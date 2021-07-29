@@ -1,0 +1,4 @@
+.body {
+  //@include text($family: $font-regular, $size: large, $lineHeight: null, $weight: 400);
+  @include regular-text();
+}

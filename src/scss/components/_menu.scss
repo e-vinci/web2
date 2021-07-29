@@ -1,0 +1,21 @@
+.menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  align-items: center;
+  width: 100%;
+
+  a {
+    font-size: 1.3rem;
+    color: $secondary-color;
+
+    &:hover {
+      color: darken($secondary-color, 25%);
+      transition: color 0.3s ease-in;
+    }
+  }
+
+  li {
+    margin-right: 1rem;
+  }
+}

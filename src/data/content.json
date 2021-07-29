@@ -1,0 +1,159 @@
+[
+  {
+    "subject": "Informations générales",
+    "week": 1,
+    "skillsL1": "Toutes les compétences",
+    "skillsL2": "Contexte",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Info-Générale",
+        "uri": "Info-Générale.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+  {
+    "subject": "Contexte d’utilisation de JS",
+    "week": 1,
+    "skillsL1": "Toutes les compétences",
+    "skillsL2": "Contexte",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "JS-Contexte",
+        "uri": "JS-Contexte.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+  {
+    "subject": "Introduction à Git",
+    "week": 1,
+    "skillsL1": "Toutes les compétences",
+    "skillsL2": "CG1. Gestion de la configuration de code JS",
+    "isOptional": true,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Git",
+        "uri": "Git.pdf"
+      }
+    ],
+    "courseVideos": [
+      {
+        "type": "youtube",
+        "title": "Introduction à Git",
+        "uri": "https://youtu.be/C6CYLxNNnK4"
+      }
+    ],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+  {
+    "subject": "Introduction au langage JS côté client",
+    "week": 1,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.1 Interagir avec de l'HTML existant",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Intro-Langage-JS",
+        "uri": "Intro-Langage-JS.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "JS interne dans une fonction",
+        "uri": "frontend/js-location/internal-function"
+      },
+      {
+        "type": "code",
+        "title": "JS dans la balise script",
+        "uri": "frontend/js-location/internal-script/"
+      },
+      {
+        "type": "code",
+        "title": "JS dans un script externe",
+        "uri": "frontend/js-location/external-script/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche01",
+        "uri": "fiche01.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "1er script externe & appel de fonction",
+        "uri": ""
+      }
+    ]
+  },
+  {
+    "subject": "Le DOM et la gestion d’événements",
+    "week": 1,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.1 Interagir avec de l'HTML existant",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "DOM-Events",
+        "uri": "DOM-Events.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Gestion d’un clic et du DOM",
+        "uri": "frontend/dom-event/click-button/"
+      },
+      {
+        "type": "code",
+        "title": "Gestion de mouseover et du DOM",
+        "uri": "frontend/dom-event/mouse-over-div/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’une callback",
+        "uri": "frontend/dom-event/callback/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche01",
+        "uri": "fiche01.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Gestion d'un compteur de clics",
+        "uri": ""
+      },
+      {
+        "type": "code",
+        "title": "Gestion d’événements différés dans le temps : l’horloge",
+        "uri": ""
+      }
+    ]
+  }
+]

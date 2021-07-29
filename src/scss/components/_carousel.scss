@@ -1,0 +1,40 @@
+/*.carousel {
+  &__wrapper {
+    width: 100%;
+    height:auto;
+    background-color: $primary-color;
+    //display:block;
+    box-sizing: border-box ;
+    max-width: 100%;
+    
+
+  }
+}*/
+
+.carousel__wrapper {
+  width: 100%;
+  height: auto;
+  background-color: $primary-color;
+  background-image: linear-gradient(
+    180deg,
+    $primary-color 25%,
+    lighten($primary-color, 20%) 100%
+  );
+
+  //background-image: url("../images/footer.jpg");
+
+  //display:block;
+  box-sizing: border-box;
+  max-width: 100%;
+  margin-top: 1rem;
+
+  /* to deal with carousel, it shall not be displayed as a flex */
+  &__background {
+    display: block;
+
+    &--transparent {
+      background-image: none;
+      background-color: transparent;
+    }
+  }
+}

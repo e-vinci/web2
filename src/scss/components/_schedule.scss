@@ -1,0 +1,192 @@
+$colCount: 5;
+$scheduletitle1: "s' ochtends";
+$scheduletitle3: "s' avonds";
+
+.schedule {
+  @include regular-text();
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  // regular headers (Monday, Tuesday...)
+  &__header1,
+  &__header2,
+  &__header3,
+  &__header4 {
+    @include emphasized-text();
+    font-size: large;
+    text-align: left;
+    display: block;
+  }
+
+  // schedule titles (Morning Session 1, Afternoon Session 1...)
+  &__title {
+    @include emphasized-text();
+    font-size: medium;
+    //font-weight: 200;
+    display: block;
+  }
+
+  /* Hide the schedule titles to be added in the first column for xs viewport */
+  &__title1:not(.schedule__title),
+  &__title2:not(.schedule__title),
+  &__title3:not(.schedule__title),
+  &__title4:not(.schedule__title) {
+    display: none;
+  }
+
+  /* for any h3 within .schedule */
+
+  &__session {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    // very important if we want it to occupy all the width
+    flex-wrap: wrap;
+
+    /*
+    padding : 0.5rem;
+    background-color: lighten($secondary-color,10%);
+    border-top: solid 1px lighten($primary-color,10%);
+    border-bottom: solid 1px lighten($primary-color,10%);*/
+
+    min-height: 5rem;
+
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    background-color: lighten($primary-color, 10%);
+
+    //box-shadow: rgba(255, 255, 255, 0.6) 1px 1px 0, rgba(0, 0, 0, 0.3) 4px 4px 0;
+
+    &__title {
+      
+      width: 100%;
+      font-weight: 700;
+      color: $secondary-color;     
+      text-align: center;
+
+      align-self: flex-start;
+    }
+
+    &__time {
+
+      width: 100%;
+      font-weight: 700;     
+      text-align: center;
+      align-self: flex-end;      
+    }
+  }
+
+  @media only screen and (min-width: $sm) {
+    @include regular-text();
+    width: 100%;
+    display: grid;
+    grid-template:
+      "headertitle header1 header2  header3  header4"
+      "scheduletitle1 monday1 wednesday1 thursday1 friday1"
+      "scheduletitle2 monday2 wednesday2 thursday2 friday2"
+      "scheduletitle3 monday3 wednesday3 thursday3 friday3"
+      "scheduletitle4 monday4 wednesday4 thursday4 friday4";
+    // fixed column width
+    grid-template-columns: repeat(5, 1fr);
+
+    // show the schedule titles
+    &__title1 {
+      display: block; 
+      font-size: large; 
+      grid-area: scheduletitle1;
+    }
+    &__title2 {
+      display: block;  
+      font-size: large;  
+      grid-area: scheduletitle2;
+    }
+    &__title3 {
+      display: block;      
+      font-size: large;
+      grid-area: scheduletitle3;
+    }
+    &__title4 {
+      display: block;   
+      font-size: large;   
+      grid-area: scheduletitle4;
+    }
+
+    &__header1 {
+      text-align: center;
+      grid-area: header1;
+    }
+    &__header2 {
+      text-align: center;
+      grid-area: header2;
+    }
+    &__header3 {
+      text-align: center;
+      grid-area: header3;
+    }
+    &__header4 {
+      text-align: center;
+      grid-area: header4;
+    }
+
+    &__monday1 {
+      grid-area: monday1;
+    }
+    &__monday2 {
+      grid-area: monday2;
+    }
+    &__monday3 {
+      grid-area: monday3;
+    }
+    &__monday4 {
+      grid-area: monday4;
+    }
+
+    &__wednesday1 {
+      grid-area: wednesday1;
+    }
+    &__wednesday2 {
+      grid-area: wednesday2;
+    }
+    &__wednesday3 {
+      grid-area: wednesday3;
+    }
+    &__wednesday4 {
+      grid-area: wednesday4;
+    }
+
+    &__thursday1 {
+      grid-area: thursday1;
+    }
+    &__thursday2 {
+      grid-area: thursday2;
+    }
+    &__thursday3 {
+      grid-area: thursday3;
+    }
+    &__thursday4 {
+      grid-area: thursday4;
+    }
+
+    &__friday1 {
+      grid-area: friday1;
+    }
+    &__friday2 {
+      grid-area: friday2;
+    }
+    &__friday3 {
+      grid-area: friday3;
+    }
+    &__friday4 {
+      grid-area: friday4;
+    }
+
+    // don't display the schedule titles added only for the xs viewport
+
+    &__title:not(.schedule__title1):not(.schedule__title2):not(.schedule__title3):not(.schedule__title4) {
+      display: none;
+    }
+  }
+}

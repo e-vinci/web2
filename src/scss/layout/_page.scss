@@ -1,0 +1,7 @@
+.page {
+    
+  // deal with all text written directly within the .mdx files, without calling react components (or html)
+  & > p {
+    padding: 1rem;    
+  }
+}

@@ -1,0 +1,5 @@
+main {
+    background-color: $secondary-color;    
+    @include regular-text();
+    flex-grow: 1;
+  }
