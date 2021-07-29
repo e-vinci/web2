@@ -80,9 +80,13 @@ const Index = () => {
 
             <div className="index__card__content__title">Optionnel?</div>
             <div className="index__card__content__description">
-              {content.isOptional !== undefined && content.isOptional
-                ? "☑"
-                : "☐"}
+              {
+                content.isOptional !== undefined && content.isOptional ? (
+                  <input type="checkbox" checked disabled></input> //"☑"
+                ) : (
+                  <input type="checkbox" disabled></input>
+                ) //"☐"
+              }
             </div>
 
             {content.skillsL1.length > 0 ? (
@@ -147,12 +151,18 @@ const Index = () => {
                   <ul className="index__card__content__description__subitems">
                     {content.courseDemos.map((item) => (
                       <li className="index__card__content__description__subitems__item">
-                        <a
-                          href={contentConfiguration.demoCodeBaseUrl + item.uri}
-                          target="_blank"
-                        >
-                          {item.title}
-                        </a>
+                        {item.uri.length > 0 ? (
+                          <a
+                            href={
+                              contentConfiguration.demoCodeBaseUrl + item.uri
+                            }
+                            target="_blank"
+                          >
+                            {item.title}
+                          </a>
+                        ) : (
+                          item.title
+                        )}
                       </li>
                     ))}
                   </ul>

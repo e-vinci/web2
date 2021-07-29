@@ -39,6 +39,13 @@
 
       &__description {
         padding-bottom: 0.5rem;
+        // for the optional checkbox (color cannot be changed as the input is disabled)
+        input {
+          height: 1.3rem;
+          width: 1.3rem;
+          vertical-align: middle;         
+        }
+
         &__subitems {
           list-style: none;
           &__item {
