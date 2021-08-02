@@ -39,7 +39,7 @@ const PublicProjectsView = ({ projectGroupName }) => {
   return (
     <div className="index">
       {filteredProjects.map(({ node: project }, index) => (
-        <div className="index__card">
+        <div className="index__card" key={index}>
           <div className="index__card__header">{project.name}</div>
 
           <div className="index__card__content">

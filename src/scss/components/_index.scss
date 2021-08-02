@@ -3,6 +3,14 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
+  &__search{
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
   &__card {
     display: block;
     width: 100%;

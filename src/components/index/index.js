@@ -1,8 +1,8 @@
-import React from "react";
-import { Link, graphql, useStaticQuery } from "gatsby";
+import React, { useState } from "react";
+import { graphql, useStaticQuery } from "gatsby";
 import contentConfiguration from "../../data/content-configuration.json";
 
-const Index = () => {
+const Index = ({ isSearchable }) => {
   const data = useStaticQuery(
     graphql`
       query MyQuery {
@@ -58,12 +58,51 @@ const Index = () => {
   const { edges: contents } = data.allContentJson;
   const { edges: pdfs } = data.allMyPDFs;
 
+  // add a contentNumber to the contents
+  const contentsWithNumber = contents.map(
+    ({ node: content }, index) => (content.index = index + 1)
+  );
+  const [filteredContents, setFilteredContents] = useState(contents);
+  const [query, setQuery] = useState("");
+
+  const handleInputChange = (e) => {
+    const inputText = e.target.value;
+    setQuery(e.target.value);
+
+    const filteredData = contents.filter((content) => {
+      // destructure data from post frontmatter
+      const { subject, skillsL1, skillsL2, index } = content.node;
+      return (
+        // standardize data with .toLowerCase()
+        // return true if the subject, skills...
+        // contains the query string
+        subject.toLowerCase().includes(inputText.toLowerCase()) ||
+        skillsL1.toLowerCase().includes(inputText.toLowerCase()) ||
+        (inputText.length > 0 && parseInt(inputText) === index)
+      );
+    });
+
+    if (filteredData && filteredData.length > 0)
+      setFilteredContents(filteredData);
+  };
+
   return (
     <div className="index">
-      {contents.map(({ node: content }, partNo) => (
+      {isSearchable !== undefined ? (
+        <input
+          type="text"
+          aria-label="Search"
+          placeholder="Filtrez les contenus..."
+          onChange={handleInputChange}
+          className="index__search"
+        />
+      ) : (
+        ""
+      )}
+      {filteredContents.map(({ node: content }) => (
         <div className="index__card">
-          <div className="index__card__header">
-            {"Partie " + (partNo + 1) + " : " + content.subject}
+          <div className="index__card__header" key={content.index}>
+            {"Partie " + content.index + " : " + content.subject}
           </div>
 
           <div className="index__card__content">
@@ -116,8 +155,11 @@ const Index = () => {
                 <div className="index__card__content__title">Document</div>
                 <div className="index__card__content__description">
                   <ul className="index__card__content__description__subitems">
-                    {content.courseFiles.map((item) => (
-                      <li className="index__card__content__description__subitems__item">
+                    {content.courseFiles.map((item, index) => (
+                      <li
+                        className="index__card__content__description__subitems__item"
+                        key={index}
+                      >
                         {pdfs.find(
                           (element) => element.node.relativePath === item.uri
                         ) !== undefined ? (
@@ -149,8 +191,11 @@ const Index = () => {
                 <div className="index__card__content__title">Démos</div>
                 <div className="index__card__content__description">
                   <ul className="index__card__content__description__subitems">
-                    {content.courseDemos.map((item) => (
-                      <li className="index__card__content__description__subitems__item">
+                    {content.courseDemos.map((item, index) => (
+                      <li
+                        className="index__card__content__description__subitems__item"
+                        key={index}
+                      >
                         {item.uri.length > 0 ? (
                           <a
                             href={
@@ -177,8 +222,11 @@ const Index = () => {
                 <div className="index__card__content__title">Vidéos</div>
                 <div className="index__card__content__description">
                   <ul className="index__card__content__description__subitems">
-                    {content.courseVideos.map((item) => (
-                      <li className="index__card__content__description__subitems__item">
+                    {content.courseVideos.map((item, index) => (
+                      <li
+                        className="index__card__content__description__subitems__item"
+                        key={index}
+                      >
                         <a href={item.uri} target="_blank">
                           {item.title}
                         </a>
@@ -198,8 +246,11 @@ const Index = () => {
                 </div>
                 <div className="index__card__content__description">
                   <ul className="index__card__content__description__subitems">
-                    {content.exerciseInstructions.map((item) => (
-                      <li className="index__card__content__description__subitems__item">
+                    {content.exerciseInstructions.map((item, index) => (
+                      <li
+                        className="index__card__content__description__subitems__item"
+                        key={index}
+                      >
                         {pdfs.find(
                           (element) => element.node.relativePath === item.uri
                         ) !== undefined ? (
@@ -231,8 +282,11 @@ const Index = () => {
                 <div className="index__card__content__title">Exercices</div>
                 <div className="index__card__content__description">
                   <ul className="index__card__content__description__subitems">
-                    {content.exerciseSolutions.map((item) => (
-                      <li className="index__card__content__description__subitems__item">
+                    {content.exerciseSolutions.map((item, index) => (
+                      <li
+                        className="index__card__content__description__subitems__item"
+                        key={index}
+                      >
                         {item.uri.length > 0 ? (
                           <a
                             href={

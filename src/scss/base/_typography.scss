@@ -2,8 +2,8 @@
 @font-face {
   font-family: "Kavoon";
   src: url(../fonts/Kavoon-Regular.ttf);
-  //The easiest way to avoid showing invisible text while custom fonts load is to temporarily 
-  //show a system font. By including font-display: swap in your @font-face style, 
+  //The easiest way to avoid showing invisible text while custom fonts load is to temporarily
+  //show a system font. By including font-display: swap in your @font-face style,
   //you can avoid FOIT in most modern browsers:
   font-display: swap;
 }
@@ -76,5 +76,11 @@ h3 {
 
   &--emphasized {
     @include emphasized-text();
+  }
+
+  &--hand-written {
+    font-family: $font-navigation;
+    font-weight: 300;
+    font-size: large;
   }
 }

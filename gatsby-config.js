@@ -83,7 +83,12 @@ module.exports = {
         path: `./src/data/`,
       },
     },
-
+    {
+      resolve: "gatsby-plugin-remove-console",
+      options: {
+        exclude: ["error", "warn"], // <- will be removed all console calls except these
+      },
+    },
     `gatsby-remark-images`,
     {
       resolve: `gatsby-plugin-mdx`,
