@@ -39,6 +39,20 @@
 
       &__description {
         padding-bottom: 0.5rem;
+
+        a {
+          color: $tertiary-color;
+          transition: color 0.15s ease-in-out,
+            background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out;
+
+          cursor: pointer;
+          &:hover,
+          &:focus {
+            color: lighten($tertiary-color, 20%);
+          }
+        }
+
         // for the optional checkbox (color cannot be changed as the input is disabled)
         input {
           height: 1.3rem;
@@ -53,18 +67,7 @@
             padding: 0.5rem;
             margin-bottom: 0.5rem;
             border-radius: 0.5rem;
-            a {
-              color: $tertiary-color;
-              transition: color 0.15s ease-in-out,
-                background-color 0.15s ease-in-out,
-                border-color 0.15s ease-in-out;
-
-              cursor: pointer;
-              &:hover,
-              &:focus {
-                color: lighten($tertiary-color, 20%);
-              }
-            }
+            
           }
 
           &__item:last-child {

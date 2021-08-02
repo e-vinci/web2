@@ -49,6 +49,7 @@
     "gatsby-transformer-remark": "^3.2.0",
     "gatsby-transformer-sharp": "^3.4.0",
     "gbimage-bridge": "^0.1.4",
+    "he": "^1.2.0",
     "node-emoji": "^1.10.0",
     "postcss": "^8.2.10",
     "react": "^17.0.1",

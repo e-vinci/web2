@@ -12,6 +12,7 @@ import SectionHeader from "../components/section-header.js";
 import SectionFooter from "../components/section-footer.js";
 import PageHeader from "../components/page-header.js";
 import Index from "../components/index/index.js";
+import PublicProjectsView from "../components/public-projects/public-projects-view.js";
 import { withFrontmatter } from "../components/hoc/hoc.js";
 
 const shortcodes = {
@@ -24,6 +25,7 @@ const shortcodes = {
   SectionFooter,
   PageHeader,
   Index,
+  PublicProjectsView,
 };
 
 export default function PageTemplate({ data: { mdx, allImages } }) {

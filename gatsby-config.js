@@ -20,21 +20,17 @@ module.exports = {
       {
         name: `Home`,
         link: `/`,
-      } /*
-      {
-        name: "Lessons",
-        link: "",
-        subMenu: [
-          { name: "Group lessons", link: "/lessons/groups" },
-          { name: "Company lessons", link: "/lessons/companies" },
-          { name: "Private lessons", link: "/lessons/personal" },
-          { name: "Online lessons", link: "/lessons/online" },
-          { name: "Videos", link: "/lessons/video" },
-        ],
-      },*/,
+      },
       {
         name: `About`,
         link: `/about`,
+      },
+      {
+        name: "Vitrines de projets",
+        link: "",
+        subMenu: [
+          { name: "Projets webs 2020", link: "/public-projects/showcase2020" },
+        ],
       },
     ],
   },
