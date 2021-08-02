@@ -3,11 +3,10 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
-  &__search{
+  &__search {
     display: block;
     width: 100%;
     padding: 0.5rem;
-    margin-left: 0.5rem;
     margin-bottom: 1rem;
   }
 
@@ -16,14 +15,18 @@
     width: 100%;
     border-radius: 0.5rem;
     padding: 0.5rem;
-    margin-left: 0.5rem;
     margin-bottom: 0.5rem;
     background-color: lighten($primary-color, 10%);
 
     word-break: break-word;
+    hyphens: auto;
 
     @media only screen and (min-width: $sm) {
       width: 48%;
+      // set a margin left only if this is not the first element on a column
+      &::nth-of-type(2n + 1) {
+        margin-left: 2rem;
+      }
     }
 
     &__header {
@@ -51,8 +54,7 @@
         a {
           color: $tertiary-color;
           transition: color 0.15s ease-in-out,
-            background-color 0.15s ease-in-out,
-            border-color 0.15s ease-in-out;
+            background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 
           cursor: pointer;
           &:hover,
@@ -65,7 +67,7 @@
         input {
           height: 1.3rem;
           width: 1.3rem;
-          vertical-align: middle;         
+          vertical-align: middle;
         }
 
         &__subitems {
@@ -75,7 +77,6 @@
             padding: 0.5rem;
             margin-bottom: 0.5rem;
             border-radius: 0.5rem;
-            
           }
 
           &__item:last-child {
