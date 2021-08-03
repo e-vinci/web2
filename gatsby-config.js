@@ -89,6 +89,10 @@ module.exports = {
         exclude: ["error", "warn"], // <- will be removed all console calls except these
       },
     },
+    {
+      resolve: `gatsby-plugin-create-client-paths`, 
+      options: { prefixes: [`/auths/*`] }, // These paths exist on the client only and do not correspond to index.html files in an app’s built assets
+    },
     `gatsby-remark-images`,
     {
       resolve: `gatsby-plugin-mdx`,

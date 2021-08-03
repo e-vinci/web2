@@ -1,14 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "gatsby";
 import Dropdow from "./dropdown.js";
-
-//import Icon from "../../images/artiyoga.inline.svg";
+import { StaticImage } from "gatsby-plugin-image";
+import { getUserName } from "../../utils/auths/authPopup";
 
 const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   // ref to deal with dropdown (submenu items)
   const node = useRef();
 
   const [collapsed, setCollapsed] = useState(false);
+  const [authenticatedUser, setAuthenticatedUser] = useState(undefined);
+
+  // useEffect is only called at client side (no issue with SSR)
+  useEffect(() => {
+    // You need to restrict it at some point
+    setAuthenticatedUser(getUserName());
+    console.log("effect : ", authenticatedUser);
+  });
 
   return (
     <nav className={`navbar ${navbarExtraStyles ? navbarExtraStyles : ""}`}>
@@ -48,6 +56,39 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
                 </Link>
               </li>
             )
+          )}
+          {/* Deal with client side menu items : unauthenticated user */}
+          {!authenticatedUser ? (
+            <li key={"li-login"} className="navbar__menu__list__item">
+              <Link to="/auths/login">
+                <StaticImage
+                  src="../../images/logo_vinci.png"
+                  alt=""
+                  width="24"
+                  height="24"
+                />
+              </Link>
+            </li>
+          ) : (
+            // client side menu items for authenticated user
+            <>
+              <li key={"li-projects"} className="navbar__menu__list__item">
+                <Link
+                  className="navbar__menu__list__item__link"
+                  to="/auths/project-page"
+                >
+                  Projects
+                </Link>
+              </li>
+              <li key={"li-login"} className="navbar__menu__list__item">
+                <Link
+                  className="navbar__menu__list__item__link"
+                  to="/auths/logout"
+                >
+                  Logout
+                </Link>
+              </li>
+            </>
           )}
         </ul>
       </div>
