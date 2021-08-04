@@ -59,23 +59,34 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
           )}
           {/* Deal with client side menu items : unauthenticated user */}
           {!authenticatedUser ? (
-            <li key={"li-login"} className="navbar__menu__list__item">
-              <Link to="/auths/login">
-                <StaticImage
-                  src="../../images/logo_vinci.png"
-                  alt=""
-                  width="24"
-                  height="24"
-                />
-              </Link>
-            </li>
+            <>
+              <li key={"li-login"} className="navbar__menu__list__item">
+                <Link to="/app/login">
+                  <StaticImage
+                    src="../../images/logo_vinci.png"
+                    alt=""
+                    width="24"
+                    height="24"
+                  />
+                </Link>
+              </li>
+
+              <li key={"li-logintemp"} className="navbar__menu__list__item">
+                <Link
+                  className="navbar__menu__list__item__link"
+                  to="/app/logintemp"
+                >
+                  LoginTemp
+                </Link>
+              </li>
+            </>
           ) : (
             // client side menu items for authenticated user
             <>
               <li key={"li-projects"} className="navbar__menu__list__item">
                 <Link
                   className="navbar__menu__list__item__link"
-                  to="/auths/project-page"
+                  to="/app/project-page"
                 >
                   Projects
                 </Link>
@@ -83,7 +94,7 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
               <li key={"li-login"} className="navbar__menu__list__item">
                 <Link
                   className="navbar__menu__list__item__link"
-                  to="/auths/logout"
+                  to="/app/logout"
                 >
                   Logout
                 </Link>

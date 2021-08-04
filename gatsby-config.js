@@ -91,7 +91,7 @@ module.exports = {
     },
     {
       resolve: `gatsby-plugin-create-client-paths`, 
-      options: { prefixes: [`/auths/*`] }, // These paths exist on the client only and do not correspond to index.html files in an app’s built assets
+      options: { prefixes: [`/app/*`] }, // These paths exist on the client only and do not correspond to index.html files in an app’s built assets
     },
     `gatsby-remark-images`,
     {

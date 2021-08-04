@@ -7,17 +7,15 @@ import LoginTemp from "../components/auths/login/logintemp";
 import Logout from "../components/auths/login/logout";
 import PrivateRoute from "../components/auths/route/secured-route";
 
-const Auths = () => (
+const App = () => (
   <MainLayout>
-    <Router>
-      <Login path="/auths/login" />
-      <LoginTemp path="auths/logintemp" />
+    <Router basepath="/app">
+      <Login path="/login" />
+      <LoginTemp path="/logintemp" />
 
-     
-      <PrivateRoute path="auths/logout" component={Logout} />
-      <PrivateRoute path="auths/project-page" component={ProjectPage} />
- 
+      <PrivateRoute path="/logout" component={Logout} />
+      <PrivateRoute path="/project-page" component={ProjectPage} />
     </Router>
   </MainLayout>
 );
-export default Auths;
+export default App;

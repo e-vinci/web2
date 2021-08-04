@@ -19,7 +19,7 @@ const Login = () => {
   };
 
   if (isSigned) {
-    navigate("/auths/project-page");
+    navigate("/app/project-page");
     return null;
   }
 
@@ -27,7 +27,7 @@ const Login = () => {
     <div>
       <p>
         Vous pouvez vous logger en cliquant
-        <Link to="/auths/login">
+        <Link to="/app/login">
           <StaticImage
             src="../../../images/logo_vinci.png"
             alt=""
