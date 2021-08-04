@@ -17,8 +17,8 @@ const getMsalConfig = () => {
         clientId: "2aad2517-743a-4a40-84c9-d5d8f411b5b0",
         authority:
           "https://login.microsoftonline.com/f7a15417-57cb-4855-8d36-064f95aada17", //"f7a15417-57cb-4855-8d36-064f95aada17",
-        redirectUri: "http://localhost:8000/auths",
-        postLogoutRedirectUri: "https://localhost:8000/auths/logintemp",
+        redirectUri: "http://localhost:8000",
+        postLogoutRedirectUri: "https://localhost:8000",
       },
       cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored
@@ -31,9 +31,9 @@ const getMsalConfig = () => {
         clientId: "e4274dd2-fd73-4756-abac-0faa44362f5b",
         authority:
           "https://login.microsoftonline.com/f7a15417-57cb-4855-8d36-064f95aada17", //"f7a15417-57cb-4855-8d36-064f95aada17",
-        redirectUri: "https://e-vinci.github.io/myjscourse/auths/",
+        redirectUri: "https://e-vinci.github.io/myjscourse",
         postLogoutRedirectUri:
-          "https://e-vinci.github.io/myjscourse/auths/logintemp",
+          "https://e-vinci.github.io/myjscourse",
       },
       cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored

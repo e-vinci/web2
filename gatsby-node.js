@@ -3,6 +3,11 @@ const path = require("path");
 const crypto = require("crypto");
 const fetch = require("node-fetch");
 
+// load variables from the .env.* files
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
 // add a slug field to all MDX files
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
@@ -116,8 +121,12 @@ exports.sourceNodes = async ({ actions }) => {
 
   // fetch raw data from the rest api :
   // TBD - MAKE IT REALLY GENERIC TO DEAL WITH MULTIPLE YEARS
+
+  const url =
+    process.env.GATSBY_API_URL + "projects/projectgroups/Web2 2020/public";
+
   const response = await fetch(
-    "https://myjscourse-api.herokuapp.com/api/projects/projectgroups/Web2 2020/public"
+    url //"https://myjscourse-api.herokuapp.com/api/projects/projectgroups/Web2 2020/public"
   );
   const publicProjects = await response.json();
 

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import callAPI from "../../../utils/api/fetch";
+import React, { useState, useEffect } from "react";
+import MainLayout from "../components/main-layout";
+import callAPI from "../utils/api/fetch";
 
 const ProjectPage = () => {
   const [projectGroup, setProjectGroup] = useState(undefined);
@@ -23,10 +24,10 @@ const ProjectPage = () => {
   };
 
   return (
-    <div>
+    <MainLayout>
       <h3>Project Page</h3>
       <p>Current project : {JSON.stringify(projectGroup)}</p>
-    </div>
+    </MainLayout>
   );
 };
 

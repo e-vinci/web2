@@ -61,22 +61,13 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
           {!authenticatedUser ? (
             <>
               <li key={"li-login"} className="navbar__menu__list__item">
-                <Link to="/app/login">
+                <Link to="/login">
                   <StaticImage
                     src="../../images/logo_vinci.png"
                     alt=""
                     width="24"
                     height="24"
                   />
-                </Link>
-              </li>
-
-              <li key={"li-logintemp"} className="navbar__menu__list__item">
-                <Link
-                  className="navbar__menu__list__item__link"
-                  to="/app/logintemp"
-                >
-                  LoginTemp
                 </Link>
               </li>
             </>
@@ -86,16 +77,13 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
               <li key={"li-projects"} className="navbar__menu__list__item">
                 <Link
                   className="navbar__menu__list__item__link"
-                  to="/app/project-page"
+                  to="/project-page"
                 >
                   Projects
                 </Link>
               </li>
               <li key={"li-login"} className="navbar__menu__list__item">
-                <Link
-                  className="navbar__menu__list__item__link"
-                  to="/app/logout"
-                >
+                <Link className="navbar__menu__list__item__link" to="/logout">
                   Logout
                 </Link>
               </li>
