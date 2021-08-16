@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 import contentConfiguration from "../../data/content-configuration.json";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Index = ({ isSearchable }) => {
   const data = useStaticQuery(
@@ -102,7 +104,9 @@ const Index = ({ isSearchable }) => {
       {filteredContents.map(({ node: content }) => (
         <div className="index__card">
           <div className="index__card__header" key={content.index}>
+          {content.isOptional ? <FontAwesomeIcon icon={faPlusCircle} /> : ""}
             {"Partie " + content.index + " : " + content.subject}
+            
           </div>
 
           <div className="index__card__content">
@@ -117,7 +121,7 @@ const Index = ({ isSearchable }) => {
               ""
             )}
 
-            <div className="index__card__content__title">Optionnel?</div>
+            {/* <div className="index__card__content__title">Optionnel?</div>
             <div className="index__card__content__description">
               {
                 content.isOptional !== undefined && content.isOptional ? (
@@ -126,7 +130,7 @@ const Index = ({ isSearchable }) => {
                   <input type="checkbox" disabled></input>
                 ) //"☐"
               }
-            </div>
+            </div> */}
 
             {content.skillsL1.length > 0 ? (
               <>

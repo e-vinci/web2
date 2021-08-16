@@ -10,6 +10,7 @@ import Footer from "./footer.js";
 import Image from "./image.js";
 import SEO from "./seo/seo.js";
 import "../scss/main.scss";
+import Scroll from "./scroll/scroll";
 
 const MainLayout = ({
   children,
@@ -82,6 +83,7 @@ const MainLayout = ({
       </main>
 
       <Footer siteMetaData={data.site.siteMetadata}></Footer>
+      <Scroll showBelow={250} />
     </div>
   );
 };

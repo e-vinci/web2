@@ -23,8 +23,10 @@ const Footer = ({ siteMetaData, ...otherProps }) => {
         {...(footerImage ? { imageName: footerImage } : {})}
         className="footer__background"
       >
-        <div className="">
-          <h3 className="footer__logo">{siteMetaData.title}</h3>
+        <div className="footer__logo">
+          <h3 className="footer__logo__text">{siteMetaData.title}</h3>
+          <div className="footer__logo__image"></div>
+          <div className="footer__logo__image2"></div>
         </div>
         <div className="footer__icons">
           <ul className="menu">

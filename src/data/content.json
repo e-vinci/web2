@@ -41,8 +41,8 @@
     "subject": "Introduction à Git",
     "week": 1,
     "skillsL1": "Toutes les compétences",
-    "skillsL2": "CG1. Gestion de la configuration de code JS",
-    "isOptional": true,
+    "skillsL2": "CG2. Gestion de la configuration de code JS",
+    "isOptional": false,
     "courseFiles": [
       {
         "type": "slides",
@@ -282,7 +282,7 @@
     "subject": "Debugging d’une application côté client",
     "week": 2,
     "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
-    "skillsL2": "C1.2 Frontend dynamique et moderne",
+    "skillsL2": "CG1. Debugging",
     "isOptional": false,
     "courseFiles": [
       {
@@ -502,8 +502,8 @@
   {
     "subject": "Introduction à un backend JavaScript",
     "week": 4,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.1 RESTful API sous Express",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.1 Backend sous Node.js & Express",
     "isOptional": false,
     "courseFiles": [
       {
@@ -521,8 +521,8 @@
   {
     "subject": "Introduction à Node.js",
     "week": 4,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.1 RESTful API sous Express",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.1 Backend sous Node.js & Express",
     "isOptional": false,
     "courseFiles": [
       {
@@ -556,8 +556,8 @@
   {
     "subject": "Serveur de fichiers statiques : Framework Express",
     "week": 4,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.1 RESTful API sous Express",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.1 Backend sous Node.js & Express",
     "isOptional": false,
     "courseFiles": [
       {
@@ -586,8 +586,8 @@
   {
     "subject": "Introduction aux RESTful APIs",
     "week": 4,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.1 RESTful API sous Express",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
     "isOptional": false,
     "courseFiles": [
       {
@@ -605,8 +605,8 @@
   {
     "subject": "Framework Express pour RESTful APIs",
     "week": 4,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.1 RESTful API sous Express",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
     "isOptional": false,
     "courseFiles": [
       {
@@ -619,7 +619,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 1 – CRUD pizzas : gestion de données non persistantes, code peu structuré",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 1 – CRUD pizzas : gestion de données non persistantes, code peu structuré",
         "uri": "backend-restful-api/restful-api-essentials/step1/"
       }
     ],
@@ -630,8 +630,8 @@
   {
     "subject": "Consommation de RESTful APIs avec REST Client",
     "week": 4,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.1 RESTful API sous Express",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
     "isOptional": false,
     "courseFiles": [
       {
@@ -644,7 +644,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 1 – CRUD pizzas : test des opérations sur les pizzas",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 1 – CRUD pizzas : test des opérations sur les pizzas",
         "uri": "backend-restful-api/restful-api-essentials/step1/"
       }
     ],
@@ -655,8 +655,8 @@
   {
     "subject": "Introduction à JSON",
     "week": 4,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.1 RESTful API sous Express",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
     "isOptional": false,
     "courseFiles": [
       {
@@ -669,7 +669,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 2 –Gestion de la persistance des données dans un fichier .json ",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 2 –Gestion de la persistance des données dans un fichier .json ",
         "uri": "backend-restful-api/restful-api-essentials/step2/"
       }
     ],
@@ -680,8 +680,8 @@
   {
     "subject": "Architectures de RESTful APIs sous Express",
     "week": 4,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.1 RESTful API sous Express",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
     "isOptional": false,
     "courseFiles": [
       {
@@ -694,7 +694,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 3 – Structuration du code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 3 – Structuration du code",
         "uri": "backend-restful-api/restful-api-essentials/step3/"
       }
     ],
@@ -708,7 +708,7 @@
     "exerciseSolutions": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API non protégée pour myMoovies",
+        "title": "Création d’une RESTful API non protégée pour myMoovies",
         "uri": ""
       }
     ]
@@ -717,8 +717,8 @@
   {
     "subject": "Authentification sécurisée et autorisation d’accès aux opérations d’une API via JWT : généralités & RESTful APIs",
     "week": 5,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.2 Sécurisation de RESTful API via JWT & autres",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.3 Sécurisation de RESTful API via JWT & autres",
     "isOptional": false,
     "courseFiles": [
       {
@@ -731,12 +731,12 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 4 – Authentification d’utilisateurs & autorisation des opérations de MàJ de données",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 4 – Authentification d’utilisateurs & autorisation des opérations de MàJ de données",
         "uri": "backend-restful-api/restful-api-essentials/step4/"
       },
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 5 – Refactor : création d’un middleware d’autorisation JWT",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 5 – Refactor : création d’un middleware d’autorisation JWT",
         "uri": "backend-restful-api/restful-api-essentials/step5/"
       }
     ],
@@ -750,7 +750,7 @@
     "exerciseSolutions": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API protégée par JWT pour myMoovies",
+        "title": "Création d’une RESTful API protégée par JWT pour myMoovies",
         "uri": ""
       }
     ]
@@ -759,8 +759,8 @@
   {
     "subject": "Sécurisation de RESTful APIs : Hachage d’information et protection contre les attaques XSS",
     "week": 5,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.2 Sécurisation de RESTful API via JWT & autres",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.3 Sécurisation de RESTful API via JWT & autres",
     "isOptional": false,
     "courseFiles": [
       {
@@ -773,7 +773,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 6 – Sécurisation : hachage des passwords et protection contre attaques XSS",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 6 – Sécurisation : hachage des passwords et protection contre attaques XSS",
         "uri": "backend-restful-api/restful-api-essentials/step6/"
       }
     ],
@@ -787,7 +787,7 @@
     "exerciseSolutions": [
       {
         "type": "code",
-        "title": "Sécurisation de la RESTfull API pour myMoovies",
+        "title": "Sécurisation de la RESTful API pour myMoovies",
         "uri": ""
       },
       {
@@ -801,8 +801,8 @@
   {
     "subject": "Debugging d’une application Node.js",
     "week": 5,
-    "skillsL1": "C2 : Backend & RESTfull API via Node.js & Express",
-    "skillsL2": "C2.2 Sécurisation de RESTful API via JWT & autres",
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "CG1. Debugging",
     "isOptional": false,
     "courseFiles": [
       {
@@ -865,7 +865,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 7 – Gestion des CORS via l’autorisation d’une nouvelle origine",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 7 – Gestion des CORS via l’autorisation d’une nouvelle origine",
         "uri": "backend-restful-api/restful-api-essentials/step7/"
       },
       {
@@ -917,7 +917,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 6 – Sécurisation : hachage des passwords et protection contre attaques XSS",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 6 – Sécurisation : hachage des passwords et protection contre attaques XSS",
         "uri": "backend-restful-api/restful-api-essentials/step6/"
       }
     ],
@@ -984,7 +984,7 @@
       },
       {
         "type": "code",
-        "title": "Création d’une RESTfull API pour une pizzeria : Step 8 – Sauvegarde du token au sein d’un cookie côté client",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 8 – Sauvegarde du token au sein d’un cookie côté client",
         "uri": "backend-restful-api/restful-api-essentials/step8/"
       }
     ],
@@ -1048,7 +1048,7 @@
     "subject": "Déploiement d’applications web",
     "week": 8,
     "skillsL1": "Toutes les compétences",
-    "skillsL2": "CG2. Déploiement",
+    "skillsL2": "CG3. Déploiement",
     "isOptional": false,
     "courseFiles": [
       {
@@ -1079,7 +1079,7 @@
     "subject": "Révisions, intégrations et approfondissements",
     "week": 8,
     "skillsL1": "Toutes les compétences",
-    "skillsL2": "CG3. Révisions, intégration et approfondissements",
+    "skillsL2": "CG5. Révisions, intégration et approfondissements",
     "isOptional": false,
     "courseFiles": [],
     "courseVideos": [],
@@ -1109,7 +1109,7 @@
     "subject": "Jeu en 2D : Phaser3",
     "week": 8,
     "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
-    "skillsL2": "CG3. Apprentissage personnel de technologie JS",
+    "skillsL2": "CG4. Apprentissage personnel de technologie JS",
     "isOptional": true,
     "courseFiles": [],
     "courseVideos": [],

@@ -1,7 +1,7 @@
 const emoji = require(`remark-emoji`);
 const siteURL = "https://e-vinci.github.io/myjscourse"; //"https://www.artiyoga.com", // No trailing slash allowed!
 const youtubeUrl = "https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
-const authorEmail = "";
+const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
 const instagramUrl = "";
 module.exports = {
