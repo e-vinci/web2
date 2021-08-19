@@ -1,47 +1,68 @@
-$max-lines: 2;
-
 .card {
-  //margin-top : 1rem;
-  //padding-left: 1rem;
-  //padding-right: 1rem;  
-  display: grid;
-  grid-template-rows: 25vh 5rem 6rem 5rem;
-  @include emphasized-text();
+  display: block;
+  width: 100%;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: lighten($primary-color, 10%);
 
-  &__image {
-    //flex: 0 0 100%;
-    //z-index: 0;
-
-    //background: center/cover no-repeat;
-  }
+  word-break: break-word;
+  hyphens: auto;
 
   &__header {
-      padding-top: 1rem;
-      @include trim($max-lines);
-    //flex: 0 0 100%;
+    display: block;
+    @include emphasized-text();
+    text-align: center;
+    padding: 0.5rem;
   }
 
   &__content {
-    padding-top: 1rem;
-    @include regular-text();
-    @include trim($max-lines);
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(min-content, 150px) auto;
 
-  }
+    &__title {
+      font-weight: 300;
+      color: $secondary-color;
+      padding-right: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
 
-  &__footer {
-    //flex: 0 0 100%;
-    display: flex;
+    &__description {
+      padding-bottom: 0.5rem;
 
-    &::before {
-      content: "";
-      display: block;
-      height: 0.65em;
-      border-bottom: 1px solid currentColor;
-      -webkit-box-flex: 1;
-      -webkit-flex: 1 1 100%;
-      -ms-flex: 1 1 100%;
-      flex: 1 1 100%;
-      margin-right: 0.3em;
+      a {
+        color: $tertiary-color;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+          border-color 0.15s ease-in-out;
+
+        cursor: pointer;
+        &:hover,
+        &:focus {
+          color: lighten($tertiary-color, 20%);
+        }
+      }
+
+      // for the optional checkbox (color cannot be changed as the input is disabled)
+      input {
+        height: 1.3rem;
+        width: 1.3rem;
+        vertical-align: middle;
+      }
+
+      &__subitems {
+        list-style: none;
+        &__item {
+          border: 0.5px solid $secondary-color;
+          padding: 0.5rem;
+          margin-bottom: 0.5rem;
+          border-radius: 0.5rem;
+        }
+
+        &__item:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 }

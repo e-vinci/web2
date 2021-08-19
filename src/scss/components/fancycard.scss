@@ -1,0 +1,47 @@
+$max-lines: 2;
+
+.fancycard {
+  //margin-top : 1rem;
+  //padding-left: 1rem;
+  //padding-right: 1rem;  
+  display: grid;
+  grid-template-rows: 25vh 5rem 6rem 5rem;
+  @include emphasized-text();
+
+  &__image {
+    //flex: 0 0 100%;
+    //z-index: 0;
+
+    //background: center/cover no-repeat;
+  }
+
+  &__header {
+      padding-top: 1rem;
+      @include trim($max-lines);
+    //flex: 0 0 100%;
+  }
+
+  &__content {
+    padding-top: 1rem;
+    @include regular-text();
+    @include trim($max-lines);
+
+  }
+
+  &__footer {
+    //flex: 0 0 100%;
+    display: flex;
+
+    &::before {
+      content: "";
+      display: block;
+      height: 0.65em;
+      border-bottom: 1px solid currentColor;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1 100%;
+      -ms-flex: 1 1 100%;
+      flex: 1 1 100%;
+      margin-right: 0.3em;
+    }
+  }
+}

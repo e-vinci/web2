@@ -243,7 +243,7 @@
       },
       {
         "type": "code",
-        "title": "Création d’un frontend pour une pizzeria : Step -1 : migration partiel du frontend classique vers un frontend moderne utilisant Webpack sans fichier de configuration",
+        "title": "Création d’un frontend pour une pizzeria : Step -1 : migration partielle du frontend classique vers un frontend moderne utilisant Webpack sans fichier de configuration",
         "uri": "frontend/frontend-essentials/step-1/"
       },
       {
@@ -669,7 +669,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une RESTful API pour une pizzeria : Step 2 –Gestion de la persistance des données dans un fichier .json ",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 2 - Gestion de la persistance des données dans un fichier .json ",
         "uri": "backend-restful-api/restful-api-essentials/step2/"
       }
     ],
@@ -686,8 +686,8 @@
     "courseFiles": [
       {
         "type": "slides",
-        "title": "Architecture-RESTful-APIs",
-        "uri": "Architecture-RESTful-APIs.pdf"
+        "title": "Architectures-RESTful-APIs",
+        "uri": "Architectures-RESTful-APIs.pdf"
       }
     ],
     "courseVideos": [],
@@ -954,7 +954,7 @@
     "courseDemos": [
       {
         "type": "code",
-        "title": "Création d’une SPA pour une pizzeria : Step 2 : gestion du routage des pages composants",
+        "title": "Création d’une SPA pour une pizzeria : Step 2 : gestion du routage des pages et composants",
         "uri": "spa/spa-essentials/step2/"
       }
     ],
@@ -984,7 +984,7 @@
       },
       {
         "type": "code",
-        "title": "Création d’une RESTful API pour une pizzeria : Step 8 – Sauvegarde du token au sein d’un cookie côté client",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 8 – Sauvegarde du username et du token au sein d’un cookie côté client",
         "uri": "backend-restful-api/restful-api-essentials/step8/"
       }
     ],

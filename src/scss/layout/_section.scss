@@ -75,6 +75,19 @@
     //z-index: 1;
   }
 
+  // Deal with hyperlinks in a section
+  a {
+    color: $tertiary-color;
+    transition: color 0.15s ease-in-out,
+      background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+    cursor: pointer;
+    &:hover,
+    &:focus {
+      color: lighten($tertiary-color, 20%);
+    }
+  }
+
   /* Deal with section modifiers */
 }
 

@@ -20,6 +20,9 @@ module.exports = {
       {
         name: `Home`,
         link: `/`,
+      },{
+        name: `L'essentiel`,
+        link: `/essentials`,
       },
       {
         name: `About`,

@@ -1,39 +1,35 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby minimal starter
-</h1>
-
 ## 🚀 Quick start
 
-1.  **Create a Gatsby site.**
+1.  **Introduction**
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+   This site has been created by using Gatsby.
+
+
+2.  **Install depedencies**
+
+    Navigate into the site’s directory and install its depedencies.
 
     ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
+    cd myjscourse/
+    npm install
     ```
 
-2.  **Start developing.**
+3. **Start this site**
 
-    Navigate into your new site’s directory and start it up.
+    Navigate into the site’s directory and install its depedencies.
 
     ```shell
-    cd my-gatsby-site/
-    npm run develop
+    cd myjscourse/
+    npm start
     ```
 
 3.  **Open the code and start customizing!**
 
-    Your site is now running at http://localhost:8000!
+    This site is now running at http://localhost:8000!
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+    Edit `src/page-content/about.mdx` or other pages to see the site update in real-time!
 
-4.  **Learn more**
+4.  **Learn more about Gatsby**
 
     - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
 
