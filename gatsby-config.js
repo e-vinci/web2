@@ -130,7 +130,7 @@ module.exports = {
         short_name: `myjscourse`,
         start_url: `/`,
         background_color: `#f7f0eb`,
-        theme_color: `#68A063`,
+        theme_color: `#303030`,
         display: `standalone`,
         icon: `src/images/favicon2.svg`,
         cache_busting_mode: 'none',

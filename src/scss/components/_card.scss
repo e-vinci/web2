@@ -19,7 +19,12 @@
   &__content {
     display: grid;
     width: 100%;
-    grid-template-columns: minmax(min-content, 150px) auto;
+    //grid-template-columns: minmax(min-content, 150px) auto;
+    grid-template-columns: 1fr 2fr;
+
+    @media only screen and (min-width: $sm) {
+      grid-template-columns: 150px 2fr;
+    }
 
     &__title {
       font-weight: 300;
