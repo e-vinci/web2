@@ -17,10 +17,29 @@
     display: block;
     width: 100%;
     padding: 0.5rem;
-    margin-top :1rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     grid-column-start: 1;
     grid-column-end: -1;
+  }
+
+  &__button {
+    display: inline-block;
+    margin-top : 1rem;
+    padding: 0.375rem 0.75rem;
+    background-color: $tertiary-color;
+    color: $secondary-color;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+    border-radius: 0.25rem;
+    cursor : pointer;
+    //transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+     // border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+     &:hover{
+       background-color: lighten($tertiary-color, 10%);
+     }
   }
 
   &__card {
@@ -104,6 +123,16 @@
   // fontawsome image
   .fa-plus-circle {
     margin-right: 0.5rem;
+  }
+
+  .fa-trash-alt, .fa-edit, .fa-user-plus, .fa-user-times{
+    margin-right: 0.5rem;
+    margin-bottom : 0.5rem;
+    cursor:pointer;
+
+    &:hover{
+      color: lighten($tertiary-color, 10%);
+    }
   }
 }
 

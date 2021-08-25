@@ -49,42 +49,46 @@ const MainLayout = ({
   console.log("main-layout:", navbarExtraStyles, featuredImage, frontmatter);
 
   return (
-    <div className="master">
-      {/* Dealing with Meta Tags : page title.... 
+    
+      <div className="master">
+        {/* Dealing with Meta Tags : page title.... 
       Use the SEO component*/}
-      {/* <Helmet>{pageTitle && <title>{pageTitle}</title>}</Helmet> */}
-      <SEO
-        title={pageTitle}
-        {...(frontmatter ? { description: frontmatter.description } : {})}
-        language="fr"
-      />
+        {/* <Helmet>{pageTitle && <title>{pageTitle}</title>}</Helmet> */}
+        <SEO
+          title={pageTitle}
+          {...(frontmatter ? { description: frontmatter.description } : {})}
+          language="fr"
+        />
 
-      <Header
-        siteTitle={data.site.siteMetadata.title}
-        menuLinks={data.site.siteMetadata.menuLinks}
-        {...(navbarExtraStyles ? { navbarExtraStyles: navbarExtraStyles } : {})}
-        {...(headerImage ? { headerImage: headerImage } : {})}
-      />
+        <Header
+          siteTitle={data.site.siteMetadata.title}
+          menuLinks={data.site.siteMetadata.menuLinks}
+          {...(navbarExtraStyles
+            ? { navbarExtraStyles: navbarExtraStyles }
+            : {})}
+          {...(headerImage ? { headerImage: headerImage } : {})}
+        />
 
-      <main className="main">
-        {featuredImage && (
-          <div>
-            <Section className="pt-3">
-              <SectionHeader className="section__header--left">
-                {pageTitle}
-              </SectionHeader>
-              <Content className="vh-50">
-                <Image name={featuredImage} />{" "}
-              </Content>
-            </Section>
-          </div>
-        )}
-        {children}
-      </main>
+        <main className="main">
+          {featuredImage && (
+            <div>
+              <Section className="pt-3">
+                <SectionHeader className="section__header--left">
+                  {pageTitle}
+                </SectionHeader>
+                <Content className="vh-50">
+                  <Image name={featuredImage} />{" "}
+                </Content>
+              </Section>
+            </div>
+          )}
+          {children}
+        </main>
 
-      <Footer siteMetaData={data.site.siteMetadata}></Footer>
-      <Scroll showBelow={250} />
-    </div>
+        <Footer siteMetaData={data.site.siteMetadata}></Footer>
+        <Scroll showBelow={250} />
+      </div>
+  
   );
 };
 

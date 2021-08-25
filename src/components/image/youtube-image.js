@@ -9,7 +9,7 @@ import React from "react";
  * @returns
  */
 const YoutubeImage = ({ src }) => {
-  if (!src) return;
+  if (!src) return null;
 
   if (src.includes("youtu")) {
     // get the youtube id
