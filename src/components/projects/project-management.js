@@ -62,21 +62,10 @@ const ProjectManagement = () => {
     try {
       // Deal with project group data
       const group = await updateProjectGroupData();
-      console.log("group", group);
-      console.log("state", projectGroupData);
-
       // Deal with user role data {role:..., isAdmin:...}
       const user = await updateUserData();
-      console.log("user", user);
-      console.log("state", userData);
-
       // Deal with project data
-      //const { updateProjectData } = useProjectData();
       const temp = await updateProjectData(group._id);
-      console.log("temp", temp);
-      console.log("state, not temp:", projectData);
-      //setFilteredContents(temp);
-      //updateProjectsData(tempProjectGroup._id);
     } catch (error) {
       console.error("getData:error", error);
     }
@@ -84,11 +73,11 @@ const ProjectManagement = () => {
 
   return (
     <>
+      {!isLoaded && <Spinner />}
       {projectGroupData === undefined ? (
         ""
       ) : (
         // deal with project view
-        // <Content>
         <div className="pl-3 pt-3 pb-3 pr-3">
           <h3 className="">Projets des groupes de {projectGroupData._id}</h3>
           <div className="index">
@@ -122,7 +111,6 @@ const ProjectManagement = () => {
           )}
         </div>
       )}
-      {!isLoaded && <Spinner />}
     </>
   );
 };

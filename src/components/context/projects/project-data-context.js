@@ -160,6 +160,23 @@ const useProjectData = () => {
     }
   };
 
+  const updateProject = async (data, id) => {
+    console.log("project to be updated:", data);
+    try {
+      const projectUpdated = await callAPI(
+        "projects/" + id,
+        "PATCH",
+        getIdToken(),
+        data
+      );
+
+      console.log("project updated:", projectUpdated);
+      return projectUpdated;
+    } catch (err) {
+      console.error("useProjectData:updateProject:error:", err);
+    }
+  };
+
   return {
     ...{
       projectGroupData,
@@ -172,6 +189,7 @@ const useProjectData = () => {
       deleteOneProject,
       addMemberToProject,
       deleteMemberFromProject,
+      updateProject,
       isLoaded,
       setIsLoaded,
     },

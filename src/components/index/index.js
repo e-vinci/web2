@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { graphql, useStaticQuery } from "gatsby";
+import { graphql, useStaticQuery, withPrefix } from "gatsby";
 import contentConfiguration from "../../data/content-configuration.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
@@ -104,9 +104,8 @@ const Index = ({ isSearchable }) => {
       {filteredContents.map(({ node: content }) => (
         <div className="index__card">
           <div className="index__card__header" key={content.index}>
-          {content.isOptional ? <FontAwesomeIcon icon={faPlusCircle} /> : ""}
+            {content.isOptional ? <FontAwesomeIcon icon={faPlusCircle} /> : ""}
             {"Partie " + content.index + " : " + content.subject}
-            
           </div>
 
           <div className="index__card__content">
@@ -168,12 +167,12 @@ const Index = ({ isSearchable }) => {
                           (element) => element.node.relativePath === item.uri
                         ) !== undefined ? (
                           <a
-                            href={
+                            href={withPrefix(
                               pdfs.find(
                                 (element) =>
                                   element.node.relativePath === item.uri
                               ).node.publicURL
-                            }
+                            )}
                             target="_blank"
                           >
                             {item.title}
@@ -259,12 +258,12 @@ const Index = ({ isSearchable }) => {
                           (element) => element.node.relativePath === item.uri
                         ) !== undefined ? (
                           <a
-                            href={
+                            href={withPrefix(
                               pdfs.find(
                                 (element) =>
                                   element.node.relativePath === item.uri
                               ).node.publicURL
-                            }
+                            )}
                             target="_blank"
                           >
                             {item.title}
