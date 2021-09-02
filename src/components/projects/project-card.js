@@ -158,12 +158,12 @@ const ProjectCard = ({ project, setFilteredContents }) => {
               project.projectMembers.includes(userData.userName)
             ) &&
             project.projectMembers.length <
-              projectGroupData.maximumProjectMembers(
-                <FontAwesomeIcon
-                  icon={faUserPlus}
-                  onClick={onAddMemberToProject}
-                />
-              )
+              projectGroupData.maximumProjectMembers && (
+              <FontAwesomeIcon
+                icon={faUserPlus}
+                onClick={onAddMemberToProject}
+              />
+            )
         }
         {
           /*REMOVE MEMBER FROM PROJECT : Visible only if :
