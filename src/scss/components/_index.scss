@@ -118,6 +118,17 @@ $hue-degree-increment: 2deg;
             margin-bottom: 0;
           }
         }
+
+        &--is-being-edited {
+          background-color: $secondary-color;
+          //margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
+          padding: 0.3rem;
+        }
+
+        &--is-inline {
+          display: inline-block;
+        }
       }
     }
     &--is-being-edited {
@@ -150,18 +161,41 @@ $hue-degree-increment: 2deg;
     margin-right: 0.5rem;
   }
 
+  .fa-check-circle {
+    font-size: 1.5rem;
+    color: green;
+  }
+
+  .fa-times-circle,
+  .fa-minus-circle {
+    font-size: 1.5rem;
+    color: red;
+  }
+
   .fa-trash-alt,
   .fa-edit,
   .fa-user-plus,
   .fa-user-times,
   .fa-save,
-  .fa-times {
+  .fa-times,
+  .fa-comment-dots,
+  .fa-eye {
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
     cursor: pointer;
 
     &:hover {
       color: lighten($tertiary-color, 10%);
+    }
+  }
+
+  &--long-text {
+    grid-column-start: 1;
+    grid-column-end: -1;
+    .index__card__content {
+      @media only screen and (min-width: $sm) {
+        grid-template-columns: 200px 1fr !important;
+      }
     }
   }
 }
@@ -263,3 +297,13 @@ $hue-degree-increment: 2deg;
   }
 }
 */
+
+/*
+span {
+  &.index__card__content__description--is-being-edited {
+    background-color: red ;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0 ;
+  }
+}*/

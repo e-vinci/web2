@@ -31,21 +31,15 @@ const ContentEditable = ({
   else if (children) currentContent = children;
   else if (content) currentContent = he.decode(content);
 
-  if (isInline)
-    return (
-      <span
-        className={className ? className : ""}
-        contentEditable={isBeingEdited ? true : false}
-        onInput={handleChange}
-        suppressContentEditableWarning={true}
-      >
-        {currentContent}
-      </span>
-    );
+  let allClasses;
+  allClasses = className ? className : "";
+  if (isBeingEdited)
+    allClasses += " index__card__content__description--is-being-edited";
+  if (isInline) allClasses += " index__card__content__description--is-inline";
 
   return (
     <div
-      className={className ? className : ""}
+      className={allClasses}
       contentEditable={isBeingEdited ? true : false}
       onInput={handleChange}
       suppressContentEditableWarning={true}

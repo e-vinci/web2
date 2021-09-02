@@ -1,0 +1,42 @@
+import React from "react";
+import { Link, useStaticQuery } from "gatsby";
+import YoutubeImage from "../image/youtube-image.js";
+import ReviewCard from "./review-card";
+import he from "he";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
+
+const MyReviewsSummary = ({ myReviewsSummary }) => {
+  if (!myReviewsSummary) return null;
+
+ 
+
+  return (
+    <div className="card card--dark-summary card--fill-wrapper">
+      <div className="card__header">Résumé de mes revues</div>
+
+      <div className="card__content card__content--long-titles">
+        <div className="card__content__title">Coups de coeurs disponibles</div>
+        <div className="card__content__description">
+          <FontAwesomeIcon icon={faHeart} />
+          <span className="text--light">{myReviewsSummary.availableLike}</span>
+        </div>
+
+        <div className="card__content__title">Revues attendues</div>
+        <div className="card__content__description">
+          <FontAwesomeIcon icon={faComment} className="card__content--orange"/>
+          <span className="text--light">{myReviewsSummary.expectedReviews}</span>
+        </div>
+
+        <div className="card__content__title">Revues terminées</div>
+        <div className="card__content__description">
+          <FontAwesomeIcon icon={faComment} />
+          <span className="text--light">{myReviewsSummary.alreadyReviewed}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MyReviewsSummary;

@@ -6,8 +6,18 @@
   margin-bottom: 0.5rem;
   background-color: lighten($primary-color, 10%);
 
+  &--fill-wrapper {
+    height: 100%;
+  }
+
   word-break: break-word;
   hyphens: auto;
+
+  &--dark-summary {
+    background-color: $tertiary-color; //$fourth-color;
+    color: $secondary-color;
+    border-radius: 0%;
+  }
 
   &__header {
     display: block;
@@ -24,6 +34,18 @@
 
     @media only screen and (min-width: $sm) {
       grid-template-columns: 150px 2fr;
+    }
+
+    &--long-titles {
+      grid-template-columns: 2fr 1fr;
+
+      @media only screen and (min-width: $sm) {
+        grid-template-columns: 2fr 150px;
+      }
+    }
+
+    &--orange {
+      color: orange !important;
     }
 
     &__title {

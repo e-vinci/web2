@@ -38,7 +38,7 @@ const Login = () => {
           />
           ici
         </Link>
-        ou dans le menu.
+        &nbsp; ou dans le menu.
       </p>
     </div>
     </MainLayout>

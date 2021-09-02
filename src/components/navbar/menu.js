@@ -4,6 +4,15 @@ import Dropdow from "./dropdown.js";
 import { StaticImage } from "gatsby-plugin-image";
 import { getUserName } from "../../utils/auths/authPopup";
 
+const reviewDropDown = {
+  name: "Revue de projet",
+  link: "",
+  subMenu: [
+    { name: "Mes revues", link: "/my-reviews-page" },
+    { name: "Toutes les revues", link: "/review-page" },
+  ],
+};
+
 const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   // ref to deal with dropdown (submenu items)
   const node = useRef();
@@ -79,9 +88,23 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
                   className="navbar__menu__list__item__link"
                   to="/project-page"
                 >
-                  Projects
+                  Projets
                 </Link>
               </li>
+              {/* <li key={"li-reviews"} className="navbar__menu__list__item">
+                <Link
+                  className="navbar__menu__list__item__link"
+                  to="/review-page"
+                >
+                  Revues de projets
+                </Link>
+              </li> */}
+              <Dropdow
+                key={"dd-reviews"}
+                linkName={reviewDropDown.name}
+                subMenu={reviewDropDown.subMenu}
+              ></Dropdow>
+
               <li key={"li-login"} className="navbar__menu__list__item">
                 <Link className="navbar__menu__list__item__link" to="/logout">
                   Logout

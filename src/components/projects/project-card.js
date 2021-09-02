@@ -151,16 +151,19 @@ const ProjectCard = ({ project, setFilteredContents }) => {
         {
           /* ADD MEMBER TO PROJECT : Visible only if :
         project group status is "init" AND
-        userName has not already joined a project */
+        userName has not already joined a project AND
+        number of members is < maximum number */
           projectGroupData.status === "init" &&
             !projectData.find((project) =>
               project.projectMembers.includes(userData.userName)
-            ) && (
-              <FontAwesomeIcon
-                icon={faUserPlus}
-                onClick={onAddMemberToProject}
-              />
-            )
+            ) &&
+            project.projectMembers.length <
+              projectGroupData.maximumProjectMembers(
+                <FontAwesomeIcon
+                  icon={faUserPlus}
+                  onClick={onAddMemberToProject}
+                />
+              )
         }
         {
           /*REMOVE MEMBER FROM PROJECT : Visible only if :
