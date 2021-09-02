@@ -1,0 +1,51 @@
+.summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+  padding-top: 1rem;
+
+
+  @media only screen and (min-width: $sm){    
+    grid-template-columns: 1fr 1fr;
+  }
+
+
+  &__card-wrapper {
+    display: block;
+    width: 100%;
+    
+  }
+
+  // if there is only one element, position the element in the middle of the screen (not caring of the grid)
+  &__card-wrapper:only-child {
+    
+    //width: 50%;
+    grid-column-start: 1;
+    grid-column-end: -1;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    @media only screen and (min-width: $sm){    
+      width: 50%;
+    }
+    @media only screen and (min-width: $xl){    
+      width: 33%;
+    }
+  }
+
+  .fa-heart, .fa-comment{
+    margin-right: 0.5rem;
+    //font-size: 1.5rem;
+  }
+
+  .fa-heart{
+    color: red;
+    
+  }
+
+  .fa-comment{
+    color:green;
+  }
+  
+
+}
