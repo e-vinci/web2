@@ -120,17 +120,6 @@ const Index = ({ isSearchable }) => {
               ""
             )}
 
-            {/* <div className="index__card__content__title">Optionnel?</div>
-            <div className="index__card__content__description">
-              {
-                content.isOptional !== undefined && content.isOptional ? (
-                  <input type="checkbox" checked disabled></input> //"☑"
-                ) : (
-                  <input type="checkbox" disabled></input>
-                ) //"☐"
-              }
-            </div> */}
-
             {content.skillsL1.length > 0 ? (
               <>
                 <div className="index__card__content__title">Skills L1</div>
@@ -167,12 +156,18 @@ const Index = ({ isSearchable }) => {
                           (element) => element.node.relativePath === item.uri
                         ) !== undefined ? (
                           <a
-                            href={withPrefix(
+                            /*href={withPrefix(
                               pdfs.find(
                                 (element) =>
                                   element.node.relativePath === item.uri
                               ).node.publicURL
-                            )}
+                            )}*/
+                            href={
+                              pdfs.find(
+                                (element) =>
+                                  element.node.relativePath === item.uri
+                              ).node.publicURL
+                            }
                             target="_blank"
                           >
                             {item.title}
@@ -258,12 +253,18 @@ const Index = ({ isSearchable }) => {
                           (element) => element.node.relativePath === item.uri
                         ) !== undefined ? (
                           <a
-                            href={withPrefix(
+                            /*href={withPrefix(
                               pdfs.find(
                                 (element) =>
                                   element.node.relativePath === item.uri
                               ).node.publicURL
-                            )}
+                            )}*/
+                            href={
+                              pdfs.find(
+                                (element) =>
+                                  element.node.relativePath === item.uri
+                              ).node.publicURL
+                            }
                             target="_blank"
                           >
                             {item.title}
