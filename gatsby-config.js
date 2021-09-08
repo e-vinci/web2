@@ -1,6 +1,6 @@
 const emoji = require(`remark-emoji`);
 const siteURL = "https://e-vinci.github.io/myjscourse"; //"https://www.artiyoga.com", // No trailing slash allowed!
-const youtubeUrl = "https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
+const youtubeUrl = ""; //"https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
 const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
 const instagramUrl = "";
@@ -20,7 +20,8 @@ module.exports = {
       {
         name: `Home`,
         link: `/`,
-      },{
+      },
+      {
         name: `L'essentiel`,
         link: `/essentials`,
       },
@@ -93,7 +94,7 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-create-client-paths`, 
+      resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/app/*`] }, // These paths exist on the client only and do not correspond to index.html files in an app’s built assets
     },
     `gatsby-remark-images`,
@@ -133,7 +134,7 @@ module.exports = {
         theme_color: `#303030`,
         display: `standalone`,
         icon: `src/images/favicon2.svg`,
-        cache_busting_mode: 'none',
+        cache_busting_mode: "none",
         sizes: "any",
         //type: "image/svg+xml",
         include_favicon: true,

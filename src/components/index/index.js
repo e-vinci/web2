@@ -111,7 +111,7 @@ const Index = ({ isSearchable }) => {
           <div className="index__card__content">
             {content.week !== undefined ? (
               <>
-                <div className="index__card__content__title">Module / Week</div>
+                <div className="index__card__content__title">Module</div>
                 <div className="index__card__content__description">
                   {content.week}
                 </div>
