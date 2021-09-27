@@ -104,7 +104,7 @@
       {
         "type": "code",
         "title": "1er script externe & appel de fonction",
-        "uri": ""
+        "uri": "fiche-01/external-script"
       }
     ]
   },
@@ -151,12 +151,12 @@
       {
         "type": "code",
         "title": "Gestion d'un compteur de clics",
-        "uri": ""
+        "uri": "fiche-01/dom-event"
       },
       {
         "type": "code",
         "title": "Gestion d’événements différés dans le temps : l’horloge",
-        "uri": ""
+        "uri": "fiche-01/time-events/"
       }
     ]
   },
