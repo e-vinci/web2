@@ -267,13 +267,13 @@
     "exerciseSolutions": [
       {
         "type": "code",
-        "title": "Homepage statique de myMoovies & Webpack",
-        "uri": ""
+        "title": "Création de la Homepage de myMoovies",
+        "uri": "fiche-02/mymoovies"
       },
       {
         "type": "code",
-        "title": "Génération dynamique de la Homepage de myMoovies",
-        "uri": ""
+        "title": "Création d'une table sur base d'un formulaire",
+        "uri": "fiche-02/dynamic-html"
       }
     ]
   },
