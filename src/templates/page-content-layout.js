@@ -31,7 +31,7 @@ const shortcodes = {
 export default function PageTemplate({ data: { mdx, allImages } }) {
   shortcodes.PageHeader = withFrontmatter(PageHeader, mdx.frontmatter);
 
-  console.log("page:", allImages.edges);
+  console.log("is auto margin ?", mdx.frontmatter.autoMargin);
 
   return (
     <MainLayout
@@ -49,7 +49,11 @@ export default function PageTemplate({ data: { mdx, allImages } }) {
       {...(allImages && allImages.length > 0 ? { allImages: allImages } : {})}
     >
       <MDXProvider components={shortcodes}>
-        <div className="page">
+        <div
+          className={
+            mdx.frontmatter.autoMargin ? "page page--auto-margin" : "page"
+          }
+        >
           <MDXRenderer>{mdx.body}</MDXRenderer>
         </div>
       </MDXProvider>
@@ -70,6 +74,7 @@ export const pageQuery = graphql`
         headerImage
         featuredImage
         description
+        autoMargin
       }
     }
     allImages: allFile(filter: { sourceInstanceName: { eq: "images" } }) {

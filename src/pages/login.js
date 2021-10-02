@@ -27,8 +27,8 @@ const Login = () => {
   return (
     <MainLayout>
     <div>
-      <p>
-        Vous pouvez vous logger en cliquant
+      <p className="pl-3">
+        Vous pouvez vous logger en cliquant &nbsp;
         <Link to="/login">
           <StaticImage
             src="../images/logo_vinci.png"

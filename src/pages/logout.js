@@ -14,7 +14,7 @@ const Logout = () => {
 
   return (
     <MainLayout>
-      <h3>Logout</h3>
+      <h3 className="pl-3">Logout</h3>
     </MainLayout>
   );
 };

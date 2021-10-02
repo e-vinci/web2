@@ -26,6 +26,10 @@ module.exports = {
         link: `/essentials`,
       },
       {
+        name: `Repositories`,
+        link: `/repositories`,
+      },
+      {
         name: `About`,
         link: `/about`,
       },

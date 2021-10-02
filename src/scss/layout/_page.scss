@@ -1,7 +1,19 @@
 .page {
-    
   // deal with all text written directly within the .mdx files, without calling react components (or html)
-  & > p {
-    padding: 1rem;    
+  // it is considered that a text written with HTML shall start with a Section tag
+  &--auto-margin {
+    padding: 1rem;
+    ul {
+      padding: 1.3rem;
+      a {
+        color: $tertiary-color;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+          color: lighten($tertiary-color, 20%);
+        }
+      }
+    }
   }
 }
