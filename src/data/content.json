@@ -360,7 +360,7 @@
       {
         "type": "code",
         "title": "Animation de carrés à l'aide de l'API Canvas",
-        "uri": ""
+        "uri": "fiche-03/canvas/"
       }
     ]
   },
@@ -397,7 +397,7 @@
       {
         "type": "code",
         "title": "Animation d'un nuage de mots à l'aide d'Anime.js (optionnel)",
-        "uri": ""
+        "uri": "fiche-03/animejs/"
       }
     ]
   },
@@ -464,12 +464,12 @@
       {
         "type": "code",
         "title": "Gestion locale d'une collection de films",
-        "uri": ""
+        "uri": "fiche-03/mymoovies/"
       },
       {
         "type": "code",
         "title": "Refactor de la gestion locale d’une collection de films (optionnel)",
-        "uri": ""
+        "uri": "fiche-03/mymoovies/"
       }
     ]
   },
