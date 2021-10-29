@@ -890,7 +890,7 @@
       {
         "type": "code",
         "title": "Intégration initiale du frontend et de la RESTful API de myMoovies",
-        "uri": ""
+        "uri": "fiche-06/mymoovies/"
       },
       {
         "type": "code",
@@ -932,7 +932,7 @@
       {
         "type": "code",
         "title": "Correction du chaînage de traitements lors de l’enregistrement d’un utilisateur",
-        "uri": ""
+        "uri": "fiche-06/promise/"
       }
     ]
   },
