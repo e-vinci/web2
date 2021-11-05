@@ -1055,6 +1055,11 @@
         "type": "slides",
         "title": "Déploiement",
         "uri": "Déploiement.pdf"
+      },
+      {
+        "type": "text",
+        "title": "Procédure de déploiement des applications web sur Heroku",
+        "uri": "ProcédureDéploiementHeroku.pdf"
       }
     ],
     "courseVideos": [],
