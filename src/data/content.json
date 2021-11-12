@@ -1024,22 +1024,22 @@
       {
         "type": "code",
         "title": "SPA myMoovies avec JWT auths : lecture et ajout de films",
-        "uri": ""
+        "uri": "fiche-07/mymoovies/"
       },
       {
         "type": "code",
         "title": "SPA myMoovies avec JWT auths : suppression et mise à jour de films",
-        "uri": ""
+        "uri": "fiche-07/mymoovies/"
       },
       {
         "type": "code",
         "title": "SPA myMoovies & auto-refresh d’infos (optional)",
-        "uri": ""
+        "uri": "fiche-07/mymoovies-optional/"
       },
       {
         "type": "code",
         "title": "SPA myMoovies : gestion de la navigation lors de l’auto-refresh d’infos (optional)",
-        "uri": ""
+        "uri": "fiche-07/mymoovies-optional/"
       }
     ]
   },
