@@ -1109,26 +1109,7 @@
       }
     ]
   },
-
-  {
-    "subject": "Jeu en 2D : Phaser3",
-    "week": 8,
-    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
-    "skillsL2": "CG4. Apprentissage personnel de technologie JS",
-    "isOptional": true,
-    "courseFiles": [],
-    "courseVideos": [],
-    "courseDemos": [
-      {
-        "type": "code",
-        "title": "Phaser3, Webpack & du code moderne : 1er jeu",
-        "uri": ""
-      }
-    ],
-    "exerciseInstructions": [],
-    "exerciseSolutions": []
-  },
-
+  
   {
     "subject": "Bibliographie",
     "week": null,

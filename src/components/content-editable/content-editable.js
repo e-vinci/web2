@@ -17,7 +17,7 @@ const ContentEditable = ({
   isInline,
   children,
 }) => {
-  const [content, setContent] = useState(startContent);
+  //const [content, setContent] = useState(startContent);
 
   const handleChange = (e) => {
     const propUpdated = {};
@@ -27,9 +27,9 @@ const ContentEditable = ({
   };
 
   let currentContent;
-  if (isBeingEdited) currentContent = content;
+  if (isBeingEdited) currentContent = startContent//content;
   else if (children) currentContent = children;
-  else if (content) currentContent = he.decode(content);
+  else if (startContent) currentContent = he.decode(startContent); // he.decode(content);
 
   let allClasses;
   allClasses = className ? className : "";
