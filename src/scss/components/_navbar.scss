@@ -1,0 +1,222 @@
+.navbar {
+  font-family: $font-navigation;
+  font-weight: 300; // normal ; // or from 100 to 900
+  font-size: large;
+
+  background-color: $primary-color;
+  //background-image: url(../images/translucent-fibres.png);
+
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 100%;
+  flex-basis: 100%;
+
+  z-index: 100;
+
+  @media only screen and (min-width: $lg) {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  &__toggler {
+    border-color: $secondary-color;
+    display: inline-block;
+
+    //text-transform: none;
+    //-webkit-appearance: button;
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 1px solid $secondary-color;
+    border-radius: 0.25rem;
+    transition: box-shadow 0.15s ease-in-out;
+    cursor: pointer;
+
+    @media only screen and (min-width: $lg) {
+      display: none;
+    }
+
+    &__icon {
+      display: inline-block;
+      width: 1.5em;
+      height: 1.5em;
+      vertical-align: middle;
+      background-repeat: no-repeat;
+      background-position: center;
+      //background-size: 100%;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='#{hsl-str($secondary-color)}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+  }
+
+  &__brand {
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    //padding-left: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 1.7rem ; //1.25rem;
+    text-decoration: none;
+    white-space: nowrap;
+    color: $secondary-color;
+  }
+
+  &__menu {
+    display: none;
+    flex-basis: 100%;
+    flex-grow: 1;
+    align-items: center;
+   
+
+    /*font-family: $font-title;
+    font-weight: 300; 
+    font-size: x-large;*/
+
+    &--collapse {
+      display: flex;
+    }
+
+    @media only screen and (min-width: $lg) {
+      display: flex;
+      flex-basis: auto;
+    }
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+
+      @media only screen and (min-width: $lg) {
+        flex-direction: row;
+        //margin-bottom: 0;
+      }
+
+      &__item {
+        display: list-item;
+        position: relative;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+
+        @media only screen and (min-width: $lg) {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+
+        &__link {
+          display: block;
+          text-decoration: none;
+          transition: color 0.15s ease-in-out,
+            background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+          color: $secondary-color;
+          cursor: pointer;
+
+          &:hover,
+              &:focus {
+                color: darken($secondary-color, 20%);                 
+              }
+
+          &--dropdown-toggle {
+            //add a triangle
+            &::after {
+              display: inline-block;
+              margin-left: 0.255em;
+              vertical-align: 0.255em;
+              content: "";
+              border-top: 0.3em solid;
+              border-right: 0.3em solid transparent;
+              border-bottom: 0;
+              border-left: 0.3em solid transparent;
+            }
+          }
+        }
+
+        &__dropdown-menu {
+          top: 100%;
+          z-index: 1000;
+          min-width: 10rem;
+          padding: 0.5rem 0;
+          //font-size: 1rem;
+          color: $tertiary-color;
+          text-align: left;
+          list-style: none;
+          background-color: $secondary-color;
+          //The background extends to the inside edge of the border
+          background-clip: padding-box;
+          border: 1px solid $tertiary-color;
+          border-radius: 0.25rem;
+          left: 0;
+          margin-top: 0.125rem;
+          display: none;
+          position: static;
+          // change text color
+
+          @media only screen and (min-width: $lg) {
+            position: absolute;
+            //margin-bottom: 0;
+          }
+
+          &--collapsed {
+            display: block;
+          }
+
+          &__item {
+            display: list-item;
+            position: relative;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+
+            &:hover,
+              &:focus {                       
+                background-color: lighten($tertiary-color, 70%);   
+              }
+
+            &__link {
+              display: block;
+              text-decoration: none;
+              transition: color 0.15s ease-in-out,
+                background-color 0.15s ease-in-out,
+                border-color 0.15s ease-in-out;
+              color: $tertiary-color;
+              cursor: pointer;
+
+              &:hover,
+              &:focus {
+                color: lighten($tertiary-color, 20%);                 
+              }
+
+            }
+          }
+
+          /*
+          .navbar__menu__list__item__link {
+            color: $tertiary-color;
+          }*/
+        }
+      }
+    }
+  }
+
+  @media only screen and (min-width: $lg) {
+    display: flex;
+    flex-basis: auto;
+  }
+
+  &--transparent-background {
+    background-image: none;
+    background-color: transparent;
+  }
+
+  // show the navbar at the top of the page, not above !
+  &--top-of-page {
+    position: absolute;
+    top: 0;
+    left: 0;    
+  }
+}

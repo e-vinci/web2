@@ -1,0 +1,21 @@
+.counter {
+  display: flex;
+  background-color: $tertiary-color;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  justify-content: space-evenly;
+  
+
+  &__symbol {
+    margin-right: 0.2rem;
+    &--red {
+      color: red;
+    }
+    &--orange {
+      color: orange;
+    }
+    &--green {
+      color: green;
+    }
+  }
+}

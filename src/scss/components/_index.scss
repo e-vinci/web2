@@ -1,0 +1,309 @@
+// Gridbox version of the index of cards
+$hue-degree-increment: 2deg;
+
+.index {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+
+  @media only screen and (min-width: $sm) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media only screen and (min-width: $xl) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  //grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // interesting but creates too smal
+
+  &__search {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    grid-column-start: 1;
+    grid-column-end: -1;
+  }
+
+  &__button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.375rem 0.75rem;
+    background-color: $tertiary-color;
+    color: $secondary-color;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    //transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    // border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:hover {
+      background-color: lighten($tertiary-color, 10%);
+    }
+  }
+
+  &__card {
+    display: block;
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    //margin-bottom: 0.5rem;
+    background-color: lighten($primary-color, 10%);
+
+    word-break: break-word;
+    hyphens: auto;
+
+    /*
+    @media only screen and (min-width: $sm) {
+      width: 48%;
+      // set a margin left only if this is not the first element on a column
+      &::nth-of-type(2n + 1) {
+        margin-left: 2rem;
+      }
+    }*/
+
+    &__header {
+      display: block;
+      @include emphasized-text();
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    &__content {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 1fr 2fr;
+
+      &__title {
+        font-weight: 300;
+        color: $secondary-color;
+        padding-right: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      &__description {
+        padding-bottom: 0.5rem;
+
+        a {
+          color: $tertiary-color;
+          transition: color 0.15s ease-in-out,
+            background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+          cursor: pointer;
+          &:hover,
+          &:focus {
+            color: lighten($tertiary-color, 20%);
+          }
+        }
+
+        // for the optional checkbox (color cannot be changed as the input is disabled)
+        input {
+          height: 1.3rem;
+          width: 1.3rem;
+          vertical-align: middle;
+        }
+
+        &__subitems {
+          list-style: none;
+          &__item {
+            border: 0.5px solid $secondary-color;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+          }
+
+          &__item:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        &--is-being-edited {
+          background-color: $secondary-color;
+          //margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
+          padding: 0.3rem;
+        }
+
+        &--is-inline {
+          display: inline-block;
+        }
+      }
+    }
+    &--is-being-edited {
+      background: linear-gradient(
+        45deg,
+        $primary-color,
+        adjust-hue($primary-color, -5deg),
+        adjust-hue($primary-color, -10deg),
+        adjust-hue($primary-color, -15deg),
+        adjust-hue($primary-color, -20deg),
+        adjust-hue($primary-color, -25deg)
+      );
+      background-size: 600% 100%;
+      animation: gradient 2s linear infinite;
+      animation-direction: alternate;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0%;
+      }
+      100% {
+        background-position: 100%;
+      }
+    }
+  }
+
+  // fontawsome image
+  .fa-plus-circle {
+    margin-right: 0.5rem;
+  }
+
+  .fa-check-circle {
+    font-size: 1.5rem;
+    color: green;
+  }
+
+  .fa-times-circle,
+  .fa-minus-circle {
+    font-size: 1.5rem;
+    color: red;
+  }
+
+  .fa-trash-alt,
+  .fa-edit,
+  .fa-user-plus,
+  .fa-user-times,
+  .fa-save,
+  .fa-times,
+  .fa-comment-dots,
+  .fa-eye {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      color: lighten($tertiary-color, 10%);
+    }
+  }
+
+  &--long-text {
+    grid-column-start: 1;
+    grid-column-end: -1;
+    .index__card__content {
+      @media only screen and (min-width: $sm) {
+        grid-template-columns: 200px 1fr !important;
+      }
+    }
+  }
+}
+
+// Flexbox version of the index of cards
+/*
+.index {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  &__search {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  &__card {
+    display: block;
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: lighten($primary-color, 10%);
+
+    word-break: break-word;
+    hyphens: auto;
+
+    @media only screen and (min-width: $sm) {
+      width: 48%;
+      // set a margin left only if this is not the first element on a column
+      &::nth-of-type(2n + 1) {
+        margin-left: 2rem;
+      }
+    }
+
+    &__header {
+      display: block;
+      @include emphasized-text();
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    &__content {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 1fr 2fr;
+
+      &__title {
+        font-weight: 300;
+        color: $secondary-color;
+        padding-right: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      &__description {
+        padding-bottom: 0.5rem;
+
+        a {
+          color: $tertiary-color;
+          transition: color 0.15s ease-in-out,
+            background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+          cursor: pointer;
+          &:hover,
+          &:focus {
+            color: lighten($tertiary-color, 20%);
+          }
+        }
+
+        // for the optional checkbox (color cannot be changed as the input is disabled)
+        input {
+          height: 1.3rem;
+          width: 1.3rem;
+          vertical-align: middle;
+        }
+
+        &__subitems {
+          list-style: none;
+          &__item {
+            border: 0.5px solid $secondary-color;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+          }
+
+          &__item:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // fontawsome image
+  .fa-plus-circle{
+    margin-right : 0.5rem;
+  }
+}
+*/
+
+/*
+span {
+  &.index__card__content__description--is-being-edited {
+    background-color: red ;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0 ;
+  }
+}*/

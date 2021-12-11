@@ -1,0 +1,13 @@
+.background {
+  display: flex;
+  z-index: 0;
+
+  &__image {
+    display: grid;
+  }
+
+  &--header {
+    //ensure that it is on top of page content / section
+    z-index: 10;
+  }
+}

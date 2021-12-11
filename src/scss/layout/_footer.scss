@@ -1,0 +1,70 @@
+.footer {
+  background-color: $tertiary-color;
+
+  @include text(
+    $family: $font-regular,
+    $color: lighten($secondary-color, 40%),
+    $size: large,
+    $lineHeight: null,
+    $weight: 400
+  );
+
+  &__icons {
+    li:last-of-type {
+      margin-right: 0;
+    }
+
+    /* Show the email when hover over the letter symbol*/
+    /*
+    a[href^="mailto"]:hover:after {
+      white-space: pre;
+      content: "\a"attr(data-email);
+    }*/
+  }
+
+  &__background {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 8vh;
+    
+
+    padding: 1rem;
+  }
+
+  &__logo {
+    height: 100%;
+    
+    &__text {
+      display:inline-block;
+      font-family: $font-navigation;
+      font-weight: 300; // normal ; // or from 100 to 900
+      font-size: 1.7rem;
+      color: lighten($secondary-color, 40%);
+    }
+
+    &__image{
+      background-image:  url('../images/jakarta-logo.svg') ;    
+      display: inline-block;
+      min-height: 5vh;  
+      min-width: 10vw;//width: auto;    
+      vertical-align: middle;
+      background-repeat: no-repeat;
+      background-position: left center, right center;
+      background-size: contain;
+      margin-left: 1rem;
+    }
+
+    &__image2{      
+      //background-image:  url('../images/jakarta-logo.svg') ;     
+      display: inline-block;
+      min-height: 5vh;  
+      min-width: 10vw;//width: auto;    
+      vertical-align: middle;
+      background-repeat: no-repeat;
+      background-position: center,;
+      background-size: contain;
+      margin-left: 1rem;
+    }
+  }
+}

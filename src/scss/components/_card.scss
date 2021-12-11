@@ -1,0 +1,95 @@
+.card {
+  display: block;
+  width: 100%;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: lighten($primary-color, 10%);
+
+  &--fill-wrapper {
+    height: 100%;
+  }
+
+  word-break: break-word;
+  hyphens: auto;
+
+  &--dark-summary {
+    background-color: $tertiary-color; //$fourth-color;
+    color: $secondary-color;
+    border-radius: 0%;
+  }
+
+  &__header {
+    display: block;
+    @include emphasized-text();
+    text-align: center;
+    padding: 0.5rem;
+  }
+
+  &__content {
+    display: grid;
+    width: 100%;
+    //grid-template-columns: minmax(min-content, 150px) auto;
+    grid-template-columns: 1fr 2fr;
+
+    @media only screen and (min-width: $sm) {
+      grid-template-columns: 150px 2fr;
+    }
+
+    &--long-titles {
+      grid-template-columns: 2fr 1fr;
+
+      @media only screen and (min-width: $sm) {
+        grid-template-columns: 2fr 150px;
+      }
+    }
+
+    &--orange {
+      color: orange !important;
+    }
+
+    &__title {
+      font-weight: 300;
+      color: $secondary-color;
+      padding-right: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    &__description {
+      padding-bottom: 0.5rem;
+
+      a {
+        color: $tertiary-color;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+          border-color 0.15s ease-in-out;
+
+        cursor: pointer;
+        &:hover,
+        &:focus {
+          color: lighten($tertiary-color, 20%);
+        }
+      }
+
+      // for the optional checkbox (color cannot be changed as the input is disabled)
+      input {
+        height: 1.3rem;
+        width: 1.3rem;
+        vertical-align: middle;
+      }
+
+      &__subitems {
+        list-style: none;
+        &__item {
+          border: 0.5px solid $secondary-color;
+          padding: 0.5rem;
+          margin-bottom: 0.5rem;
+          border-radius: 0.5rem;
+        }
+
+        &__item:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

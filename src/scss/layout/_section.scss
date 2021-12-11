@@ -1,0 +1,97 @@
+.section {
+  @include regular-text();
+
+  display: flex;
+  //flex-direction: row;
+  // should your items be too large to all display in one line, they will wrap onto another line
+  //flex-wrap: wrap;
+  // this is the equivalent of the above given
+
+  flex-flow: row wrap;
+
+  width: 100%;
+  min-height: 10px;
+  //z-index: 5;
+
+  &__content {
+    // The flex shorthand allows you to set the three values in this order — flex-grow, flex-shrink, flex-basis
+    // With the flex-grow property set to a positive integer, flex items can grow along the main axis from their flex-basis. This will cause the item to stretch and take up any available space on that axis, or a proportion of the available space if other items are allowed to grow too.
+    flex: 1 1 100%;
+
+    flex-wrap: wrap;
+
+    //in a flex container, where you have box-sizing: border-box, and the width or flex-basis is used to calculate length, the boxes will render evenly regardless of padding.
+    box-sizing: border-box;
+
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    &--no-auto-margin{
+      padding-left: 0rem;
+    }
+    
+    @media only screen and (min-width: $lg) {
+      flex-basis: 50%;
+    }
+  }
+
+  /* Section's elements */
+
+  &__header {
+    flex: 1 1 100%;
+    min-height: 10px; //5vh;
+    text-align: center;
+    align-self: flex-start;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    @include emphasized-text();
+
+    &--left{
+      text-align: left;
+      padding-left: 1rem;
+    }
+  }
+
+  &__footer {
+    flex: 1 1 100%;
+    min-height: 5vh;
+    text-align: center;
+    align-self: flex-end;
+    justify-content:center ;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+
+  }
+
+  /* Deal with background elements within a section or within a : note that this is normally not necessary
+  to use it if .background is used instead of .section_background */
+
+  &__background {
+    display: flex;
+    flex-flow: row wrap;
+
+    width: 100%;
+    min-height: 10px;
+
+    background-size: cover;
+    //z-index: 1;
+  }
+
+  // Deal with hyperlinks in a section
+  a {
+    color: $tertiary-color;
+    transition: color 0.15s ease-in-out,
+      background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+    cursor: pointer;
+    &:hover,
+    &:focus {
+      color: lighten($tertiary-color, 20%);
+    }
+  }
+
+  /* Deal with section modifiers */
+}
+

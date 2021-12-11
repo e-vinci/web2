@@ -1,0 +1,14 @@
+$rules: (
+  (ml, margin-left),
+  (mt, margin-top),
+  (mb, margin-bottom),
+  (mr, margin-right),
+  (pl, padding-left),
+  (pt, padding-top),
+  (pb, padding-bottom),
+  (pr, padding-right)
+);
+
+@each $item in $rules {
+  @include generate(nth($item, 1), nth($item, 2));
+}

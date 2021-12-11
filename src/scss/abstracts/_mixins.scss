@@ -1,0 +1,132 @@
+// We define `null` as the default value for each argument
+@mixin text(
+  $family: null,
+  $color: null,
+  $size: null,
+  $weight: null,
+  $lineHeight: null
+) {
+  @if $family != null {
+    font-family: $family;
+  }
+
+  @if $color != null {
+    color: $color;
+  }
+
+  @if $size != null {
+    font-size: $size;
+  }
+
+  @if $lineHeight != null {
+    line-height: $lineHeight;
+  }
+
+  @if $weight != null {
+    font-weight: $weight;
+  }
+}
+
+@mixin regular-text() {
+  @include text(
+    $family: $font-regular,
+    $color: $tertiary-color,
+    $size: large,
+    $weight: 400
+  );
+}
+
+@mixin emphasized-text() {
+  @include text(
+    $family: $font-title,
+    $size: x-large,
+    $weight: 300,
+    $lineHeight: 1.5rem
+  );
+}
+
+/* Generate spacing classes (from : https://stackoverflow.com/questions/58069059/dynamic-spacing-classes-with-sass) */
+@mixin generate($prefix, $property) {
+  // List of sizes to generate for each
+  $sizes: (0, 0.25, 0.5, 1, 1.5, 3);
+  // Spacing to multiply the sizes by
+  $spacing: 1rem;
+
+  // Loop through all of the sizes(we use @for rather than @each, as we want access to the index)
+  @for $i from 1 through length($sizes) {
+    // Get the size for the current index
+    $size: nth($sizes, $i);
+
+    // Create the rule
+    .#{$prefix}-#{$i - 1} {
+      #{$property}: #{$spacing * $size} !important;
+    }
+  }
+}
+
+/* that would compile to :
+
+  .ml-0 {
+  margin-left: 0rem;
+}
+
+.ml-1 {
+  margin-left: 0.25rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.ml-3 {
+  margin-left: 1rem;
+}
+
+.ml-4 {
+  margin-left: 1.5rem;
+}
+
+.ml-5 {
+  margin-left: 3rem;
+}*/
+
+@mixin content-heights-vh() {
+  @for $i from 1 through 20 {
+    .vh-#{$i*5} {
+      height: $i * 5 + vh;
+    }
+  }
+}
+
+@mixin content-widths-vw() {
+  @for $i from 1 through 20 {
+    .vw-#{$i*5} {
+      width: $i * 5 + vw;
+      flex-basis: $i * 5 + vw;
+    }
+  }
+}
+
+@mixin content-width-percents() {
+  @for $i from 1 through 20 {
+    .w-#{$i*5} {
+      width: $i * 5 * 1%;
+      flex-basis: $i * 5 * 1%;
+    }
+  }
+}
+
+/* trim text with "..." based on number of lines given */
+@mixin trim($numLines: null) {
+  @if $numLines != null {
+    display: -webkit-box;
+    -webkit-line-clamp: $numLines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  } @else {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+  }
+}

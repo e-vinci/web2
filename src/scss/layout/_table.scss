@@ -1,0 +1,57 @@
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border: 0;
+  border-top: 3px solid currentColor;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+  margin: 2rem 0;
+  border-collapse: collapse;
+  text-indent: initial;
+  border-spacing: 2px;
+
+  td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+    width: 75%;
+
+    /*
+    &:first-child {
+      padding-left: 0;
+      border-left: 0;
+      width: 25%;
+      word-wrap: break-word;
+      hyphens: auto;
+      
+    }*/
+  }
+
+  th {
+    padding: 0.75rem;
+    padding-left: 0;
+    border-left: 0;
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    border-left: 0;
+    vertical-align: top;
+    text-align: left;
+    width: 25%;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /*
+  &--small {
+    table-layout: auto;
+    td {
+      width: auto;
+    }
+    th {      
+      width: 1%;
+    }
+  }*/
+}

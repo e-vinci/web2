@@ -1,0 +1,86 @@
+// Fonts
+@font-face {
+  font-family: "Kavoon";
+  src: url(../fonts/Kavoon-Regular.ttf);
+  //The easiest way to avoid showing invisible text while custom fonts load is to temporarily
+  //show a system font. By including font-display: swap in your @font-face style,
+  //you can avoid FOIT in most modern browsers:
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MeriendaOne";
+  font-size: 15vh;
+  src: url(../fonts/MeriendaOne-Regular.ttf);
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Apercu Pro Regular";
+  src: url("../fonts/Apercu Pro Regular.otf");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Regular";
+  src: url("../fonts/Roboto-Regular.ttf");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Baloo Bhaina 2 Bold";
+  src: url("../fonts/BalooBhaina2-Bold.ttf");
+  font-display: swap;
+}
+
+// Headers
+h1 {
+  @include text(
+    $family: $font-title,
+    $size: xx-large,
+    $weight: 300,
+    $color: $tertiary-color,
+    $lineHeight: 2rem
+  );
+}
+h2 {
+  @include text(
+    $family: $font-title,
+    $size: x-large,
+    $weight: 300,
+    $color: $tertiary-color,
+    $lineHeight: 1.7rem
+  );
+}
+h3 {
+  //@include text($family: $font-navigation, $size: x-large, $weight: 300);
+  @include text(
+    $family: $font-title,
+    $size: x-large,
+    $weight: 300,
+    $color: $tertiary-color,
+    $lineHeight: 1.7rem
+  );
+}
+
+.text {
+  @include regular-text();
+
+  &--light {
+    color: $secondary-color !important;
+  }
+
+  &--italic {
+    font-style: italic !important;
+  }
+
+  &--emphasized {
+    @include emphasized-text();
+  }
+
+  &--hand-written {
+    font-family: $font-navigation;
+    font-weight: 300;
+    font-size: large;
+  }
+}
