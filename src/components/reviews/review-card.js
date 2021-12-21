@@ -40,7 +40,7 @@ const ReviewCard = ({ project, setFilteredContents }) => {
 
   // Scroll to the element that is detailed or that is put back without details
   useEffect(() => {
-    if (detailedElementRef.current) {
+    if (detailedElementRef.current && isDetailed) {
       detailedElementRef.current.scrollIntoView();
     }
   }, [isDetailed]);
