@@ -23,7 +23,7 @@ const ReviewCard = ({ project, setFilteredContents }) => {
   const userName = getUserName();
   let userReview;
   // get the associated review of the authenticated user (from my reviews)
-  if (project.praise) userReview = project;
+  if (project.praise !== undefined) userReview = project;
   // get the eventual associated review of the authenticated user (from all reviews)
   else if (project.projectReviews && project.projectReviews.length > 0) {
     userReview = project.projectReviews.find(
@@ -233,17 +233,20 @@ const ReviewCard = ({ project, setFilteredContents }) => {
       </div>
 
       {/* Deal with telling if the project is reviewed. :
-        Tell that the review is impossible if the user is a member of this project */}
+        Tell that the review is impossible if the user is a member of this project 
+        else
+        if there is no praise given, tell that the reviewed is not done
+        else tell that the review is done*/}
 
       <div className="index__card__content">
         <div className="index__card__content__title">Ma revue ?</div>
         <div className="index__card__content__description">
           {project.projectMembers.includes(userName) ? (
             <FontAwesomeIcon icon={faMinusCircle} />
-          ) : userReview ? (
-            <FontAwesomeIcon icon={faCheckCircle} />
-          ) : (
+          ) : !userReview || ! userReview.praise || userReview.praise.length === 0 ? (
             <FontAwesomeIcon icon={faTimesCircle} />
+          ) : (
+            <FontAwesomeIcon icon={faCheckCircle} />
           )}
         </div>
       </div>

@@ -119,6 +119,7 @@ const useReviewData = () => {
   };
 
   const createFreeProjectReview = async (data, id) => {
+    console.log("data:", data ,"id:", id);
     try {
       const newReview = await callAPI("reviews", "POST", getIdToken(), {
         ...data,
