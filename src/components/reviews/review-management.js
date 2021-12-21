@@ -66,6 +66,7 @@ const ReviewManagement = () => {
       // Deal with review data
       const temp = await updateMyReviewSummaryData(user.userName, group._id);
       const summary = await updateAllReviewsData(group._id);
+      console.log("Summary", summary);
     } catch (error) {
       console.error("getData:error", error);
     }

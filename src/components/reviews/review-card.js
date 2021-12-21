@@ -250,8 +250,8 @@ const ReviewCard = ({ project, setFilteredContents }) => {
         {project.description !== undefined ? (
           <>
             <div className="index__card__content__title">Description</div>
-            <div className="index__card__content__description">
-              {project.description}
+            <div className="index__card__content__description" >
+              {he.decode(project.description)}
             </div>
           </>
         ) : (
