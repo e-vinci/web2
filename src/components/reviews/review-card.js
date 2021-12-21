@@ -38,9 +38,9 @@ const ReviewCard = ({ project, setFilteredContents }) => {
 
   const detailedElementRef = useRef(null);
 
+  // Scroll to the element that is detailed or that is put back without details
   useEffect(() => {
     if (detailedElementRef.current) {
-      console.log("scroll into view please");
       detailedElementRef.current.scrollIntoView();
     }
   }, [isDetailed]);
@@ -123,18 +123,10 @@ const ReviewCard = ({ project, setFilteredContents }) => {
 
   const onViewDetails = () => {
     setIsDetailed(true);
-    /*// Scroll to the element that is detailed
-    detailedElementRef.current.scrollIntoView({
-      behavior: "smooth",
-    });*/
   };
 
   const onQuitViewDetails = () => {
     setIsDetailed(false);
-    // Scroll to the element that is left (no more detailed)
-    /*detailedElementRef.current.scrollIntoView({
-      behavior: "smooth",
-    });*/
   };
 
   // deal with modification of content
