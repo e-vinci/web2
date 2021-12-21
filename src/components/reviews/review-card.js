@@ -38,20 +38,13 @@ const ReviewCard = ({ project, setFilteredContents }) => {
 
   const detailedElementRef = useRef(null);
 
-  /*useEffect(() => {
-    console.log(
-      "isDetailed",
-      isDetailed,
-      "Current",
-      detailedElementRef.current
-    );
-
-    if (isDetailed) {
+  useEffect(() => {
+    if (detailedElementRef.current) {
       console.log("scroll into view please");
       detailedElementRef.current.scrollIntoView();
     }
-  }, []);
-*/
+  }, [isDetailed]);
+
   // Get state management functions from the provider
   const {
     userData,
@@ -130,18 +123,18 @@ const ReviewCard = ({ project, setFilteredContents }) => {
 
   const onViewDetails = () => {
     setIsDetailed(true);
-    // Scroll to the element that is detailed
+    /*// Scroll to the element that is detailed
     detailedElementRef.current.scrollIntoView({
       behavior: "smooth",
-    });
+    });*/
   };
 
   const onQuitViewDetails = () => {
     setIsDetailed(false);
     // Scroll to the element that is left (no more detailed)
-    detailedElementRef.current.scrollIntoView({
+    /*detailedElementRef.current.scrollIntoView({
       behavior: "smooth",
-    });
+    });*/
   };
 
   // deal with modification of content
