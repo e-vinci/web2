@@ -158,7 +158,9 @@ const ReviewCard = ({ project, setFilteredContents }) => {
       ref={detailedElementRef}
     >
       <div className="index__card__header">
-        <span>{"Projet N° " + project.shortId + " : " + project.name}</span>
+        <span>
+          {"Projet N° " + project.shortId + " : " + he.decode(project.name)}
+        </span>
       </div>
 
       <div className="index__card__header">
