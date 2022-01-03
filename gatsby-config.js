@@ -19,11 +19,7 @@ module.exports = {
       {
         name: `Home`,
         link: `/`,
-      },
-      {
-        name: `About`,
-        link: `/about`,
-      },
+      },      
       {
         name: "Contenu du cours",
         link: "",
@@ -33,6 +29,10 @@ module.exports = {
           { name: "Module 2 : JAX-RS & auths", link: "/modules/2" },
           { name: "Module 3 : JAX-RS avancé", link: "/modules/3" },
         ],
+      },
+      {
+        name: `About`,
+        link: `/about`,
       },
     ],
   },

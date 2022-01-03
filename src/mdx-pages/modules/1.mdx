@@ -81,13 +81,14 @@ Jersey offre différents archetypes Maven.
 Pour plus d'infos: https://eclipse-ee4j.github.io/jersey.github.io/documentation/latest3x/getting-started.html#new-from-archetype 
 <br/>
 
-A l’aide d’IntelliJ, créez un projet Maven en utilisant un archetype fournit par Jersey:
--	Clic sur “Create from archetype” à la création de votre projet
--	Sélectionnez dans la liste des archetypes : **org.glassfish.jersey.archetypes :jersey-quickstart-grizzly**
+A l’aide d’IntelliJ, créez un projet ou un module Maven en utilisant un archetype fournit par Jersey :
+- Clic sur “**Create from archetype**” à la création de votre projet
+- Sélectionnez dans la liste des archetypes : **org.glassfish.jersey.archetypes :jersey-quickstart-grizzly2**
+- Ajouter le nom de domaine dans **Artifact Coordinates**, **GroupId**. Par exemple : **be.vinci**
 
 <br/>
 
-Explorez ce qui est offert au sein de ce projet :
+Explorez ce qui est offert au sein de ce module ou projet :
 - Lancez la méthode **main** de la classe **Main**.
 - Une tout première méthode **getIt** est offerte au sein de la ressource **MyResource**.
 - Consommez cette méthode **getIt**  à l’aide d’un client, via un browser, à l’URL [http://localhost:8080/myapp/myresource](http://localhost:8080/myapp/myresource) 
@@ -131,6 +132,9 @@ Celle-ci se trouve indiquée de la sorte dans **/pom.xml** :
  ```
 
 Dans la classe **Main**, changez la **BASE_URI** pour pointer vers [http://localhost:8080/](http://localhost:8080/).
+```java
+public static final String BASE_URI = "http://localhost:8080/";
+```
 <br/>
 
 ## c.2) Root resources
@@ -341,7 +345,8 @@ Que se passe-t-il ?
 A chaque fois on repart avec le même tableau par défaut de ressources, on a toujours qu’un seul élément en moins.
 On ne peut donc pas effacer plus d'un élément.
 <br/>
-Conclusion : 
+
+**Conclusion** : 
 
 Par défaut, une nouvelle instance d’une Route Resource sera créée pour chaque requête matchant l’URI de la Root Resource. 
 C’est comme si la Root Resource avait été annotée par **@RequestScoped**.
@@ -524,7 +529,7 @@ La requête pour pouvoir appeler l'opération de création d'un film est donnée
 [f) Envoi de requêtes à ses APIs](/modules/1#sectionF)
 <br/>
 
-Plus d'info sur la désérialisation via Jackson : 
+Plus d'infos sur la désérialisation via Jackson : 
 
 https://www.baeldung.com/jackson-field-serializable-deserializable-or-not
 <br/>
@@ -672,9 +677,57 @@ GET {{baseUrl}}/films
 ```
 <br/>
 
+Nous allons maintenant tester l'API de gestion de films que nous avons créée pour tout ce que nous 
+ne pouvons pas tester directement via un browser.
+<br/>
+
+Au sein de VS Code, veuillez créer un fichier **films.http**.
+
+Veuillez y ajouter cette requête pour la création d'un film et exécutez la requête : 
+```json
+@baseUrl = http://localhost:8080
+### Create One film
+POST {{baseUrl}}/films 
+Content-Type: application/json
+
+{
+"title" : "Venom: Let There Be Carnage",
+"duration" : 97,
+"budget" : 110,
+"link" : "https://en.wikipedia.org/wiki/Venom:_Let_There_Be_Carnage"
+} 
+```
+<br/>
+
+Veuillez ajouter cette requête de suppression d'un film dans **films.http** et l'exécuter :
+```json
+DELETE {{baseUrl}}/films/5
+```
+<br/>
+
+Veuillez ajouter cette requête de suppression d'un film dans **films.http** et l'exécuter :
+```json
+### Update One film
+PUT {{baseUrl}}/films/4
+Content-Type: application/json
+
+{
+"title" : "Venom: Let There Be Carnage",
+"duration" : 97,
+"budget" : 110,
+"link" : "https://en.wikipedia.org/wiki/Venom:_Let_There_Be_Carnage"
+} 
+```
+<br/>
+
 ## f.2) REST Client sous VS Code
-Dans le cadre de ce cours, nous pouvons utiliser REST Client de Visual Studio Code : 
-https://github.com/Huachao/vscode-restclient 
+Dans le cadre de ce cours, nous pouvons aussi utiliser REST Client de Visual Studio Code pour tester nos APIs : 
+https://github.com/Huachao/vscode-restclient
+
+<br/>
+Il est inutile de lire ce paragraphe si vous avec choisi de faire vos requêtes à l'aide d'IntelliJ.
+
+<br/>
 <br/>
 
 Si ça n'est pas déjà fait, veuillez installer Visual Studio Code.
@@ -749,13 +802,6 @@ Content-Type: application/json
 ## g.1) Introduction
 L’utilisation de Jackson est documentée, mais celle-ci semble fort dispersée sur le Web.
 Nous avons donc résumé les concepts essentiels ci-dessous. 
-<br/>
-
-Voici quelques références malgré tout pour la documentation, si vous souhaitez approfondir :
--	Tutoriel reprenant les fonctions principales de Jackson : https://www.baeldung.com/jackson-object-mapper-tutorial 
--	Le point d’entrée de Jackson au sein de Jersey : https://eclipse-ee4j.github.io/jersey.github.io/documentation/latest3x/media.html#json.jackson
--	Pour une idée de base de la libraire Jackson : https://github.com/FasterXML/jackson-docs ou https://github.com/FasterXML/jackson-databind 
-<br/>
 
 Pour ce cours, nous souhaitons que nos ressources soient persistantes, mais sans utiliser de 
 système de gestion de base de données. Nous allons donc sauvegarder les données dans un fichier JSON.
@@ -777,46 +823,67 @@ sérialiser / désérialiser des données JSON à l'aide de Jackson
  (voir [c.3) Sérialisation via Jackson](/modules/1#sectionC3)).
 <br/>
 
+<br/>
+
+Voici quelques références malgré tout pour la documentation, si vous souhaitez approfondir :
+-	Tutoriel reprenant les fonctions principales de Jackson : https://www.baeldung.com/jackson-object-mapper-tutorial 
+-	Le point d’entrée de Jackson au sein de Jersey : https://eclipse-ee4j.github.io/jersey.github.io/documentation/latest3x/media.html#json.jackson
+-	Pour une idée de base de la libraire Jackson : https://github.com/FasterXML/jackson-docs ou https://github.com/FasterXML/jackson-databind 
+
+<br/>
+
 ## g.2) Sérialisation d'une liste de POJOs dans un fichier JSON
 
 Pour rendre les ressources peristantes au sein de notre API de gestion de films, veuillez créer 
-une nouvelle classe **Json**.
+une nouvelle classe s'appelant **Json**.
 
 Au sein de la classe **Json**, voici le code de la méthode **serialize** permettant d’utiliser
 le fichier **db.json** pour sérialiser (ou enregistrer) plusieurs types de ressources. Veuillez 
 bien lire les commentaires pour comprendre le code :
 ```java
-public class Json {
-private static final String DB_FILE_PATH = "db.json";
-private static Path pathToDb = Paths.get(DB_FILE_PATH);
-private static final String COLLECTION_NAME = "films";
-private final static ObjectMapper jsonMapper = new ObjectMapper();
+package be.vinci;
 
-public static void serialize(List<Film> films) {
-    try {
-        // if no DB file, write a new collection to a new db file
-        if (!Files.exists(pathToDb)) {
-            // Create an object and add a JSON array as POJO, e.g. { films:[...]}
-            ObjectNode newCollection = jsonMapper.createObjectNode().putPOJO(COLLECTION_NAME, films);
-            jsonMapper.writeValue(pathToDb.toFile(), newCollection); // write the JSON Object in the DB file
-            return;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+public class Json {
+    private static final String DB_FILE_PATH = "db.json";
+    private static Path pathToDb = Paths.get(DB_FILE_PATH);
+    private static final String COLLECTION_NAME = "films";
+    private final static ObjectMapper jsonMapper = new ObjectMapper();
+
+    public static void serialize(List<Film> films) {
+        try {
+            // if no DB file, write a new collection to a new db file
+            if (!Files.exists(pathToDb)) {
+                // Create an object and add a JSON array as POJO, e.g. { films:[...]}
+                ObjectNode newCollection = jsonMapper.createObjectNode().putPOJO(COLLECTION_NAME, films);
+                jsonMapper.writeValue(pathToDb.toFile(), newCollection); // write the JSON Object in the DB file
+                return;
+            }
+            // get all collections : can be read as generic JsonNode, if it can be Object or Array;
+            JsonNode allCollections = jsonMapper.readTree(pathToDb.toFile()); // e.g. { users:[...], films:[...]}
+            // remove current collection, e.g. remove the array of films
+            if (allCollections.has(COLLECTION_NAME)) {
+                ((ObjectNode) allCollections).remove(COLLECTION_NAME); //e.g. it leaves { users:[...]}
+            }
+            // Prepare a JSON array from the list of POJOs for the collection to be updated, e.g. [{"film1",...}, ...]
+            ArrayNode updatedCollection = jsonMapper.valueToTree(films);
+            // Add the JSON array in allCollections, e.g. : { users:[...], films:[...]}
+            ((ObjectNode) allCollections).putArray(COLLECTION_NAME).addAll(updatedCollection);
+            // write to the db file allCollections
+            jsonMapper.writeValue(pathToDb.toFile(), allCollections);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        // get all collections : can be read as generic JsonNode, if it can be Object or Array;
-        JsonNode allCollections = jsonMapper.readTree(pathToDb.toFile()); // e.g. { users:[...], films:[...]}
-        // remove current collection, e.g. remove the array of films
-        if (allCollections.has(COLLECTION_NAME)) {
-            ((ObjectNode) allCollections).remove(COLLECTION_NAME); //e.g. it leaves { users:[...]}
-        }
-        // Prepare a JSON array from the list of POJOs for the collection to be updated, e.g. [{"film1",...}, ...]
-        ArrayNode updatedCollection = jsonMapper.valueToTree(films);
-        // Add the JSON array in allCollections, e.g. : { users:[...], films:[...]}
-        ((ObjectNode) allCollections).putArray(COLLECTION_NAME).addAll(updatedCollection);
-        // write to the db file allCollections
-        jsonMapper.writeValue(pathToDb.toFile(), allCollections);
-    } catch (IOException e) {
-        e.printStackTrace();
     }
-}
 }
 ```
 <br/>
@@ -1010,6 +1077,9 @@ Le manuel utilisateur de cette librairie est disponible ici : https://commons.ap
 # <a id="sectionI"></a>i) Exercice 1.1
 Veuillez créer une application JAX-RS mettant à disposition des opérations CRUD 
 (**C**reate, **R**ead, **U**pdate & **D**elete) sur des ressources de type « texte à dactylographier ».
+
+Les ressources doivent persister au format JSON et vous devez échapper les caractères dangereux.
+<br/>
 
 Veuillez partir d'un archetype Maven comme décrit au point 
 [b) Creation d’une première application sur base d’un Archetype Maven](/modules/1#sectionB).

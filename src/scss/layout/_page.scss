@@ -1,17 +1,26 @@
 .page {
   // deal with all text written directly within the .mdx files, without calling react components (or html)
   // it is considered that a text written with HTML shall start with a Section tag
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
   &--auto-margin {
     padding: 1rem;
-    ul {
+    ul,
+    ol {
       padding-left: 1.3rem;
-      padding-right: 1.3rem;    
+      padding-right: 1.3rem;
     }
   }
 
   a {
     color: $tertiary-color;
     cursor: pointer;
+
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    hyphens: auto;
 
     &:hover,
     &:focus {
