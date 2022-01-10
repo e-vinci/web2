@@ -29,6 +29,10 @@ module.exports = {
           { name: "Module 2 : JAX-RS & auths", link: "/modules/2" },
           { name: "Module 3 : JAX-RS avancé", link: "/modules/3" },
         ],
+      },          
+      {
+        name: `Repositories`,
+        link: `/repositories`,
       },
       {
         name: `About`,
