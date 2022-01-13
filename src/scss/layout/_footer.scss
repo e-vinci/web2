@@ -44,10 +44,11 @@
     }
 
     &__image{
-      background-image:  url('../images/jakarta-logo.svg') ;    
+      background-image:  url('../images/jakarta-logo.png') ;    
       display: inline-block;
-      min-height: 5vh;  
-      min-width: 10vw;//width: auto;    
+      min-height: 3rem; 
+      min-width: 30vw; 
+      //min-width: 15vw;//width: auto;    
       vertical-align: middle;
       background-repeat: no-repeat;
       background-position: left center, right center;
@@ -58,7 +59,7 @@
     &__image2{      
       //background-image:  url('../images/jakarta-logo.svg') ;     
       display: inline-block;
-      min-height: 5vh;  
+      min-height: 2rem;  
       min-width: 10vw;//width: auto;    
       vertical-align: middle;
       background-repeat: no-repeat;
