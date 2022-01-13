@@ -1566,6 +1566,12 @@ sérialisé et renvoyé au client via une Root Resource (**AuthsResource** dans 
 
 <br/>
 
+**Code du tutoriel** : si vous souhaitez directement accéder au code de la fin du tutoriel de 
+création d'une API de gestion de films pour ce module 2 : 
+https://github.com/e-vinci/baja-demos/tree/main/films-api-module2
+
+<br/>
+
 # <a id="sectionJ"></a>j) Exercice 2.1
 Peut-être avez-vous déjà entendu parler de cette mode montante dans le Web 
 qu’est la JAMstack ?
@@ -1590,7 +1596,7 @@ Le statut de publication d’une page peut actuellement prendre comme valeur :
 
 <br/>
 
-Seul un utilisateur authentifié pourra créer, modifier ou supprimer des pages.
+Seul un utilisateur authentifié pourra lire, créer, modifier ou supprimer des pages.
 <br/>
 
 La modification d’une page, tout comme la suppression d’une page ne pourra se faire 
@@ -1606,9 +1612,17 @@ La lecture d’une page, ou de toutes les pages, pourra être réalisée par n�
 quel utilisateur authentifié pour les pages dont le statut vaut « published ».
 <br/>
 
-Pour les pages dont le statut vaut « hidden », seul leur auteur pourra les lire.
+Pour les pages dont le statut vaut « hidden », seul leur auteur authentifié pourra les lire.
 A la lecture d’une ou plusieurs page, on veillera à ce que les données associées 
 à l’auteur d’une page ne contiennent pas le password.
+<br/>
+
+Lorsque vous renvoyer les données associées à une page, il est acceptable, à ce stade-ci, 
+d'inclure le password dans la réponse faite au client. 
+<br/>
+
+Il est aussi acceptable à ce stade-ci, lorsque vous devez renvoyer une erreur à un client, de simplement 
+renvoyer un code d'erreur (sans mettre de message dans le body de la réponse).
 <br/>
 
 Veuillez développer une application JAX-RS mettant à disposition les opérations 
@@ -1665,7 +1679,18 @@ Web associée à la JAMstack ? https://jamstack.wtf/
 Optionnel : si vous souhaitez découvrir le format Markdown, notamment très souvent utilisé 
 dans certains sites JAMstack (source des données pour certains Headless CMS) : 
 https://www.markdownguide.org/basic-syntax/
+<br/>
 
+**Challenges** : 
+- **N°1** : Modifiez les autorisations au niveau des opérations de lecture (en gras pour la modification) : 
+la lecture d’une page, ou de toutes les pages, pourra être réalisée par n’importe 
+quel utilisateur **anonyme ou authentifié** pour les pages dont le statut vaut « published ».
+Pour les pages dont le statut vaut « hidden », seul leur auteur authentifié pourra les lire.
+- **N°2** : lorsqu'un utilisateur tente d'effacer ou modifier une page dont il n'est pas l'auteur,
+renvoyer un code d'erreur approprié au client.
+- **N°3** : Si vous ne l'avez pas déjà fait, trouvez une façon de ne pas inclure le password lors de la sérialisation de celui-ci 
+dans une page (via l'auteur de la page). Attention, le password doit toujours être sérialisé 
+lors de l'enregistrement d'un utilisateur.
 
 
 <br/>
