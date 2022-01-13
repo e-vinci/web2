@@ -25,7 +25,7 @@ const AboutPage = () => {
             Si vous souhaitez participer à la mise à jour des contenus du cours, n’hésitez
             pas à faire part de modifications en soumettant des Pull Requests ou
             des des Issues sur le &nbsp;
-            <a href="https://github.com/e-vinci/baja-website" target="_blank">
+            <a href="https://github.com/e-vinci/baja" target="_blank">
               web repository de ce website.
             </a>
           </p>
