@@ -1,11 +1,11 @@
 const emoji = require(`remark-emoji`);
-const siteURL = "https://e-vinci.github.io/baja-website"; // No trailing slash allowed!
+const siteURL = "https://e-vinci.github.io/baja"; // No trailing slash allowed!
 const youtubeUrl = "";
 const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
 const instagramUrl = "";
 module.exports = {
-  pathPrefix: `/baja-website`, // this is if your site is to be published on URL with a prefix (Github page e.g.),
+  pathPrefix: `/baja`, // this is if your site is to be published on URL with a prefix (Github page e.g.),
   siteMetadata: {
     title: "Backend Java",
     description: "Your site description",
