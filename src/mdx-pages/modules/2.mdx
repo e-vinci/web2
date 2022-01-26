@@ -34,13 +34,13 @@ on veut pouvoir mettre à jour la couche d'accès aux données sans devoir mettr
 données, ne doit pas être séparée de la gestion des données.
 3. On veut pouvoir rapidement distinguer certaines parties de code : les objets du domaine, le main,  
 les opérations offertes sur les ressources, les utilitaires, la logique d'accès 
-aux opérations sur les données et la gestion des donnnées.
+aux opérations sur les données et la gestion des données.
 
 <br/>
 
-Pour ce faire, nous veuillez créér ces packages au sein de votre API gérant les films :
+Pour ce faire, nous veuillez créer ces packages au sein de votre API gérant les films :
 - **api** : s'occupera des Root Resources et donc de la présentation des ressources aux clients.
-- **domain** : incluera tous les objets du domaines, les sacs de données.
+- **domain** : inclura tous les objets du domaines, les sacs de données.
 - **main** : gère le démarrage de l'application JAX-RS.
 - **services** : permet de traiter de la logique d'accès aux opérations sur les données et la gestion de 
 ces données.
@@ -415,7 +415,7 @@ Config.load("dev.properties");
 ```
 <br/>
 
-Mais nous vous proposons d'utiliser un initialisateur static qui sera appelé avant la méthode 
+Mais nous vous proposons d'utiliser un initialiseur "static" qui sera appelé avant la méthode 
 **main**. Veuillez mettre à jour votre classe **Main** en ajoutant :
 ```java {2-4}
 public class Main {
@@ -454,7 +454,7 @@ sur des ressources. Ces opérations seront disponibles via des requêtes http as
 URLs construites selon les conventions RESTful.
 <br/>
 
-Certaines opérations sont protégées par des token JWT. 
+Certaines opérations sont protégées par des tokens JWT. 
 Ainsi, tout client souhaitant accéder à ces opérations devra fournir un token dans le header 
 de la requête.
 Le client devra donc mémoriser le token reçu lors de son enregistrement (**auths/register**) ou 
@@ -544,7 +544,7 @@ Nous allons donc créer les opérations **login** et **register** pour des resso
 <br/>
 
 Pour ce faire, voici les étapes que nous allons suivre :
-- Ajout d'une propriété pour gérer le secret associé à la signature des token.
+- Ajout d'une propriété pour gérer le secret associé à la signature des tokens.
 - Création d'une classe **User** qui va permettre de sérialiser les données du monde Java vers
 le monde JSON.
 - Création d'une classe **UserDataService** qui va permettre de gérer les données associées aux 
@@ -1000,7 +1000,7 @@ public String hashPassword(String password) {
 ```
 <br/>
 
-Attention, maintenant que nous utilisons les password hachés, il faut supprimer l'ancienne base 
+Attention, maintenant que nous utilisons les passwords hachés, il faut supprimer l'ancienne base 
 de donnée des utilisateurs. Vous devez soit effacer la collection **users** du fichier **db.json**,
 soit vous pouvez aussi directement effacer le fichier **db.json**.
 <br/>
@@ -1183,7 +1183,7 @@ public @interface Authorize {
 <br/>
 
 C’est grâce à cette annotation qui a été définie que **AuthorizationRequestFilter** 
-ne s’éxécutera que pour les méthodes annotées de **@Authorize**.
+ne s’exécutera que pour les méthodes annotées de **@Authorize**.
 <br/>
 
 Au sein de **FilmResource**, il nous reste donc à annoter les opérations d'écriture de notre API de gestion de films afin de 
@@ -1236,7 +1236,7 @@ JavaScript / CSS) pour tester vos APIs. Cela prendrait trop de temps.
 
 Nous utilisons donc des clients légers permettant de faire des requêtes à nos APIs.
 
-Comme nous vous encourageons à utilser IntelliJ pour développer votre code Java, il est probablement 
+Comme nous vous encourageons à utiliser IntelliJ pour développer votre code Java, il est probablement 
 plus aisé de rester au sein du même environnement de développement en utilisant le client HTTP 
 d'IntelliJ.
 <br/>
@@ -1664,7 +1664,7 @@ Les ressources doivent persister au format JSON et vous devez échapper les cara
 <br/>
 
 Veuillez partir d'un archetype Maven comme décrit au point 
-[Module 1 : b) Creation d’une première application sur base d’un Archetype Maven](/modules/1#sectionB).
+[Module 1 : b) Création d’une première application sur base d’un Archetype Maven](/modules/1#sectionB).
 
 Veuillez intégrer à votre application les fichiers utiles de la démo 
 https://github.com/e-vinci/baja-demos/tree/main/films-api présentée dans ce module-ci, 

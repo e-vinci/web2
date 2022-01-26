@@ -8,13 +8,13 @@ Ce module vous offre une première découverte du framework JAX-RS par le biais 
 
 Voici les sujets traités :
 - a) [Rappel de conventions sur les RESTful API](/modules/1#sectionA)
-- b) [Creation d’une première application sur base d’un Archetype Maven](/modules/1#sectionB)
+- b) [Création d’une première application sur base d’un Archetype Maven](/modules/1#sectionB)
 - c) [Première opération de lecture de ressources JSON](/modules/1#sectionC)
 - d) [Gestion des paramètres de requêtes](/modules/1#sectionD)
 - e) [Gestion des réponses](/modules/1#sectionE)
 - f) [Envoi de requêtes à ses APIs](/modules/1#sectionF)
 - g) [Sérialisation de fichiers JSON](/modules/1#sectionG)
-- h) [Gesion des caractères dangereux](/modules/1#sectionH)
+- h) [Gestion des caractères dangereux](/modules/1#sectionH)
 - i) [Exercice 1.1](/modules/1#sectionI)
 
 <br/>
@@ -30,10 +30,10 @@ concernant les sessions des clients.
 
 Cela permet principalement de rendre l’architecture 
 facilement « scalable ».Chaque requête vers une RESTful API protégée (via JWT) 
-devra contenir toutes les données pour être authentifié / authorisé.
+devra contenir toutes les données pour être authentifié / autorisé.
 <br/>
 
-Une RESTful API met à disposition des pérations sur des ressources via :
+Une RESTful API met à disposition des opérations sur des ressources via :
 - des URI
 - des méthodes HTTPS
 - des représentations des ressources compréhensibles tant par les clients que les
@@ -72,7 +72,7 @@ Nous allons maintenant développer une application JAX-RS offrant une API de fil
 <br/>
 <br/>
 
-# <a id="sectionB"></a>b) Creation d’une première application sur base d’un Archetype Maven
+# <a id="sectionB"></a>b) Création d’une première application sur base d’un Archetype Maven
 Un **archetype Maven** est un boilerplate de projet mis à disposition sur un repository.
 <br/>
 
@@ -119,7 +119,7 @@ Cette ligne de code permet scanner toutes les ressources JAX-RS
 <br/>
 
 Les classes associées à des ressources (**MyResource** dans ce projet) sont enregistrées 
-au sein de l’application. Le framework pourra injecter des instances de ces resources le temps voulu.
+au sein de l’application. Le framework pourra injecter des instances de ces ressources le temps voulu.
 <br/>
 
 Pour pouvoir utiliser l’injection de dépendances, la librairie de Jersey permettant de le faire a été installée. 
@@ -264,7 +264,7 @@ private List<Film> films = new ArrayList<>(Arrays.asList(defaultFilms)); // to g
 <br/>
 
 Veuillez faire en sorte que la méthode **getAll** de **FilmResource** renvoie l’ArrayList de films 
-et spécifiez que la représentation des resources renvoyées par votre méthode **getAll** est du JSON :
+et spécifiez que la représentation des ressources renvoyées par votre méthode **getAll** est du JSON :
 ```java
 @GET
 @Produces(MediaType.APPLICATION_JSON)
@@ -351,7 +351,7 @@ On ne peut donc pas effacer plus d'un élément.
 Par défaut, une nouvelle instance d’une Route Resource sera créée pour chaque requête matchant l’URI de la Root Resource. 
 C’est comme si la Root Resource avait été annotée par **@RequestScoped**.
 Dans une application RESTful, cela n'a pas de sens car elle est "stateless". Dès lors, comme la réponse à une requête 
-ne dépend pas de l'état de la resource, il est inutile de créer une nouvelle instance de ressource pour chaque requête.
+ne dépend pas de l'état de la ressource, il est inutile de créer une nouvelle instance de ressource pour chaque requête.
 <br/>
 
 Si vous souhaitez plus de détails concernant le cycle de vie de Root Resources : https://eclipse-ee4j.github.io/jersey.github.io/documentation/latest3x/jaxrs-resources.html#d0e2470
@@ -416,11 +416,11 @@ cela correspond à une requête de type **GET /films/3**. Au sein de la méthode
 **id** vaudra 3.
 <br/>
 
-Veuillez noter comment un message de status est renvoyé au client si aucune resource n'est trouvée.
+Veuillez noter comment un message de statut est renvoyé au client si aucune resource n'est trouvée.
 
 Nous lançons une **WebApplicationException**, en lui passant un code d'erreur (**NOT_FOUND**), et 
 nous construisons une réponse en indiquant que le type est du texte (**text/plain**).
-Dès lors, la réponse contiendra le code de status **404** (équivalent de **NOT_FOUND**) et le message 
+Dès lors, la réponse contiendra le code de statut **404** (équivalent de **NOT_FOUND**) et le message 
 "Resource not found".
 <br/>
 
@@ -536,7 +536,7 @@ https://www.baeldung.com/jackson-field-serializable-deserializable-or-not
 <br/>
 
 ### d.3.2) Type MIME de la requête et @Consumes 
-Afin de permettre la désérialisation par le framework, on doit préciser le type **MIME** de la représentation de la resource qui est envoyée dans 
+Afin de permettre la désérialisation par le framework, on doit préciser le type **MIME** de la représentation de la ressource qui est envoyée dans 
 le **body** de la requête : 
 
 **@Consumes(MediaType.APPLICATION_JSON)**, **@Consumes("text/plain")**, …
@@ -638,7 +638,7 @@ Nous allons donc utiliser des clients légers permettant de faire des requêtes 
 
 Pour ce cours, vous pouvez choisir d'utiliser IntelliJ ou REST Client pour faire vos requêtes.
 
-Comme nous vous encourageons à utilser IntelliJ pour développer votre code Java, il est probablement 
+Comme nous vous encourageons à utiliser IntelliJ pour développer votre code Java, il est probablement 
 plus aisé de rester au sein du même environnement de développement en utilisant le client HTTP 
 d'IntelliJ.
 <br/>
@@ -725,7 +725,7 @@ Dans le cadre de ce cours, nous pouvons aussi utiliser REST Client de Visual Stu
 https://github.com/Huachao/vscode-restclient
 
 <br/>
-Il est inutile de lire ce paragraphe si vous avec choisi de faire vos requêtes à l'aide d'IntelliJ.
+Il est inutile de lire ce paragraphe si vous avez choisi de faire vos requêtes à l'aide d'IntelliJ.
 
 <br/>
 <br/>
@@ -808,7 +808,7 @@ système de gestion de base de données. Nous allons donc sauvegarder les donné
 <br/>
 
 Pour chaque opération sur un type de ressources : 
-- Nous allons charger toutes les ressources se trouvont dans un fichier JSON au sein d'un objet Java, 
+- Nous allons charger toutes les ressources se trouvant dans un fichier JSON au sein d'un objet Java, 
 une liste d'objets de type **Film** par exemple.
 - Si nécessaire, dans le cadre d'une opération d'écriture sur une ou plusieurs ressources, 
 nous allons mettre à jour la liste d'objets Java (ou POJOs).
@@ -834,7 +834,7 @@ Voici quelques références malgré tout pour la documentation, si vous souhaite
 
 ## g.2) Sérialisation d'une liste de POJOs dans un fichier JSON
 
-Pour rendre les ressources peristantes au sein de notre API de gestion de films, veuillez créer 
+Pour rendre les ressources persistantes au sein de notre API de gestion de films, veuillez créer 
 une nouvelle classe s'appelant **Json**.
 
 Au sein de la classe **Json**, voici le code de la méthode **serialize** permettant d’utiliser

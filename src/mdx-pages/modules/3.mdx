@@ -109,7 +109,7 @@ A ce stade-ci, la librairie Jackson qui s'occupe de la désérialisation ne sait
 quelle implémentation est à utiliser pour les POJOs. 
 <br/>
 
-Si vous exécutez l'application, elle lancera des exceptions lorsque vous appelerez certaines 
+Si vous exécutez l'application, elle lancera des exceptions lorsque vous appellerez certaines 
 opérations.
 
 <br/>
@@ -150,7 +150,7 @@ Veuillez exécuter l'application et vous assurer que tout est en ordre.
 <br/>
 
 ## a.4) L’injection de dépendances
-Afin d’injecter des dépendances au sein d’une application implémentant Jackarta EE, 
+Afin d’injecter des dépendances au sein d’une application implémentant Jakarta EE, 
 « Jakarta Dependency Injection » (ou Jakarta DI) permet d’obtenir des objets tout 
 en maximisant la réutilisation, la testabilité et la maintenabilité en comparaison 
 avec des approches plus traditionnelles (utilisation de constructeurs…).
@@ -210,7 +210,7 @@ final ResourceConfig rc = new ResourceConfig().packages("be.vinci.api")
         .register(JacksonFeature.class)
         .register(ApplicationBinder.class);
 ```
-- Pour rappel, l’annotation **@Provider** ci-desssus permet de fournir notre propre implémentation 
+- Pour rappel, l’annotation **@Provider** ci-dessus permet de fournir notre propre implémentation 
 d’un provider, de la rendre disponible à l’exécution, à notre application JAX-RS.
 - Nous allons maitenant injecter la factory via l'annotation **@Inject**, qui sera injectée 
 sous forme de Singleton (une et une seule instance) conformément à sa configuration 
@@ -418,7 +418,7 @@ pour créer des logs...
 <br/>
 
 Nous allons créer une **ExceptionMapper** nommé **WebExceptionMapper** dans le package **utils** 
-qui doit attrapper toutes les exceptions, afficher la stack trace, puis envoyer une réponse 
+qui doit attraper toutes les exceptions, afficher la stack trace, puis envoyer une réponse 
 au client. Si de l'exception est de type **WebApplicationException**, on souhaite envoyer une réponse contenant le **status** 
 et **message** de celle-ci. Sinon on renvoie le code d'erreur **INTERNAL_SERVER_ERROR** et 
 le message associé à l'exception  :
@@ -939,7 +939,7 @@ par contre, ça ne l'est pas si vous devez sérialiser des **boolean** : si la v
 **false** pour un attribut : il sera d'office filtré (valeur par défaut d'un boolean) 
 même si ça n'est pas ce que l'on veut. 
 N'hésitez pas à visualiser ce scénario si cela vous intéresse : il suffit d'appliquer la vue **Public** 
-à l'attribut **married** de **UserImpl** et de réexecuter la dernière requête HTTP 
+à l'attribut **married** de **UserImpl** et de réexécuter la dernière requête HTTP 
 de **users.http**.
 
 <br/>
@@ -983,7 +983,7 @@ Il n'est dès lors pas nécessaire de sérialiser les données tant pour les enr
 dans un fichier JSON, on doit juste renvoyer des données JSON pour répondre aux requêtes clientes.
 <br/>
 
-Voici au sein de **UserImpl** un exemple de commment filtrer l'attribut **password** 
+Voici au sein de **UserImpl** un exemple de comment filtrer l'attribut **password** 
 pour toutes les opérations de sérialisation d'un **User** :
 ```java {1}
 class UserImpl implements User {
