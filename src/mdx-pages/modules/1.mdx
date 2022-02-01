@@ -91,14 +91,25 @@ A l’aide d’IntelliJ, créez un projet ou un module Maven en utilisant un arc
 Explorez ce qui est offert au sein de ce module ou projet :
 - Lancez la méthode **main** de la classe **Main**.
 - Une tout première méthode **getIt** est offerte au sein de la ressource **MyResource**.
-- Consommez cette méthode **getIt**  à l’aide d’un client, via un browser, à l’URL [http://localhost:8080/myapp/myresource](http://localhost:8080/myapp/myresource) 
+- Consommez cette méthode **getIt**  à l’aide d’un client, via un browser, à l’URL [http://localhost:8080/myresource](http://localhost:8080/myresource) 
 
 <br/>
 
 Pour terminer, veuillez mettre à jour les versions de vos dépendances (directement dans **/pom.xml**).:
 - Faites passer **Jersey** en version **3.0.3**. 
 - Faites en sorte de configurer aussi votre projet pour bénéficier de la version LTS de Java, actuellement la version 17.
-
+```markup {6-9}
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>2.5.1</version>
+    <inherited>true</inherited>
+    <configuration>
+        <source>17</source>
+        <target>17</target>
+    </configuration>
+</plugin>
+ ```
 <br/>
 
 # <a id="sectionC"></a>c) Première opération de lecture de ressources JSON
