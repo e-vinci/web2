@@ -368,17 +368,6 @@ ne dépend pas de l'état de la ressource, il est inutile de créer une nouvelle
 Si vous souhaitez plus de détails concernant le cycle de vie de Root Resources : https://eclipse-ee4j.github.io/jersey.github.io/documentation/latest3x/jaxrs-resources.html#d0e2470
 <br/>
 
-Avant de passer au point suivant, nous allons  remettre en ordre la fonction permettant de lire tous les films 
-(elle ne doit plus effacer de films).
-```java
-@GET
-@Produces(MediaType.APPLICATION_JSON)
-public List<Film> getAll() {
-    return films;
-}
-```
-<br/>
-
 ### c.4.2) Scope : une instance par application JAX-RS
 
 Nous allons modifier le scope de la création en ajoutant l’annotation **@Singleton** dans **FilmResource** :
@@ -393,6 +382,17 @@ Suite à ce changement, vérifiez ce qui se produit au niveau de l'application.
 
 On a bien une seule instance de **FilmResource** qui est injectée dans notre application.
 Dès lors, à chaque refresh de la page, un film est enlevé, jusqu'à ce que l'API renvoie comme JSON un tableau vide.
+<br/>
+
+Avant de passer au point suivant, nous allons  remettre en ordre la fonction permettant de lire tous les films 
+(elle ne doit plus effacer de films).
+```java
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+public List<Film> getAll() {
+    return films;
+}
+```
 <br/>
 
 # <a id="sectionD"></a>d) Gestion des paramètres de requêtes
