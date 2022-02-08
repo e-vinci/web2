@@ -37,7 +37,8 @@ module.exports = {
         name: "Vitrines de projets",
         link: "",
         subMenu: [
-          { name: "Projets webs 2020", link: "/public-projects/showcase2020" },
+          { name: "Projets web 2021", link: "/public-projects/showcase2021" },
+          { name: "Projets web 2020", link: "/public-projects/showcase2020" },          
         ],
       },
     ],

@@ -119,23 +119,28 @@ exports.createSchemaCustomization = ({ actions }) => {
 exports.sourceNodes = async ({ actions }) => {
   const { createNode } = actions;
 
-  // fetch raw data from the rest api :
+  // fetch raw data from the rest api & create GraphQL nodes
   // TBD - MAKE IT REALLY GENERIC TO DEAL WITH MULTIPLE YEARS
 
-  const url =
-    process.env.GATSBY_API_URL + "projects/projectgroups/Web2 2020/public";
+  await addProjectsInGraphQL(createNode, "Web2 2020"); 
 
-  const response = await fetch(
-    url //"https://myjscourse-api.herokuapp.com/api/projects/projectgroups/Web2 2020/public"
-  );
+  await addProjectsInGraphQL(createNode, "Web2 2021");  
+
+  return;
+};
+
+async function addProjectsInGraphQL(createNode, projectGroupName) {
+  const url =
+    process.env.GATSBY_API_URL + "projects/projectgroups/" + projectGroupName + "/public";
+  const response = await fetch(url);
   const publicProjects = await response.json();
 
-  // map into these results and create nodes
+  // map into these results and create nodes, but ensure that the id's are unique ! 
   publicProjects.map((project, i) => {
     // Create your node object
     const projectNode = {
       // Required fields
-      id: `${i}`,
+      id: `${projectGroupName + i}`,
       parent: `__SOURCE__`,
       internal: {
         type: `PublicProjects`, // name of the graphQL query --> allPublicProjects {}
@@ -165,9 +170,7 @@ exports.sourceNodes = async ({ actions }) => {
     // Create node with the gatsby createNode() API
     createNode(projectNode);
   });
-
-  return;
-};
+}
 
 /* USE OF gatsby-plugin-create-client-paths instead
 // Implement the Gatsby API “onCreatePage”. This is
