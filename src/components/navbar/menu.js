@@ -5,7 +5,7 @@ import { StaticImage } from "gatsby-plugin-image";
 import { getUserName } from "../../utils/auths/authPopup";
 
 const reviewDropDown = {
-  name: "Revue de projet",
+  name: "Revues de projet",
   link: "",
   subMenu: [
     { name: "Mes revues", link: "/my-reviews-page" },
