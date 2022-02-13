@@ -40,7 +40,7 @@ const PublicProjectsView = ({ projectGroupName }) => {
     <div className="index">
       {filteredProjects.map(({ node: project }, index) => (
         <div className="index__card" key={index}>
-          <div className="index__card__header">{project.name}</div>
+          <div className="index__card__header">{he.decode(project.name)}</div>
 
           <div className="index__card__content">
             {project.description !== undefined ? (
