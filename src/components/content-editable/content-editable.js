@@ -27,7 +27,7 @@ const ContentEditable = ({
   };
 
   let currentContent;
-  if (isBeingEdited) currentContent = startContent//content;
+  if (isBeingEdited) currentContent = he.decode(startContent);// startContent//content;
   else if (children) currentContent = children;
   else if (startContent) currentContent = he.decode(startContent); // he.decode(content);
 
