@@ -939,7 +939,7 @@ Content-Type: application/json
 }
 
 ### Register john
-POST {{baseUrl}}/register
+POST {{baseUrl}}/auths/register
 Content-Type: application/json
 
 {
@@ -948,7 +948,7 @@ Content-Type: application/json
 }
 
 ### Login with John credentials
-POST {{baseUrl}}/login
+POST {{baseUrl}}/auths/login
 Content-Type: application/json
 
 {
@@ -1576,7 +1576,7 @@ Admettons que nous souhaitons construire une réponse JSON de ce type :
 
 Dans la méthode **login** de la classe **AuthsResource**, voici le code permettant 
 de renvoyer une représentation JSON de cet objet via un **ObjectNode** :
-```java numbered {14,20}
+```java numbered {3,8,18,24}
 public class UserDataService {
     //...
     private final ObjectMapper jsonMapper = new ObjectMapper();
@@ -1737,7 +1737,7 @@ Veuillez partir d'un archetype Maven comme décrit au point
 [Module 1 : b) Création d’une première application sur base d’un Archetype Maven](/modules/1#sectionB).
 
 Veuillez intégrer à votre application les fichiers utiles de la démo 
-https://github.com/e-vinci/baja-demos/tree/main/films-api présentée dans ce module-ci, 
+https://github.com/e-vinci/baja-demos/tree/main/films-api-module2 présentée dans ce module-ci, 
 principalement : **pom.xml**, **Authorize**, **AuthorizationRequestFilter**, **Config**, **AuthsResource**, **UserDataService**
 
 <br/>

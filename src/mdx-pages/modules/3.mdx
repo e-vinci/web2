@@ -413,7 +413,7 @@ On peut aussi souhaiter de centraliser certains traitement pour toutes les excep
 y-compris les **WebApplicationException** lancées dans les Root Resources.
 
 La centralisation de ces traitements d'exception peut se faire au sein d'un **ExceptionMapper**.
-C'est un lieu idéal pour traiter de toutes les codes et messages d'erreur à envoyer aux client,
+C'est un lieu idéal pour traiter de tous les codes et messages d'erreur à envoyer aux client,
 pour créer des logs...
 <br/>
 
@@ -906,6 +906,7 @@ Authorization: {{twigToken}}
 ```
 
 <br/>
+
 Veuillez exécuter ces 3 requêtes dans l'ordre.
 On voit que la dernière requête nous renvoie tant **age** que **married** alors qu'on souhaite 
 les filtrer. De plus, les valeurs renvoyées sont les valeurs par défaut des attributs, même si 
