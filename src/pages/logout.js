@@ -1,13 +1,17 @@
 import React, { useEffect } from "react";
-import { signOut } from "../utils/auths/authPopup.js";
+import { useMsal } from "@azure/msal-react";
 import { navigate } from "gatsby";
 import MainLayout from "../components/main-layout";
 
+/**
+ * NO LONGER REQUIRED : TO BE DELETED
+ * @returns 
+ */
 const Logout = () => {
+  const { instance } = useMsal();
   // only call this function at client side
   useEffect(() => {
-    signOut();
-    //sessionStorage.clear();
+    instance.logoutRedirect();
     // force to rerender all the components => navigate to home
     navigate("/");
   });

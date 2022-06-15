@@ -1,7 +1,6 @@
 import React from "react";
 import { graphql } from "gatsby";
 import { useStaticQuery } from "gatsby";
-import PageHeader from "./page-header.js";
 import SectionHeader from "./section-header.js";
 import Section from "./section.js";
 import Content from "./content.js";
@@ -23,7 +22,6 @@ const MainLayout = ({
   headerImage,
   featuredImage,
   pageTitle,
-  allImages,
   frontmatter,
 }) => {
   const data = useStaticQuery(
@@ -51,7 +49,6 @@ const MainLayout = ({
     `
   );
 
-  console.log("main-layout:", navbarExtraStyles, featuredImage, frontmatter);
 
   return (
     <div className="master">

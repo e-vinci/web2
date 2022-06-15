@@ -5,3 +5,7 @@ export const wrapRootElement = ({ element }) => (
   <ProjectDataProvider>{element}</ProjectDataProvider>
 );
 */
+
+import wrapWithProvider from "./src/utils/auths/wrap-with-provider";
+
+export const wrapRootElement = wrapWithProvider;

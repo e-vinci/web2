@@ -1,6 +1,7 @@
 import React from "react";
 import ReviewCard from "./review-card";
 
+
 const AllReviews = ({ projects, setFilteredContents, myReviewsSummary }) => {
   console.log("SUMMARY:", myReviewsSummary);
   if (myReviewsSummary && myReviewsSummary.expectedReviews > 0)

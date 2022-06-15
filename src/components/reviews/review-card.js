@@ -11,16 +11,18 @@ import {
   faTimesCircle,
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { useMsal } from "@azure/msal-react";
 import { getNamesFromEmail } from "../../utils/string/string";
 import { useProjectData } from "../context/projects/project-data-context";
 import ContentEditable from "../content-editable/content-editable.js";
 import ProjectReviewsSummary from "./project-reviews-summary.js";
 import { useReviewData } from "../context/reviews/review-data-context.js";
-import { getUserName } from "../../utils/auths/authPopup.js";
 import Quote from "../quote/quote.js";
 
 const ReviewCard = ({ project, setFilteredContents }) => {
-  const userName = getUserName();
+  const { accounts } = useMsal();
+  const userName = accounts?.[0].username; //getUserName(); SEE IF EXISTS !!!
+
   let userReview;
   // get the associated review of the authenticated user (from my reviews)
   if (project.praise !== undefined) userReview = project;

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import callAPI from "../../../utils/api/fetch";
-import { getIdToken } from "../../../utils/auths/authPopup";
+import { useMsal } from "@azure/msal-react";
+import { getAsyncIdToken } from "../../../utils/auths/use-id-token";
 
 const ReviewDataContext = React.createContext([
   {},
@@ -38,6 +39,8 @@ const ReviewDataProvider = ({ children }) => {
 let updateOperationCount = 0;
 
 const useReviewData = () => {
+  const { instance, accounts } = useMsal();
+
   const [
     myReviewSummaryData,
     setMyReviewSummaryData,
@@ -51,10 +54,11 @@ const useReviewData = () => {
 
   const updateMyReviewSummaryData = async (userName, projectGroupName) => {
     try {
+      const idToken = await getAsyncIdToken(accounts, instance);
       const myReviewSummary = await callAPI(
         `reviews/users/${userName}/projectgroups/${projectGroupName}/count`,
         "get",
-        getIdToken(),
+        idToken,
         undefined
       );
       setMyReviewSummaryData(myReviewSummary);
@@ -67,12 +71,13 @@ const useReviewData = () => {
 
   const updateMyReviewsData = async (userName, projectGroupName) => {
     try {
+      const idToken = await getAsyncIdToken(accounts, instance);
       if (updateOperationCount === 0) setIsLoaded(false);
       updateOperationCount++;
       const myReviews = await callAPI(
         `reviews/users/${userName}/projectgroups/${projectGroupName}`,
         "get",
-        getIdToken(),
+        idToken,
         undefined
       );
       setMyReviewsData(myReviews);
@@ -86,12 +91,13 @@ const useReviewData = () => {
 
   const updateAllReviewsData = async (projectGroupName) => {
     try {
+      const idToken = await getAsyncIdToken(accounts, instance);
       if (updateOperationCount === 0) setIsLoaded(false);
       updateOperationCount++;
       const allReviews = await callAPI(
         `reviews/projectgroups/${projectGroupName}/summary`,
         "get",
-        getIdToken(),
+        idToken,
         undefined
       );
       setAllReviewsData(allReviews);
@@ -105,10 +111,11 @@ const useReviewData = () => {
 
   const updateExpectedProjectReview = async (data, id) => {
     try {
+      const idToken = await getAsyncIdToken(accounts, instance);
       const reviewUpdated = await callAPI(
         "reviews/" + id,
         "PATCH",
-        getIdToken(),
+        idToken,
         data
       );
 
@@ -119,9 +126,9 @@ const useReviewData = () => {
   };
 
   const createFreeProjectReview = async (data, id) => {
-    console.log("data:", data ,"id:", id);
     try {
-      const newReview = await callAPI("reviews", "POST", getIdToken(), {
+      const idToken = await getAsyncIdToken(accounts, instance);
+      const newReview = await callAPI("reviews", "POST", idToken, {
         ...data,
         projectId: id,
       });

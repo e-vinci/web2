@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { navigate } from "gatsby";
-import { getUserName } from "../../utils/auths/authPopup";
+import { useMsal, useIsAuthenticated } from "@azure/msal-react";
+
+import { loginRequest } from "../../utils/auths/authConfig";
 
 const withFrontmatter = (WrappedComponent, frontmatter) => (props) => {
   console.log("props", props);
@@ -8,22 +10,19 @@ const withFrontmatter = (WrappedComponent, frontmatter) => (props) => {
 };
 
 const withAuthentication = (WrappedComponent) => (props) => {
+  const { instance } = useMsal();
+
+  const isAuthenticated = useIsAuthenticated();
+
   const [isSigned, setIsSigned] = useState(false);
 
   // useEffect has to be used in order to ensure that the code is executed at client side
   useEffect(() => {
-    const username = getUserName();
-    if (!username) {
-      navigate("/login");
-      return null;
+    if (!isAuthenticated) {
+      instance.loginRedirect(loginRequest);
     }
-    // user is authenticated
-    setIsSigned(true);
   });
 
-  if (!isSigned) {
-    return null;
-  }
   return <WrappedComponent {...props}></WrappedComponent>;
 };
 

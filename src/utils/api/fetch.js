@@ -1,11 +1,11 @@
 // Helper function to call our API
 // using authorization bearer token scheme
-import { acquireTokenSilent } from "../auths/authPopup";
-
 export default async function callAPI(endpoint, method = "get", token, data) {
   let headers = new Headers();
   let options = {};
   options.method = method;
+
+  console.log("token :", token);
 
   if (token) {
     const bearer = `Bearer ${token}`;
@@ -46,8 +46,7 @@ export default async function callAPI(endpoint, method = "get", token, data) {
       console.error("fetch() error", fullErrorMessage);
       // deal with token expiration
       if (fullErrorMessage.search("expired") > -1) {
-        console.log("issue");
-        return await onTokenExpiration();
+        console.log("token expired");
       }
       throw new Error(fullErrorMessage);
     }
@@ -58,12 +57,3 @@ export default async function callAPI(endpoint, method = "get", token, data) {
   }
 }
 
-const onTokenExpiration = async () => {
-  try {
-    const success = await acquireTokenSilent();
-    return success;
-  } catch (error) {
-    console.log("onTokenExpiration:error:", error);
-    throw error;
-  }
-};
