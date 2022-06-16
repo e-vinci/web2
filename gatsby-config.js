@@ -51,6 +51,10 @@ module.exports = {
           { name: "Projets web 2020", link: "/public-projects/showcase2020" },          
         ],
       },
+      {
+        name: `Other tools`,
+        link: `/other-tools`,
+      },
     ],
   },
   plugins: [
@@ -101,6 +105,13 @@ module.exports = {
       options: {
         name: "mdx-pages",
         path: `./src/mdx-pages`,
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "other-ressources",
+        path: `./src/other-resources`,
       },
     },
     {
