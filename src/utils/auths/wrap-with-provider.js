@@ -3,7 +3,7 @@ import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./authConfig";
 import { MDXProvider } from "@mdx-js/react";
-import CodeBlock from "./src/components/codeblock/codeblock";
+import CodeBlock from "../../components/codeblock/codeblock";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 

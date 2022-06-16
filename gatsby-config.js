@@ -58,7 +58,6 @@ module.exports = {
     `gatsby-plugin-image`,
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
-    `gatsby-plugin-catch-links`,
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -74,14 +73,7 @@ module.exports = {
         path: "./src/pages",
       },
       __key: "pages",
-    },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "page-content",
-        path: `./src/page-content`,
-      },
-    },
+    },   
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -102,7 +94,6 @@ module.exports = {
       options: {
         path: `./src/data/`,
         name: "texts",
-        path: `./src/other-resources`,
       },
     },
     {

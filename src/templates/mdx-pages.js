@@ -15,6 +15,7 @@ import { withFrontmatter } from "../components/hoc/hoc.js";
 import CodeBlock from "../components/codeblock/codeblock.js";
 import LinkFile from "../components/file/link-file.js";
 import ScrollableImage from "../components/image/scrollable-image";
+import PublicProjectsView from "../components/public-projects/public-projects-view";
 
 const shortcodes = {
   Link,
@@ -28,6 +29,7 @@ const shortcodes = {
   CodeBlock,
   LinkFile,
   ScrollableImage,
+  PublicProjectsView,
 };
 
 export default function PageTemplate({ data: { mdx, allImages } }) {

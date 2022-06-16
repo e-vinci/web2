@@ -16,6 +16,8 @@
     "deploy": "gatsby clean && gatsby build --prefix-paths && cp .nojekyll public/ && gh-pages -d public -t"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.26.0",
+    "@azure/msal-react": "^1.4.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
@@ -60,8 +62,8 @@
     "postcss": "^8.2.10",
     "prism-react-renderer": "^1.2.1",
     "prismjs": "^1.25.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-responsive-carousel": "^3.2.18",
     "remark-emoji": "^2.2.0",

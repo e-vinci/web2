@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { graphql, useStaticQuery, withPrefix } from "gatsby";
+import { graphql, useStaticQuery } from "gatsby";
 import contentConfiguration from "../../data/content-configuration.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
