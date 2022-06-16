@@ -27,16 +27,6 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   const node = useRef();
 
   const [collapsed, setCollapsed] = useState(false);
-  const [authenticatedUser, setAuthenticatedUser] = useState(undefined);
-
-  // useEffect is only called at client side (no issue with SSR)
-  useEffect(() => {
-    // You need to restrict it at some point
-    const myAccounts = instance.getAllAccounts();
-    console.log("info from getAllAccounts", myAccounts);
-    setAuthenticatedUser(accounts?.[0]);
-    console.log("available account information from menu : ", accounts?.[0]);
-  });
 
   // call the redirect function from MS Azure AD
   const onSigningIn = async () => {

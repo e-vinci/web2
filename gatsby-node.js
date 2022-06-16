@@ -15,7 +15,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   // remote CMS you could also check to see if the parent node was a
   // `File` node here
   if (node.internal.type === "Mdx") {
-    const value = createFilePath({ node, getNode, basePath: `page-content` });
+    const value = createFilePath({ node, getNode });
     console.log("create this slug: ", value);
     createNodeField({
       // Individual MDX node
@@ -53,20 +53,20 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     console.error("page creation error");
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query');
   }
-  // Create pages from /page-content.
+  // Create pages from /pages.
   const pages = result.data.allMdx.edges;
   console.log("Pages to create : ", pages.length);
+  const templatePath = path.resolve(`src/templates/mdx-pages.js`);
+  console.log("path to template: ", templatePath);
   // you'll call `createPage` for each result
   pages.forEach(({ node }, index) => {
-    console.log("Path:", node);
-    //console.log("Path:", node.slug);
+    console.log("CREATE PAGE FOR : ", node.fields.slug);
     createPage({
       // This is the slug you created before
       // (or `node.frontmatter.slug`)
       path: node.fields.slug,
       // This component will wrap our MDX content
-      component: path.resolve(`./src/templates/page-content-layout.js`),
-      //component: path.resolve(`src/templates/empty-page-layout.js`),
+      component: templatePath,      
       // Data passed to context is available
       // in page queries as GraphQL variables.
       //context: { id: node.id },
@@ -83,6 +83,51 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 // this is important in order for the main-layout to work even if there are no SubMenus
 exports.createSchemaCustomization = ({ actions }) => {
   const { createFieldExtension, createTypes } = actions;
+
+  createFieldExtension({
+    name: "defaultTrue",
+    extend() {
+      return {
+        resolve(source, args, context, info) {
+          if (source[info.fieldName] == null) {
+            return true;
+          }
+          return source[info.fieldName];
+        },
+      };
+    },
+  });
+
+  createFieldExtension({
+    name: "defaultString",
+    extend() {
+      return {
+        resolve(source, args, context, info) {
+          if (source[info.fieldName] == null) {
+            return "";
+          }
+          return source[info.fieldName];
+        },
+      };
+    },
+  });
+
+  createFieldExtension({
+    name: "defaultTitle",
+    extend() {
+      return {
+        resolve(source, args, context, info) {
+          console.log("source : ", source);
+          console.log("info : ", info);
+          if (source[info.fieldName] == null) {
+            return "";
+          }
+          return source[info.fieldName];
+        },
+      };
+    },
+  });
+
   createFieldExtension({
     name: `defaultArray`,
     extend() {
@@ -96,7 +141,20 @@ exports.createSchemaCustomization = ({ actions }) => {
       };
     },
   });
+
   const typeDefs = `
+  type Mdx implements Node {
+    frontmatter: MdxFrontmatter!
+  }
+    type MdxFrontmatter {      
+      autoMargin: Boolean @defaultTrue
+      title: String @defaultString   
+      description: String @defaultString 
+      headerImage: String @defaultString 
+      featuredImage: String @defaultString 
+      navbarExtraStyles: String @defaultString
+      date: Date @dateformat(formatString: "DD/MM/YYYY")
+    }
     type Site implements Node {
       siteMetadata: SiteMetadata
     }
@@ -116,6 +174,7 @@ exports.createSchemaCustomization = ({ actions }) => {
   createTypes(typeDefs);
 };
 
+// VERY PROJECT SPECIFIC CODE : CONTENT FOR JS COURSE PROJECTS VITRINES
 exports.sourceNodes = async ({ actions }) => {
   const { createNode } = actions;
 
@@ -172,17 +231,4 @@ async function addProjectsInGraphQL(createNode, projectGroupName) {
   });
 }
 
-/* USE OF gatsby-plugin-create-client-paths instead
-// Implement the Gatsby API “onCreatePage”. This is
-// called after every page is created.
-exports.onCreatePage = async ({ page, actions }) => {
-  const { createPage } = actions
-  // page.matchPath is a special key that's used for matching pages
-  // only on the client.
-  if (page.path.match(/^\/auths/)) {
-    page.matchPath = "/auths/*"
-    // Update the page.
-    createPage(page)
-  }
-}
-*/
+

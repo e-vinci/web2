@@ -15,7 +15,6 @@ const Footer = ({ siteMetaData, ...otherProps }) => {
   const { className, footerImage } = otherProps;
   const classValue = `footer ${className ? className : ""}`;
 
-  console.log("authorEmail:", siteMetaData.authorEmail);
 
   return (
     <footer className={classValue}>

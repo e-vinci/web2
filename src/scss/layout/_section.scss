@@ -26,8 +26,12 @@
     padding-top: 1rem;
     padding-left: 1rem;
     padding-right: 1rem;
+
+    &--no-auto-margin{
+      padding-left: 0rem;
+    }
     
-    @media only screen and (min-width: $sm) {
+    @media only screen and (min-width: $lg) {
       flex-basis: 50%;
     }
   }
@@ -91,14 +95,3 @@
   /* Deal with section modifiers */
 }
 
-/*
-// add padding-bottom only if next element is not a section_content or a section
-.section__content + .section_content:not(.section__content, .section){
-  padding-bottom: 1rem;
-}
-
-// add padding-bottom to section only if there is no .section_content children
-.section .section:not(.section__content, .section){
-  padding-bottom: 1rem;
-}
-*/

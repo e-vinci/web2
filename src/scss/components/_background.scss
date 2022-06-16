@@ -11,21 +11,3 @@
     z-index: 10;
   }
 }
-
-/* to deal with background embedded in a section */ /*
-.section .background {
-    //display: flex;
-    flex-flow: row wrap;
-
-    width: 100%;
-    min-height: 10px;
-
-    background-size: cover;
-    //z-index: 0;
-}*/
-
-/* to deal with carousel, it shall not be displayed as a flex */
-/*
-.carousel__wrapper .background{
-    display:block;
-}*/

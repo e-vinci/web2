@@ -15,7 +15,7 @@ module.exports = {
     authorEmail: authorEmail,
     facebookUrl: facebookUrl,
     instagramUrl: instagramUrl,
-    //twitterUsername: "@occlumency",
+    //twitterUsername: "@whoever; )",
     menuLinks: [
       {
         name: `Home`,
@@ -24,7 +24,17 @@ module.exports = {
       {
         name: `L'essentiel`,
         link: `/essentials`,
-      },
+      },      
+      {
+        name: "Contenu du cours",
+        link: "",
+        subMenu: [
+          { name: "Introduction", link: "/intro" },
+          { name: "Module 1 : découverte de JAX-RS", link: "/modules/1" },
+          { name: "Module 2 : JAX-RS & auths", link: "/modules/2" },
+          { name: "Module 3 : JAX-RS avancé", link: "/modules/3" },
+        ],
+      },          
       {
         name: `Repositories`,
         link: `/repositories`,
@@ -48,6 +58,7 @@ module.exports = {
     `gatsby-plugin-image`,
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    `gatsby-plugin-catch-links`,
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -90,6 +101,15 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `./src/data/`,
+        name: "texts",
+        path: `./src/other-resources`,
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "mdx-pages",
+        path: `./src/mdx-pages`,
       },
     },
     {
@@ -98,11 +118,8 @@ module.exports = {
         exclude: ["error", "warn"], // <- will be removed all console calls except these
       },
     },
-    {
-      resolve: `gatsby-plugin-create-client-paths`,
-      options: { prefixes: [`/app/*`] }, // These paths exist on the client only and do not correspond to index.html files in an app’s built assets
-    },
     `gatsby-remark-images`,
+    
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
@@ -113,7 +130,7 @@ module.exports = {
               maxWidth: 1200,
               linkImagesToOriginal: true,
             },
-          },
+          },          
         ],
         extensions: [".mdx", ".md"],
         remarkPlugins: [emoji],
@@ -150,28 +167,5 @@ module.exports = {
     },
     `gatsby-plugin-offline`,
     "gatsby-plugin-robots-txt",
-    /*
-    {
-      resolve: `gatsby-transformer-remark`,
-      options: {
-        // In your gatsby-transformer-remark plugin array
-        plugins: [{
-          resolve: 'gatsby-remark-emojis',
-          options: {
-            // Deactivate the plugin globally (default: true)
-            active : true,
-            // Add a custom css class
-            //class  : 'emoji-icon',
-            // In order to avoid pattern mismatch you can specify
-            // an escape character which will be prepended to the
-            // actual pattern (e.g. `#:poop:`).
-            escapeCharacter : '', // (default: '')
-            // Select the size (available size: 16, 24, 32, 64)
-            size   : 16,
-            
-          }
-        }]
-      }
-    }*/
   ],
 };

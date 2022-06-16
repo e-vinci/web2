@@ -27,7 +27,7 @@
 
     This site is now running at http://localhost:8000!
 
-    Edit `src/page-content/about.mdx` or other pages to see the site update in real-time!
+    Edit `src/mdx-pages/about.mdx` or other pages to see the site update in real-time!
 
 4.  **Learn more about Gatsby**
 

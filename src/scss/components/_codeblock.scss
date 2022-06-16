@@ -1,0 +1,75 @@
+$padding-inside-block: 0.5rem;
+.codeblock {
+  margin-top: $padding-inside-block;
+  margin-bottom: $padding-inside-block;
+  /* Just in case we want to influence */
+  pre[class*="language-"] {
+    padding: $padding-inside-block;
+    //width: 100%;
+    float: left;
+    min-width: 100%;
+  }
+
+  overflow: auto;
+
+  &__header {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: thin solid yellowgreen;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.5rem;    
+
+    &__copy-button {
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding-right: 1rem;
+    }
+
+    &__language-name {      
+      color: yellowgreen;
+    }
+
+    /* If we want language & copy button at right hand side
+    &__language-name {
+      padding-right: 1rem;
+      color: yellowgreen;
+    }
+
+    &__copy-button {
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }*/
+  }
+
+  &__body {
+    &__line {
+      min-width: 100%;
+      display: block;
+      &--highlighted {
+        background-color: rgb(53, 59, 69);        
+        //display: block;
+        //margin-right: - $padding-inside-block;
+        //margin-left: - $padding-inside-block;
+        //padding-right: $padding-inside-block;//1em;
+        //padding-left: $padding-inside-block; 1em;
+      }
+      &__number {
+        //display: inline-block;
+        //text-align: right;
+        //padding-right: 1em;
+        user-select: none;
+        opacity: 0.5;
+        width: 2.5rem;
+        display: table-cell;
+      }
+      &__content {
+        display: table-cell;
+      }
+    }
+  }
+}

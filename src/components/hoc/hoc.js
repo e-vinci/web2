@@ -5,7 +5,6 @@ import { Typography } from "@material-ui/core";
 import { loginRequest } from "../../utils/auths/authConfig";
 
 const withFrontmatter = (WrappedComponent, frontmatter) => (props) => {
-  console.log("props", props);
   return <WrappedComponent {...{ props, frontmatter }} />;
 };
 

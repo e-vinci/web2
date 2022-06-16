@@ -4,9 +4,6 @@ import Background from "./background.js";
 const Header = ({ siteTitle, menuLinks, ...otherProps }) => {
   let { className, navbarExtraStyles, headerImage } = otherProps;
 
-  console.log("header:", navbarExtraStyles, headerImage);
-  console.log("image:", headerImage);
-
   className = `header ${className ? className : ""}`;
   if (headerImage)
     return (

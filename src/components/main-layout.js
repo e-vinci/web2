@@ -10,7 +10,6 @@ import Image from "./image.js";
 import SEO from "./seo/seo.js";
 import "../scss/main.scss";
 import Scroll from "./scroll/scroll";
-
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 // Fix huge icon flash: https://github.com/FortAwesome/react-fontawesome/issues/234
@@ -48,7 +47,6 @@ const MainLayout = ({
       }
     `
   );
-
 
   return (
     <div className="master">

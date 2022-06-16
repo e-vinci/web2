@@ -39,6 +39,6 @@
 // function to ensure that SASS does not convert hsl colors to #XXYYZZ but keep hsl()
 @function hsl-str($color) {
   @return unquote(
-    "hsl(#{hue($color)/1deg}, #{saturation($color)}, #{lightness($color)})"
+    "hsl(#{calc(hue($color) / 1deg)}, #{saturation($color)}, #{lightness($color)})"
   );
 }

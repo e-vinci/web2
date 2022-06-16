@@ -1,0 +1,59 @@
+---
+title: "Concept 1"
+description: "Concept 1...."
+---
+This is concept 1 with lot of changes.
+
+Some example of JS code :
+```js {1,6-20}
+const component = {
+  pre: (props) => {
+    const className = props.children.props.className || "";
+    const matches = className.match(/language-(?<lang>.*)/);
+    return (
+      <Highlight
+        {...defaultProps}
+        code={props.children.props.children}
+        language={
+          matches && matches.groups && matches.groups.lang
+            ? matches.groups.lang
+            : ""
+        }
+        theme={vsDark}
+      >
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre className={className} style={style}>
+            {tokens.map((line, i) => (
+              <div {...getLineProps({ line, key: i })}>
+                {line.map((token, key) => (
+                  <span {...getTokenProps({ token, key })} />
+                ))}
+              </div>
+            ))}
+          </pre>
+        )}
+      </Highlight>
+    );
+  },
+};
+
+export const wrapRootElement = ({ element }) => {
+  return <MDXProvider components={component}>{element}</MDXProvider>;
+};
+```
+
+And some html
+```html {10} numbered
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First Heading</h1>
+
+<p>My first paragraph.</p>
+
+</body>
+</html>
+
+
+```
