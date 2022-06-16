@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { navigate } from "gatsby";
-import { useMsal, useIsAuthenticated } from "@azure/msal-react";
-
+import React from "react";
+import { MsalAuthenticationTemplate } from "@azure/msal-react";
+import { InteractionType } from "@azure/msal-browser";
+import { Typography } from "@material-ui/core";
 import { loginRequest } from "../../utils/auths/authConfig";
 
 const withFrontmatter = (WrappedComponent, frontmatter) => (props) => {
@@ -10,20 +10,30 @@ const withFrontmatter = (WrappedComponent, frontmatter) => (props) => {
 };
 
 const withAuthentication = (WrappedComponent) => (props) => {
-  const { instance } = useMsal();
+  const authRequest = {
+    ...loginRequest,
+  };
 
-  const isAuthenticated = useIsAuthenticated();
+  return (
+    <MsalAuthenticationTemplate
+      interactionType={InteractionType.Redirect}
+      authenticationRequest={authRequest}
+      errorComponent={ErrorComponent}
+      loadingComponent={Loading}
+    >
+      <WrappedComponent {...props} />
+    </MsalAuthenticationTemplate>
+  );
+};
 
-  const [isSigned, setIsSigned] = useState(false);
+const ErrorComponent = ({ error }) => {
+  return (
+    <Typography variant="h6">An Error Occurred: {error.errorCode}</Typography>
+  );
+};
 
-  // useEffect has to be used in order to ensure that the code is executed at client side
-  useEffect(() => {
-    if (!isAuthenticated) {
-      instance.loginRedirect(loginRequest);
-    }
-  });
-
-  return <WrappedComponent {...props}></WrappedComponent>;
+const Loading = () => {
+  return <Typography variant="h6">Authentication in progress...</Typography>;
 };
 
 export { withFrontmatter, withAuthentication };
