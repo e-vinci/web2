@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "gatsby";
+import React, { useState, useRef } from "react";
 import Dropdow from "./dropdown.js";
 import { StaticImage } from "gatsby-plugin-image";
 import {
@@ -8,7 +7,12 @@ import {
   useMsal,
   useIsAuthenticated,
 } from "@azure/msal-react";
+import { graphql } from "gatsby";
+import { useStaticQuery } from "gatsby";
+import { useIntl } from "react-intl";
 import { loginRequest } from "../../utils/auths/authConfig.js";
+import InternationalLink from "./international-link.js";
+import LanguageSwitcher from "../header/language-switcher.js";
 
 const reviewDropDown = {
   name: "Revues de projet",
@@ -20,6 +24,24 @@ const reviewDropDown = {
 };
 
 const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
+  const data = useStaticQuery(
+    graphql`
+      {
+        allSitePlugin(filter: { name: { eq: "gatsby-plugin-i18n" } }) {
+          nodes {
+            name
+            pluginOptions
+          }
+        }
+      }
+    `
+  );
+
+  const i18nPluginOptions = data?.allSitePlugin.nodes[0].pluginOptions;
+  //console.log("In the menu, i18n : ", i18nPluginOptions);
+
+  const { locale } = useIntl();
+  console.log("the current locale is : ", locale);
   const { instance, accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
@@ -32,7 +54,6 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   const onSigningIn = async () => {
     try {
       instance.loginRedirect(loginRequest);
-
     } catch (error) {
       // handle error, either in the library or coming back from the server
       console.log("error during login redirect :", error);
@@ -42,7 +63,6 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   const onSigningOut = async () => {
     try {
       instance.logoutRedirect();
-
     } catch (error) {
       // handle error, either in the library or coming back from the server
       console.log("error during logout redirect :", error);
@@ -51,9 +71,15 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
 
   return (
     <nav className={`navbar ${navbarExtraStyles ? navbarExtraStyles : ""}`}>
-      <Link className="navbar__brand" to="/">
+      <InternationalLink
+        className="navbar__brand"
+        i18nPluginOptions={i18nPluginOptions}
+        absoluteLink="/"
+        locale={locale}
+      >
         {siteTitle}
-      </Link>
+      </InternationalLink>
+
       <button
         onClick={() => setCollapsed(!collapsed)}
         className="navbar__toggler"
@@ -75,16 +101,19 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
                 key={"dd" + indexMenu}
                 linkName={link.name}
                 subMenu={link.subMenu}
+                i18nPluginOptions={i18nPluginOptions}
+                locale={locale}
               ></Dropdow>
             ) : (
               <li key={"li" + indexMenu} className="navbar__menu__list__item">
-                <Link
+                <InternationalLink
                   className="navbar__menu__list__item__link"
-                  aria-current="page"
-                  to={link.link}
+                  i18nPluginOptions={i18nPluginOptions}
+                  absoluteLink={link.link}
+                  locale={locale}
                 >
                   {link.name}
-                </Link>
+                </InternationalLink>
               </li>
             )
           )}
@@ -104,23 +133,28 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
 
           <AuthenticatedTemplate>
             <li key={"li-projects"} className="navbar__menu__list__item">
-              <Link
+              <InternationalLink
                 className="navbar__menu__list__item__link"
-                to="/project-page"
+                i18nPluginOptions={i18nPluginOptions}
+                absoluteLink="/project-page"
+                locale={locale}
               >
                 Projets
-              </Link>
+              </InternationalLink>
             </li>
 
             <Dropdow
               key={"dd-reviews"}
               linkName={reviewDropDown.name}
               subMenu={reviewDropDown.subMenu}
+              i18nPluginOptions={i18nPluginOptions}
+              locale={locale}
             ></Dropdow>
 
             <li key={"li-logout"} className="navbar__menu__list__item">
-              <span  className="navbar__menu__list__item__link" 
-               onClick={() => onSigningOut()}
+              <span
+                className="navbar__menu__list__item__link"
+                onClick={() => onSigningOut()}
               >
                 Logout
               </span>
@@ -128,6 +162,7 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
           </AuthenticatedTemplate>
         </ul>
       </div>
+      <LanguageSwitcher></LanguageSwitcher>
     </nav>
   );
 };

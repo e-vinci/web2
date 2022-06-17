@@ -14,7 +14,7 @@ import { GatsbyImage } from "gatsby-plugin-image";
 const Image = ({ children, name, alt }) => {
   const data = useStaticQuery(graphql`
     {
-      allFile(filter: { sourceInstanceName: { eq: "images" } }) {
+      allFile(filter: {sourceInstanceName: {eq: "images"}, extension: {nin: ["ico", "svg"]}}) {
         edges {
           node {
             childImageSharp {

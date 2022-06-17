@@ -79,7 +79,7 @@ export const pageQuery = graphql`
         autoMargin
       }
     }
-    allImages: allFile(filter: { sourceInstanceName: { eq: "images" } }) {
+    allImages: allFile(filter: {sourceInstanceName: {eq: "images"}, extension: {nin: ["ico", "svg"]}}) {
       edges {
         node {
           childImageSharp {

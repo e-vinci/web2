@@ -1,6 +1,7 @@
 import React from "react";
-import Menu from "./navbar/menu.js";
-import Background from "./background.js";
+import Menu from "../navbar/menu.js";
+import Background from "../background.js";
+
 const Header = ({ siteTitle, menuLinks, ...otherProps }) => {
   let { className, navbarExtraStyles, headerImage } = otherProps;
 
@@ -26,7 +27,9 @@ const Header = ({ siteTitle, menuLinks, ...otherProps }) => {
           {...(navbarExtraStyles
             ? { navbarExtraStyles: navbarExtraStyles }
             : {})}
-        ></Menu>
+        >
+        </Menu>
+        
       </header>
     );
 };

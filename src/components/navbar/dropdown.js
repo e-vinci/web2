@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "gatsby";
+import InternationalLink from "./international-link";
 
-const Dropdown = ({ linkName, subMenu }) => {
+const Dropdown = ({ linkName, subMenu, i18nPluginOptions , locale }) => {
   // ref to deal with dropdown (submenu items)
   const subMenuRef = useRef();
 
@@ -55,14 +56,19 @@ const Dropdown = ({ linkName, subMenu }) => {
         aria-labelledby="navbarDropdown"
       >
         {subMenu.map((subLink, indexSubMenu) => (
-          <li key={"sli" + indexSubMenu} className="navbar__menu__list__item__dropdown-menu__item">
-            <Link
+          <li
+            key={"sli" + indexSubMenu}
+            className="navbar__menu__list__item__dropdown-menu__item"
+          >
+            <InternationalLink
               className="navbar__menu__list__item__dropdown-menu__item__link"
+              i18nPluginOptions={i18nPluginOptions}
+              absoluteLink={subLink.link}
+              locale={locale}
               aria-current="page"
-              to={subLink.link}
             >
               {subLink.name}
-            </Link>
+            </InternationalLink>
           </li>
         ))}
       </ul>

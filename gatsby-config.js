@@ -4,6 +4,7 @@ const youtubeUrl = ""; //"https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlA
 const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
 const instagramUrl = "";
+const defaultLanguage = "fr";
 module.exports = {
   pathPrefix: `/myjscourse`,
   siteMetadata: {
@@ -15,6 +16,7 @@ module.exports = {
     authorEmail: authorEmail,
     facebookUrl: facebookUrl,
     instagramUrl: instagramUrl,
+    languages: { langs: ["fr", "en"], defaultLangKey: defaultLanguage },
     //twitterUsername: "@whoever; )",
     menuLinks: [
       {
@@ -24,7 +26,7 @@ module.exports = {
       {
         name: `L'essentiel`,
         link: `/essentials`,
-      },      
+      },
       {
         name: "Contenu du cours",
         link: "",
@@ -34,7 +36,7 @@ module.exports = {
           { name: "Module 2 : JAX-RS & auths", link: "/modules/2" },
           { name: "Module 3 : JAX-RS avancé", link: "/modules/3" },
         ],
-      },          
+      },
       {
         name: `Repositories`,
         link: `/repositories`,
@@ -48,7 +50,7 @@ module.exports = {
         link: "",
         subMenu: [
           { name: "Projets web 2021", link: "/public-projects/showcase2021" },
-          { name: "Projets web 2020", link: "/public-projects/showcase2020" },          
+          { name: "Projets web 2020", link: "/public-projects/showcase2020" },
         ],
       },
       {
@@ -77,7 +79,7 @@ module.exports = {
         path: "./src/pages",
       },
       __key: "pages",
-    },   
+    },
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -121,10 +123,11 @@ module.exports = {
       },
     },
     `gatsby-remark-images`,
-    
+
     {
       resolve: `gatsby-plugin-mdx`,
-      options: {
+      options: {      
+
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-images`,
@@ -132,7 +135,7 @@ module.exports = {
               maxWidth: 1200,
               linkImagesToOriginal: true,
             },
-          },          
+          },
         ],
         extensions: [".mdx", ".md"],
         remarkPlugins: [emoji],
@@ -159,12 +162,22 @@ module.exports = {
         display: `standalone`,
         icon: `src/images/favicon2.svg`,
         cache_busting_mode: "none",
-        sizes: "any",
+       // sizes: "any",
         //type: "image/svg+xml",
         include_favicon: true,
         icon_options: {
           purpose: `any maskable`,
         },
+      },
+    },
+    {
+      resolve: "gatsby-plugin-i18n",
+      options: {
+        langKeyForNull: 'any',
+        langKeyDefault: defaultLanguage,
+        useLangKeyLayout: true,
+        prefixDefault: false,
+        pagesPaths: ["/src/mdx-pages/", "/src/pages"],
       },
     },
     `gatsby-plugin-offline`,
