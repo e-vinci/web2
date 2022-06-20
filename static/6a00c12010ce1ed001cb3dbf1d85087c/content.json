@@ -1,0 +1,1131 @@
+[
+  {
+    "subject": "Informations générales",
+    "week": 1,
+    "skillsL1": "Toutes les compétences",
+    "skillsL2": "Contexte",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Info-Générale",
+        "uri": "Info-Générale.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Contexte d’utilisation de JS",
+    "week": 1,
+    "skillsL1": "Toutes les compétences",
+    "skillsL2": "Contexte",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "JS-Contexte",
+        "uri": "JS-Contexte.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Introduction à Git",
+    "week": 1,
+    "skillsL1": "Toutes les compétences",
+    "skillsL2": "CG2. Gestion de la configuration de code JS",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Git",
+        "uri": "Git.pdf"
+      }
+    ],
+    "courseVideos": [
+      {
+        "type": "youtube",
+        "title": "Introduction à Git",
+        "uri": "https://youtu.be/C6CYLxNNnK4"
+      }
+    ],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Introduction au langage JS côté client",
+    "week": 1,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.1 Interagir avec de l'HTML existant",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Intro-Langage-JS",
+        "uri": "Intro-Langage-JS.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "JS interne dans une fonction",
+        "uri": "frontend/js-location/internal-function"
+      },
+      {
+        "type": "code",
+        "title": "JS dans la balise script",
+        "uri": "frontend/js-location/internal-script/"
+      },
+      {
+        "type": "code",
+        "title": "JS dans un script externe",
+        "uri": "frontend/js-location/external-script/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche01",
+        "uri": "fiche01.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "1er script externe & appel de fonction",
+        "uri": "fiche-01/external-script"
+      }
+    ]
+  },
+
+  {
+    "subject": "Le DOM et la gestion d’événements",
+    "week": 1,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.1 Interagir avec de l'HTML existant",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "DOM-Events",
+        "uri": "DOM-Events.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Gestion d’un clic et du DOM",
+        "uri": "frontend/dom-event/click-button/"
+      },
+      {
+        "type": "code",
+        "title": "Gestion de mouseover et du DOM",
+        "uri": "frontend/dom-event/mouse-over-div/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’une callback",
+        "uri": "frontend/dom-event/callback/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche01",
+        "uri": "fiche01.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Gestion d'un compteur de clics",
+        "uri": "fiche-01/dom-event"
+      },
+      {
+        "type": "code",
+        "title": "Gestion d’événements différés dans le temps : l’horloge",
+        "uri": "fiche-01/time-events/"
+      }
+    ]
+  },
+
+  {
+    "subject": "Génération dynamique d’HTML",
+    "week": 2,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.2 Frontend dynamique et moderne",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Html-Dynamique",
+        "uri": "Html-Dynamique.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Génération dynamique de listes",
+        "uri": "frontend/dom-event/dynamic-html1/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "UI & Design responsive",
+    "week": 2,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.2 Frontend dynamique et moderne",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Design-Responsive",
+        "uri": "Design-Responsive.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Génération dynamique de listes avec Bootstrap",
+        "uri": "frontend/dom-event/dynamic-html2/"
+      },
+      {
+        "type": "code",
+        "title": "Validation d’un formulaire côté client suite à un submit",
+        "uri": "frontend/dom-event/submit-form/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Gestion moderne du code, des dépendances et des assets du frontend via un bundler : Webpack",
+    "week": 2,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.2 Frontend dynamique et moderne",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Bundler",
+        "uri": "Bundler.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’un frontend pour une pizzeria : Step -2 - Option A : frontend classique HTML / CSS / JS",
+        "uri": "frontend/frontend-essentials/step-2-optionA/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’un frontend pour une pizzeria : Step -2 - Option B : frontend classique HTML / Bootstrap / JS",
+        "uri": "frontend/frontend-essentials/step-2-optionA/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’un frontend pour une pizzeria : Step -1 : migration partielle du frontend classique vers un frontend moderne utilisant Webpack sans fichier de configuration",
+        "uri": "frontend/frontend-essentials/step-1/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’un frontend pour une pizzeria : Step 0 : migration complète du frontend classique vers un frontend moderne utilisant Webpack ",
+        "uri": "frontend/frontend-essentials/step0/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’un frontend pour une pizzeria : Step 1 : frontend à partir d’un boilerplate et ajout moderne d’une librairie pour afficher une horloge",
+        "uri": "frontend/frontend-essentials/step1/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche02",
+        "uri": "fiche02.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Création de la Homepage de myMoovies",
+        "uri": "fiche-02/mymoovies"
+      },
+      {
+        "type": "code",
+        "title": "Création d'une table sur base d'un formulaire",
+        "uri": "fiche-02/dynamic-html"
+      }
+    ]
+  },
+
+  {
+    "subject": "Debugging d’une application côté client",
+    "week": 2,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "CG1. Debugging",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Debugging-Frontend",
+        "uri": "Debugging-Frontend.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Qui a un bug ?",
+        "uri": ""
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Les contraintes de validation",
+    "week": 2,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.2 Frontend dynamique et moderne",
+    "isOptional": true,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Contraintes-de-Validation",
+        "uri": "Contraintes-de-Validation.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Validation d’un formulaire via les contraintes de validation (html5)",
+        "uri": "frontend/validation-constraints/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Animations via l’API Canvas",
+    "week": 3,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.3 Frontend structuré et animations",
+    "isOptional": true,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Animations-Canvas",
+        "uri": "Animations-Canvas.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Design d’une animation avec l’API Canvas",
+        "uri": "frontend/canvas/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche03",
+        "uri": "fiche03.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Animation de carrés à l'aide de l'API Canvas",
+        "uri": "fiche-03/canvas/"
+      }
+    ]
+  },
+
+  {
+    "subject": "Animations via une librairie externe",
+    "week": 3,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.3 Frontend structuré et animations",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Animations-Librairies-Externes",
+        "uri": "Animations-Librairies-Externes.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Design d’une animation avec Anime.js",
+        "uri": "frontend/animejs/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche03",
+        "uri": "fiche03.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Animation d'un nuage de mots à l'aide d'Anime.js (optionnel)",
+        "uri": "fiche-03/animejs/"
+      }
+    ]
+  },
+
+  {
+    "subject": "L’orienté objet en JS",
+    "week": 3,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.3 Frontend structuré et animations",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Orienté-Objet",
+        "uri": "Orienté-Objet.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Programmation orienté objet en JS",
+        "uri": "frontend/object-oriented/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Introduction aux modules (ES6)",
+    "week": 3,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.3 Frontend structuré et animations",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Modules",
+        "uri": "Modules.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Les modules ES6",
+        "uri": "frontend/modules/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’un frontend pour une pizzeria : Step 2 : Structuration du code en modules, création d'une version statique de l'application via l'ajout de formulaires et la gestion de la navigation",
+        "uri": "frontend/frontend-essentials/step2/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche03",
+        "uri": "fiche03.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Gestion locale d'une collection de films",
+        "uri": "fiche-03/mymoovies/"
+      },
+      {
+        "type": "code",
+        "title": "Refactor de la gestion locale d’une collection de films (optionnel)",
+        "uri": "fiche-03/mymoovies/"
+      }
+    ]
+  },
+
+  {
+    "subject": "JQuery",
+    "week": 3,
+    "skillsL1": "C1 : Frontend interactif et moderne en JS / HTML / CSS",
+    "skillsL2": "C1.3 Frontend structuré et animations",
+    "isOptional": true,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "JQuery",
+        "uri": "JQuery.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "JQuery et la génération dynamique d’HTML",
+        "uri": "frontend/jquery/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Introduction à un backend JavaScript",
+    "week": 4,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.1 Backend sous Node.js & Express",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Intro-Backend-JS",
+        "uri": "Intro-Backend-JS.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Introduction à Node.js",
+    "week": 4,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.1 Backend sous Node.js & Express",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Intro-NodeJS",
+        "uri": "Intro-NodeJS.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Appel d’une méthode au sein d’un script externe via Node",
+        "uri": "backend-restful-api/node/start/"
+      },
+      {
+        "type": "code",
+        "title": "Serveur web minimaliste avec Node.js",
+        "uri": "backend-restful-api/node/web-server/"
+      },
+      {
+        "type": "code",
+        "title": "Serveur web minimaliste refactoré pour gérer sa configuration dans un module",
+        "uri": "backend-restful-api/node/node-modules/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Serveur de fichiers statiques : Framework Express",
+    "week": 4,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.1 Backend sous Node.js & Express",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Static-File-Server-Express",
+        "uri": "Static-File-Server-Express.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Serveur de fichiers statiques minimaliste avec Express",
+        "uri": "backend-restful-api/express-static-file-server/"
+      },
+      {
+        "type": "code",
+        "title": "Créer le boilerplate d’une application à l’aide du générateur d’application d’Express",
+        "uri": "backend-restful-api/express-generator/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Introduction aux RESTful APIs",
+    "week": 4,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Intro-RESTful-APIs",
+        "uri": "Intro-RESTful-APIs.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Framework Express pour RESTful APIs",
+    "week": 4,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Express-RESTful-APIs",
+        "uri": "Express-RESTful-APIs.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 1 – CRUD pizzas : gestion de données non persistantes, code peu structuré",
+        "uri": "backend-restful-api/restful-api-essentials/step1/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Consommation de RESTful APIs avec REST Client",
+    "week": 4,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "REST-Client",
+        "uri": "REST-Client.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 1 – CRUD pizzas : test des opérations sur les pizzas",
+        "uri": "backend-restful-api/restful-api-essentials/step1/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Introduction à JSON",
+    "week": 4,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "JSON",
+        "uri": "JSON.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 2 - Gestion de la persistance des données dans un fichier .json ",
+        "uri": "backend-restful-api/restful-api-essentials/step2/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Architectures de RESTful APIs sous Express",
+    "week": 4,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.2 RESTful API sous Express",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Architectures-RESTful-APIs",
+        "uri": "Architectures-RESTful-APIs.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 3 – Structuration du code",
+        "uri": "backend-restful-api/restful-api-essentials/step3/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche04",
+        "uri": "fiche04.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API non protégée pour myMoovies",
+        "uri": "fiche-04/mymoovies/"
+      }
+    ]
+  },
+
+  {
+    "subject": "Authentification sécurisée et autorisation d’accès aux opérations d’une API via JWT : généralités & RESTful APIs",
+    "week": 5,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.3 Sécurisation de RESTful API via JWT & autres",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "JWT-auths-general-backend",
+        "uri": "JWT-auths-general-backend.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 4 – Authentification d’utilisateurs & autorisation des opérations de MàJ de données",
+        "uri": "backend-restful-api/restful-api-essentials/step4/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 5 – Refactor : création d’un middleware d’autorisation JWT",
+        "uri": "backend-restful-api/restful-api-essentials/step5/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche05",
+        "uri": "fiche05.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API protégée par JWT pour myMoovies",
+        "uri": "fiche-05/mymoovies/"
+      }
+    ]
+  },
+
+  {
+    "subject": "Sécurisation de RESTful APIs : Hachage d’information et protection contre les attaques XSS",
+    "week": 5,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "C2.3 Sécurisation de RESTful API via JWT & autres",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Sécurisation-RESTful-APIs-Hash-Escape",
+        "uri": "Sécurisation-RESTful-APIs-Hash-Escape.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 6 – Sécurisation : hachage des passwords et protection contre attaques XSS",
+        "uri": "backend-restful-api/restful-api-essentials/step6/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche05",
+        "uri": "fiche05.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Sécurisation de la RESTful API pour myMoovies",
+        "uri": "fiche-05/mymoovies/"
+      },
+      {
+        "type": "code",
+        "title": "RESTful API pour un headless CMS (optionnel)",
+        "uri": ""
+      }
+    ]
+  },
+
+  {
+    "subject": "Debugging d’une application Node.js",
+    "week": 5,
+    "skillsL1": "C2 : Backend & RESTful API via Node.js & Express",
+    "skillsL2": "CG1. Debugging",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Debugging-Node",
+        "uri": "Debugging-Node.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Qui a un bug ?",
+        "uri": ""
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Introduction aux SPAs et à leur communications",
+    "week": 6,
+    "skillsL1": "C3 : Single-Page Application (SPA)",
+    "skillsL2": "C3.1 Intégration d'un frontend moderne avec une RESTful API",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Intro-SPA-Communications",
+        "uri": "Intro-SPA-Communications.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une SPA pour une pizzeria : Step 0 : Intégration de la RESTful API de la pizzeria et problème de CORS",
+        "uri": "spa/spa-essentials/step0/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Gestion de la sécurité du browser",
+    "week": 6,
+    "skillsL1": "C3 : Single-Page Application (SPA)",
+    "skillsL2": "C3.1 Intégration d'un frontend moderne avec une RESTful API",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Sécurité-Browser",
+        "uri": "Sécurité-Browser.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 7 – Gestion des CORS via l’autorisation d’une nouvelle origine",
+        "uri": "backend-restful-api/restful-api-essentials/step7/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’une SPA pour une pizzeria : Step 0 : Intégration de la RESTful API de la pizzeria et problème de CORS",
+        "uri": "spa/spa-essentials/step0/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’une SPA : Step 1 : Consommation d’opérations non protégées de la RESTful API grâce à un proxy",
+        "uri": "spa/spa-essentials/step1/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche06",
+        "uri": "fiche06.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Intégration initiale du frontend et de la RESTful API de myMoovies",
+        "uri": "fiche-06/mymoovies/"
+      },
+      {
+        "type": "code",
+        "title": "Gestion des CORS via l’autorisation d’une nouvelle origine",
+        "uri": ""
+      }
+    ]
+  },
+
+  {
+    "subject": "Les promesses",
+    "week": 6,
+    "skillsL1": "C3 : Single-Page Application (SPA)",
+    "skillsL2": "C3.1 Intégration d'un frontend moderne avec une RESTful API",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Promesses",
+        "uri": "Promesses.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 6 – Sécurisation : hachage des passwords et protection contre attaques XSS",
+        "uri": "backend-restful-api/restful-api-essentials/step6/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche06",
+        "uri": "fiche06.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Correction du chaînage de traitements lors de l’enregistrement d’un utilisateur",
+        "uri": "fiche-06/promise/"
+      }
+    ]
+  },
+
+  {
+    "subject": "SPAs & routage des pages et composants",
+    "week": 7,
+    "skillsL1": "C3 : Single-Page Application (SPA)",
+    "skillsL2": "C3.2 Routage de SPA et intégration avec RESTful API sécurisée par JWT",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "SPAs-Routage-Pages",
+        "uri": "SPAs-Routage-Pages.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une SPA pour une pizzeria : Step 2 : gestion du routage des pages et composants",
+        "uri": "spa/spa-essentials/step2/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Gestion de sessions côté client",
+    "week": 7,
+    "skillsL1": "C3 : Single-Page Application (SPA)",
+    "skillsL2": "C3.2 Routage de SPA et intégration avec RESTful API sécurisée par JWT",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Sessions-Côté-Client",
+        "uri": "Sessions-Côté-Client.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une SPA pour une pizzeria : Step 3 : Sauvegarde du token et du username dans le localStorage, affichage du username pour tout utilisateur authentifié & logout",
+        "uri": "spa/spa-essentials/step3/"
+      },
+      {
+        "type": "code",
+        "title": "Création d’une RESTful API pour une pizzeria : Step 8 – Sauvegarde du username et du token au sein d’un cookie côté client",
+        "uri": "backend-restful-api/restful-api-essentials/step8/"
+      }
+    ],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  },
+
+  {
+    "subject": "Utilisation de JWT au sein d’un frontend",
+    "week": 7,
+    "skillsL1": "C3 : Single-Page Application (SPA)",
+    "skillsL2": "C3.2 Routage de SPA et intégration avec RESTful API sécurisée par JWT",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "JWT-SPAs",
+        "uri": "JWT-SPAs.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [
+      {
+        "type": "code",
+        "title": "Création d’une SPA pour une pizzeria : Step 4 : Formulaire d’ajout de pizzas consommant l’opération d’ajout de la RESTful API de la pizzeria protégée par JWT auths",
+        "uri": "spa/spa-essentials/step4/"
+      }
+    ],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche07",
+        "uri": "fiche07.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "SPA myMoovies avec JWT auths : lecture et ajout de films",
+        "uri": "fiche-07/mymoovies/"
+      },
+      {
+        "type": "code",
+        "title": "SPA myMoovies avec JWT auths : suppression et mise à jour de films",
+        "uri": "fiche-07/mymoovies/"
+      },
+      {
+        "type": "code",
+        "title": "SPA myMoovies & auto-refresh d’infos (optional)",
+        "uri": "fiche-07/mymoovies-optional/"
+      },
+      {
+        "type": "code",
+        "title": "SPA myMoovies : gestion de la navigation lors de l’auto-refresh d’infos (optional)",
+        "uri": "fiche-07/mymoovies-optional/"
+      }
+    ]
+  },
+
+  {
+    "subject": "Déploiement d’applications web",
+    "week": 8,
+    "skillsL1": "Toutes les compétences",
+    "skillsL2": "CG3. Déploiement",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "slides",
+        "title": "Déploiement",
+        "uri": "Déploiement.pdf"
+      },
+      {
+        "type": "text",
+        "title": "Procédure de déploiement des applications web sur Heroku",
+        "uri": "ProcédureDéploiementHeroku.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche08",
+        "uri": "fiche08.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Déploiement de myMoovies (optionnel)",
+        "uri": ""
+      }
+    ]
+  },
+
+  {
+    "subject": "Révisions, intégrations et approfondissements",
+    "week": 8,
+    "skillsL1": "Toutes les compétences",
+    "skillsL2": "CG5. Révisions, intégration et approfondissements",
+    "isOptional": false,
+    "courseFiles": [],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [
+      {
+        "type": "text",
+        "title": "fiche08",
+        "uri": "fiche08.pdf"
+      }
+    ],
+    "exerciseSolutions": [
+      {
+        "type": "code",
+        "title": "Exercice récapitulatif couvrant toutes les compétences du cours (optionnel)",
+        "uri": ""
+      },
+      {
+        "type": "code",
+        "title": "Apprentissage personnel de technologies JS (optionnel)",
+        "uri": ""
+      }
+    ]
+  },
+  
+  {
+    "subject": "Bibliographie",
+    "week": null,
+    "skillsL1": "",
+    "skillsL2": "",
+    "isOptional": false,
+    "courseFiles": [
+      {
+        "type": "text",
+        "title": "Bibliographie",
+        "uri": "Bibliographie.pdf"
+      }
+    ],
+    "courseVideos": [],
+    "courseDemos": [],
+    "exerciseInstructions": [],
+    "exerciseSolutions": []
+  }
+]

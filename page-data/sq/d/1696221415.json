@@ -1,0 +1,1 @@
+{"data":{"allSitePlugin":{"nodes":[{"name":"gatsby-plugin-i18n","pluginOptions":{"plugins":[],"langKeyForNull":"any","langKeyDefault":"fr","useLangKeyLayout":true,"prefixDefault":false,"pagesPaths":["/src/mdx-pages/","/src/pages"]}}]}}}

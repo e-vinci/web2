@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://e-vinci.github.io/js/sitemap/sitemap-index.xml
+Host: https://e-vinci.github.io
