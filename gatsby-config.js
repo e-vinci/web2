@@ -1,11 +1,11 @@
 const emoji = require(`remark-emoji`);
-const siteURL = "https://e-vinci.github.io/js";  // No trailing slash allowed!
+const siteURL = "https://e-vinci.github.io/js"; // No trailing slash allowed!
 const youtubeUrl = ""; //"https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
 const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
 const instagramUrl = "";
 const defaultLanguage = "fr";
-const defaultAssociatedProjectGroupName ="Web2 2021";
+const defaultAssociatedProjectGroupName = "Web2 2021";
 module.exports = {
   pathPrefix: `/js`,
   siteMetadata: {
@@ -26,14 +26,17 @@ module.exports = {
         link: `/`,
       },
       {
-        name: `L'essentiel`,
-        link: `/essentials`,
+        name: `Introduction au JS`,
+        link: `/intro`,
+      },
+      {
+        name: `Bibliographie`,
+        link: `/references`,
       },
       {
         name: "Contenu du cours",
         link: "",
         subMenu: [
-          { name: "Introduction", link: "/intro" },
           { name: "Module 1 : découverte de JAX-RS", link: "/modules/1" },
           { name: "Module 2 : JAX-RS & auths", link: "/modules/2" },
           { name: "Module 3 : JAX-RS avancé", link: "/modules/3" },
@@ -44,16 +47,20 @@ module.exports = {
         link: `/repositories`,
       },
       {
-        name: `About`,
-        link: `/about`,
-      },
-      {
         name: "Vitrines de projets",
         link: "",
         subMenu: [
           { name: "Projets web 2021", link: "/public-projects/showcase2021" },
           { name: "Projets web 2020", link: "/public-projects/showcase2020" },
         ],
+      },
+      {
+        name: `About`,
+        link: `/about`,
+      },
+      {
+        name: `L'essentiel`,
+        link: `/essentials`,
       },
       {
         name: `Other tools`,
@@ -128,8 +135,7 @@ module.exports = {
 
     {
       resolve: `gatsby-plugin-mdx`,
-      options: {      
-
+      options: {
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-images`,
@@ -164,7 +170,7 @@ module.exports = {
         display: `standalone`,
         icon: `src/images/favicon2.svg`,
         cache_busting_mode: "none",
-       // sizes: "any",
+        // sizes: "any",
         //type: "image/svg+xml",
         include_favicon: true,
         icon_options: {
@@ -175,7 +181,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-i18n",
       options: {
-        langKeyForNull: 'any',
+        langKeyForNull: "any",
         langKeyDefault: defaultLanguage,
         useLangKeyLayout: true,
         prefixDefault: false,
