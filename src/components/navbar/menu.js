@@ -51,8 +51,9 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   // call the redirect function from MS Azure AD
-  const onSigningIn = async () => {
+  const onSigningIn = () => {
     try {
+      console.log("ON SIGNING IN...");
       instance.loginRedirect(loginRequest);
     } catch (error) {
       // handle error, either in the library or coming back from the server
@@ -121,10 +122,12 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
 
           <UnauthenticatedTemplate>
             <li key={"li-login"} className="navbar__menu__list__item">
-              <span className="navbar__menu__list__item__link">
+              <span
+                className="navbar__menu__list__item__link"
+                onClick={() => onSigningIn()}
+              >
                 <StaticImage
                   placeholder="blurred"
-                  onClick={() => onSigningIn()}
                   src="../../images/logo_vinci.png"
                   alt=""
                   width={24}

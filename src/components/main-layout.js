@@ -49,6 +49,7 @@ const MainLayout = ({
             authorEmail
             facebookUrl
             instagramUrl
+            defaultAssociatedProjectGroupName
           }
         }
       }

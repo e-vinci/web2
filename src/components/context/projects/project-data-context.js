@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import callAPI from "../../../utils/api/fetch";
 import { useMsal } from "@azure/msal-react";
-import {getAsyncIdToken} from "../../../utils/auths/use-id-token";
+import { getAsyncIdToken } from "../../../utils/auths/use-id-token";
+
 
 const ProjectDataContext = React.createContext([
   {},
@@ -38,9 +39,10 @@ const ProjectDataProvider = ({ children }) => {
   );
 };
 
-const useProjectData =    () => {
+const useProjectData = () => {
+  
   const { instance, accounts } = useMsal();
-
+  
   const [
     projectGroupData,
     setProjectGroupData,
@@ -52,14 +54,14 @@ const useProjectData =    () => {
     setIsLoaded,
   ] = useContext(ProjectDataContext);
 
-
-
-  const updateProjectGroupData = async () => {
+  const updateProjectGroupData = async (associatedProjectGroupName) => {
     try {
-      
+      const idToken = await getAsyncIdToken(accounts, instance);
       const tempProjectGroup = await callAPI(
-        "projectgroups/default/public",
-        "get"
+        `projectgroups/${associatedProjectGroupName}`,
+        "get",
+        idToken,
+        undefined
       );
       setProjectGroupData(tempProjectGroup);
       console.log("STATE NOW ????", projectGroupData);

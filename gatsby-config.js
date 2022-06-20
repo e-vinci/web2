@@ -5,6 +5,7 @@ const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
 const instagramUrl = "";
 const defaultLanguage = "fr";
+const defaultAssociatedProjectGroupName ="Web2 2021";
 module.exports = {
   pathPrefix: `/myjscourse`,
   siteMetadata: {
@@ -17,6 +18,7 @@ module.exports = {
     facebookUrl: facebookUrl,
     instagramUrl: instagramUrl,
     languages: { langs: ["fr", "en"], defaultLangKey: defaultLanguage },
+    defaultAssociatedProjectGroupName: defaultAssociatedProjectGroupName,
     //twitterUsername: "@whoever; )",
     menuLinks: [
       {

@@ -4,7 +4,7 @@ import Spinner from "../spinner/spinner";
 
 import { useProjectData } from "../context/projects/project-data-context";
 
-const ProjectManagement = () => {
+const ProjectManagement = ({associatedProjectGroupName}) => {
   // Get state from the provider
   const {
     projectGroupData,
@@ -61,7 +61,7 @@ const ProjectManagement = () => {
   const getData = async () => {
     try {
       // Deal with project group data
-      const group = await updateProjectGroupData();
+      const group = await updateProjectGroupData(associatedProjectGroupName);
       // Deal with user role data {role:..., isAdmin:...}
       const user = await updateUserData();
       // Deal with project data

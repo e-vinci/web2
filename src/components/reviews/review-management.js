@@ -7,7 +7,7 @@ import AllReviews from "./all-reviews";
 import AllReviewsSummary from "./all-reviews-summary";
 import MyReviewsSummary from "./my-reviews-summary";
 
-const ReviewManagement = () => {
+const ReviewManagement = ({associatedProjectGroupName}) => {
   // Get state from the provider
   const { projectGroupData, updateProjectGroupData, userData, updateUserData } =
     useProjectData();
@@ -60,7 +60,7 @@ const ReviewManagement = () => {
   const getData = async () => {
     try {
       // Deal with project group data
-      const group = await updateProjectGroupData();
+      const group = await updateProjectGroupData(associatedProjectGroupName);
       // Deal with user role data {role:..., isAdmin:...}
       const user = await updateUserData();
       // Deal with review data

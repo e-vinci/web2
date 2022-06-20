@@ -1,4 +1,7 @@
 import React from "react";
+import { graphql } from "gatsby";
+import { useStaticQuery } from "gatsby";
+
 import MainLayout from "../components/main-layout";
 
 import { withAuthentication } from "../components/hoc/hoc";
@@ -8,11 +11,28 @@ import { ReviewDataProvider } from "../components/context/reviews/review-data-co
 import MyReviewsManagement from "../components/reviews/my-reviews-management";
 
 const MyReviewsPage = () => {
+  const data = useStaticQuery(
+    graphql`
+      query  {
+        site {
+          siteMetadata {
+            defaultAssociatedProjectGroupName
+          }
+        }
+      }
+    `
+  );
+
+  const associatedProjectGroupName =
+    data?.site.siteMetadata.defaultAssociatedProjectGroupName;
+
   return (
     <ProjectDataProvider>
       <ReviewDataProvider>
         <MainLayout>
-          <MyReviewsManagement />
+          <MyReviewsManagement
+            associatedProjectGroupName={associatedProjectGroupName}
+          />
         </MainLayout>
       </ReviewDataProvider>
     </ProjectDataProvider>
@@ -20,5 +40,4 @@ const MyReviewsPage = () => {
 };
 
 const MyReviewsPageProtected = withAuthentication(MyReviewsPage);
-export default MyReviewsPageProtected ;
-;
+export default MyReviewsPageProtected;
