@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useStaticQuery } from "gatsby";
-import { GatsbyImage } from "gatsby-plugin-image";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 /**
  * Based on a name of a picture (WARNING : there cannot be duplicates), fill a container
@@ -14,7 +14,12 @@ import { GatsbyImage } from "gatsby-plugin-image";
 const Image = ({ children, name, alt }) => {
   const data = useStaticQuery(graphql`
     {
-      allFile(filter: {sourceInstanceName: {eq: "images"}, extension: {nin: ["ico", "svg"]}}) {
+      allFile(
+        filter: {
+          sourceInstanceName: { eq: "images" }
+          extension: { nin: ["ico", "svg"] }
+        }
+      ) {
         edges {
           node {
             childImageSharp {
@@ -59,9 +64,11 @@ const Image = ({ children, name, alt }) => {
     );
   }
 
+  const image = getImage(requiredImage.node);
+
   return (
     <GatsbyImage
-      image={requiredImage.node.childImageSharp.gatsbyImageData}
+      image={image}
       style={{ height: "100%", width: "100%", zIndex: 2 }}
       alt={!alt ? "GatsbyImage" : alt}
     />

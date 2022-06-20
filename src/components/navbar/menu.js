@@ -12,7 +12,7 @@ import { useStaticQuery } from "gatsby";
 import { useIntl } from "react-intl";
 import { loginRequest } from "../../utils/auths/authConfig.js";
 import InternationalLink from "./international-link.js";
-import LanguageSwitcher from "../header/language-switcher.js";
+import LanguageSwitcher from "../language-switcher/language-switcher.js";
 
 const reviewDropDown = {
   name: "Revues de projet",
@@ -80,6 +80,7 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
         {siteTitle}
       </InternationalLink>
 
+      <LanguageSwitcher />
       <button
         onClick={() => setCollapsed(!collapsed)}
         className="navbar__toggler"
@@ -120,14 +121,15 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
 
           <UnauthenticatedTemplate>
             <li key={"li-login"} className="navbar__menu__list__item">
-              <StaticImage
-                className="navbar__menu__list__item__link"
-                onClick={() => onSigningIn()}
-                src="../../images/logo_vinci.png"
-                alt=""
-                width="24"
-                height="24"
-              />
+              <span className="navbar__menu__list__item__link">
+                <StaticImage
+                  placeholder="blurred"
+                  onClick={() => onSigningIn()}
+                  src="../../images/logo_vinci.png"
+                  alt=""
+                  width={24}
+                />
+              </span>
             </li>
           </UnauthenticatedTemplate>
 
@@ -162,7 +164,6 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
           </AuthenticatedTemplate>
         </ul>
       </div>
-      <LanguageSwitcher></LanguageSwitcher>
     </nav>
   );
 };

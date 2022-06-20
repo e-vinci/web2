@@ -2,11 +2,7 @@ const path = require("path");
 const crypto = require("crypto");
 const fetch = require("node-fetch");
 const { getSlugAndLang } = require("ptz-i18n");
-const { isNil } = require("ramda");
-const Result = require("folktale/result");
-const SegfaultHandler = require('segfault-handler');
-SegfaultHandler.registerHandler('crash.log');
-
+const { getFilePath } = require("./src/utils/files/files");
 /*/
 const {
   onCreateNode: gatsbyPluginI18nOptions,
@@ -16,7 +12,6 @@ const { plugins } = require("./gatsby-config");
 const { options: i18nPluginOptions } = plugins.find(
   (plugin) => plugin.resolve === `gatsby-plugin-i18n`
 );
-
 
 // load variables from the .env.* files
 require("dotenv").config({
@@ -32,9 +27,6 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   if (node.internal.type === "MarkdownRemark" || node.internal.type === "Mdx") {
     const filePath = getFilePath(node);
     const slugAndLang = getSlugAndLang(i18nPluginOptions, filePath);
-
-    console.log("slugAndLang : ", slugAndLang);
-
     createNodeField({
       node,
       name: "langKey",
@@ -46,70 +38,6 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       value: slugAndLang.slug,
     });
   }
-
-  /*
-  return getFilePath(node)
-    .map((filePath) =>
-      chain((isInPaths) => {
-        if (isInPaths === false) {
-          return "Skipping page, not in pagesPaths";
-        }
-
-        console.log("filePath : ", filePath);
-        const slugAndLang = getSlugAndLang(pluginOptions, filePath);
-
-        const { createNodeField } = actions;
-
-        if (
-          node.internal.type === "MarkdownRemark" ||
-          node.internal.type === "Mdx"
-        ) {
-          createNodeField({
-            node,
-            name: "langKey",
-            value: slugAndLang.langKey,
-          });
-          createNodeField({
-            node,
-            name: "slug",
-            value: slugAndLang.slug,
-          });
-        }
-
-        
-
-        return "langKey and slug added";
-      }, isInPagesPaths(pluginOptions, filePath))
-    )
-    .merge();
-    */
-
-  /*
-  const { createNodeField } = actions;
-  // you only want to operate on `Mdx` nodes. If you had content from a
-  // remote CMS you could also check to see if the parent node was a
-  // `File` node here
-  if (node.internal.type === "Mdx") {
-    const value = createFilePath({ node, getNode });
-    console.log("create this slug: ", value);
-
-    const potentiallyInternationalizedSlug =
-      getPotentiallyInternationalizedSlug(value);
-    console.log(
-      "POTENTIALLY INTERNATIONAL SLUG : ",
-      potentiallyInternationalizedSlug
-    );
-    createNodeField({
-      // Individual MDX node
-      node,
-      // Name of the field you are adding
-      name: "slug",
-      // Generated value based on filepath. you
-      // don't need a separating "/" before the value because
-      // createFilePath returns a path with the leading "/".
-      value: potentiallyInternationalizedSlug,
-    });
-  }*/
 };
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
@@ -319,43 +247,3 @@ async function addProjectsInGraphQL(createNode, projectGroupName) {
     console.log("error in addProjectsInGraphQL : ", err);
   }
 }
-
-const getPotentiallyInternationalizedSlug = (slug) => {
-  let languageCode;
-  let potentiallyInternationalizedSlug;
-  const fileNameParts = slug?.split(".");
-  console.log("split [1]", fileNameParts?.[1]);
-  if (fileNameParts?.[1]?.length === 3) {
-    // it is the language code + "/", e.g. "fr/"
-    languageCode = fileNameParts[1].replace("/", "");
-    const uriWithoutLanguageCode = fileNameParts[0].replace("/", "");
-    console.log(
-      "languageCode : ",
-      languageCode,
-      "uriWithoutLanguageCode : ",
-      uriWithoutLanguageCode
-    );
-    if (uriWithoutLanguageCode !== "index")
-      potentiallyInternationalizedSlug =
-        "/" + languageCode + "/" + uriWithoutLanguageCode;
-    else potentiallyInternationalizedSlug = "/" + languageCode;
-  } else {
-    potentiallyInternationalizedSlug = slug;
-  }
-  return potentiallyInternationalizedSlug;
-};
-
-const getValidFile = (filePath) =>
-  isNil(filePath) ? Result.Error("No file name") : Result.Ok(filePath);
-
-const getFilePath = (node) => {
-  switch (node.internal.type) {
-    case "File":
-      return getValidFile(node.absolutePath);
-    case "MarkdownRemark":
-    case "Mdx":
-      return getValidFile(node.fileAbsolutePath);
-    default:
-      return Result.Error("Skiping file type: " + node.internal.type);
-  }
-};
