@@ -1,5 +1,5 @@
 const emoji = require(`remark-emoji`);
-const siteURL = "https://e-vinci.github.io/myjscourse"; //"https://www.artiyoga.com", // No trailing slash allowed!
+const siteURL = "https://e-vinci.github.io/js";  // No trailing slash allowed!
 const youtubeUrl = ""; //"https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
 const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
@@ -7,7 +7,7 @@ const instagramUrl = "";
 const defaultLanguage = "fr";
 const defaultAssociatedProjectGroupName ="Web2 2021";
 module.exports = {
-  pathPrefix: `/myjscourse`,
+  pathPrefix: `/js`,
   siteMetadata: {
     title: "myjscourse",
     description: "myjscourse : Apprendre JavaScript et Node.js",
