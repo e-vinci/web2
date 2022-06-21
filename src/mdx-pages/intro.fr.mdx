@@ -264,7 +264,7 @@ dans ce chapître.
 <br/>
 
 ## d.1) Instructions JS
-Même si ça n'est pas obligatoire, on recommande de séparer chaque instruction par un " **;** ".
+👍 Même si ça n'est pas obligatoire, on recommande de séparer chaque instruction par un " **;** ".
 
 Cela permet d'augmenter la lisibilité du code.
 
@@ -396,7 +396,7 @@ console.log(varInFunction); // Uncaught ReferenceError: varInFunction is n
 
 <br/>
 
-Nous vous recommandons d'utiliser **let** ou **const** lorsque vous déclarer 
+👍 Nous vous recommandons d'utiliser **let** ou **const** lorsque vous déclarer 
 une variable ou constante au sein d'une fonction.
 
 <br/>
@@ -415,12 +415,12 @@ console.log(varInFunction); // Hello
 
 <br/>
 
-Nous vous recommandons de ne jamais utiliser de variables non déclarées.
+👍 Nous vous recommandons de ne jamais utiliser de variables non déclarées.
 
 <br/>
 
 ### d.3.7 Les dangers des variables globales
-L'utilisation de variables globales peut s'avérer dangereux. 
+⚡ L'utilisation de variables globales peut s'avérer dangereux. 
 
 On crée une variable globale soit via **var**, soit en initialisant une variable non déclarée.
 
@@ -446,9 +446,9 @@ Dans cet exemple de code, on s'attendrait à ce que la deuxième boucle affiche 
 <br/>
 
 ### d.3.8 Recommandations concernant la portée de vos variables
-L'utilisation de variables globales peut s'avérer dangereux quand on souhaiterait que la durée de vie de celle-ci corresponde à un bloc de code bien précis. 
+⚡ L'utilisation de variables globales peut s'avérer dangereux quand on souhaiterait que la durée de vie de celle-ci corresponde à un bloc de code bien précis. 
 
-Nous vous recommandons de définir des variables dont la portée est correctement exprimée par le mot-clé utilisé lors de la définition :
+👍 Nous vous recommandons de définir des variables dont la portée est correctement exprimée par le mot-clé utilisé lors de la définition :
 - utilisez **let** ou **const** pour des variables ou constantes disponibles au sein d'un bloc 
 de code uniquement;
 - utilisez **var** (ou **const**) que si une variable (ou constante) doit être disponible 
@@ -478,6 +478,147 @@ console.log(typeof undeclaredVariable); // undefined
 ```
 
 <br/>
+
+## d.4) Les opérateurs
+### d.4.1 Opérateurs d'égalité ou de non égalité
+Pour une comparaison stricte, sans conversion de type, on utilise **===** ou **!==**.
+
+<br/>
+
+Pour une comparaison avec conversion de type, on utilise **==** ou **!=**.
+
+```js 
+1 === 1; // true
+"1" === 1; // false
+1 == 1; // true
+"1" == 1; // true
+0 == false; // true
+0 == null; // false
+var object1 = { key: "value" },
+  object2 = { key: "value" };
+object1 == object2; //false
+```
+
+<br/>
+
+👍 Nous recommandons en général d'utiliser l'égalité stricte sauf si vous souhaitez convertir 
+le type des variables comparées.
+
+<br/>
+
+### d.4.2 Optional chaining operator
+L'opérateur **?.** permet de lire la valeur d'une propriété d'un objet sans devoir contrôler 
+si la référence de l'objet est valide.
+
+Il agit comme l'opérateur **.** sauf qu'au lieu de causer une error si une référence (d'une 
+variable) est "nullish", c'est-à-dire **null** ou **undefined**, l'expression est court-circuitée et 
+renvoie **undefined**.
+
+Sans test de condition, voici un morceau de code qui soulève une exception :
+
+```js 
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah'
+  }
+};
+
+const dogName = adventurer.dog.name; //Error: Cannot read properties of undefined (reading 'name')
+console.log(dogName);
+```
+
+<br/>
+
+En effet, la référence dog est **undefined**.
+Avant le récent "optional chaining operateur", voici ce que nous aurions pu écrire comme code 
+avant d'initialiser **dogName** :
+
+```js 
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah'
+  }
+};
+
+let dogName; 
+
+
+if(adventurer !== undefined && adventurer.dog !== undefined) // often simplified to : if(adventurer && adventurer.dog)
+	dogName = adventurer.dog.name;
+
+console.log(dogName); // undefined
+```
+
+<br/>
+
+Si la propriété d'un objet renvoyait jamais une valeur valide qui était à **false** ou **0**,
+alors on simplifiait souvent le check des valeurs nullish à qqch du style : 
+`if(adventurer && adventurer.dog)` . 
+
+<br/>
+
+Maintenant, grâce à l'opérateur **?.**, nous pouvons écrire du code très concis et ne plus 
+écrire de tests de conditions pour les valeurs de type "nullish" :
+```js 
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah'
+  },
+};
+
+const dogName = adventurer?.dog?.name;
+
+console.log(dogName); // undefined
+
+console.log(adventurer?.someNonExistentMethod?.()); // undefined
+
+console.log(adventurer?.kids?.[0]?.name) // undefined
+
+const kids= [{name:'John'}];
+let kids2 ;
+
+console.log(kids?.[0]?.name); // "John"
+console.log(kids2?.[0]?.name) // undefined
+```
+
+<br/>
+
+### d.4.2 Nullish coalescing operator
+Le "nullish coalescing operator" permet de renvoyer ce qui se trouve à droite de l'opérateur 
+quand ce qui se trouve à gauche est "nullish" (**null** ou **undefined**).
+
+```js 
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah'
+  },
+};
+
+const dogName = adventurer?.dog?.name ?? "No dog";
+console.log(dogName); // "No dog"
+
+
+const catName = adventurer?.cat?.name ?? "No cat";
+console.log(catName); // "Dinah"
+```
+
+<br/>
+
+
+
+### d.4.3 Les autres opérateurs
+Nous ne verrons pas tous les opérateurs logiques dans ce cours, ils sont sensés être connus.
+
+Par exemple, les opérateurs logiques sont les habituels : **&&**, **||**, **!**
+
+Néanmoins, vous avez tous les opérateurs disponibles ici [[8.]](/references/#r8).
+
+<br/>
+
 
 # <a id="e"></a>e) Repositories
 
