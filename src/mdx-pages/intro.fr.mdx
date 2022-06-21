@@ -2,19 +2,21 @@
 title: "Introduction"
 description: "Introduction au JavaScript"
 ---
-# Introduction
-Voici les sujets traités dans cette introduction :
-1. [Contexte d'utilisation du JS](/intro#s1)
-2. [Librairies & frameworks JS sélectionnés pour ce cours](/intro#s2)
-3. [Repositories](/intro#s3)
+Voici les sujets traités dans cette introduction au JS :
+- [a) Contexte d'utilisation du JS](/intro#a)
+- [b) Librairies & frameworks JS sélectionnés pour ce cours](/intro#b)
+- [c) Architectures classiques d'applications web](/intro#c)
+- [d) Introduction au langage JS](/intro#d)
+- [d) Repositories](/intro#d)
 
 <br/>
 
-# <a id="s1"></a>1. Contexte d'utilisation du JS
+# <a id="a"></a>a) Contexte d'utilisation du JS
 
-## 1.1 Utilisation de JS
+## a.1) Utilisation de JS
 En 2021, suite au grand sondage annuel de StackOverflow, le JS est le langage le 
 plus utilisé depuis plus de 9 ans !
+
 <br/>
 
 <ScrollableImage name="most-pop-programming.png" minWidth="400px" maxWidth="600px" />
@@ -23,7 +25,13 @@ plus utilisé depuis plus de 9 ans !
 
 <br/>
 
-## 1.2 (Sur)Diversité de JS
+## a.2) (Sur)Diversité de JS
+#### a.2.1) Applications frontend web classiques
+Il existe une multitude de librairies & frameworks JS pour aider à réaliser des 
+d'Interfaces Homme-Machine (IHM) : JQuery, Phaser, Anime.js, AngularJS, React…
+
+<br/>
+
 Voici quelques librairies et frameworks JS utilisés en 2021 côté client :
 
 <br/>
@@ -34,7 +42,14 @@ Voici quelques librairies et frameworks JS utilisés en 2021 côté client :
 
 <br/>
 
-Voici quelques frameworks JS en 2020 utilisés côté serveur 
+#### a.2.2) Applications backend
+Il existe aussi un nombre incroyables de librairies & frameworks JS permettant de réaliser 
+des applications côté serveur, aussi appelées applications backend : Node.js, Express,
+Next.js...
+
+<br/>
+
+Voici quelques frameworks JS utilisés en 2020 côté serveur :
 
 <ScrollableImage name="backend-frameworks.png" minWidth="400px" maxWidth="600px" />
 
@@ -42,12 +57,54 @@ Voici quelques frameworks JS en 2020 utilisés côté serveur
 
 <br/>
 
+#### a.2.3) Communication de données
+Le JavaScript Object Notation (JSON) est notamment utilisé dans le cadre de communications 
+entre applications, notamment afin de standardiser l'échange de message et de permettre une
+interopérabilité entre applications développées selon des technologies différentes.
+
+<br/>
+
+#### a.2.4) Applications mobiles clientes / Cross Platform applications
+Le JS est utilisé pour réaliser des applications multi-plateformes. Il existe 
+beaucoup de types d'architecture et de librairies & framework JS pour écrire une base de 
+code commune en JS et permettre de générer des application qui s'exécuteront sous différentes 
+plateformes (Android, iOS, Windows, Mac, Linux, Web...) :
+- Progressive Web Applications (PWA)
+- Hybrid Applications : Cordova, Ionic…
+- Real Native Applications : React Native, NativeScript…
+
+<br/>
+
+#### a.2.5) Sur-ensemble de JS / langage transpilant vers JS 
+Certaines applications peuvent être écrites dans un langage qui se base sur le JS :
+- TypeScript
+- CoffeeScript
+- ...
+
+<br/>
+
+#### a.2.6) Embedded scripts
+Le JS sert aussi à intégrer des fonctionnalités, des plugins, à certains logiciels très connus.
+Par exemple : 
+- Chrome extensions
+- Google Apps Script
+- ...
+
+<br/>
+
+#### a.2.7) Autres
+Il existe encore d'autres contextes où le JS est utilisé. C'est une belle motivation pour 
+apprendre ce langage, il permet de faire de nombreuses choses en tant que programmeur.
+
+<br/>
+
 Pour ce cours, nous avons donc du faire des choix afin de sélectionner les technologies les 
 plus appropriées.
 <br/>
 
-# <a id="s2"></a> 2. Librairies & frameworks JS sélectionnés pour ce cours
-Côté client, pour le développement d'Interfaces Homme-Machine (IHM), la priorité est mise
+# <a id="b"></a> b) Librairies & frameworks JS sélectionnés pour ce cours
+## b.1) Côté client / frontend
+Côté client, pour le développement d'IHM, la priorité est mise
 sur l'apprentissage de Vanilla JS [[3.]](/references/#r3), ou JS pure, sans utilisation de framework.
 
 En effet, comme le JS est devenu interopérable grâce à des standards (les normes **ECMAScript**) qui doivent être 
@@ -62,14 +119,367 @@ librairies comme **jQuery**.
 
 <br/>
 
+## b.2) Côté serveur / backend
 Par contre, côté serveur, nous utiliserons le framework **Express** afin de faciliter 
 le développement de web services.
 
 <br/>
 
+# <a id="c"></a>c) Architectures classiques d'applications web
 
+## c.1) Introduction
+Il existe quelques architectures classiques d'applications web frontend / backend :
+- Les Multi Page Applications (MPA) : le serveur est responsable de générer l'HTML et de le renvoyer aux clients ;
+- Les Single Page Applications (SPA) : le serveur met à disposition des opérations sur des données aux clients via des web services ; les clients sont principalement responsables de générer l'HTML. Les web services peuvent prendre plusieurs formes :
+    - RESTful API
+    - GraphQL
+    - WebSocket
+    - ...
 
-# <a id="s2"></a>2. Repositories
+<br/>
+
+## c.2) Multi Page Applications
+Voici une réprésentation d'une MPA tel que vous l'avez potentiellement déjà implémentée :
+
+<ScrollableImage name="mpa.png" minWidth="400px" maxWidth="600px" />
+
+<figcaption>MPA communiquant avec un web service</figcaption>
+
+<br/>
+
+A chaque demande d'une page par un client, généralement une requête HTTP de type `GET` 
+faite par un browser :
+- le client est mis en attente jusqu'à ce qu'il reçoive la page HTML correspondant à sa 
+requête ;
+- le browser affiche l'HTML reçu par le serveur.
+
+<br/>
+
+Il existe d'autres types d'architectures associées à des MPA, comme par exemple :
+
+<ScrollableImage name="mpa-api.png" minWidth="600px" maxWidth="800px" />
+
+<figcaption>MPA communiquant avec un web service</figcaption>
+
+<br/>
+
+Dans cet exemple, le serveur, pour pouvoir générer de l'HTML, va devoir utiliser des opérations 
+mises à disposition par un web service. 
+
+<br/>
+
+Les MPA ne seront pas vue dans ce cours.
+<br/>
+
+## c.3) Single Page Applications
+Voici une réprésentation d'une SPA :
+
+<ScrollableImage name="spa.png" minWidth="600px" maxWidth="800px" />
+
+<figcaption>SPA communiquant avec un web service : frontend indépendant du backend</figcaption>
+
+<br/>
+
+Dans un premier temps, la première requête d'un client est généralement une requête HTTP 
+de type `GET` faite par un browser. L'application web agit comme un serveur de fichiers 
+statiques et va renvoyer le layout HTML de base au browser. 
+Notons que le browser, une fois le layout HTML de base reçu, va demander à l'application 
+web l'ensemble des fichiers nécessaires au bon fonctionnement de l'application : 
+fichiers JS, CSS, images. On appelle ces fichiers les "assets".
+
+<br/>
+
+A chaque future demande d'un client pour afficher une page, le browser 
+va faire appel de manière asynchrone à des opérations offertes par une web service.
+
+Comme cet appel est asynchrone, l'IHM du browser reste disponible pour des interactions avec 
+l'utilisateur. Une fois la réponse reçue du web service, le browser s'occupe de mettre à jour 
+dynamiquement l'HTML du browser.
+
+<br/>
+
+L'architecture représentée ci-dessous, qui est celle qui sera étudiée dans ce cours,
+met en oeuvre deux modules "serveur" bien distincts pour créer une SPA : 
+- un serveur de fichiers statiques offrant tous les fichiers permettant 
+de créer un rendu de l'IHM (nommé "Application web" dans la figure)
+- un web service offrant des opérations sur des ressources ; ce web service suivra, 
+dans le cadre de ce cours, une architecture de type "RESTful". Nous verrons plus tard ce 
+que cela implique.
+
+<br/>
+
+Un des gros avantages de l'architecture web que nous appliquerons dans ce cours, c'est que 
+nous pourrons développer l'IHM indépendamment de la RESTful API (ou web service).
+
+<br/>
+
+Voici une réprésentation d'un autre type d'architecture associé à une SPA :
+
+<ScrollableImage name="spa-monolithic.png" minWidth="600px" maxWidth="800px" />
+
+<figcaption>SPA monolithique</figcaption>
+
+<br/>
+
+Dans cet exemple-ci, la SPA est monolithique : c'est le même serveur qui s'occupe 
+tant de fournir les web "assets" (ou les fichiers statiques) que d'offrir des opérations 
+sur des ressources (ou web services).
+
+Nous ne verrons pas cette architecture dans le cadre de ce cours. Néanmoins, à la fin de ce 
+cours-ci, vous devriez avoir tous les outils pour pouvoir la mettre en oeuvre si vous le 
+souhaitiez.
+
+<br/>
+
+## c.4) Autres types d’architectures web
+Il existe bien sûr d'autres types d'architectures web que celles présentées ci-dessus.
+
+Vous pourrez explorer par vous-même, si vous le souhaitez et totalement optionnellement, 
+les architectures suivantes :
+- Progressive Web Applications
+- Hybrid Applications : Cordova, Electron, Ionic…
+- Microservices
+- JAMStack [[6.]](/references/#r6)
+
+<br/>
+
+Faites-nous savoir SVP si une architecture particulière vous intéresse et n'est pas 
+reprise ci-dessus ; )
+
+<br/>
+
+# <a id="d"></a>d) Introduction au langage JS
+## d.1) Introduction
+Le JS s'écrit tant dans un browser que dans un environnement serveur.
+
+Quand on écrit du JS au niveau client, on écrira du JS conforme au standard `ECMAScript`.
+
+Quand on écrit du JS au niveau serveur, on écrira du Node.js, du JS conforme au standard 
+`CommonJS`.
+
+Il existe des différences lorsqu'on écrit du JS pour un browser ou lorsqu'on écrit du JS 
+pour une application serveur. Néanmoins, il existe une syntaxe commune que nous allons voir 
+dans ce chapître.
+
+<br/>
+
+## d.1) Instructions JS
+Même si ça n'est pas obligatoire, on recommande de séparer chaque instruction par un " **;** ".
+
+Cela permet d'augmenter la lisibilité du code.
+
+```js 
+let x = 1 ; 
+console.log("x = ", x);
+```
+
+<br/>
+
+`console.log()` : c'est une méthode qui permet d'afficher un message dans la console du browser 
+ou de l'environnement Node.js. En Java, c'est l'équivalent de `System.out.println()`.
+
+<br/>
+
+## d.2) Les commentaires
+On ajoute des commentaires dans son code via :
+- " **//** " : une seule ligne commentée.
+- " **/*** " et " ***/** "  : un bloc de lignes commenté.
+- " **/**** " et " ***/** "  : un bloc de lignes commenté pour générer la `JSDoc` d'une fonction.
+
+<br/>
+
+```js 
+/**
+ * JSDoc as comments
+ * @param {message} message to be displayed in console
+ */
+function raiseAlert(message) {
+  // Single line comment
+  console.log(message);
+  /* Regular comment
+    on multiple lines
+    */
+  console.log("An alert has been raised.");
+}
+```
+
+<br/>
+
+## d.3) Déclaration, initialisation et mise à jour de variables
+### d.3.1 Variable key sensitive
+En JS, on ne déclare pas le type de variable, c'est un langage dynamiquement typé,
+c'est-à-dire que le type d'une variable est déterminé à l'exécution.
+
+<br/>
+
+Les variables sont sensibles à la casse (ou "case sensitive") :
+
+```js 
+// two different variables
+let monBrowser ;
+let monbrowser ;
+```
+
+<br/>
+
+### d.3.2 Variables locales
+Pour définir une variable locale dont sa portée est associée à un bloc, 
+on utilise : **let**.
+
+ ```js 
+if (true) {
+  let blockScope = "Hello";
+  console.log(blockScope); // Hello
+}
+console.log(blockScope); // Uncaught ReferenceError: blockScope is not defined
+```
+
+<br/>
+
+Une variable **let** [[7.]](/references/#r7) :
+- n'est pas accessible en dehors du bloc où elle est définie ;
+- est processée à l'exécution seulement ;
+- ne peut pas être redéclarée dans le même bloc.
+
+<br/>
+
+### d.3.3 constantes locales
+Pour définir une constante dont sa portée est associée à un bloc, 
+on utilise : **const** [[8.]](/references/#r8).
+
+ ```js 
+if (true) {
+  const constVar = "Hello";
+  console.log(constVar); // Hello
+  const SITE_URL = "http://MyCMS.org";
+  console.log(SITE_URL); // http://MyCMS.org
+  constVar = "Hi"; // Uncaught TypeError: Assignment to constant variable.
+  console.log(constVar); 
+}
+```
+
+<br/>
+
+### d.3.4 Variables globales
+Pour définir une variable globale si elle est déclarée en dehors d'une fonction, 
+on utilise : **var**.
+
+ ```js 
+if (true) {
+  var globalVar = "Hello";
+  console.log(globalVar); // Hello
+}
+console.log(globalVar); // Hello
+```
+
+<br/>
+
+Une variable **var** est:
+- processée avant l'execution du code ("hoisting") ;
+- accessible au travers de tout le programme ; 
+- redéclarable dans n’importe quel bloc.
+
+<br/>
+
+### d.3.5 Variables dont la portée est associée à une fonction
+Pour définir une variable ou constante dont la portée est associée à une fonction, 
+on peut utiliser : **let**,**const** ou **var**.
+
+ ```js 
+function checkScopeVarInFunction() {
+  var varInFunction = "Hello";
+  console.log(varInFunction); // Hello
+}
+checkScopeVarInFunction();
+console.log(varInFunction); // Uncaught ReferenceError: varInFunction is not defined
+```
+
+<br/>
+
+Nous vous recommandons d'utiliser **let** ou **const** lorsque vous déclarer 
+une variable ou constante au sein d'une fonction.
+
+<br/>
+
+### d.3.6 Assignation d'une valeur à une variable non déclarée
+L'assignation d'une valeur à une variable non déclarée crée implicitement une variable globale.
+
+ ```js 
+function checkScopeVarInFunction() {
+  varInFunction = "Hello";
+  console.log(varInFunction); // Hello
+}
+checkScopeVarInFunction();
+console.log(varInFunction); // Hello
+```
+
+<br/>
+
+Nous vous recommandons de ne jamais utiliser de variables non déclarées.
+
+<br/>
+
+### d.3.7 Les dangers des variables globales
+L'utilisation de variables globales peut s'avérer dangereux. 
+
+On crée une variable globale soit via **var**, soit en initialisant une variable non déclarée.
+
+ ```js 
+var index = 1;
+for (index; index <= 3; index++) {
+  console.log(index); // 1 2 3
+}
+print();
+function print() {
+  for (index; index <= 5; index++) {
+    console.log("Print " + index); // Print 4 Print 5
+  }
+}
+```
+
+<br/>
+
+Dans cet exemple de code, on s'attendrait à ce que la deuxième boucle affiche : 
+
+`Print 1 Print 2 Print 3 Print 4 Print 5`.
+
+<br/>
+
+### d.3.8 Recommandations concernant la portée de vos variables
+L'utilisation de variables globales peut s'avérer dangereux quand on souhaiterait que la durée de vie de celle-ci corresponde à un bloc de code bien précis. 
+
+Nous vous recommandons de définir des variables dont la portée est correctement exprimée par le mot-clé utilisé lors de la définition :
+- utilisez **let** ou **const** pour des variables ou constantes disponibles au sein d'un bloc 
+de code uniquement;
+- utilisez **var** (ou **const**) que si une variable (ou constante) doit être disponible 
+au sein de tous les blocs d'un script.
+
+<br/>
+
+### d.3.9 Types de variables
+Voici les types principaux de variables qui seront déterminés lors de l'initialisation d'une 
+variable :
+- **Number** (Nombre) : un seul type pour les entiers, réels, doubles…
+- **String** (Chaîne) : comprise entre guillemets simples, doubles ou entre **\`** et **\`**. 
+- **Bool** (Booléen)
+- **Array** (Tableau)
+- **Object** (Objet)
+
+<br/>
+
+Afin de renvoyer sous forme d'une string le type d'une expression, on utilise l'opérateur 
+**typeof**.
+
+ ```js 
+console.log(typeof 12); // number
+console.log(typeof "I love JS"); // string
+console.log(typeof true); // boolean
+console.log(typeof undeclaredVariable); // undefined
+```
+
+<br/>
+
+# <a id="e"></a>e) Repositories
 
 Vous trouverez tous les repositories associés à ce cours via ces liens :
 - [**boilerplate de base pour les exercices**](https://github.com/e-vinci/js-basic-boilerplate) ; il offre le squelette d'un frontend, 
@@ -83,6 +493,8 @@ donné ci-dessus avec un router permettant de facilement circuler au niveau des 
 - [**solutions des exercices**](https://github.com/e-vinci/js-exercises.git) ; les solutions sont ajoutées de manière progressive au cours d'une année.
 - [**frontend du cours**](https://github.com/e-vinci/js) ; le frontend a été développé à l'aide de JavaScript. Il met en place une architecture
 moderne de type "Jamstack". Il repose sur Gatsby, qui lui même utilise React, ainsi que Webpack.
+
+<br/>
 
 Si vous souhaitez participer à la mise à jour du cours, n’hésitez pas à proposer des modifications 
 en soumettant des Pull Requests ou des des Issues via ces repositories.

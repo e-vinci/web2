@@ -30,7 +30,7 @@
     "@popperjs/core": "^2.9.2",
     "autoprefixer": "^10.2.5",
     "bootstrap": "^5.0.0-beta3",
-    "gatsby": "^4.16.0",
+    "gatsby": "4.14",
     "gatsby-background-image": "^1.6.0",
     "gatsby-dynamical-navigation": "^0.4.1",
     "gatsby-plugin-create-client-paths": "^4.9.0",
