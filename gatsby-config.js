@@ -26,7 +26,7 @@ module.exports = {
         link: `/`,
       },
       {
-        name: `Introduction au JS`,
+        name: `Introduction`,
         link: `/intro`,
       },
       {
