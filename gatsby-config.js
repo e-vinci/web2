@@ -26,26 +26,21 @@ module.exports = {
         link: `/`,
       },
       {
-        name: `Introduction`,
-        link: `/intro`,
-      },
-      {
-        name: `Bibliographie`,
-        link: `/references`,
-      },
-      {
         name: "Contenu du cours",
         link: "",
         subMenu: [
-          { name: "Module 1 : découverte de JAX-RS", link: "/modules/1" },
-          { name: "Module 2 : JAX-RS & auths", link: "/modules/2" },
-          { name: "Module 3 : JAX-RS avancé", link: "/modules/3" },
+          { name: "Introduction", link: "/intro" },
+          { name: "Module 1 : IHM classique & interactions", link: "/modules/1" },
+          { name: "Module 2 : IHM moderne & dynamique", link: "/modules/2" },
+          { name: "Module 3 : IHM structurée, routage & animations", link: "/modules/3" },
+          { name: "Module 4 : Service web & clients", link: "/modules/4" },
+          { name: "Module 5 : Service web architecturé", link: "/modules/5" },
+          { name: "Module 6 : SPA & comms", link: "/modules/6" },
+          { name: "Module 7 : SPA & sécurisation", link: "/modules/7" },
+          { name: "Module 8 : SPA & sessions & déploiement", link: "/modules/8" },
+          { name: "Bibliographie", link: "/references" },
         ],
-      },
-      {
-        name: `Repositories`,
-        link: `/repositories`,
-      },
+      },      
       {
         name: "Vitrines de projets",
         link: "",
