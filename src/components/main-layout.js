@@ -63,18 +63,23 @@ const MainLayout = ({
   const potentialPrefix = baseUrl.replace("/", "");
   const prefix = potentialPrefix !== "" ? baseUrl : undefined;
 
-  if (prefix) pathname = pathname.replace(prefix, "");
+  if (prefix) {
+    pathname = pathname.replace(prefix, "/");
+    console.log("new pathname : ", pathname);
+  }
 
-  console.log("prefix : ", prefix);
-  console.log("location : ", location);
   const { langs, defaultLangKey } = data.site.siteMetadata.languages;
   const langKey = getCurrentLangKey(langs, defaultLangKey, pathname);
   const homeLink = `/${langKey}/`.replace(`/${defaultLangKey}/`, "/");
-  const langsMenu = getLangs(
-    langs,
-    langKey,
-    getUrlForLang(homeLink, pathname)
-  ).map((item) => ({
+
+
+  const url = getUrlForLang(homeLink, pathname);
+  console.log("url : ", pathname);
+
+  console.log("prefix : ", prefix);
+  console.log("location : ", location);
+
+  const langsMenu = getLangs(langs, langKey, url).map((item) => ({
     ...item,
     link: item.link.replace(`/${defaultLangKey}/`, "/"),
   }));
