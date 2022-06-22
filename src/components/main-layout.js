@@ -1,6 +1,5 @@
 import React from "react";
-import { graphql } from "gatsby";
-import { useStaticQuery } from "gatsby";
+import { graphql, useStaticQuery, withPrefix } from "gatsby";
 import SectionHeader from "./section-header.js";
 import Section from "./section.js";
 import Content from "./content.js";
@@ -57,21 +56,35 @@ const MainLayout = ({
   );
 
   const location = useLocation();
-  const pathname = location?.pathname;
+
+  let pathname = location?.pathname;
+
+  const baseUrl = withPrefix("/");
+  const potentialPrefix = baseUrl.replace("/", "");
+  const prefix = potentialPrefix !== "" ? baseUrl : undefined;
+
+  if (prefix) pathname = pathname.replace(prefix, "");
+
+  console.log("prefix : ", prefix);
   console.log("location : ", location);
   const { langs, defaultLangKey } = data.site.siteMetadata.languages;
   const langKey = getCurrentLangKey(langs, defaultLangKey, pathname);
   const homeLink = `/${langKey}/`.replace(`/${defaultLangKey}/`, "/");
-  const langsMenu = getLangs(langs, langKey, getUrlForLang(homeLink, pathname)).map(
-    (item) => ({ ...item, link: item.link.replace(`/${defaultLangKey}/`, "/") })
-  );
+  const langsMenu = getLangs(
+    langs,
+    langKey,
+    getUrlForLang(homeLink, pathname)
+  ).map((item) => ({
+    ...item,
+    link: item.link.replace(`/${defaultLangKey}/`, "/"),
+  }));
 
   console.log("Homelink : ", homeLink);
   console.log("langsMenu : ", langsMenu);
   console.log("langsKey : ", langKey);
 
   return (
-    <IntlProvider  locale={langKey} messages={{langsMenu:langsMenu}}>
+    <IntlProvider locale={langKey} messages={{ langsMenu: langsMenu }}>
       <div className="master">
         {/* Dealing with Meta Tags : page title.... 
       Use the SEO component*/}
