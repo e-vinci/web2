@@ -11,7 +11,7 @@ import { GatsbyImage, getImage } from "gatsby-plugin-image";
  * @param {*} param0
  * @returns
  */
-const Image = ({ children, name, alt }) => {
+const Image = ({ children, name, alt, width, height, display }) => {
   const data = useStaticQuery(graphql`
     {
       allFile(
@@ -69,7 +69,8 @@ const Image = ({ children, name, alt }) => {
   return (
     <GatsbyImage
       image={image}
-      style={{ height: "100%", width: "100%", zIndex: 2 }}
+      style={{ height: height ?? "100%", width: width ?? "100%", zIndex: 2, display: display ?? "block"}}
+      imgStyle={{ height: height ?? "100%", width: width ?? "100%", display: display ?? "block"}}
       alt={!alt ? "GatsbyImage" : alt}
     />
   );
