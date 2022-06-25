@@ -1,15 +1,17 @@
 const emoji = require(`remark-emoji`);
-const siteURL = "https://e-vinci.github.io/js"; // No trailing slash allowed!
+const siteURL = "https://e-vinci.github.io/web2"; // No trailing slash allowed!
+const siteTitle = "web2course";
 const youtubeUrl = ""; //"https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
 const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
 const instagramUrl = "";
 const defaultLanguage = "fr";
 const defaultAssociatedProjectGroupName = "Web2 2021";
+
 module.exports = {
-  pathPrefix: `/js`,
+  pathPrefix: `/web2`,
   siteMetadata: {
-    title: "myjscourse",
+    title: siteTitle,
     description: "myjscourse : Apprendre JavaScript et Node.js",
     url: siteURL,
     siteUrl: siteURL, // config for gatsby-plugin-robots-txt
@@ -173,8 +175,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `myjscourse`,
-        short_name: `myjscourse`,
+        name: siteTitle,
+        short_name: siteTitle,
         start_url: `/`,
         background_color: `#f7f0eb`,
         theme_color: `#303030`,

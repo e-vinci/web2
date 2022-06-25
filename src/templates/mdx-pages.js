@@ -16,6 +16,13 @@ import CodeBlock from "../components/codeblock/codeblock.js";
 import LinkFile from "../components/file/link-file.js";
 import ScrollableImage from "../components/image/scrollable-image";
 import PublicProjectsView from "../components/public-projects/public-projects-view";
+import {
+  AuthenticatedTemplate,
+  UnauthenticatedTemplate,
+} from "@azure/msal-react";
+import AuthenticatedMdxBlock from "../components/auth/authenticated-mdx-block.js";
+import UnAuthenticatedMdxBlock from "../components/auth/unauthenticated-mdx-block.js";
+import NestedMdxBlock from "../components/mdx/nested-mdx-block.js";
 
 const shortcodes = {
   Link,
@@ -30,6 +37,9 @@ const shortcodes = {
   LinkFile,
   ScrollableImage,
   PublicProjectsView,
+  AuthenticatedMdxBlock,
+  UnAuthenticatedMdxBlock,  
+  NestedMdxBlock,
 };
 
 export default function PageTemplate({ data: { mdx, allImages } }) {
@@ -79,7 +89,12 @@ export const pageQuery = graphql`
         autoMargin
       }
     }
-    allImages: allFile(filter: {sourceInstanceName: {eq: "images"}, extension: {nin: ["ico", "svg"]}}) {
+    allImages: allFile(
+      filter: {
+        sourceInstanceName: { eq: "images" }
+        extension: { nin: ["ico", "svg"] }
+      }
+    ) {
       edges {
         node {
           childImageSharp {
