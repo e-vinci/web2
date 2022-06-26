@@ -3,7 +3,7 @@ import { UnauthenticatedTemplate } from "@azure/msal-react";
 
 import NestedMdxBlock from "../mdx/nested-mdx-block";
 
-const UnAuthenticatedMdxBlock = ({ children }) => {
+const UnAuthenticatedBlock = ({ children }) => {
   if (!children) return null;
 
   return (
@@ -13,4 +13,4 @@ const UnAuthenticatedMdxBlock = ({ children }) => {
   );
 };
 
-export default UnAuthenticatedMdxBlock;
+export default UnAuthenticatedBlock;

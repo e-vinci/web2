@@ -3,7 +3,7 @@ import { AuthenticatedTemplate } from "@azure/msal-react";
 
 import NestedMdxBlock from "../mdx/nested-mdx-block";
 
-const AuthenticatedMdxBlock = ({ children }) => {
+const AuthenticatedBlock = ({ children }) => {
   if (!children) return null;
 
   return (
@@ -13,4 +13,4 @@ const AuthenticatedMdxBlock = ({ children }) => {
   );
 };
 
-export default AuthenticatedMdxBlock;
+export default AuthenticatedBlock;

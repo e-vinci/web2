@@ -20,8 +20,8 @@ import {
   AuthenticatedTemplate,
   UnauthenticatedTemplate,
 } from "@azure/msal-react";
-import AuthenticatedMdxBlock from "../components/auth/authenticated-mdx-block.js";
-import UnAuthenticatedMdxBlock from "../components/auth/unauthenticated-mdx-block.js";
+import AuthenticatedBlock from "../components/auth/authenticated-block.js";
+import UnAuthenticatedBlock from "../components/auth/unauthenticated-block.js";
 import NestedMdxBlock from "../components/mdx/nested-mdx-block.js";
 
 const shortcodes = {
@@ -37,8 +37,8 @@ const shortcodes = {
   LinkFile,
   ScrollableImage,
   PublicProjectsView,
-  AuthenticatedMdxBlock,
-  UnAuthenticatedMdxBlock,  
+  AuthenticatedBlock,
+  UnAuthenticatedBlock,  
   NestedMdxBlock,
 };
 
