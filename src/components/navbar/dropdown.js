@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "gatsby";
-import InternationalLink from "./international-link";
+import MenuItem from "./menu-item";
 
-const Dropdown = ({ linkName, subMenu, i18nPluginOptions , locale }) => {
+const Dropdown = ({
+  itemData,
+  i18nPluginOptions,
+  locale,
+  isAuthenticated,
+  key,
+}) => {
   // ref to deal with dropdown (submenu items)
+  const { name, subMenu } = itemData;
+
   const subMenuRef = useRef();
 
   const [collapsed, setCollapsed] = useState(false);
@@ -39,14 +46,20 @@ const Dropdown = ({ linkName, subMenu, i18nPluginOptions , locale }) => {
     };
   }, []);
 
+  console.log("ITEMDATA : ", itemData, "isAuthenticated :", isAuthenticated);
+
+  const itemIsUnavailable = itemData?.protected && !isAuthenticated;
+  console.log("isUnavailable : ", itemIsUnavailable);
+  if (itemIsUnavailable) return null;
+
   return (
-    <li className="navbar__menu__list__item">
+    <li key={key} className="navbar__menu__list__item">
       <a
         className="navbar__menu__list__item__link navbar__menu__list__item__link--dropdown-toggle"
         onClick={onDropDownClick}
         ref={subMenuRef}
       >
-        {linkName}
+        {name}
       </a>
 
       <ul
@@ -56,20 +69,14 @@ const Dropdown = ({ linkName, subMenu, i18nPluginOptions , locale }) => {
         aria-labelledby="navbarDropdown"
       >
         {subMenu.map((subLink, indexSubMenu) => (
-          <li
-            key={"sli" + indexSubMenu}
+          <MenuItem
+            index={indexSubMenu}
             className="navbar__menu__list__item__dropdown-menu__item"
-          >
-            <InternationalLink
-              className="navbar__menu__list__item__dropdown-menu__item__link"
-              i18nPluginOptions={i18nPluginOptions}
-              absoluteLink={subLink.link}
-              locale={locale}
-              aria-current="page"
-            >
-              {subLink.name}
-            </InternationalLink>
-          </li>
+            i18nPluginOptions={i18nPluginOptions}
+            itemData={subLink}
+            locale={locale}
+            isAuthenticated={isAuthenticated}            
+          />
         ))}
       </ul>
     </li>

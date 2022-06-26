@@ -2,7 +2,7 @@ import React from "react";
 import Menu from "../navbar/menu.js";
 import Background from "../background.js";
 
-const Header = ({ siteTitle, menuLinks, ...otherProps }) => {
+const Header = ({ siteMetadata, ...otherProps }) => {
   let { className, navbarExtraStyles, headerImage } = otherProps;
 
   className = `header ${className ? className : ""}`;
@@ -11,7 +11,7 @@ const Header = ({ siteTitle, menuLinks, ...otherProps }) => {
       <header {...{ className }}>
         <Background imageName={headerImage} className="background--header">
           <Menu
-            {...{ menuLinks, siteTitle }}
+            {...{ siteMetadata }}
             {...(navbarExtraStyles
               ? { navbarExtraStyles: navbarExtraStyles }
               : {})}
@@ -23,13 +23,11 @@ const Header = ({ siteTitle, menuLinks, ...otherProps }) => {
     return (
       <header {...{ className }}>
         <Menu
-          {...{ menuLinks, siteTitle }}
+          {...{ siteMetadata }}
           {...(navbarExtraStyles
             ? { navbarExtraStyles: navbarExtraStyles }
             : {})}
-        >
-        </Menu>
-        
+        ></Menu>
       </header>
     );
 };

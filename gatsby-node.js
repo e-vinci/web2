@@ -109,6 +109,20 @@ exports.createSchemaCustomization = ({ actions }) => {
   });
 
   createFieldExtension({
+    name: "defaultFalse",
+    extend() {
+      return {
+        resolve(source, args, context, info) {
+          if (source[info.fieldName] == null) {
+            return false;
+          }
+          return source[info.fieldName];
+        },
+      };
+    },
+  });
+
+  createFieldExtension({
     name: "defaultString",
     extend() {
       return {
@@ -174,11 +188,13 @@ exports.createSchemaCustomization = ({ actions }) => {
     type MenuLinks {
       name: String!
       link: String!
+      protected: Boolean @defaultFalse
       subMenu: [SubMenu] @defaultArray
     }
     type SubMenu {
       name: String
       link: String
+      protected: Boolean @defaultFalse
     }     
   `;
   createTypes(typeDefs);

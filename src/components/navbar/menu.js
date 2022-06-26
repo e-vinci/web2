@@ -1,29 +1,18 @@
 import React, { useState, useRef } from "react";
 import Dropdow from "./dropdown.js";
 import { StaticImage } from "gatsby-plugin-image";
-import {
-  AuthenticatedTemplate,
-  UnauthenticatedTemplate,
-  useMsal,
-  useIsAuthenticated,
-} from "@azure/msal-react";
+import { useMsal, useIsAuthenticated } from "@azure/msal-react";
 import { graphql } from "gatsby";
 import { useStaticQuery } from "gatsby";
 import { useIntl } from "react-intl";
 import { loginRequest } from "../../utils/auths/authConfig.js";
 import InternationalLink from "./international-link.js";
 import LanguageSwitcher from "../language-switcher/language-switcher.js";
+import MenuItem from "./menu-item.js";
 
-const reviewDropDown = {
-  name: "Revues de projet",
-  link: "",
-  subMenu: [
-    { name: "Mes revues", link: "/my-reviews-page" },
-    { name: "Toutes les revues", link: "/review-page" },
-  ],
-};
+const Menu = ({ siteMetadata, navbarExtraStyles }) => {
+  const { menuLinks, siteTitle, isAuthentication } = siteMetadata;
 
-const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   const data = useStaticQuery(
     graphql`
       {
@@ -38,7 +27,6 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   );
 
   const i18nPluginOptions = data?.allSitePlugin.nodes[0].pluginOptions;
-  //console.log("In the menu, i18n : ", i18nPluginOptions);
 
   const { locale } = useIntl();
   console.log("the current locale is : ", locale);
@@ -49,26 +37,6 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
   const node = useRef();
 
   const [collapsed, setCollapsed] = useState(false);
-
-  // call the redirect function from MS Azure AD
-  const onSigningIn = () => {
-    try {
-      console.log("ON SIGNING IN...");
-      instance.loginRedirect(loginRequest);
-    } catch (error) {
-      // handle error, either in the library or coming back from the server
-      console.log("error during login redirect :", error);
-    }
-  };
-
-  const onSigningOut = async () => {
-    try {
-      instance.logoutRedirect();
-    } catch (error) {
-      // handle error, either in the library or coming back from the server
-      console.log("error during logout redirect :", error);
-    }
-  };
 
   return (
     <nav className={`navbar ${navbarExtraStyles ? navbarExtraStyles : ""}`}>
@@ -82,6 +50,7 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
       </InternationalLink>
 
       <LanguageSwitcher />
+
       <button
         onClick={() => setCollapsed(!collapsed)}
         className="navbar__toggler"
@@ -92,6 +61,7 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
       >
         <span className="navbar__toggler__icon"></span>
       </button>
+
       <div
         className={`navbar__menu ${collapsed ? "navbar__menu--collapse" : ""}`}
         id="navbarSupportedContent"
@@ -100,75 +70,87 @@ const Menu = ({ menuLinks, siteTitle, navbarExtraStyles }) => {
           {menuLinks.map((link, indexMenu) =>
             link.subMenu && link.subMenu.length > 0 ? (
               <Dropdow
-                key={"dd" + indexMenu}
-                linkName={link.name}
-                subMenu={link.subMenu}
+                key={indexMenu}
+                itemData={link}
                 i18nPluginOptions={i18nPluginOptions}
                 locale={locale}
+                isAuthenticated={isAuthenticated}
               ></Dropdow>
             ) : (
-              <li key={"li" + indexMenu} className="navbar__menu__list__item">
-                <InternationalLink
-                  className="navbar__menu__list__item__link"
-                  i18nPluginOptions={i18nPluginOptions}
-                  absoluteLink={link.link}
-                  locale={locale}
-                >
-                  {link.name}
-                </InternationalLink>
-              </li>
+              <MenuItem
+                key={indexMenu}
+                className="navbar__menu__list__item"
+                i18nPluginOptions={i18nPluginOptions}
+                itemData={link}
+                locale={locale}
+                isAuthenticated={isAuthenticated}
+                isWithinDrowdown={false}
+              />
             )
           )}
 
-          <UnauthenticatedTemplate>
-            <li key={"li-login"} className="navbar__menu__list__item">
-              <span
-                className="navbar__menu__list__item__link"
-                onClick={() => onSigningIn()}
-              >
-                <StaticImage
-                  placeholder="blurred"
-                  src="../../images/logo_vinci.png"
-                  alt=""
-                  width={24}
-                />
-              </span>
-            </li>
-          </UnauthenticatedTemplate>
+          {isAuthentication && !isAuthenticated && (
+            <LoginItem msalInstance={instance} />
+          )}
 
-          <AuthenticatedTemplate>
-            <li key={"li-projects"} className="navbar__menu__list__item">
-              <InternationalLink
-                className="navbar__menu__list__item__link"
-                i18nPluginOptions={i18nPluginOptions}
-                absoluteLink="/project-page"
-                locale={locale}
-              >
-                Projets
-              </InternationalLink>
-            </li>
-
-            <Dropdow
-              key={"dd-reviews"}
-              linkName={reviewDropDown.name}
-              subMenu={reviewDropDown.subMenu}
-              i18nPluginOptions={i18nPluginOptions}
-              locale={locale}
-            ></Dropdow>
-
-            <li key={"li-logout"} className="navbar__menu__list__item">
-              <span
-                className="navbar__menu__list__item__link"
-                onClick={() => onSigningOut()}
-              >
-                Logout
-              </span>
-            </li>
-          </AuthenticatedTemplate>
+          {isAuthentication && isAuthenticated && (
+            <LogoutItem msalInstance={instance} />
+          )}
         </ul>
       </div>
     </nav>
   );
+};
+
+const LoginItem = ({ msalInstance }) => {
+  return (
+    <li key={"li-login"} className="navbar__menu__list__item">
+      <span
+        className="navbar__menu__list__item__link"
+        onClick={() => onSigningIn(msalInstance)}
+      >
+        <StaticImage
+          placeholder="blurred"
+          src="../../images/logo_vinci.png"
+          alt=""
+          width={24}
+        />
+      </span>
+    </li>
+  );
+};
+
+const LogoutItem = ({ msalInstance }) => {
+  return (
+    <li key={"li-logout"} className="navbar__menu__list__item">
+      <span
+        className="navbar__menu__list__item__link"
+        onClick={() => onSigningOut(msalInstance)}
+      >
+        Logout
+      </span>
+    </li>
+  );
+};
+
+// call the redirect function from MS Azure AD
+const onSigningIn = (msalInstance) => {
+  try {
+    console.log("ON SIGNING IN...");
+    msalInstance.loginRedirect(loginRequest);
+  } catch (error) {
+    // handle error, either in the library or coming back from the server
+    console.log("error during login redirect :", error);
+  }
+};
+
+const onSigningOut = async (msalInstance) => {
+  try {
+    msalInstance.logoutRedirect();
+  } catch (error) {
+    // handle error, either in the library or coming back from the server
+    console.log("error during logout redirect :", error);
+  }
 };
 
 export default Menu;

@@ -38,9 +38,11 @@ const MainLayout = ({
             menuLinks {
               name
               link
+              protected
               subMenu {
                 link
                 name
+                protected
               }
             }
             authorEmail
@@ -49,6 +51,7 @@ const MainLayout = ({
             facebookUrl
             instagramUrl
             defaultAssociatedProjectGroupName
+            isAuthentication
           }
         }
       }
@@ -100,9 +103,8 @@ const MainLayout = ({
           language="fr"
         />
 
-        <Header
-          siteTitle={data.site.siteMetadata.title}
-          menuLinks={data.site.siteMetadata.menuLinks}
+        <Header  
+          siteMetadata = {data.site.siteMetadata}
           {...(navbarExtraStyles
             ? { navbarExtraStyles: navbarExtraStyles }
             : {})}

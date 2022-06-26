@@ -21,6 +21,7 @@ module.exports = {
     instagramUrl: instagramUrl,
     languages: { langs: ["fr", "en"], defaultLangKey: defaultLanguage },
     defaultAssociatedProjectGroupName: defaultAssociatedProjectGroupName,
+    isAuthentication: true, // currently there is only Vinci MSAL
     //twitterUsername: "@whoever; )",
     menuLinks: [
       {
@@ -71,6 +72,21 @@ module.exports = {
       {
         name: `Other tools`,
         link: `/other-tools`,
+      },
+      {
+        name: `Projet`,
+        link: `/project-page`,
+        protected: true,
+      },
+      {
+        name: "Revues de projet",
+        link: "",
+        protected: true,
+        subMenu: [
+          { name: "Mes revues", link: "/my-reviews-page" },
+          { name: "Toutes les revues", link: "/review-page" },
+          {protected: true},
+        ],
       },
     ],
   },
