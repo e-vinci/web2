@@ -155,6 +155,13 @@ module.exports = {
       },
     },
     {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "sounds",
+        path: `./src/sounds`,
+      },
+    },
+    {
       resolve: "gatsby-plugin-remove-console",
       options: {
         exclude: ["error", "warn"], // <- will be removed all console calls except these
