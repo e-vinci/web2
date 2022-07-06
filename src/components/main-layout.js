@@ -15,6 +15,7 @@ import { getCurrentLangKey, getLangs, getUrlForLang } from "ptz-i18n";
 import { IntlProvider } from "react-intl";
 import { useLocation } from "@reach/router";
 // Fix huge icon flash: https://github.com/FortAwesome/react-fontawesome/issues/234
+
 config.autoAddCss = false;
 
 const MainLayout = ({
