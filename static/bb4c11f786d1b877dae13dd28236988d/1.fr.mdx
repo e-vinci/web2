@@ -30,7 +30,12 @@ Voici les sujets traités :
     - b.3.6) [Gestion de timers](#b3.6)
     - b.3.7) [Gestion d'intervalles de temps](#b3.7)
     - b.3.8) [Documentation MDN](#b3.8)
-- b.4) [Création d'une IHM interactive](#b4)
+  - b.4) [Création d'une IHM classique & interactive: tutoriel](#b4)
+- c) [Exercice 1.1 : Créer un repository local et distant pour gérer vos exercices](#c)
+- d) [Exercice 1.2 : 1er script externe](#d)
+- e) [Exercice 1.3 : compteur d'événements](#e)
+- f) [Exercice 1.4 : événements différés dans le temps](#f)
+- g) [🍬 Exercice 1.5 : autres événements](#f)
 
 <br />
 
@@ -38,7 +43,7 @@ Dans ce module, nous allons développer des applications web classiques, façon 
 
 Nous n'allons pas utiliser d'outils pour gérer les dépendances de nos applications,
 
-nous allons intégrer ces dépendances directement à l'aide de balises **script**.
+nous allons intégrer ces dépendances directement à l'aide de balises **`<script>`**.
 
 <br />
 
@@ -584,7 +589,7 @@ Le DOM donne accès aux éléments HTML ainsi qu'à leur style. Il est donc poss
 
 <ScrollableImage name="dom2.png" minWidth="486px" maxWidth="500px" />
 
-[_HTML DOM Tree [R.22]_](/references/#r22)
+[HTML DOM Tree [R.22]](/references/#r22)
 
 <br />
 
@@ -752,7 +757,7 @@ Voici comment le browser traite les événements :
 
 <ScrollableImage name="eventflow.png" minWidth="480px" maxWidth="500px" />
 
-[Flux de traitement d'un événement [R.26]_](/references/#r26)
+[Flux de traitement d'un événement [R.26]\_](/references/#r26)
 
 <br />
 
@@ -921,13 +926,15 @@ pas l'appel d'une fonction !
 <br />
 
 ### <a id="b3.5"></a> b.3.5) L'objet event
+
 L'objet "event" est automatiquement passé à la callback d'un écouteur d'événement.
 
 Il est très utile pour deux raisons principalement :
+
 - Stopper l'action par défaut suite à un événement.
 - Lorsqu'on attache une même callback à une multitude d'éléments, pour retrouver la cible de l'événement.
 
-<br/>
+<br />
 
 Voici un exemple où l'on souhaite découvrir l'id de la **div** lorsque la souris
 quitte celle-ci. **index.html** contient 6 divs :
@@ -938,12 +945,12 @@ quitte celle-ci. **index.html** contient 6 divs :
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">    
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Demo : mouse-over event management to update a div</title>
     <link rel="stylesheet" href="./main.css">
 
 <body>
-    
+
     <div class="message" id="msgBox1">
         Waiting for the call to a welcome function...
     </div>
@@ -959,7 +966,7 @@ quitte celle-ci. **index.html** contient 6 divs :
     <div class="message" id="msgBox4">
         Waiting for the call to a welcome function...
     </div>
-    
+
     <div class="message" id="msgBox5">
         Waiting for the call to a welcome function...
     </div>
@@ -967,9 +974,9 @@ quitte celle-ci. **index.html** contient 6 divs :
     <div class="message" id="msgBox6">
         Waiting for the call to a welcome function...
     </div>
-    
+
     <script src="index.js" ></script>
-    
+
 </body>
 </html>
 ```
@@ -980,9 +987,9 @@ Un peu de style pour bien visualiser les 6 divs au sein de **main.css** :
 
 ```css
 .message {
-    padding : 1rem;
-    margin: 1rem ;
-    border: solid 1px black;
+  padding: 1rem;
+  margin: 1rem;
+  border: solid 1px black;
 }
 ```
 
@@ -1002,7 +1009,6 @@ divs.forEach((div) => {
     div.innerText = `You have left the div wit id ${e.target.id}`;
   });
 });
-
 ```
 
 <br />
@@ -1011,45 +1017,46 @@ L'event objet a été nommé **e** ici, mais nous aurions pu lui donner le nom q
 
 👍 Pour éviter la confusion, il est recommandé de l'appeler **e** (ou éventuellement **event**).
 
-<br/>
+<br />
 
 **e.target** est l'élément HTML qui lance la propagation de l'événement dans le DOM tree.
 
-<br/> 
+<br />{" "}
 
-Parfois on préfère utiliser **e.currentTarget** qui est l'élément HTML sur lequel est attaché 
+Parfois on préfère utiliser **e.currentTarget** qui est l'élément HTML sur lequel est attaché
 l'écouteur d'événement.
 
-<br/>
+<br />
 
-N'hésitez pas à exécuter le code ci-dessus, si vous le souhaitez, en créant les 
+N'hésitez pas à exécuter le code ci-dessus, si vous le souhaitez, en créant les
 3 fichiers nécessaires.
 
-<br/>
+<br />
 
-Voici un exemple partiel de gestion de formulaire où l'on utilise l'objet "event" pour stopper 
-l'action par défaut qui est d'envoyer les données au serveur (indiqué par la propriété 
+Voici un exemple partiel de gestion de formulaire où l'on utilise l'objet "event" pour stopper
+l'action par défaut qui est d'envoyer les données au serveur (indiqué par la propriété
 **action** du formulaire) et de recharger la page :
 
 ```js {3,5}
 // code to get the reference to the form shall be imagined
 
-const onSubmit = (e) => {
-  console.log("onSubmit::");
-  e.preventDefault();
-}
+const onSubmit = (e) => {
+  console.log("onSubmit::");
+  e.preventDefault();
+};
 
-myForm.addEventListener("submit", onSubmit);
+myForm.addEventListener("submit", onSubmit);
 ```
 
 <br />
 
 ### <a id="b3.6"></a> b.3.6) Gestion de timers
+
 **setTimeout(f,t)** permet l'exécution d'une callback **f** à l'expiration d'un timer, après **t** ms.
 
-<br/>
+<br />
 
-**clearTimeout()** permet de stopper l'exécution d'une callback qui a été appelée via 
+**clearTimeout()** permet de stopper l'exécution d'une callback qui a été appelée via
 **setTimeout()**.
 
 Voici un exemple :
@@ -1095,17 +1102,18 @@ function clearAlert() {
 
 N'hésitez pas à exécuter ce code si vous le souhaitez en créant les 2 fichiers nécessaires.
 
-<br/>
+<br />
 
 Normalement, si vous clicquez sur le 1er bouton, puis avant deux secondes sur le deuxième bouton,
 aucun pop-up ne sera lancé.
 
-<br/>
+<br />
 
 ### <a id="b3.7"></a> b.3.7) Gestion d'intervalles de temps
+
 **setInterval(f,t)** permet l'exécution d'une callback **f** tous les **t** ms.
 
-**clearInterval()** permet de stopper les appels à la callback qui ont été programmés via 
+**clearInterval()** permet de stopper les appels à la callback qui ont été programmés via
 **setInterval()**.
 
 On souhaiterait programmer une horloge, voici un simple exemple :
@@ -1164,93 +1172,110 @@ N'hésitez pas à exécuter ce code si vous le souhaitez en créant les 2 fichie
 
 La gestion d'intervalles, de cette façon, est l'ancêtre des animations en JS !
 
-<br/>
+<br />
 
 ### <a id="b3.8"></a> b.3.8) Documentation MDN
+
 Si vous souhaitez consulter la documentation MDN concernant la gestion d'événements, afin d'approfondir :
+
 - Introduction aux événements [[R.27]](/references/#r27)
 - Index & liste de tous les événements [[R.28]](/references/#r28)
 
-<br/>
+<br />
 
-## <a id="b4"></a> b.4) Création d'une IHM interactive
-## <a id="b4.1"></a> b.4.1) Introduction aux tutoriels 
+## <a id="b4"></a> b.4) Création d'une IHM classique & interactive: tutoriel
+
+### <a id="b4.1"></a> b.4.1) Introduction aux tutoriels
+
 Tout au long des modules du cours, nous allons développer de manière incrémentale,
 via une série de tutoriels, un site pour une pizzeria.
 
-Il est important que vous exécutiez et compreniez le code associé à ces tutoriels qui reprendront 
+Il est important que vous exécutiez et compreniez le code associé à ces tutoriels qui reprendront
 toutes les compétences attendues dans le cadre de ce cours.
 
-<br/>
+<br />
 
-Une fois un tutoriel réalisé, vous pourrez voir si vous avez bien acquis les compétences 
+Une fois un tutoriel réalisé, vous pourrez voir si vous avez bien acquis les compétences
 du module en vous attaquant aux exercices.
 
-<br/>
+<br />
 
-Veuillez créer les répertoires **web2/tuturials/pizzeria/hmi/classic**.
+Dans votre repo **web2**, veuillez créer les répertoires **/tuturials/pizzeria/hmi/classic**.
 
-Nous allons maintenant développer la version classique du site d'une pizzeria dans le dossier 
+Nous allons maintenant développer la version classique du site d'une pizzeria dans le dossier
 **classic**.
 
 Veuillez ajouter dans **classic** ces 3 répertoires :
--  **web2/tuturials/pizzeria/hmi/classic/img** : c'est là que seront reprises les photos ;
--  **web2/tuturials/pizzeria/hmi/classic/sound** : c'est là que les fichiers sonores seront ajoutés ;
--  **web2/tuturials/pizzeria/hmi/classic/stylesheets** : c'est là que le CSS sera donné.
 
-<br/>
+- **/tuturials/pizzeria/hmi/classic/img** : c'est là que seront reprises les photos ;
+- **/tuturials/pizzeria/hmi/classic/sound** : c'est là que les fichiers sonores seront ajoutés ;
+- **/tuturials/pizzeria/hmi/classic/stylesheets** : c'est là que le CSS sera donné.
 
-Par la suite, nous considérons que tous les chemins absolus démarrent dans le répertoire 
-**web2/tuturials/pizzeria/hmi/classic**.
+<br />
+
+Par la suite, nous considérons que tous les chemins absolus démarrent du répertoire
+**/tuturials/pizzeria/hmi/classic** (ou **/web2/tuturials/pizzeria/hmi/classic** si l'on 
+considère le nom du répertoire du repo).
 
 Veuillez ajouter ces 3 images dans **/img** :
-- <LinkFile name="pizza.jpg" target="_blank" download>Photo à utiliser comme background [R.29]</LinkFile>  
 
-- <LinkFile name="pizza-svgrepo-com.svg" target="_blank" download>SVG à utiliser comme favicon (ou icône de votre site web)</LinkFile>
-- <LinkFile name="js-logo.png" target="_blank" download>Logo à utiliser dans le footer</LinkFile>
+- <LinkFile name="pizza.jpg" target="_blank" download>
+    Photo à utiliser comme background [R.29]
+  </LinkFile>{" "}
 
-<br/>
+- <LinkFile name="pizza-svgrepo-com.svg" target="_blank" download>
+    SVG à utiliser comme favicon (ou icône de votre site web)
+  </LinkFile>
+- <LinkFile name="js-logo.png" target="_blank" download>
+    Logo à utiliser dans le footer
+  </LinkFile>
 
-Veuillez ajouter la musique du site dans **/sound** : 
-<LinkFile name="Infecticide-11-Pizza-Spinoza.mp3" target="_blank" download>Pizza Spinoza [R.30]</LinkFile>
+<br />
 
-<br/>
+Veuillez ajouter la musique du site dans **/sound** :
 
-## <a id="b4.2"></a> b.4.2) Les abbréviations Emmet
+<LinkFile name="Infecticide-11-Pizza-Spinoza.mp3" target="_blank" download>
+  Pizza Spinoza [R.30]
+</LinkFile>
 
-Nous allons d'abord créer la structure des éléments de la page au sein d'un nouveau fichier 
-**/index.html**. 
+<br />
+<br />
 
-Pour générer le corps de sa page HTML, on peut utiliser une abbréviation Emmet au sein de 
-VS Code ; pour cela tappez `**html:5**` dans le fichier **index.html** et donnez le titre 
+### <a id="b4.2"></a> b.4.2) Les abbréviations Emmet
+
+Nous allons d'abord créer la structure des éléments de la page au sein d'un nouveau fichier
+**/index.html**.
+
+Pour générer le corps de sa page HTML, on peut utiliser une abbréviation Emmet au sein de
+VS Code ; pour cela tappez **html:5** dans le fichier **index.html** et donnez le titre
 **Pizzeria** à votre page web.
 
-<br/>
+<br />
 
 Les abbréviations Emmet permettent donc d'automatiser l'écriture d'HTML.
 
-<br/>
+<br />
 
 En savoir plus sur les abbréviations Emmet : https://docs.emmet.io/abbreviations/ [[R.31]](/references/#r31)
 
-<br/>
+<br />
 
 ## <a id="b4.3"></a> b.4.4) Création de la structure de l'IHM
 
 Nous allons ajouter un header, un main et un footer à notre page web.
 
-<br/>
+<br />
 
 Le header reprendra un simple texte ("We love Pizza").
 
-<br/>
+<br />
 
-Le main contiendra seulement une balise **audio** pour offrir un lecteur contenant la 
+Le main contiendra seulement une balise **audio** pour offrir un lecteur contenant la
 chanson Pizza Spinoza.
 
 Le footer présentera un texte ("But we also love JS") et le logo de JS.
 
-<br/>
+<br />
 
 Voici ce que devrait donner à ce stade-ci votre **index.html** :
 
@@ -1286,18 +1311,25 @@ Voici ce que devrait donner à ce stade-ci votre **index.html** :
 </html>
 ```
 
-<br/>
+<br />
+
+Exécutez cette page web, même si ça n'est pas très esthétique,
+tous les éléments sont présents.
+
+<br />
 
 ## <a id="b4.4"></a> b.4.4) Mise en forme
-A l'aide de CSS, nous allons mettre en forme notre page web via un nouveau fichier 
+
+A l'aide de CSS, nous allons mettre en forme notre page web via un nouveau fichier
 à créer : **`/stylesheets/style.css`**.
 
-Nous souhaitons que le layout de la page fasse toujour, au minimum, 
+Nous souhaitons que le layout de la page fasse toujour, au minimum,
 la hauteur complète du navigateur ; pour ce faire nous allons :
-- utiliser un body repris comme un un élément Flexbox faisant 100% de hauteur. 
-- paramétrer le **main** pour lui permettre de remplir l'espace disponible. 
 
-<br/>
+- utiliser un body repris comme un un élément Flexbox faisant 100% de hauteur.
+- paramétrer le **main** pour lui permettre de remplir l'espace disponible.
+
+<br />
 
 Ainsi, le footer donnera l'effet d'être "sticky" en bas de la page.
 
@@ -1311,15 +1343,12 @@ html, body {
     margin: 0;
 }
 
-html {    
-    background-image : url(../img/pizza.jpg);
-    background-size : cover;
-}
-
 body { 
     /*to easily deal with sticky footer*/
     display: flex;
     flex-direction: column;
+    background-image : url(../img/pizza.jpg);
+    background-size : cover;
 }
 
 
@@ -1347,25 +1376,25 @@ footer h1{
 }
 ```
 
-Pour appliquer la stylesheet à **index.html**, il suffit d'ajouter cette balise 
+Pour appliquer la stylesheet à **index.html**, il suffit d'ajouter cette balise
 dans **index.html** à la fin de la balise **head** :
 
 ```html
-<link rel="stylesheet" href="./stylesheets/style.css">
+<link rel="stylesheet" href="./stylesheets/style.css" />
 ```
 
-<br/>
+<br />
 
 Pour ajouter cette balise, il est possible de juste taper l'abbréviation Emmet "link:css" dans VS Code.
 Il ne reste plus qu'à ajouter le chemin vers le fichier au sein de **href**.
 Dans la valeur de **href**, si vous tapez "./", vous verrez tous les fichiers et répertoires disponibles.
 
-<br/>
+<br />
 
-👍 Il est recommandé d'utiliser un chemin relatif dans **href** et d'utiliser l'autocomplétion 
+👍 Il est recommandé d'utiliser un chemin relatif dans **href** et d'utiliser l'autocomplétion
 afin de ne pas se tromper dans l'écriture du chemin d'un fichier.
 
-<br/>
+<br />
 
 Il est temps d'ajouter le fichier favicon comme logo pour notre site.
 
@@ -1373,25 +1402,30 @@ Tapez l'abbréviation Emmet "link:favicon" à la fin de la balise **head** d'**i
 Une balise de ce genre doit avoir été ajoutée :
 
 ```html
-<link rel="shortcut icon" href="./img/pizza-svgrepo-com.svg" type="image/svg+xml">
+<link
+  rel="shortcut icon"
+  href="./img/pizza-svgrepo-com.svg"
+  type="image/svg+xml"
+/>
 ```
 
-<br/>
+<br />
 
 La page web de la pizzeria devrait paraître pas trop mal à ce stade ci.
 
-<br/>
+<br />
 
 ## <a id="b4.5"></a> b.4.5) Ajout d'interactivité
+
 Nous souhaitons maintenant rendre cette page un peu plus interactive.
 
-Nous nous sommes rendu compte que les clients de la pizzeria ont des difficultés à cliquer 
-juste sur le bouton Play / Stop du lecteur. 
+Nous nous sommes rendu compte que les clients de la pizzeria ont des difficultés à cliquer
+juste sur le bouton Play / Stop du lecteur.
 
 Dès lors, nous allons permettre aux visiteurs de cliquer n'importe où
-sur la page pour démarrer ou stopper la musique. 
+sur la page pour démarrer ou stopper la musique.
 
-Nous allons ajouter un script **index.js** gérant les clics des utilisateurs sur la 
+Nous allons ajouter un script **index.js** gérant les clics des utilisateurs sur la
 page :
 
 ```js
@@ -1407,25 +1441,340 @@ function startOrStopSound() {
 }
 ```
 
-<br/>
+<br />
 
-Ici, à l'aide d'un script JS et du DOM, nous pouvons accéder à l'HTMLAudioElement 
+Ici, à l'aide d'un script JS et du DOM, nous pouvons accéder à l'HTMLAudioElement
 contenu dans la page web.
 Nous avons ensuite à toutes les propriétés et fonctions mises à disposition par cet objet
 
-<br/>
+<br />
 
 Pour ajouter le fichier JS externe à la page HTML à la fin de la balise **body**,
-vous pouvez utiliser une abbréviation Emmet "script:src" et il ne vous restera plus 
+vous pouvez utiliser une abbréviation Emmet "script:src" et il ne vous restera plus
 qu'à indiquer le chemin vers **index.js** au sein de **src**.
 
 ```html
 <script src="./index.js"></script>
 ```
 
-<br/>
+<br />
 
-Voila, vous devriez pouvoir bien exécuter la HomePage du site de la pizzeria qui traite des 
+Voila, vous devriez pouvoir bien exécuter la HomePage du site de la pizzeria qui traite des
 clics n'importe où sur la page.
 
-En cas de souci, vous pouvez accéder au code final de ce tutorial [ici](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/step-2-optionA).
+<br />
+
+## <a id="b4.6"></a> b.4.6) Ajout d'une librairie externe
+
+Nous souhaiterions ajouter une librairie externe à notre application et l'utiliser afin
+d'afficher une petite animation sur notre HomePage.
+
+<br />{" "}
+
+Après quelques recherches dans google, nous découvrons la librairie 
+[Animate.css](https://animate.style/) [[R.32]](/references/#r32).
+
+<br />
+
+En lisant la documentation, nous voyons que pour ajouter la librairie à notre application,
+il suffit d'ajouter cette balise à une page HTML :
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
+```
+
+<br />
+
+Et pour utiliser cette librairie, nous pouvons avoir un titre qui rebondit en utilisant une
+classe CSS de cette façon, directement au sein d'une page HTML :
+
+```html
+<h1 class="animate__animated animate__bounce">We love Pizza</h1>
+```
+
+<br />
+
+Toujours en lisant la documentation, si nous souhaitons ajouter un délai au rebondissement,
+nous pouvons le faire de cette façon, à l'aide d'une classe CSS :
+
+```html
+<h1 class="animate__animated animate__bounce animate__delay-2s">
+  But we also love JS
+</h1>
+```
+
+<br />
+
+Veuillez mettre à jour votre page **index.html** :
+
+```html numbered {9-12,16,36-38}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizzeria</title>
+    <link rel="icon" href="./img/pizza-svgrepo-com.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <h1 class="animate__animated animate__bounce">We love Pizza</h1>
+    </header>
+
+    <main>
+      <p>My HomePage</p>
+      <p>
+        Because we love JS, you can also click on the header to stop / start the
+        music ; )
+      </p>
+
+      <audio id="audioPlayer" controls autoplay>
+        <source
+          src="./sound/Infecticide-11-Pizza-Spinoza.mp3"
+          type="audio/mpeg"
+        />
+        Your browser does not support the audio element.
+      </audio>
+    </main>
+
+    <footer>
+      <h1 class="animate__animated animate__bounce animate__delay-2s">
+        But we also love JS
+      </h1>
+      <img src="./img/js-logo.png" alt="" />
+    </footer>
+
+    <script src="./index.js"></script>
+  </body>
+</html>
+```
+
+<br />
+
+Nous avons très facilement ajouté deux animations à notre application web sans effort,
+en nous reposant sur une librairie externe.
+
+<br />
+
+Si tout fonctionne bien, faites un commit de votre repo (**web2**) avec le message
+"**classic-hmi**".
+
+<br/>
+
+En cas de souci, vous pouvez accéder au code final de ce tutorial ici :
+[classic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/classic-hmi).
+
+<br />
+
+## <a id="c"></a> c) Exercice 1.1 : Créer un repository local et distant pour gérer vos exercices
+
+Veuillez créer un repository local qui reprendra tous les
+exercices que vous allez réaliser.
+
+Ce repository doit reprendre la structure de répertoires
+que vous allez mettre en place pour couvrir les 8 modules
+de cours.
+
+<br />
+
+Voici comment nous souhaitons que vous organisiez
+cette structure de répertoires :
+
+- **`/web2`**
+  - **`/web2/exercises/module1`**
+  - **`/web2/exercises/module2`**
+  - **`/web2/exercises/module3`**
+  - **`/web2/exercises/module4`**
+  - **`/web2/exercises/module5`**
+  - **`/web2/exercises/module6`**
+  - **`/web2/exercises/module7`**
+  - **`/web2/exercises/module8`**
+
+<br />
+
+Veuillez créer un web repo portant le nom **web2**.
+
+<br/>
+
+N'oubliez pas d'ajouter un fichier **`.gitignore`** à votre repo :
+
+```
+# ignore all node_modules folders and nested folders & files
+node_modules
+# ignore the specific VS Code configuration parameters
+.vscode
+# ignore the specific packages versions installed by the developper
+package-lock.json
+# ignore the development environment variables (if any)
+.env
+# ignore all dist directories files (and subdirectories) from .gitignore
+dist/*
+# but (re)include specific dist directory files, e.g.
+#!frontend-essentials/step-1/dist
+```
+
+<br/>
+
+Si ça n'est pas déjà fait, veuillez 
+[installer Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
+[[R.34]](/references/#r34).
+
+
+<AuthenticatedBlock>
+
+Pour ce faire, veuillez :
+
+- Créer votre Gitlab repository dans le Gitlab offert par Vinci. Pour vous logger sur la plateforme Gitlab de Vinci, accédez à https://gitlab.vinci.be/ , puis cliquez sur **Sign in with Azure AD**.
+- Créer un projet "private" sur GitLab portant le **web2**.
+- Ajouter comme membre les deux enseignants associés au cours (rôle de "Developer") :
+  - Sébastien Strebelle
+  - e-Baron (Raphael Baroni)
+  - NB : pour ce faire, dans l'interface web de GitLab : **Settings**, **Members**, **Invite member**, **Choose a role permission : Developer**.
+
+<br />
+
+Veuillez soumettre le lien vers votre web repository (qqch du genre https://gitlab.vinci.be/votre_username/web2.git) via le devoir associé sous Moodle.
+Pour trouver le lien vers votre repo, il vous suffit de cliquer sur **Clone** dans votre projet sous Gitlab, et de prendre l'info associée à **Clone with HTTPS**.
+
+</AuthenticatedBlock>
+
+<br />
+
+NB : Lorsque vous allez ajouter une remote pour vous
+synchroniser avec votre web repository,
+nous vous conseillons d'utiliser l'URL associée à **Clone with HTTPS**.
+Si vous souhaitez malgré tout vous connecter en SSH, vous pouvez consulter cet article : https://dev.to/sndrx/how-to-set-up-an-ssh-key-and-use-it-in-gitlab--42p1.
+
+<br />
+
+## <a id="d"></a> d) Exercice 1.2 : 1er script externe
+
+Via un script JS externe, veuillez créer une application web affichant,
+au chargement d'une page HTML, un pop-up dont le message reprend
+la date et l'heure au moment de l'affichage de ce pop-up.
+
+<br />
+
+Ce même message doit être affiché dans la console.
+
+Pour ce faire, vous allez créer, puis appeler, une fonction **addDateTime(message)** qui renvoie une string concaténant :
+
+- La date et l'heure à l'appel de la fonction
+- Le message passé en argument de la fonction
+
+<br />
+
+🤝 Vous pouvez vous aider du code donné ci-dessous :
+
+```js
+const dateTimeNow = new Date();
+console.log(dateTimeNow.toLocaleDateString()); // 17/08/2020
+console.log(dateTimeNow.toLocaleTimeString()); // 13:26:15
+```
+
+<br />
+
+Autre référence pouvant vous aider :
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+
+<br />
+
+Le code de votre application web doit se retrouver dans votre repository local et
+votre web repository (normalement appelé **web2**) dans un répertoire nommé
+**/exercises/module1/1.2**.
+
+<br />
+
+## <a id="e"></a> e) Exercice 1.3 : compteur d'événements
+
+Veuillez réaliser une application web permettant d'afficher un compteur de clics sur votre
+page web.
+
+<br />
+
+Affichez le message suivant sur votre page web :
+
+- Au 5ème clic : « Bravo, bel échauffement ! »
+- Au 10ème clic : « Vous êtes passé maître en l'art du clic ! »
+
+<br />
+
+N'oubliez pas, bien sûr, d'afficher le compteur de clics sur votre page.
+
+<br />
+
+#### 🤝 Tips
+
+- Vous avez besoin d'un container pour afficher de l'information.
+  Vous pouvez utiliser la propriété **innerHtml** ou **textContent** d'un paragraphe
+  **`<p>`** ou d'un **`<span>`** pour afficher votre compteur.
+- Vous pouvez faire de même pour afficher votre message.
+- Vous pouvez ajouter un gestionnaire d'événement sur l'objet **window** de votre navigateur.
+
+<br />
+
+Le code de votre application web doit se retrouver dans votre repository local et
+votre web repository (normalement appelé **web2**) dans un répertoire nommé
+**/exercises/module1/1.3**.
+
+<br />
+
+## <a id="f"></a> f) Exercice 1.4 : événements différés dans le temps
+
+Veuillez réaliser une application web permettant d'afficher un feu rouge.
+
+<br />
+
+Votre feu rouge devra continuellement alterner l'affichage de trois couleurs :
+
+- rouge pendant 2 secondes
+- orange pendant 2 secondes
+- vert pendant 2 secondes
+
+<br />
+
+Lors d'un clic sur votre feu rouge, veuillez stopper ou réactiver le rafraîchissement
+de son affichage.
+
+<br />
+
+#### 🤝 Tips
+
+- Vous avez besoin d'un container pour afficher une couleur.
+  Vous pourriez utiliser la propriété **style.backgroundColor** d'une div.
+- Quelles sont les fonctions permettant de lancer & stopper des appels à intervalles de
+  temps bien déterminés ? N'hésitez pas à jeter un oeil
+  au §b.3.7) [Gestion d'intervalles de temps](#b3.7).
+
+<br />
+
+Le code de votre application web doit se retrouver dans votre repository local et
+votre web repository (normalement appelé **web2**) dans un répertoire nommé
+**/exercises/module1/1.4**.
+
+<br />
+
+## <a id="g"></a> g) 🍬 Exercice 1.5 : autres événements
+
+N'hésitez pas à libérer votre créativité et approfondir la gestion des événements.
+
+Vous pourriez compléter l'exercice 1.3 en gérant d'autres événements que le clic.
+
+<br />
+
+Voici quelques idées :
+
+- Affichez des informations cachées de votre page lorsque les utilisateurs
+  passent la souris sur une partie bien précise de la page :
+  par exemple, apparition d'une image quand la souris se trouve sur sa zone d'affichage,
+  disparition de l'image lorsque la souris en sort (ou ne s'y trouve pas).
+- Réalisez une action spécifique lors d'un clic droit sur votre page…
+- C'est votre application web, qu'est ce qui serait chouette à ajouter ? 😉
