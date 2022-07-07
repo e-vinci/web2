@@ -545,7 +545,7 @@ Vérifiez bien que tout est fonctionnel !
 Si tout fonctionne bien, faites un commit de votre repo (**web2**) avec le message
 "**modern-hmi**".
 
-En cas de souci, vous pouvez accéder au code de cette étape du tutorial ici :
+En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici :
 [modern-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-hmi).
 
 # <a id="b"></a>b) Développement d'IHM esthétiques
@@ -988,7 +988,7 @@ Voila à quoi doit ressembler vodre **index.html** suite aux changements :
 Si tout fonctionne bien, faites un commit de votre repo (**web2**) avec le message
 "**modern-esthetic-hmi**".
 
-En cas de souci, vous pouvez accéder au code de cette étape du tutorial ici :
+En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici :
 [modern-esthetic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-esthetic-hmi).
 
 # <a id="c"></a>c) Développement d'IHM dynamiques
@@ -1514,6 +1514,10 @@ function getDrinksTableAsNode(drinks) {
 }
 ```
 
+Nous avons ajouté deux écouteurs d'événements à la **table** en cours de construction. 
+Notons que ces écouteurs peuvent être ajoutés avant ou après avoir 
+fait l'ajout de la table dans le "DOM tree", cela ne change rien.
+
 Regardez le code d'**index.js** et imaginez que vous souhaitiez ajouter une légende à la liste 
 de boissons, en utilisant des Nodes :
 
@@ -1546,7 +1550,8 @@ se trouvera l'image lors du build.
 
 Pour bien gérer les URL au sein de votre JS, vous devez d'abord importer vos assets. 
 Voici un exemple pour ajouter une image dynamiquement au sein du **`<footer>`** : 
-```javascript
+
+```js
 import pizzaImage from './src/img/pizza2.png';
 
 renderPizzaImage(pizzaImage);
@@ -1559,6 +1564,7 @@ function renderPizzaImage(pizzaUrl) {
   footer.appendChild(image);
 }
 ```
+
 Le type du Asset Module configuré dans **webpack.config.js** est **'asset/resource'**.
 Cela signifie que pour chaque fichier importé dans le JS, il sera émis dans le "output directory",
 (ou "build directory"), généralement dans **/dist**, avec comme non de fichier qqch qui ressemble 
@@ -1573,7 +1579,7 @@ Veuillez mettre à jour votre site de la pizzeria pour afficher cette image dans
 Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
 "**modern-dynamic-hmi**".
 
-En cas de souci, vous pouvez accéder au code de cette étape du tutorial ici :
+En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici :
 [modern-dynamic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-dynamic-hmi).
 
 Si vous souhaitez plus d'informations sur la gestion des assets via Webpack, vous 
