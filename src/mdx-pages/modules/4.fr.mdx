@@ -7,19 +7,24 @@ description: "Création de services web, de RESTful API & requêtes clientes"
 Ce module vous offre principalement la création de services web et la mise en place de 
 requêtes clientes pour tester des RESTful API.
 
-<br/>
-
 Voici les sujets traités :
 - a) [Introduction au backend](#a)
 - b) [Introduction à Node.js](#b)
-    - b.1) [Introduction](#b1)
-    - b.2) [Ou mettre du code Node.js ?](#b2)
-    - b.3) [Les modules CommonJS](#b3)
-    - b.4) [Introduction aux packages](#b4)
-
-
-
-<br/>
+  - b.1) [Introduction](#b1)
+  - b.2) [Ou mettre du code Node.js ?](#b2)
+  - b.3) [Les modules CommonJS](#b3)
+  - b.4) [Introduction aux packages](#b4)
+- c) [Introduction à Express](#c)
+  - c.1) [Introduction](#c1)
+  - c.2) [Créer une application Express "from scratch"](#c2)
+  - c.3) [Créer une application Express via un générateur](#c3)
+- d) [Introduction aux RESTful API](#d)
+  - d.1) [Introduction](#d1)
+  - d.2) [Conventions REST](#d2)
+- e) [RESTful API via Express](#e)
+  - e.1) [Intro](#e1)
+  - e.2) [](#e2)
+  - e.3) [](#e3)
 
 # <a id="a"></a>a) Introduction au backend
 ## a.1) Frontend, backend, c'est quoi ?
@@ -326,7 +331,8 @@ Tous les packages associés à une app, ses dépendances, sont données dans le 
 C'est le fichier qui décrit la configuration d'un projet JS.
 
 On peut manuellement créer ce fichier à l'aide de la commande **`npm init`** 
-ou **`npm init -y`** si l'on souhaite quelque chose de plus interactif.
+si l'on souhaite quelque chose de plus interactif
+ou **`npm init -y`** si l'on souhaite un fichier avec le minimum autogénéré.
 
 Voici un exemple de fichier **package.json** :
 
@@ -375,6 +381,28 @@ mettre ce dossier sur vos web repository, via Git.
 Pour ce faire, n'oubliez pas d'inclure un fichier **.gitignore** dans vos repos 
 pour ignore **node_modules**.
 
+**package.json** indique les scripts de démarrage, 
+en fonction de la façon dont nous souhaitons démarrer l'application.
+
+```json
+  "scripts": {
+    "debug": "npm run dev",
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "lint": "eslint **/*.js",
+    "lint:fix": "npm run lint -- --fix"
+  },  
+```
+
+Au regard de cette configuration, on peut démarrer l'application à l'aide de **`npm start`**
+ou **`npm run start`**, 
+ce qui exécutera le script **`./bin/www`** à l'aide de **node**.  
+On pourrait aussi démarer l'application à l'aide de **`npm run dev`**, ce qui démarrerait l'application 
+à l'aide de **nodemon**, un outil permettant de monitorer les changements de fichiers et de 
+redémarrer automatiquement le serveur en cas de changement.
+
+NB : nous verrons plus tard cet outil **nodemon** pour simplifier le développement.
+
 ### b.4.4) Installer un package
 Pour installer un package (ou une dépendance), 
 il suffit de faire : **`npm i nomDuPackage`** ou **`npm install nomDuPackage`**.
@@ -410,3 +438,262 @@ ce qui impose que vous deviez faire migrer votre code avant que celui-ci soit fo
 Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à jour de tous vos 
 packages d'un coup, de revenir à la situation initiale, et de faire l'upgrade de chaque 
 package listé dans **package.json** individuellement.
+
+# <a id="c"></a> c) Introduction à Express
+## <a id="c1"></a>  c.1) Introduction
+Voici le moto du framework Express: "Fast, unopinionated, minimalist web framework for Node.js" 
+[Express](https://expressjs.com/)
+[[R.50]](/references/#r50).
+
+Express est un framework qui permet de rapidement créer des applications en Node.js. 
+
+Il est possible de créer une application Express soit "from scratch", soit à partir 
+d'un boilerplate.
+
+Dans le cadre de ce cours, nous allons plutôt utiliser des boilerplates 
+pour générer des applications. Néanmoins, il est intéressant de voir comment créer 
+une application "from scratch".
+
+## <a id="c2"></a> c.2) Créer une application Express "from scratch"
+Il faut d'abord créer un répertoire pour votre application.
+
+Au sein de votre repo **web2**, veuillez créer le répertoire **/tutorials/express-static-file-server**.
+
+Veuillez, via le terminal, entrer dans ce répertoire.
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**/tuturials/express-static-file-server**.
+
+Dans ce répertoire, veuillez générer le fichier de configuration du projet (**package.json**) :
+**`npm init`**.  
+Veuillez répondre aux questions pour configurer le point d'entrée de l'application comme étant 
+le script **index.js**.
+
+Veuillez configurer le script de démarrage de votre application en ajoutant cette ligne au sein 
+de **package.json** :
+
+```json {2}
+  "scripts": {
+    "start": "node index.js",
+```
+
+Ainsi, notre application pourra démarrer à l'aide de la commande **`npm start`**.
+
+A ce stade-ci, voila à quoi devrait ressembler votre **package.json** :
+
+```json
+{
+  "name": "express-static-file-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yourName",
+  "license": "ISC"
+}
+```
+
+Veuillez installer Express, son package : 
+
+```bash
+npm i express
+```
+
+Nous allons créer un simple serveur de fichiers statiques à l'aide du 
+middleware **express.static**, afin de servir tous les fichiers qui se trouveront dans 
+le répertoire **public**.
+
+Tout d'abord, téléchargez ce zip : <LinkFile name="public.zip" target="_blank" download>fichiers statiques</LinkFile>.
+
+Veuillez désarchiver ce répertoire dans votre projet afin d'avoir les fichiers statiques 
+qui seront partagés par votre serveur au sein de **/public**.  
+Vérifiez bien que vous n'avez qu'un seul répertoire **/public** et pas un **/public/public**.
+
+Il ne reste plus qu'à créer le serveur. Veuillez créer le fichier **/index.js** et y ajouter 
+ce code :
+
+```js
+const express = require('express');
+const app = express();
+
+app.use(express.static('public'));
+
+const PORT = 7777;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+On voit que juste cette ligne permet la mise en place d'un serveur de fichier statique, 
+via le middleware **express.static** :
+
+```js
+app.use(express.static('public'));
+```
+
+Et pour démarrer un serveur web qui écoute sur le port **7777**, ces lignes sont suffisantes :
+```js
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+Veuillez lancer l'application en tapant cela dans votre terminal au sein du répertoire du projet :
+
+```bash
+npm start
+```
+
+Pour accéder au serveur de fichiers, vous pouvez le faire via un browser : 
+[http://localhost:7777](http://localhost:7777)
+
+Si tout se passe bien, vous devriez avoir accès au site de la pizzeria développé au module 1 de 
+ce cours.
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
+"**express-static-file-server**".
+
+En cas de souci, vous pouvez accéder au code de cette démo ici :
+[express-static-file-server](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/express-static-file-server/).
+
+## <a id="c3"></a> c.3) Créer une application Express via un générateur
+Le générateur d'applications **express-generator** permet de générer le boilerplate 
+d'une application Express de base.
+
+A l'aide du générateur d'applications Express, vous allez créer une application Express 
+sans "view engine" car nous n'allons pas faire du Server Side Rendering 
+dans le cadre de ce cours.
+
+Veuillez ouvrir un terminal au sein de VS Code au niveau du répertoire **/tutorials**.
+
+Ensuite, créez une application nommée **basic-generated-app** en tapant :
+
+```bash
+npx express-generator --no-view basic-generated-app
+```
+
+**npx** permet de directement exécuter un package en mode de commandes en installant une copie 
+locale et temporaire de ce package (et de ses dépendances).
+
+Veuillez installer les dépendances de votre app et la démarrer :
+
+```bash
+cd basic-generated-app
+npm i 
+npm start
+```
+
+Si vous copier / coller le contenu du répertoire **/public** du tutoriel précédent 
+dans le répertoire **public** généré, l'application fournira le même résultat que la précédente, 
+mais sur un port différent : [http://localhost:3000](http://localhost:3000).
+
+Nous allons découvrir en détails ce qui a été généré par **express-generator** un peu plus tard.
+
+Actuellement, on remarquera : 
+- le point d'entrée de l'application est **./bin/www** au regard de **package.json**;
+- que **./bin/www** démarre un serveur web sur le port **3000** en lui demandant de s'occuper 
+de démarrer tous les middlewares en lui passant tout ce qui est exporté de **app.js**.
+- **app.js** met aussi à disposition un serveur de fichier statiques servant le contenu du répertoire 
+**public**.
+
+Avant d'aller dans les détails d'Express que nous souhaitons utiliser pour développer des 
+services web de type RESTful, nous allons voir ce que nous entendons par RESTful.
+
+# <a id="d"></a> d) Introduction aux RESTful API
+## <a id="d1"></a> d.1) Introduction
+**REST** vient de **RE**presentational **S**tate **T**ransfer : c'est un 
+style architectural pour construire des applications web extensibles, où les client et serveurs
+sont séparés.
+
+Dans une application REST, une **interface uniforme** (ou API) est définie afin de permettre à des 
+applications de coopérer.
+
+Toute application REST se doit d'être **stateless** : il n'y a pas d'enregistrement du contexte 
+d'une session sur le serveur pour comprendre une requête d'un client.  
+Ainsi, les requêtes clientes ne dépendent pas d'un historique de requêtes, elles sont autoportantes.
+
+Une RESTful API met à disposition des **opérations** sur des **ressources** via :
+- des **URI** ; il y a donc une adresse unique pur chaque ressource ;
+- des **méthodes HTTP** (GET, POST, DELETE, PUT) représentant les opérations possibles (CRUD, opérations de type Create, Read, 
+Update ou Delete) ;
+- des **représentations** des ressources compréhensibles tant par les clients que les serveurs ; 
+les ressources sont représentées par leur "Media type" : **JSON**, **XML**, **HTML**, **TXT**, **JPEG**... ;
+dans le cadre de ce cours, les ressources seront quasi toujours représentées via du **JSON**.
+
+## <a id="d2"></a> d.2) Conventions REST
+
+ Le type d'opération CRUD (Create, Read, Update ou Delete) sur une ressource est défini 
+ via la méthode http de la requête.  
+ Les opérations possibles sont :
+  - GET = Read
+  - POST = Create
+  - DELETE = Delete 😉
+  - PUT (ou PATCH) = Update
+
+Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTful API 
+permettant de gérer des films :
+
+| URI | Méthode HTTP | Opération |
+|---|---|---|
+| **films** | GET | READ ALL : Lire toutes les ressources de la collection |
+| **films?minimum-duration=value** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
+| **films/{id}** | GET | READ ONE : Lire la ressource identifiée |
+| **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
+| **films/{id}** | DELETE | DELETE ONE : Effacer la ressource identifiée |
+| **films/{id}** | PUT | UPDATE ONE : Replacer l'entièreté de la ressource par les données de la requête |
+
+Si cette API est hébergée à l'URL racine **http://ilovemoovies.org**, alors nous pourrions identifier 
+une ressource de type **films** de cette façons : **http://ilovemoovies.org/films/10**.
+
+Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : 
+**http://ilovemoovies.org/films/10**.
+
+# <a id="e"></a> d) RESTful API via Express
+## <a id="e1"></a> e.1) Introduction
+Nous avons précédemment généré une application Express à l'aide du générateur d'applications.
+
+Veuillez avoir devant vous le code de cette application car nous allons découvrir le rôle des 
+répertoires et fichiers importants générés par **express-generator**.
+
+Nous allons maintenant nous attarder à comprendre les concepts associés à l'utilisation d'Express,
+mais en focalisant sur ceux utiles aux applications REST.
+
+Voici comment une requête faite à une application Express est traitée :
+
+<ScrollableImage name="express-flow.png" minWidth="800px" maxWidth="800px" />
+
+<figcaption>Flux d'une requête vers une application Express [R.51]</figcaption>
+
+Dans ce flux de traitement d'une requête, c'est la seule responsabilité du dévelopeur est de 
+s'occuper de la partie "Middleware".
+
+La grande majorité du code écrit sera du "routing middleware" : notre code s'occupera de répondre
+à des requêtes clientes pour différentes URLs et méthodes HTTP (GET, POST...).
+
+## <a id="e2"></a> e.2) Configuration et démarrage d'une application Express
+On l'a déjà vu, la configuration d'une application Express, comme toutes applications Node.js, 
+est faite au sein de **package.json**.
+
+En fonction de comment est configuré l'application, on la démarrera via **npm start**, 
+**npm run dev**...
+
+## <a id="e3"></a> e.3) Serveur web intégré
+Un serveur web intégré à nos applications Express est démarré au sein du fichier **bin/www**.
+
+C'est ce fichier que vous devez mettre à jour si par exemple vous souhaitez que votre application 
+fonctionne sur un port différent que le port par défaut **3000**.
+
+Un serveur intégré est différent d'une application web offerte par un serveur standalone comme 
+Apache, Tomcat... C'est un serveur très léger dédié à votre application.
+
+## <a id="e4"></a> e.4) Les middlewares Express
+
+Les middlewares s'occupe du traitement des requêtes des clients et de la préparation des réponses :
+
+<ScrollableImage name="middlewares.jpg" minWidth="638px" maxWidth="638px" />
+
+<figcaption>Les fonctions Middleware et Express [R.52]</figcaption>
