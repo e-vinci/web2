@@ -690,10 +690,359 @@ fonctionne sur un port différent que le port par défaut **3000**.
 Un serveur intégré est différent d'une application web offerte par un serveur standalone comme 
 Apache, Tomcat... C'est un serveur très léger dédié à votre application.
 
-## <a id="e4"></a> e.4) Les middlewares Express
+## <a id="e4"></a> e.4) Les fonctions middleware en Express
+### e.4.1) C'est quoi une fonction middleware ?
 
-Les middlewares s'occupe du traitement des requêtes des clients et de la préparation des réponses :
+Les fonctions middleware s'occupent du traitement des requêtes des clients 
+et de la préparation des réponses :
 
 <ScrollableImage name="middlewares.jpg" minWidth="638px" maxWidth="638px" />
 
 <figcaption>Les fonctions Middleware et Express [R.52]</figcaption>
+
+Une fonction du middleware a accès aux objets de la requête et de la réponse et peut m
+odifier la requête et la réponse pour ajouter, par exemple, un log, pour autoriser un utilisateur,
+pour parser des données Json vers des objets JS, pour servir des fichiers statiques, pour faire 
+un traitement pour une route bien spécifique...
+
+Si une fonction du middleware ne termine pas le cycle de requête-réponse, elle doit appeller 
+**`next()`** pour permettre à d'autres fonctions qui sont dans la queue de pouvoir être exécutées.
+
+Voici les éléments associés à l'appel d'une fonction middleware :
+
+<ScrollableImage name="middleware-function.png" minWidth="944px" maxWidth="944px" />
+
+<figcaption>Une fonction middleware [R.53]</figcaption>
+
+Il existe différent types de fonctions middleware ayant différents cas d'utilisation :
+- Application-level middleware : la fonction middleware est liée à l'objet **app** ;
+- Router-level middleware : la fonction middleware est liée à un objet de type **express.router()**, 
+elle est très similaire au "application-level middleware" ;
+- Error-handling middleware : fonction de gestion des erreurs qui se définit comme les fonctions 
+app ou router level middleware, mais qui contient un quatrième paramètre nommé **error**.
+- Built-in middleware : fonctions middleware mises à disposition par Express directement :
+  - **express.static** : pour servir des assets statiques ;
+  - **express.json** : pour parser le body de requêtes en JSON vers des objets JS ;
+  - **express.urlencoded** : pour parser des requêtes dont le body est de type "urlencoded" (type 
+  par défaut des formulaires) vers des objets JS. 
+- Third-party middleware : fonctions mises à disposition par la communauté et installables via 
+npm, comme par exemple la fonction middleware **cookieParser**.
+
+Si vous souhaitez approfondir, nous vous conseillons [la documentation d'Express](https://expressjs.com/en/guide/using-middleware.html#middleware.third-party)
+[[R.54]](/references/#r54).
+
+La suite fournit quelques exemples de fonctions middleware qui seront plus tard rencontrées 
+dans notre code ou extraits de [[R.54]](/references/#r54).
+
+### e.4.2) Application-level middleware : exemple
+Voici une fonction middleware qui sera exécutée à chaque fois qu'il y a une requête, quelque soit 
+le chemin (ou path) associé à la requête :
+
+```js
+var express = require('express');
+var app = express();
+app.use((req, res, next) => {
+  console.log('Time:', Date.now());
+  next();
+});
+```
+
+### e.4.3) Router-level middleware : exemple
+
+```js
+var router = express.Router();
+
+router.use((req, res, next) => {
+  console.log('Time:'', Date.now());
+  next();
+});
+
+router.get('/',(req, res, next) => {
+  return res.json(menu);
+});
+```
+
+La première fonction middleware ne contient pas de méthode HTTP, ni de chemin, elle s'applique 
+donc à toutes les routes associées au router.
+
+```js
+var pizzaRouter = require('./routes/pizzas');
+app.use('/pizzas', pizzaRouter);
+```
+
+Si le router est utilisé de cette façon, la première fonction s'applique donc à toutes les routes 
+qui commencent par '/pizzas'.
+
+La deuxième fonction middleware s'appliquent seulement aux requêtes de type GET sur la route (ou 
+le chemin) '/pizzas' (équivalent de la route '/pizzas/').
+
+### e.4.4) Error-handling middleware : exemple
+Ce type de middleware est à définir après tous les middlewares pouvant générer une erreur et 
+est appelé via **`next(err)`** dans une fonction middleware où un souci est détecté.
+
+Voici la définition d'un "error handler" :
+
+```js
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+});
+```
+
+Attention, il y a bien 4 paramètres au lieu des 3 habituels pour les autres types de fonctions 
+middleware.
+
+### e.4.5) Built-in middleware & third-party middleware : exemple
+
+```js
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+var app = express();
+
+app.use(logger('dev')); // HTTP request logger
+app.use(express.json()); // Parse requests with JSON payloads
+app.use(express.urlencoded({ extended: false })); // Parse requests with URL-
+                                                  // encoded payload 
+app.use(cookieParser()); // Parse cookie header (req.cookies)
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static assets
+```
+
+## <a id="e5"></a> e.5) Routing en Express
+### e.5.1) Définition d'une route
+#### e.5.1.1) Concepts
+Le "Routing", ou routage, contrôle la réponse à une requête client pour un 
+**endpoint** / **URI** / **PATH** et une méthode HTTP.
+
+On va définir une route soit sur l'objet **app**, soit sur un **router**.  
+Un objet de type **router** permet de regrouper toutes les routes associées à un type de 
+ressources.
+
+On définit une route de cette façon : **app.** ou **router.**  **METHOD(PATH, MIDDLEWARE_FUNCTION)**.
+
+👍 Dans notre cours, nous vous recommandons d'organiser vos routes par type de ressources et donc 
+de mettre en place un router.
+
+#### e.5.1.2) Création d'un projet
+Nous allons maintenant réaliser un tutoriel pour créer notre toute première RESTful API.
+Nous allons créer une API pour permettre à notre site web de la pizzeria de bénéficier d'opérations 
+sur des ressources de type "pizzas".
+
+Dans votre repo **web2**, veuillez créer le répertoire **/tutorials/pizzeria/api**.
+
+Veuillez ouvrir un terminal au niveau de ce répertoire.
+
+Dans ce répertoire, veuillez générer une application express nommée **basic**. 
+Pour ce faire :
+
+```bash
+npx express-generator --no-view basic
+```
+
+Veuillez installer les dépendances :
+```bash
+cd basic
+npm i
+```
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**/tuturials/pizzeria/hmi/modern** (ou **/web2/tuturials/pizzeria/hmi/modern** si l'on 
+considère le nom du répertoire du repo).
+
+Nous allons développer des RESTful API qui ne possèdent pas de serveur de fichiers statiques. 
+On n'a donc pas besoin d'avoir un répertoire **/public** ni d'un serveur statique.  
+On peut donc effacer le répertoire **/public** et supprimer le middleware 
+de serveur de fichiers statiques au sein de **/app.js** : 
+
+```js
+app.use(express.static(path.join(__dirname, 'public'))); 
+```
+
+
+#### e.5.1.3) Opération de lecture
+Nous souhaitons par commencer à développer une opération permettant de lire toutes les ressources 
+de type "pizzas". En effet, nous aimerions plus tard que notre IHM reçoive de notre API le menu 
+des pizzas.
+
+Veuillez créer un router pour traiter des ressources **/pizzas** au sein de **/routes/pizzas.js**.
+Le plus simple est d'adapter **indexRouter** dans **app.js** en **pizzaRouter** et **/routers/index.js** 
+en **/routes/pizzas.js**.  
+Il est aussi possible de partir de rien et de créer **pizzaRouter** dans **app.js** et **/routes/pizzas.js**.
+
+Pour l'opération de lecture de toutes les pizzas, selon les conventions REST, 
+il faut faire une requête de type **GET /pizzas**.  
+**/routes/pizza.js** doit donc offrir une route renvoyant toutes les pizzas 
+qui existent dans le menu.  
+Pour démarrer, nous souhaitons une application basique qui ne gère pas la persistence des données.
+Le menu est donc un Array d'objets, dont chaque objet représente une pizza.
+
+Notre opération de lecture de pizza va renvoyer du JSON au client, c'est à dire une représentation 
+textuelle du menu. Nous verrons plus tard ce qu'est réellement le JSON. A ce stade-ci, 
+il est suffisant de connaître la fonction d'Express qui permet à un objet JS 
+de circuler sur le réseau : **res.json()**.
+
+Voici le code du router **/routes/pizza.js** :
+```js
+var express = require('express');
+var router = express.Router();
+
+const MENU = [
+  {
+    id: 1,
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
+  },
+  {
+    id: 2,
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
+  },
+  {
+    id: 3,
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
+  },
+  {
+    id: 4,
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
+  },
+  {
+    id: 5,
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
+  },
+];
+
+// Read all the pizzas from the menu
+router.get('/', (req, res, next) => {
+  console.log('GET /pizzas');
+  res.json(MENU);
+});
+
+module.exports = router;
+```
+
+Et voici le code de **app.js** (les parties modifiées sont surlignées) :
+
+```js numbered {6,16}
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+var pizzaRouter = require('./routes/pizzas');
+var usersRouter = require('./routes/users');
+
+var app = express();
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use('/pizzas', pizzaRouter);
+app.use('/users', usersRouter);
+
+module.exports = app;
+```
+
+Notons que nous pourrions effacer le router s'occupant des ressources de type "users", mais nous 
+préférons le garder car plus tard nous souhaiterons gérer l'authentification d'utilisateurs.
+
+Veuillez démarrer l'API (par défaut elle est configurée sur le port 3000 au sein de **bin/www**) :
+
+```bash
+npm start
+```
+
+Pour consommer l'opération de lecture via un browser, nous pouvons lire toutes les ressources de type "pizzas" ici :
+[http://localhost:3000/pizzas](http://localhost:3000/pizzas)
+
+### e.5.2) Chemin et paramètress de route
+Les "route parameters" sont des segments d'une URL qui sont utilisés pour capturer une valeur 
+spécifiée à leur position dans l'URL. On récupère ces paramètres via l'objet **req.params**.
+
+Pour notre pizzeria, nous souhaitons pouvoir lire une pizza identifiée par son **id**.
+
+Nous allons donc ajouter le paramètre de route **id**. 
+En respect des conventions REST, un client, pour faire appel à cette 
+opération, devra faire une requête du genre : **GET /pizzas/2**.
+
+Voici la nouvelle route permettant de traiter de cette opération, à ajouter dans 
+le router **/routes/pizza.js** :
+```js
+// Read the pizza identified by an id in the menu
+router.get('/:id', (req, res) => {
+  console.log(`GET /pizzas/${req.params.id}`);
+
+  const indexOfPizzaFound = MENU.findIndex((pizza) => pizza.id == req.params.id);
+
+  if (indexOfPizzaFound < 0) return res.status(404).end();
+
+  res.json(MENU[indexOfPizzaFound]);
+});
+```
+
+Veuillez redémarrer l'API (**`CTRL c`** puis **`npm start`**).
+
+Pour consommer cette nouvelle opération via un browser, nous pouvons lire 
+la ressource de type "pizzas" identifiée par **2** dans le menu ainsi :
+[http://localhost:3000/pizzas/2](http://localhost:3000/pizzas/2)
+
+Le browser fait bien une requête du genre : **GET /pizzas/2**.
+
+Le paramètre de la route "2" est récupéré dans l'URL de la route par 
+Express et est offert via **`req.params.id`**. 
+
+N'hésitez pas à faire une requête pour un identifiant n'existant pas de le menu pour voir 
+ce qui se passe : 
+[http://localhost:3000/pizzas/666](http://localhost:3000/pizzas/666)
+
+
+### e.5.3) Chemin et paramètres de requête
+Les "query parameters" sont des paramètres qui peuvent être ajoutés à une URL.  
+On récupère ces paramètres via l'objet **req.query**.
+
+Pour notre pizzeria, nous souhaitons pouvoir lire toutes les ressources de type 
+"pizzas" triées par ordre ascendant ou descendant du titre.
+
+En respect des conventions REST, un client, pour faire appel à cette 
+opération, devra faire une requête du genre : **GET /pizzas?order=title** pour le tri ascendant
+ou **GET /pizzas?order=-title** pour le tri descendant .
+
+Il n'y a donc pas de nouvelle route à ajouter ici. En effet, ça reste une requête 
+de type GET sur la route "/pizzas". 
+
+Veuillez donc mettre à jour **/routes/pizza.js** pour la lecture de toutes les pizzas :
+```js
+/* Read all the pizzas from the menu
+   GET /pizzas?order=title : ascending order by title
+   GET /pizzas?order=-title : descending order by title
+*/
+router.get('/', (req, res, next) => {
+  const orderByTitle =
+    req?.query?.order?.includes('title') ||
+    req?.query?.order?.includes('-title')
+      ? req.query.order
+      : undefined;
+  let orderedMenu;
+  console.log(`order by ${orderByTitle ?? 'not requested'}`);
+  if (orderByTitle)
+    orderedMenu = MENU.sort((a, b) => a.title.localeCompare(b.title));
+  if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
+
+  console.log('GET /pizzas');
+  res.json(orderedMenu ?? MENU);
+});
+```
+
+Veuillez redémarrer l'API (**`CTRL c`** puis **`npm start`**).
+
+Pour consommer cette nouvelle opération via un browser, nous pouvons lire 
+toutes les ressources de type "pizzas" triée par leur titre de manière descendante ainsi :
+[http://localhost:3000/pizzas?order=-title](http://localhost:3000/pizzas?order=-title).
+
+N'hésitez pas à tester d'autres tris.
