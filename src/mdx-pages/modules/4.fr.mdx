@@ -22,9 +22,19 @@ Voici les sujets traités :
   - d.1) [Introduction](#d1)
   - d.2) [Conventions REST](#d2)
 - e) [RESTful API via Express](#e)
-  - e.1) [Intro](#e1)
-  - e.2) [](#e2)
-  - e.3) [](#e3)
+  - e.1) [Introduction](#e1)
+  - e.2) [Configuration et démarrage d'une application Express](#e2)
+  - e.3) [Serveur web intégré](#e3)
+  - e.4) [Les fonctions middleware en Express](#e4)
+  - e.5) [Définition d'une route en Express](#e5)
+  - e.6) [Opération de lecture](#e6)
+  - e.7) [Chemin et paramètres de route](#e7)
+  - e.8) [Chemin et paramètres de requête](#e8)
+  - e.9) [Opération de création & parsing du body](#e9)
+  - e.10) [Client REST](#e10) 
+  - e.11) [Répondre avec un code de statut HTTP](#e11) 
+  - e.12) [Opération de suppresion](#e12)
+  - e.13) [Opération de modification](#e13) 
 
 # <a id="a"></a>a) Introduction au backend
 ## a.1) Frontend, backend, c'est quoi ?
@@ -810,9 +820,8 @@ app.use(cookieParser()); // Parse cookie header (req.cookies)
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static assets
 ```
 
-## <a id="e5"></a> e.5) Routing en Express
+## <a id="e5"></a> e.5) Définition d'une route en Express
 ### e.5.1) Définition d'une route
-#### e.5.1.1) Concepts
 Le "Routing", ou routage, contrôle la réponse à une requête client pour un 
 **endpoint** / **URI** / **PATH** et une méthode HTTP.
 
@@ -825,7 +834,7 @@ On définit une route de cette façon : **app.** ou **router.**  **METHOD(PATH, 
 👍 Dans notre cours, nous vous recommandons d'organiser vos routes par type de ressources et donc 
 de mettre en place un router.
 
-#### e.5.1.2) Création d'un projet
+### e.5.2) Création d'un projet
 Nous allons maintenant réaliser un tutoriel pour créer notre toute première RESTful API.
 Nous allons créer une API pour permettre à notre site web de la pizzeria de bénéficier d'opérations 
 sur des ressources de type "pizzas".
@@ -848,7 +857,7 @@ npm i
 ```
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/tuturials/pizzeria/hmi/modern** (ou **/web2/tuturials/pizzeria/hmi/modern** si l'on 
+**/tuturials/pizzeria/api/basic** (ou **/web2/tuturials/pizzeria/api/basic** si l'on 
 considère le nom du répertoire du repo).
 
 Nous allons développer des RESTful API qui ne possèdent pas de serveur de fichiers statiques. 
@@ -861,7 +870,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 ```
 
 
-#### e.5.1.3) Opération de lecture
+## <a id="e6"></a> e.6) Opération de lecture
 Nous souhaitons par commencer à développer une opération permettant de lire toutes les ressources 
 de type "pizzas". En effet, nous aimerions plus tard que notre IHM reçoive de notre API le menu 
 des pizzas.
@@ -873,7 +882,7 @@ Il est aussi possible de partir de rien et de créer **pizzaRouter** dans **app.
 
 Pour l'opération de lecture de toutes les pizzas, selon les conventions REST, 
 il faut faire une requête de type **GET /pizzas**.  
-**/routes/pizza.js** doit donc offrir une route renvoyant toutes les pizzas 
+**/routes/pizzas.js** doit donc offrir une route renvoyant toutes les pizzas 
 qui existent dans le menu.  
 Pour démarrer, nous souhaitons une application basique qui ne gère pas la persistence des données.
 Le menu est donc un Array d'objets, dont chaque objet représente une pizza.
@@ -883,7 +892,7 @@ textuelle du menu. Nous verrons plus tard ce qu'est réellement le JSON. A ce st
 il est suffisant de connaître la fonction d'Express qui permet à un objet JS 
 de circuler sur le réseau : **res.json()**.
 
-Voici le code du router **/routes/pizza.js** :
+Voici le code du router **/routes/pizzas.js** :
 ```js
 var express = require('express');
 var router = express.Router();
@@ -961,7 +970,7 @@ npm start
 Pour consommer l'opération de lecture via un browser, nous pouvons lire toutes les ressources de type "pizzas" ici :
 [http://localhost:3000/pizzas](http://localhost:3000/pizzas)
 
-### e.5.2) Chemin et paramètress de route
+## <a id="e7"></a> e.7) Chemin et paramètres de route
 Les "route parameters" sont des segments d'une URL qui sont utilisés pour capturer une valeur 
 spécifiée à leur position dans l'URL. On récupère ces paramètres via l'objet **req.params**.
 
@@ -980,7 +989,7 @@ router.get('/:id', (req, res) => {
 
   const indexOfPizzaFound = MENU.findIndex((pizza) => pizza.id == req.params.id);
 
-  if (indexOfPizzaFound < 0) return res.status(404).end();
+  if (indexOfPizzaFound < 0) return res.sendStatus(404);
 
   res.json(MENU[indexOfPizzaFound]);
 });
@@ -1002,7 +1011,7 @@ ce qui se passe :
 [http://localhost:3000/pizzas/666](http://localhost:3000/pizzas/666)
 
 
-### e.5.3) Chemin et paramètres de requête
+## <a id="e8"></a> e.8) Chemin et paramètres de requête
 Les "query parameters" sont des paramètres qui peuvent être ajoutés à une URL.  
 On récupère ces paramètres via l'objet **req.query**.
 
@@ -1046,3 +1055,297 @@ toutes les ressources de type "pizzas" triée par leur titre de manière descend
 [http://localhost:3000/pizzas?order=-title](http://localhost:3000/pizzas?order=-title).
 
 N'hésitez pas à tester d'autres tris.
+
+## <a id="e9"></a> e.9) Opération de création & parsing du body
+Nous souhaitons développer une opération permettant de créer une ressource 
+de type "pizzas".  
+Selon les conventions REST, il faut faire une requête de type **POST /pizzas** qui 
+offre une représentation de la ressource à créer. La représentation utilisée est le JSON que 
+nous verrons plus en détails plus tard.  
+Si nous souhaitons créer une ressource dont le titre est "Magic Green" et le contenu est 
+"Epinards, Brocolis, Olives vertes, Basilic", la représentation de la ressource à créer sera 
+la suivante :
+```json
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Selon les conventions REST, une requête de création est de type POST et contient ses paramètres 
+au sein du body de la requête.
+
+**/routes/pizzas.js** doit offrir une nouvelle route permettant d'ajouter une nouvelle 
+pizza au menu, qui est un array d'objets. Une nouvelle pizza doit donc être ajoutée à une variable,
+un array, qui est contenu dans la mémoire vive de votre machine.  
+Lorsque l'ajout d'une pizza au menu a réussi, nous souhaitons renvoyer la représentation de la 
+nouvelle ressource au client. Ainsi, le client aura notamment accès à l'id de la pizza créé par l'API.
+
+Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez la rajouter 
+dans votre application :
+```js
+// Create a pizza to be added to the menu.
+router.post('/', (req, res) => {
+  const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
+  const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
+
+  console.log('POST /pizzas');
+
+  if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
+
+  const lastItemIndex = MENU?.length !== 0 ? MENU.length - 1 : undefined;
+  const lastId = lastItemIndex ? MENU[lastItemIndex]?.id : undefined;
+  const nextId = lastItemIndex !== 0 ? lastId + 1 : 1;
+
+  const newPizza = {
+    id: nextId,
+    title: title,
+    content: content,
+  };
+
+  MENU.push(newPizza);
+
+  res.json(newPizza);
+});
+```
+
+La représentation de la ressource à créer est parsée dans l'objet **req.body**
+grâce à la fonction middleware **express.json()** appelée dans **/app.js** :
+```js
+app.use(express.json());
+```
+
+Il est donc important de ne pas retirer cette ligne lorsque l'on crée une RESTful API.
+
+
+OK, c'est bien, mais comment tester ce nouveau code ?
+
+Le browser permet de facilement créer des requêtes de type GET, mais pas des requêtes de type 
+POST...  
+Nous avons donc besoin d'un client léger permettant de faire des requêtes HTTP.
+
+## <a id="e10"></a> e.10) Client REST
+### e.10.1) Introduction
+Dans le cadre de ce cours, tout comme généralement dans un environnement professionnel, 
+nous souhaitons pouvoir développer une API indépendemment du développement d'une IHM.
+
+En effet, cela prendrait trop de temps de devoir développer un frontend (HTML / 
+JavaScript / CSS) pour tester nos API.
+
+Nous allons donc utiliser un client léger permettant de faire des requêtes à nos API.  
+Il en existe de nombreux, comme REST Client [[R.55]](/references/#r55) ou 
+Postman [[R.56]](/references/#r56).
+
+Pour ce cours, nous vous présentons et recommendons d'utiliser REST Client pour écrire et
+exécuter vos requêtes HTTP.
+
+### e.10.2) REST Client
+Dans le cadre de ce cours, nous utilisons REST Client [[R.55]](/references/#r55) 
+de Visual Studio Code pour tester nos API.
+
+Pour installer REST Client au sein de VS Code, veuillez cliquer sur l'onglet **Extensions**. 
+
+Recherchez l'extension **REST Client** et cliquez sur **Install**.
+
+Quelques notions pour utiliser REST Client :
+- Il faut créer un fichier **.http** (ou **.rest**) contenant les requêtes vers vos RESTful APIs.  
+NB : Il est approprié de créer un fichier par par type de ressources.
+- Chaque requête est introduite par **###** (3 "**#**"" ou plus) ;  
+voici la requête permettant de lire toutes les pizzas :
+```http
+### Read all pizzas
+GET http://localhost:3000/pizzas
+```
+- Pour exécuter une requête, il suffit de cliquer sur **Send Request**
+- Lorsqu'on envoie des données au format JSON, il est important d'avoir un espace avant 
+les accolades (avant le "**&#123;**" )
+- On peut définir des "**File variables**" via ce genre de syntaxe : **@baseUrl = http://localhost:3000**
+- Pour utiliser la variable **baseUrl**, il suffit de la mettre entre double accolades. Par exemple, voici 
+la requête permettant de lire toutes les pizzas :  
+```http
+### Read all pizzas with File variable
+@baseUrl = http://localhost:3000
+GET {{baseUrl}}/pizzas
+```
+
+Nous allons maintenant tester l'API de la pizzeria que nous avons créée pour toutes les opérations 
+que nous avons déjà créés.
+
+Au sein de VS Code, dans votre projet **/tuturials/pizzeria/api/basic**, veuillez créer 
+un répertoire nommé **REST Client**. Dans ce répertoire, veuillez créer un fichier 
+nommé **pizzas.http**.
+
+Dans **pizzas.http**, veuillez ajouter cette requête pour la lecture de toutes les pizzas 
+et exécutez la : 
+```http
+### Read all pizzas with File variable
+@baseUrl = http://localhost:3000
+GET {{baseUrl}}/pizzas
+```
+
+Est-ce que cela fonctionne bien ?  Avez vous bien démarré votre API ?
+Vous devriez obtenir le même résultat que si vous accédiez à votre API à l'aide du browser.
+
+Au sein de **pizzas.http**, veuillez ajouter ces deux requêtes pour la lecture de toutes 
+les pizzas en les triant selon leur titre :
+```http
+### Read all pizzas sorted by title (ascending)
+GET {{baseUrl}}/pizzas/?order=+title
+
+### Read all pizzas sorted by title (descending)
+GET {{baseUrl}}/pizzas/?order=-title
+```
+
+Veuillez exécuter ces deux requêtes.
+
+Il semble que nous sommes prêt pour créer une requête appelant l'opération de création d'une 
+pizza.
+
+Au sein de **pizzas.http**, veuillez ajouter cette requête pour la création d'une pizza :
+```http
+### Create a pizza
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+On remarque qu'il est important de mettre une ligne vide avant les accolades représentant le 
+body de la requête.  N'hésitez pas à tester cette requête avec ou sans la ligne vide pour y 
+croire.
+
+💭 Comment tester que l'opération de création a fonctionnée ?
+
+Et bien il suffit d'exécuter l'opération de lecture de toutes les pizzas 😎 !
+Si la nouvelle ressource apparaît, c'est qu'elle a bien été créée !
+Faites le test.
+
+## <a id="e11"></a> e.11) Répondre avec un code de statut HTTP
+On ne peut pas toujours renvoyer du JSON suite à une requête client ainsi qu'un code HTTP
+correspondant au fait que tout est OK ("200 OK").
+
+Quand vous exécutez cette requête :
+```http
+### Read all pizzas with File variable
+GET {{baseUrl}}/pizzas
+```
+
+Vous faites appel à l'opération de lecture de toutes les pizzas. La dernière ligne de cette 
+opération est la suivante :
+```js
+res.json(orderedMenu ?? MENU);
+```
+
+En fait, la fonction **json** renvoie une réponse au format JSON, mais de plus, elle renvoie 
+un "status code" **200** indiquant au client que tout s'est bien passé.
+
+Au sein de **pizzas.http**, veuillez ajouter cette requête pour tenter de créer une pizza en 
+oubliant un paramètre :
+```http
+### Create a pizza which lacks a property
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Veuillez exécuter cette requête. Que se passe-t-il ?
+On récupère un code d'erreur "400 Bad Request".
+
+En effet, lorsqu'on omet un paramètre dans la représentation de la ressource à créer, voici les 
+lignes de code amenant au renvoi du code d'erreur 400 au sein de **pizzas.js** :
+```js numbered {3,4,8}
+// Create a pizza to be added to the menu.
+router.post('/', (req, res) => {
+  const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
+  const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
+
+  console.log('POST /pizzas');
+
+  if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
+
+  const lastItemIndex = MENU?.length !== 0 ? MENU.length - 1 : undefined;
+  const lastId = lastItemIndex ? MENU[lastItemIndex]?.id : undefined;
+  const nextId = lastItemIndex !== 0 ? lastId + 1 : 1;
+
+  const newPizza = {
+    id: nextId,
+    title: title,
+    content: content,
+  };
+
+  MENU.push(newPizza);
+
+  res.json(newPizza);
+});
+```
+
+Le client est donc bien informé qu'il y a eu un problème lors de l'exécution de l'opération.  
+Il pourrait par exemple utiliser cette information pour présenter un message d'erreur au niveau 
+d'une IHM.
+
+Voici les grandes catégories de "status codes" :
+- Réponses informatives : **100-199**
+- Réponses en cas de succès : **200-299**
+- Redirections : **300-399**
+- Erreurs du client : **400-499**
+- Erreurs du serveur : **500-599**
+
+Voici les "status codes" que nous allons généralement utiliser :
+- **200 OK** : tout s'est bien passé, Express ajoute ce code automatiquement pour nous quand nous 
+utilisons une méthode comme **res.json()**.
+- **400 Bad Request** : pour indiquer au client que la requête contient des paramètres non valides ou 
+n'est pas complète.
+- **401 Unauthorized** : pour indiquer au client qu'il doit s'authentifier pour accéder à cette 
+opération. On renvoie aussi ce code d'erreur quand un client fournit un mauvais username ou password.
+- **403 Forbidden** : le client est connu du serveur, mais il n'a pas les privilèges pour accéder 
+à cette opération (par exemple, le client n'est pas admin et tente d'accéder à une opération 
+seulement accessible à un admin).
+- **404 Not Found** : la ressource demandée n'existe pas, bien que l'URL semble valide.
+- **409 Conflict** : l'état du serveur entre en conflit avec la requête. Par exemple, la requête 
+demande de créer un utilisateur qui existe déjà.
+- **500 Internal Server Error** : le serveur a rencontré une erreur qu'il ne peut pas régler.
+Par exemple, le serveur de base de données ne répond pas et ne permet donc pas d'accéder aux 
+ressources.
+
+## <a id="e12"></a> e.12) Opération de suppresion
+Nous souhaitons développer une opération permettant de supprimer une ressource 
+de type "pizzas" à l'aide de son identifiant.  
+Selon les conventions REST, il faut faire une requête de type **DELETE /pizzas/{id}** contenant 
+l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter".
+
+Une opération de suppression ne contient donc pas de body et est de type DELETE. 
+
+Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez la rajouter 
+dans votre application :
+```js
+// Delete a pizza from the menu based on its id
+router.delete('/:id', (req, res) => {
+  console.log(`DELETE /pizzas/${req.params.id}`);
+
+  const foundIndex = MENU.findIndex(pizza => pizza.id == req.params.id);
+
+  if (foundIndex < 0) return res.sendStatus(404);
+
+  const itemsRemovedFromMenu = MENU.splice(foundIndex, 1);
+  const itemRemoved = itemsRemovedFromMenu[0];
+
+  return res.json(itemRemoved);
+});
+```
+
+Au sein de **pizzas.http**, veuillez ajouter cette requête pour supprimer la pizza 
+possédant l'identifiant "2" :
+```http
+### Delete pizza identified by 2
+DELETE {{baseUrl}}/pizzas/2
+```
+
+Veuillez exécuter cette requête et vérifier que la pizza a bien été supprimée.
+
+## <a id="e13"></a> e.13) Opération de modification
