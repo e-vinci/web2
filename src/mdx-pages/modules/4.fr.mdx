@@ -21,7 +21,7 @@ Voici les sujets traités :
 - d) [Introduction aux RESTful API](#d)
   - d.1) [Introduction](#d1)
   - d.2) [Conventions REST](#d2)
-- e) [RESTful API via Express](#e)
+- e) [Introduction aux RESTful API via Express](#e)
   - e.1) [Introduction](#e1)
   - e.2) [Configuration et démarrage d'une application Express](#e2)
   - e.3) [Serveur web intégré](#e3)
@@ -35,6 +35,9 @@ Voici les sujets traités :
   - e.11) [Répondre avec un code de statut HTTP](#e11) 
   - e.12) [Opération de suppresion](#e12)
   - e.13) [Opération de modification](#e13) 
+- f) [Spread operator](#f)
+- g) [Exercice 4.1 : Création d'une RESTfull API non protégée pour myMoovies](#g)
+- h) [🍬 Exercice 4.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films](#h)
 
 # <a id="a"></a>a) Introduction au backend
 ## a.1) Frontend, backend, c'est quoi ?
@@ -628,7 +631,7 @@ Ainsi, les requêtes clientes ne dépendent pas d'un historique de requêtes, el
 
 Une RESTful API met à disposition des **opérations** sur des **ressources** via :
 - des **URI** ; il y a donc une adresse unique pur chaque ressource ;
-- des **méthodes HTTP** (GET, POST, DELETE, PUT) représentant les opérations possibles (CRUD, opérations de type Create, Read, 
+- des **méthodes HTTP** (GET, POST, DELETE, PATCH, PUT) représentant les opérations possibles (CRUD, opérations de type Create, Read, 
 Update ou Delete) ;
 - des **représentations** des ressources compréhensibles tant par les clients que les serveurs ; 
 les ressources sont représentées par leur "Media type" : **JSON**, **XML**, **HTML**, **TXT**, **JPEG**... ;
@@ -642,8 +645,10 @@ dans le cadre de ce cours, les ressources seront quasi toujours représentées v
   - GET = Read
   - POST = Create
   - DELETE = Delete 😉
-  - PUT (ou PATCH) = Update
-
+  - PATCH / PUT = Update
+    - PATCH = Update d'une ou plusieurs propriétés de la ressources
+    - PUT = Update de toutes les propriétés de la ressources, ou création si la ressource n'existe pas
+    
 Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTful API 
 permettant de gérer des films :
 
@@ -662,7 +667,7 @@ une ressource de type **films** de cette façons : **http://ilovemoovies.org/fil
 Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : 
 **http://ilovemoovies.org/films/10**.
 
-# <a id="e"></a> d) RESTful API via Express
+# <a id="e"></a> d) Introduction aux RESTful API via Express
 ## <a id="e1"></a> e.1) Introduction
 Nous avons précédemment généré une application Express à l'aide du générateur d'applications.
 
@@ -1335,7 +1340,7 @@ router.delete('/:id', (req, res) => {
   const itemsRemovedFromMenu = MENU.splice(foundIndex, 1);
   const itemRemoved = itemsRemovedFromMenu[0];
 
-  return res.json(itemRemoved);
+  res.json(itemRemoved);
 });
 ```
 
@@ -1349,3 +1354,143 @@ DELETE {{baseUrl}}/pizzas/2
 Veuillez exécuter cette requête et vérifier que la pizza a bien été supprimée.
 
 ## <a id="e13"></a> e.13) Opération de modification
+Nous souhaitons développer une opération permettant de modifier une ressource 
+de type "pizzas" à l'aide de son identifiant et de nouvelles valeurs pour ses propriétés.
+Selon les conventions REST, comme on accepte de modifier que certaines des propriétés d'une pizza,
+qu'il ne faut pas fournir toutes les propriétés d'une pizza, 
+il faut faire une requête de type **PATCH /pizzas/{id}** contenant 
+l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter" ainsi que les 
+nouvelles données au sein du body de la requête.
+
+Si nous souhaitons modifier une ressource identifiée par 6 en fournissant un nouveau titre 
+"Magic Green 2", la représentation des données de la ressource à modifier sera 
+la suivante :
+```json
+{
+    "title":"Magic Green 2"
+}
+```
+
+Selon les conventions REST, la requête de modification est de type PATCH et contient ses paramètres 
+au sein du body de la requête.
+
+Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez la rajouter 
+dans votre application :
+```js
+// Update a pizza based on its id and new values for its parameters
+router.patch('/:id', (req, res) => {
+  console.log(`PATCH /pizzas/${req.params.id}`);
+
+  const title = req?.body?.title;
+  const content = req?.body?.content;
+
+  console.log('POST /pizzas');
+
+  if ((!title && !content) || title?.length === 0 || content?.length === 0) return res.sendStatus(400);
+
+  const foundIndex = MENU.findIndex(pizza => pizza.id == req.params.id);
+
+  if (foundIndex < 0) return res.sendStatus(404);
+
+  const updatedPizza = {...MENU[foundIndex], ...req.body};
+
+  MENU[foundIndex] = updatedPizza;
+
+  res.json(updatedPizza);
+});
+```
+
+Au sein de **pizzas.http**, veuillez ajouter cette requête pour modifier la pizza 
+possédant l'identifiant "6" :
+```http
+### Update the pizza identified by 6
+PATCH {{baseUrl}}/pizzas/6
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2"
+}
+```
+
+Veuillez exécuter cette requête et vérifier que la pizza a bien été modifiée.
+
+💭 Cela ne fonctionne pas ? 
+Avez vous précédemment exécuté la requête permettant de créer une sixième pizza.
+
+# <a id="f"></a> f) Spread operator
+💭 Avez-vous observé un morceau de code inconnu au niveau de l'opération de modification, 
+dans le router ?
+```js
+const updatedPizza = {...MENU[foundIndex], ...req.body};
+```
+Le **spread operator** est très utile en JS, ce sont les **"..."**.
+Ici, nous créons un nouvel objet en intégrant deux objets : **`MENU[foundIndex]`** 
+et **`req.body`**.  
+Le **spread operator** permet de faire une "Shallow copy", 
+ou copie peu profonde, d'une pizza du menu, à l'aide de **`...MENU[foundIndex]`**.
+Cela reprend toutes les propriétés de la pizza identifiée par **`foundIndex`**. 
+Ensuite, nous remplaçons les propriétés existantes de cette pizza par les propriétés données 
+dans **`req.body`** à l'aide de **`...req.body`**.  
+
+Le **spread operator** est incroyablement puissant, il permet d'écrire du code concis et lisible.
+Il est aussi utilisé dans les arrays, ainsi que comme paramètre de fonction.  
+N'hésitez pas à consulter la 
+[documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) 
+[[R.57]](/references/#r57)
+pour en savoir plus.
+
+# <a id="g"></a> g) Exercice 4.1 : Création d'une RESTfull API non protégée pour myMoovies
+Veuillez continuer le développement de **myMoovies**. 
+Vous allez créer la première version de la RESTful API de **myMoovies**, sous Express, 
+afin de mettre à disposition toutes les opération de type CRUD sur des films.
+
+
+Afin de réaliser cet exercice, voici les contraintes d'implémentation :
+-	Veuillez créer une RESTful API pour la collection de films, qui réponde sur le port par défaut 
+d'une application Express (3000), et qui couvre ces opérations :
+
+| URI | Méthode HTTP | Opération |
+|---|---|---|
+| **films** | GET | READ ALL : Lire toutes les ressources de la collection |
+| **films?minimum-duration=value** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
+| **films/{id}** | GET | READ ONE : Lire la ressource identifiée |
+| **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
+| **films/{id}** | DELETE | DELETE ONE : Effacer la ressource identifiée |
+| **films/{id}** | PATCH | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
+
+- Une ressource de type **films** doit contenir les propriétés suivantes :
+  - **id** : un entier
+  - **title** : titre du film (String)
+  - **duration** : durée du film en minutes
+  - **budget** : pour informer du coût qu'a couté la production du film, en millions
+  - **link** : pour donner une URL vers la description du film (lien vers imdb, rottentomatoes ou autre)
+-	Les ressources ne doivent pas persister : dès lors, ajoutez les données associées aux films 
+dans un array.
+-	Veuillez tester toutes les fonctions de la RESTful API pour la collection de films 
+à l'aide du REST Client dans VS Code (extension à installer au sein de VS Code).
+Veuillez ajouter vos requêtes au sein du fichier **films.http** dans le répertoire **REST Client**
+du dossier associé à cet exercice.
+
+Le code de votre application web doit se trouver dans votre repository local et
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module4/4.1**.
+
+Veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMoovies : module 4 : basic API**".
+
+# <a id="h"></a> h) 🍬 Exercice 4.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films
+N'hésitez pas, c'est optionnel, de gérer de nouvelles opérations au sein de votre RESTful API 
+de **myMoovies** :
+-	Filtrez tous les films qui commencent par une certaines chaînes de caractères.
+-	Gérez l'ordre de présentation des films.
+
+#### 🤝 Tips
+Besoin d'inspiration pour l'aspect filtrage et la gestion de l'ordre des ressources ? 
+[REST API Guide](https://dev.to/drminnaar/rest-api-guide-14n2)
+[[R.58]](/references/#r58).
+
+Veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMoovies : module 4 : ordering & filtrering**".
+
+🍬 Et si vraiment vous avez encore du temps et souhaitez déjà approfondir les RESTful APIs, 
+n'hésitez pas aussi à implémenter la gestion de la pagination.

@@ -1487,7 +1487,7 @@ NB : Le code de votre application web se trouve dans votre repository local et
 votre web repository (normalement appelé **web2**) toujours dans le répertoire nommé
 **/exercises/mymoovies**.
 Si vous trouvez plus simple de repartir "from scratch", il est possible d'ajouter 
-votre code dans **/exercises/module3/mymoovies**
+votre code dans **/exercises/module3/mymoovies**.
 
 # <a id="d"></a> d) 🍬 L'orienté objet en JS
 ## <a id="d1"></a> d.1) Introduction
@@ -1570,3 +1570,36 @@ vues dans ce cours : WebGL, SVG DOM Interface...
 ## <a id="e2"></a> e.2) 🍬 Animations via une librairie externe
 
 ## <a id="e3"></a> e.3) 🍬 Jeux vidéo en 2D via Phaser
+
+# <a id="f"></a> f) Exercice 3.2 : Gérer des événements associés à une animation
+Veuillez adapter une application web permettant l'affichage de différents scintillements 
+de formes selon la demande de l'utilisateur.
+
+Le code a adapter se trouve dans ce dossier [/demo/canvas](https://github.com/e-vinci/js-demos/tree/main/frontend/canvas)
+du repo associé aux démos.
+
+Veuillez retravailler l'animation pour que :
+-	elle s'arrête ou démarre lors d'un clic gauche d'un utilisateur ;
+-	les carrés grandissent ou rapetississent au clic sur la touche **+** ou la touche **-** ; 
+-	lors d'un clic droit de la souris, la couleur des carrés change de manière aléatoire.
+
+#### 🤝 Tips
+-	N'hésitez pas à découvrir la documentation de **requestAnimationFrame()** pour voir 
+comment stopper une animation.  
+Toujours pas d'idée ? N'hésitez pas à utiliser la fonction **cancelAnimationFrame()**.
+-	Vous pouvez utiliser le type d'événement "**contextmenu**" pour gérer les clics droits.
+Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event)
+-	Vous pouvez utiliser le type d'événement "**keydown**" pour gérer l'appui sur 
+les touches **+** ou **-**.  
+Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event).
+-	Si vous avez besoin de générer un nombre aléatoire de 0 à 255 : 
+```js
+Math.floor(Math.random() * 256); // [0,255]
+```
+
+Le code de votre application web doit se trouver dans votre repository local et
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module3/3.2**.
+
+Veuillez faire un **commit** de votre code avec le message suivant : 
+"**module 3 : exercise 3.2 canvas event management**".
