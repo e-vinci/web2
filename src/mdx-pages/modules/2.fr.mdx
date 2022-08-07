@@ -15,9 +15,10 @@ Voici les sujets traités :
   - a.3) [Comment créer une IHM moderne ?](#a3)
   - a.4) [Création du squelette d'une IHM à partir d'un boilerplate](#a4)
   - a.5) [Installation de toutes les dépendances d'une application](#a5)
-  - a.6) [Exécution de l'application à l'aide d'un serveur de développement de Webpack](#a6)
-  - a.7) [Fonctionnement de Webpack pour gérer des assets](#a7)
-  - a.8) [Installation d'un package](#a8)
+  - a.6) [Installation des extensions pour le linter et le formater](#a6)
+  - a.7) [Exécution de l'application à l'aide d'un serveur de développement de Webpack](#a7)
+  - a.8) [Fonctionnement de Webpack pour gérer des assets](#a8)
+  - a.9) [Installation d'un package](#a9)
 - b) [Développement d'IHM esthétiques](#b)
   - b.1) [Introduction](#b1)
   - b.2) [Introduction à Bootstrap](#b2)
@@ -260,7 +261,48 @@ Pour la suite du tutoriel, nous considérons que tous les chemins absolus démar
 **/tuturials/pizzeria/hmi/modern** (ou **/web2/tuturials/pizzeria/hmi/modern** si l'on 
 considère le nom du répertoire du repo).
 
-## <a id="a6"></a> a.6) Exécution de l'application à l'aide d'un serveur de développement de Webpack
+## <a id="a6"></a> a.6) Installation des extensions pour le linter et le formater
+### a.6.1) Le linter
+Nous souhaitons ajouter un outil qui permette de détecter des erreurs de programmation lors 
+de l'écriture de nos scripts, un linter.  
+Nous voulons que le linter impose le style d'Airbnb décrit dans le **Airbnb JS style guide**.  
+Pour ce faire, grâce au boilerplate, lorsque nous lançons la commande **`npm start`**, 
+nous utilisons **ESLint** (cet outil est aussi utilisé par Facebook au sein d'applications React) 
+qui impose un style de programmation conforme aux règles d'Airbnb.  
+Lors du build de l'application, nous bénéficions de feedback sur notre code.
+
+Pour bénéficier de plus de feedback sur le code, veuillez installer l'extension **ESLint** 
+au sein de VS Code.  
+Vous ne devez plus attendre le build pour avoir du feedback sur votre code, cela 
+se fait dès l'écriture ! Vous avez même des propositions de "Quick fix" !
+
+Pour votre info, la configuration des règles de **ESLint** se fait dans le fichier 
+**.eslintrc.js** devant se trouver à la racine d'un projet et offert au sein du boilerplate.
+
+### a.6.2) Le formater
+Pour formater facilement votre code, le boilerplate fournit une configuration de **prettier** 
+conforme à ce qui est attendu pour coller au style imposé par le linter, c'est à dire au style 
+d'Airbnb.
+
+💭 Vous souhaitez reformater votre code en accord avec le linter, 
+lors de l'appui sur plusieurs touches ?
+
+Vous devriez répondre "oui" à cette question, car c'est un gain de temps d'avoir un outil permettant
+d'améliorer la qualité de son code, sans efforts.
+
+Pour que la configuration du formater offerte dans le boilerplate soit utile, 
+veuillez installer l'extension **prettier** au sein de VS Code.
+
+Une fois **prettier** installé dans VS Code, vous pouvez facilement formatter votre code conformément 
+au style d'Airbnb :
+- soit en tapant **Shift Alt F** ;
+- soit en faisant un clic droit sur votre script, **Format Document** ; la première fois, il se peut 
+que vous deviez sélectionner **prettier** comme formater.
+
+Pour votre info, la configuration des règles de **prettier** se fait dans le fichier 
+**.prettierrc.js** devant se trouver à la racine d'un projet et offert au sein du boilerplate.
+
+## <a id="a7"></a> a.7) Exécution de l'application à l'aide d'un serveur de développement de Webpack
 Veuillez exécuter l'application de base offerte par le boilerplate :
 
 ```bash
@@ -299,7 +341,7 @@ Et pour la redémarrer ?
 
 **`npm start`**.
 
-## <a id="a7"></a> a.7) Fonctionnement de Webpack pour gérer des assets
+## <a id="a8"></a> a.8) Fonctionnement de Webpack pour gérer des assets
 Webpack a été configuré afin de générer une fichier **index.html** sur base d'un template 
 donné dans **/src/index.html**.
 
@@ -510,7 +552,7 @@ Veuillez stopper l'exécution du serveur web
 cd ..
 ```
 
-## <a id="a8"></a> a.8) Installation d'un package
+## <a id="a9"></a> a.9) Installation d'un package
 Afin de gérer des animations, il faut réinstaller la dépendance via **npm**, le gestionnaire 
 de packages.
 

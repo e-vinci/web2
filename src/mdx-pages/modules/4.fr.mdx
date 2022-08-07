@@ -1038,14 +1038,13 @@ Veuillez donc mettre à jour **/routes/pizza.js** pour la lecture de toutes les 
 */
 router.get('/', (req, res, next) => {
   const orderByTitle =
-    req?.query?.order?.includes('title') ||
-    req?.query?.order?.includes('-title')
+    req?.query?.order?.includes('title')
       ? req.query.order
       : undefined;
   let orderedMenu;
   console.log(`order by ${orderByTitle ?? 'not requested'}`);
   if (orderByTitle)
-    orderedMenu = MENU.sort((a, b) => a.title.localeCompare(b.title));
+    orderedMenu = [...MENU].sort((a, b) => a.title.localeCompare(b.title));
   if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
 
   console.log('GET /pizzas');
@@ -1060,6 +1059,10 @@ toutes les ressources de type "pizzas" triée par leur titre de manière descend
 [http://localhost:3000/pizzas?order=-title](http://localhost:3000/pizzas?order=-title).
 
 N'hésitez pas à tester d'autres tris.
+
+💭 Est-ce qu'il y a un morceau de code que vous ne comprenez pas dans ce code-ci et cela vous 
+gêne ? Si oui, vous trouverez plus d'info ici : [f.2) Spread operator au niveau d'un array](#f2).
+Si non, c'est OK de ne pas comprendre tous les éléments du code à ce stade-ci.
 
 ## <a id="e9"></a> e.9) Opération de création & parsing du body
 Nous souhaitons développer une opération permettant de créer une ressource 
@@ -1417,12 +1420,20 @@ Veuillez exécuter cette requête et vérifier que la pizza a bien été modifi�
 💭 Cela ne fonctionne pas ? 
 Avez vous précédemment exécuté la requête permettant de créer une sixième pizza.
 
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
+"**api-basic**".
+
+En cas de souci, vous pouvez accéder au code du tutoriel ici :
+[api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
+
 # <a id="f"></a> f) Spread operator
+## <a id="f1"></a> f.1) Spread operator au niveau d'un objet
 💭 Avez-vous observé un morceau de code inconnu au niveau de l'opération de modification, 
 dans le router ?
 ```js
 const updatedPizza = {...MENU[foundIndex], ...req.body};
 ```
+
 Le **spread operator** est très utile en JS, ce sont les **"..."**.
 Ici, nous créons un nouvel objet en intégrant deux objets : **`MENU[foundIndex]`** 
 et **`req.body`**.  
@@ -1432,8 +1443,25 @@ Cela reprend toutes les propriétés de la pizza identifiée par **`foundIndex`*
 Ensuite, nous remplaçons les propriétés existantes de cette pizza par les propriétés données 
 dans **`req.body`** à l'aide de **`...req.body`**.  
 
+## <a id="f2"></a> f.2) Spread operator au niveau d'un array
+Au niveau de l'opération de lecture de toutes les pizzas, nous avons rencontré le **spread operator**.
+```js
+orderedMenu = [...MENU].sort((a, b) => a.title.localeCompare(b.title));
+```
+
+En effet, lorsque nous faisons un tri du menu, nous souhaitons le faire sur une copie de celui-ci.  
+💭 Mais pourquoi le faire sur une copie ?  
+Et bien, si nous autorisons à trier l'array associé au MENU, 
+lorsque nous tenterons d'ajouter une nouvelle pizza, 
+le dernier élément de l'array ne contiendra plus le dernier id (ou l'id le plus haut) !
+Comme la fonction **sort** modifie l'array sur lequel la méthode est appelée, nous travaillons 
+sur une copie de cet array : **`[...MENU]`** crée un nouveau tableau contenant tous les éléments 
+du **MENU**.
+
+## <a id="f3"></a> f.3) Conclusion
 Le **spread operator** est incroyablement puissant, il permet d'écrire du code concis et lisible.
-Il est aussi utilisé dans les arrays, ainsi que comme paramètre de fonction.  
+Il est utilisé dans les objets, les arrays, ainsi que comme paramètre de fonction.  
+
 N'hésitez pas à consulter la 
 [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) 
 [[R.57]](/references/#r57)
