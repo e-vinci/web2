@@ -4,16 +4,122 @@ description: "Création de SPA et gestion des communications entre une RESTful A
 ---
 
 # Module 6 : SPA & comms
-Ce module vous offre principalement laréation de SPA et la gestion des communications 
+Ce module vous offre principalement la création de SPA et la gestion des communications 
 entre une RESTful API et une IHM.
 
-<br/>
+A cette étape-ci, nous allons simplement intégrer des RESTful API au sein d'IHM. 
+C'est donc juste du développement frontend que nous allons faire, à l'inverse des deux derniers 
+modules où nous avons fait que du développement backend.
 
 Voici les sujets traités :
-- 
+- a) [Introduction aux Single Page Applications](#a)
+  - a.1) [Caractéristiques et workflow associés à une SPA](#a1)
+  - a.2) [Architectures associées à une SPA](#a2)
+  - a.3) [Gestion des communications d'une SPA](#a3)
+  - a.4) [Sauvegarde de données JSON](#a4)
+- b) [Amélioration des outils de développement](#b)
+  - b.1) [Introduction](#b1)
+  - b.2) [Redémarrage automatique au changement d'un fichier](#b2)
+  - b.3) [Debugging](#b3)
+  - b.4) [Autres outils de développement](#b4)
+- c) [Exercice 5.1 : Persistance de la RESTfull API pour myMovies](#c)
+- d) [Refactoring à l'aide d'un "fat model"](#d)
 
 <br/>
 
-# <a id="a"></a>a) TBD
+# <a id="a"></a> a) Introduction aux Single Page Applications
+## <a id="a1"></a> a.1) Caractéristiques et workflow associés à une SPA
+Une SPA (Single Page Application) offre de belles caractéristiques :
+- **Pas de rechargement de page pendant l'utilisation** : en effet, on télécharge une seule fois 
+l'ensemble du frontend (et donc de toutes les pages) ;
+- **La réécriture dynamique du contenu de la page** : lorsque l'on navigue d'une page à une autre, 
+on change que les parties de l'IHM qui doivent être mises à jour.
+- **Pas d'interruption de l'expérience de l'utilisateur** : lorsque l'utilisateur, via ses actions, 
+amène par exemple à un appel à une API, l'IHM reste disponible. Le browser peut réaliser des actions 
+de manière asynchrone (ou autrement dit, en parallèle) et ne bloque pas l'expérience utilisateur 
+lors de long chargements (à l'exception bien sûr du tout premier accès à l'application nécessitant 
+le chargement complet du frontend).
 
-<br/>
+Voici un exemple de workflow associé à la SPA qui gérera le site de la pizzeria, afin d'afficher le 
+menu au sein de l'IHM :
+
+<ScrollableImage name="readPizzas.png" minWidth="523px" maxWidth="523px" />
+<figcaption>Exemple de Workflow classique d'une SPA</figcaption>
+
+Une fois la page **index.html** chargée par le browser, celui-ci va faire des appels multiples 
+au serveur de fichiers statiques afin de télécharger tous les assets nécessaires à l'IHM.
+
+Une fois l'IHM chargée, le browser lance en parallèle un appel à la RESTful API pour lire 
+toutes les pizzas, tout en étant à l'écoute d'événements qui pourrait se passer au niveau de 
+l'IHM.
+
+## <a id="a2"></a> a.2) Architectures associées à une SPA
+Il existe différentes architectures associées à une SPA.
+
+Dans le cadre de ce cours, nous avons choisi d'avoir une IHM qui soit entièrement indépendante 
+de la RESTful API :
+
+<ScrollableImage name="independentFrontBackSPA.png" minWidth="914px" maxWidth="914px" />
+<figcaption>Frontend indépendant de l'API</figcaption>
+
+Lors du développement, nous utiliserons donc le boilerplate du cours pour avoir une IHM qui soit 
+entièrement indépendante de l'API. Webpack sera utilisé comme serveur de fichiers statiques 
+lors du développpement. Notons qu'il est possible d'utiliser d'autres serveurs lors du développement, 
+comme **Live Server** de VS Code, ou un package npm comme **serve**.
+En production, lorsque nous mettrons l'IHM sur le web, nous devrons 
+nous tourner vers un autre serveur de fichiers statiques.
+
+Voici l'architecture de l'API telle que développée dans les modules précédents :
+
+<ScrollableImage name="architecture.png" minWidth="859px" maxWidth="859px" />
+<figcaption>RESTful API indépendante du frontend</figcaption>
+
+Nous voyons que ces architectures (frontend & backend) amènent à deux projets bien distincts, un projet pour le frontend, 
+et un autre pour le backend.
+
+Pour votre information, il est aussi possible d'avoir une architecture monolithique pour une SPA.
+Dans ce scénario, la RESTful API s'occupe tant de fournir l'IHM via un serveur de fichiers statiques 
+que d'offrir les opérations sur les ressources via un serveur dynamique.
+
+Voici un exemple d'architecture monolithique possible à l'aide de Node.js :
+
+<ScrollableImage name="monolithicSPA.png" minWidth="758px" maxWidth="758px" />
+<figcaption>SPA monolithique sous Express : chargement du frontend</figcaption>
+
+Une fois le frontend chargé, le browser pourra faire appel aux API et c'est le ou les router(s) 
+de l'API qui prendront en compte les appels.
+
+Nous n'appliquerons pas cette architecture dans le cadre de ce cours. Néanmoins, vous aurez toutes les 
+connaissances pour l'appliquer si vous le souhaitez.
+
+Voici en résumé les caractéristiques des deux architectures présentées ci-dessus :
+- SPA dont le frontend est indépendant du backend :
+    - Frontend avec Serveur de fichiers statiques pour déployer l'IHM
+    - 2 serveurs : 1 serveur pour le frontend, 1 serveur pour le backend
+    - Ports différents pour le Frontend & le Backend
+- SPA monolithique : 
+    - RESTful API avec Serveur de fichiers statiques pour déployer l'IHM
+    - Même serveur pour déployer le backend & le frontend 
+    - Même port pour le frontend & le backend
+
+
+Pour information, les ports permettent à un même appareil de communiquer sur un réseau en offrant 
+plusieurs services. Chaque service, ou application, communique sur un et un seul port.
+
+## <a id="a3"></a> a.3) Gestion des communications d'une SPA
+Quelles protocoles & techniques principales allons nous utiliser pour communiquer au sein d'une SPA ?  
+Il en existe plusieurs. Dans le cadre de ce cours, nous allons simplement voir la technique 
+principale, **AJAX** (ou **A**synchronous **Ja**vaScript and **X**ML).
+
+**AJAX** est une combinaison de technologies (HTML/CSS, DOM, JSON ou XML, XMLHttpRequest, JS) 
+pour réaliser une application web asynchrone.  
+C'est-à-dire que le frontend reste disponible aux actions des utilisateurs même lorsqu'il fait des 
+requêtes HTTP asynchrone à des API.
+Le transport de données entre le frontend et l'API se faisait autrefois via **XML**, or actuellement, 
+il se fait via **JSON**.
+
+Notons que dans le cadre d'architectures MPA "old school" (non vues dans le cadre de ce cours), 
+généralement, l'appel aux API se fait pas par le frontend, mais par le backend. Pendant toute la durée de l'appel du frontend au backend, 
+celui-ci reste en attente car la demande faite au backend est synchrone.
+
+
