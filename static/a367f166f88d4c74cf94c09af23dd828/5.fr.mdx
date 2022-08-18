@@ -1,5 +1,5 @@
 ---
-title: "Module 5 : Service web persistant via JSON et architecturé"
+title: 'Module 5 : Service web persistant via JSON et architecturé'
 description: "Persistance des ressources via fichiers JSON & refactor du code d'une RESTful API"
 ---
 
@@ -170,17 +170,17 @@ Voici un exemple de code que vous ne devez pas encore comprendre :
 
 ```js
 const options = {
-  method: "POST",
+  method: 'POST',
   body: JSON.stringify({
     title: title.value,
     content: content.value,
   }),
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 };
 
-const response = await fetch("/api/pizzas", options);
+const response = await fetch('/api/pizzas', options);
 const pizza = await response.json();
 ```
 
@@ -231,17 +231,17 @@ côté API au sein de la variable **`pizza`** :
 
 ```js {13}
 const options = {
-  method: "POST",
+  method: 'POST',
   body: JSON.stringify({
     title: title.value,
     content: content.value,
   }),
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 };
 
-const response = await fetch("/api/pizzas", options);
+const response = await fetch('/api/pizzas', options);
 const pizza = await response.json();
 ```
 
@@ -277,7 +277,7 @@ Imaginez que, au sein du router traitant des ressources de type "pizzas",
 vous passiez la valeur suivante à **filePath** :
 
 ```js
-const jsonDbPath = __dirname + "/../data/pizzas.json";
+const jsonDbPath = __dirname + '/../data/pizzas.json';
 serialize(jsonDbPath, MENU);
 ```
 
@@ -307,7 +307,7 @@ Veuillez créer un nouveau répertoire **/utils**. Au sein de ce répertoire, ve
 **/utils/json.js** dans lequel vous allez ajouter ces fonctions :
 
 ```js
-const fs = require("fs");
+const fs = require('fs');
 
 /**
  * Parse items given in a .json file
@@ -345,7 +345,7 @@ function serialize(filePath, object) {
  * @param {String} filePath - path to the .json file
  */
 function createPotentialLastDirectory(filePath) {
-  const pathToLastDirectory = filePath.substring(0, filePath.lastIndexOf("/"));
+  const pathToLastDirectory = filePath.substring(0, filePath.lastIndexOf('/'));
 
   if (fs.existsSync(pathToLastDirectory)) return;
 
@@ -386,37 +386,37 @@ Voici ce que nous devons faire pour les opérations de :
   définie ci-dessus, les modifications étant surlignées :
 
 ```js numbered {2,5,45,47,51,58,60,64,76-78,87,89,98,100,104,107,123,125,129,131,133}
-var express = require("express");
-const { serialize, parse } = require("../utils/utils");
+var express = require('express');
+const { serialize, parse } = require('../utils/json');
 var router = express.Router();
 
-const jsonDbPath = __dirname + "/../data/pizzas.json";
+const jsonDbPath = __dirname + '/../data/pizzas.json';
 
 const MENU = [
   {
     id: 1,
-    title: "4 fromages",
-    content: "Gruyère, Sérac, Appenzel, Gorgonzola, Tomates",
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
   },
   {
     id: 2,
-    title: "Vegan",
-    content: "Tomates, Courgettes, Oignons, Aubergines, Poivrons",
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
   },
   {
     id: 3,
-    title: "Vegetarian",
-    content: "Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives",
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
   },
   {
     id: 4,
-    title: "Alpage",
-    content: "Gruyère, Mozarella, Lardons, Tomates",
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
   },
   {
     id: 5,
-    title: "Diable",
-    content: "Tomates, Mozarella, Chorizo piquant, Jalapenos",
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
   },
 ];
 
@@ -424,45 +424,40 @@ const MENU = [
    GET /pizzas?order=title : ascending order by title
    GET /pizzas?order=-title : descending order by title
 */
-router.get("/", (req, res, next) => {
-  const orderByTitle = req?.query?.order?.includes("title")
-    ? req.query.order
-    : undefined;
+router.get('/', (req, res, next) => {
+  const orderByTitle =
+    req?.query?.order?.includes('title') ? req.query.order : undefined;
   let orderedMenu;
-  console.log(`order by ${orderByTitle ?? "not requested"}`);
+  console.log(`order by ${orderByTitle ?? 'not requested'}`);
 
   const pizzas = parse(jsonDbPath, MENU);
+  
+  if (orderByTitle) orderedMenu = [...pizzas].sort((a, b) => a.title.localeCompare(b.title));
+  if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
 
-  if (orderByTitle)
-    orderedMenu = [...pizzas].sort((a, b) => a.title.localeCompare(b.title));
-  if (orderByTitle === "-title") orderedMenu = orderedMenu.reverse();
-
-  console.log("GET /pizzas");
-  res.json(orderedMenu ?? pizzas);
+  console.log('GET /pizzas');
+  return res.json(orderedMenu ?? pizzas);
 });
 
 // Read the pizza identified by an id in the menu
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
   console.log(`GET /pizzas/${req.params.id}`);
 
   const pizzas = parse(jsonDbPath, MENU);
 
-  const indexOfPizzaFound = pizzas.findIndex(
-    (pizza) => pizza.id == req.params.id
-  );
+  const indexOfPizzaFound = pizzas.findIndex(pizza => pizza.id == req.params.id);
 
   if (indexOfPizzaFound < 0) return res.sendStatus(404);
 
-  res.json(pizzas[indexOfPizzaFound]);
+  return res.json(pizzas[indexOfPizzaFound]);
 });
 
 // Create a pizza to be added to the menu.
-router.post("/", (req, res) => {
+router.post('/', (req, res) => {
   const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
-  const content =
-    req?.body?.content?.length !== 0 ? req.body.content : undefined;
+  const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
 
-  console.log("POST /pizzas");
+  console.log('POST /pizzas');
 
   if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
 
@@ -481,16 +476,16 @@ router.post("/", (req, res) => {
 
   serialize(jsonDbPath, pizzas);
 
-  res.json(newPizza);
+  return res.json(newPizza);
 });
 
 // Delete a pizza from the menu based on its id
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   console.log(`DELETE /pizzas/${req.params.id}`);
 
   const pizzas = parse(jsonDbPath, MENU);
 
-  const foundIndex = pizzas.findIndex((pizza) => pizza.id == req.params.id);
+  const foundIndex = pizzas.findIndex(pizza => pizza.id == req.params.id);
 
   if (foundIndex < 0) return res.sendStatus(404);
 
@@ -499,34 +494,33 @@ router.delete("/:id", (req, res) => {
 
   serialize(jsonDbPath, pizzas);
 
-  res.json(itemRemoved);
+  return res.json(itemRemoved);
 });
 
 // Update a pizza based on its id and new values for its parameters
-router.patch("/:id", (req, res) => {
+router.patch('/:id', (req, res) => {
   console.log(`PATCH /pizzas/${req.params.id}`);
 
   const title = req?.body?.title;
   const content = req?.body?.content;
 
-  console.log("POST /pizzas");
+  console.log('POST /pizzas');
 
-  if ((!title && !content) || title?.length === 0 || content?.length === 0)
-    return res.sendStatus(400);
+  if ((!title && !content) || title?.length === 0 || content?.length === 0) return res.sendStatus(400);
 
   const pizzas = parse(jsonDbPath, MENU);
 
-  const foundIndex = pizzas.findIndex((pizza) => pizza.id == req.params.id);
+  const foundIndex = pizzas.findIndex(pizza => pizza.id == req.params.id);
 
   if (foundIndex < 0) return res.sendStatus(404);
 
-  const updatedPizza = { ...pizzas[foundIndex], ...req.body };
+  const updatedPizza = {...pizzas[foundIndex], ...req.body};
 
   pizzas[foundIndex] = updatedPizza;
 
   serialize(jsonDbPath, pizzas);
 
-  res.json(updatedPizza);
+  return res.json(updatedPizza);
 });
 
 module.exports = router;
@@ -596,8 +590,8 @@ lecture de toutes les pizzas :
 
 ```js
 // Read all the pizzas from the menu
-router.get("/", function (req, res) {
-  console.log("GET /pizzas");
+router.get('/', function (req, res) {
+  console.log('GET /pizzas');
   const pizzas = parse(jsonDbPath, DEFAULT_MENU);
   res.json(pizzas);
 });
@@ -939,46 +933,46 @@ Au sein de ce fichier, veuillez ajouter le code s'occupant des opérations sur l
 type "pizzas" :
 
 ```js
-const path = require("node:path");
-const { parse, serialize } = require("../utils/json");
+const path = require('node:path');
+const { parse, serialize } = require('../utils/json');
 
-const jsonDbPath = path.join(__dirname, "/../data/pizzas.json");
+const jsonDbPath = path.join(__dirname, '/../data/pizzas.json');
 
 const defaultPizzas = [
   {
     id: 1,
-    title: "4 fromages",
-    content: "Gruyère, Sérac, Appenzel, Gorgonzola, Tomates",
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
   },
   {
     id: 2,
-    title: "Vegan",
-    content: "Tomates, Courgettes, Oignons, Aubergines, Poivrons",
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
   },
   {
     id: 3,
-    title: "Vegetarian",
-    content: "Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives",
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
   },
   {
     id: 4,
-    title: "Alpage",
-    content: "Gruyère, Mozarella, Lardons, Tomates",
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
   },
   {
     id: 5,
-    title: "Diable",
-    content: "Tomates, Mozarella, Chorizo piquant, Jalapenos",
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
   },
 ];
 
 function readAllPizzas(orderBy) {
-  const orderByTitle = orderBy?.includes("title") ? orderBy : undefined;
+  const orderByTitle = orderBy?.includes('title') ? orderBy : undefined;
   let orderedMenu;
   const pizzas = parse(jsonDbPath, defaultPizzas);
   if (orderByTitle)
     orderedMenu = [...pizzas].sort((a, b) => a.title.localeCompare(b.title));
-  if (orderByTitle === "-title") orderedMenu = orderedMenu.reverse();
+  if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
 
   const allPizzasPotentiallyOrderd = orderedMenu ?? pizzas;
   return allPizzasPotentiallyOrderd;
@@ -1058,14 +1052,14 @@ Maintenant, il ne reste plus qu'à mettre à jour le router **/routes/pizzas.js*
 faire les appels aux fonctions offertes par le modèle :
 
 ```js
-const express = require("express");
+const express = require('express');
 const {
   readAllPizzas,
   readOnePizza,
   createOnePizza,
   deleteOnePizza,
   updateOnePizza,
-} = require("../models/pizzas");
+} = require('../models/pizzas');
 
 const router = express.Router();
 
@@ -1073,14 +1067,14 @@ const router = express.Router();
    GET /pizzas?order=title : ascending order by title
    GET /pizzas?order=-title : descending order by title
 */
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   const allPizzasPotentiallyOrdered = readAllPizzas(req?.query?.order);
 
   return res.json(allPizzasPotentiallyOrdered);
 });
 
 // Read the pizza identified by an id in the menu
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
   const foundPizza = readOnePizza(req.params.id);
 
   if (!foundPizza) return res.sendStatus(404);
@@ -1089,7 +1083,7 @@ router.get("/:id", (req, res) => {
 });
 
 // Create a pizza to be added to the menu.
-router.post("/", (req, res) => {
+router.post('/', (req, res) => {
   const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
   const content =
     req?.body?.content?.length !== 0 ? req.body.content : undefined;
@@ -1102,7 +1096,7 @@ router.post("/", (req, res) => {
 });
 
 // Delete a pizza from the menu based on its id
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   const deletedPizza = deleteOnePizza(req.params.id);
 
   if (!deletedPizza) return res.sendStatus(404);
@@ -1111,7 +1105,7 @@ router.delete("/:id", (req, res) => {
 });
 
 // Update a pizza based on its id and new values for its parameters
-router.patch("/:id", (req, res) => {
+router.patch('/:id', (req, res) => {
   const title = req?.body?.title;
   const content = req?.body?.content;
 
@@ -1130,7 +1124,7 @@ module.exports = router;
 ```
 
 Lancer votre API soit via le debugger, soit via la commande **`npm run dev`**.  
-Veuillez ensuite tester que tout fonctionne bien en exécutant les requêtes HTTP déjà présentes 
+Veuillez ensuite tester que tout fonctionne bien en exécutant les requêtes HTTP déjà présentes
 dans le répertoire **REST Client** du boilerplate.
 
 Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
