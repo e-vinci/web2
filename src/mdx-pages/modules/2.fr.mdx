@@ -991,7 +991,7 @@ met du padding sur l'axe des **y**, est donc tant en haut qu'en bas du footer.
 et donne l'effet au **`<footer>`** d'être "sticky" en bas de page,
 on utilise :
   - **`vh-100 d-flex flex-column`** au sein du **`<body>`**.
-  - **`h-100 flex-grow-1`** dans le **`<main>`** pour lui imposer de remplir l'espace disponible. Ainsi, le footer donne l'effet d'être "sticky" en bas de la page.
+  - **`flex-grow-1`** dans le **`<main>`** pour lui imposer de remplir l'espace disponible. Ainsi, le footer donne l'effet d'être "sticky" en bas de la page.
 - Pour la taille du logo JS, Bootstrap offre des classe pour le **Sizing** en fonction 
 de la taille du parent ou du **viewport** (le browser). Ici, on préfère avoir une taille fixe 
 de 50 pixel, donc on va indiquer cette taille directement dans l'attribut **`height`** de **`<img>`**.
@@ -1011,7 +1011,7 @@ Voila à quoi doit ressembler vodre **index.html** suite aux changements :
     <header>
       <h1 class="animate__animated animate__bounce text-center">We love Pizza</h1>
     </header>
-    <main class="h-100 flex-grow-1 text-center">
+    <main class="flex-grow-1 text-center">
       <audio id="audioPlayer" controls autoplay>
         <source src="./sound/Infecticide-11-Pizza-Spinoza.mp3" type="audio/mpeg" />
         Your browser does not support the audio element.
