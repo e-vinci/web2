@@ -43,7 +43,7 @@ const shortcodes = {
 };
 
 export default function PageTemplate({ data: { mdx, allImages } }) {
-  shortcodes.PageHeader = withFrontmatter(PageHeader, mdx.frontmatter);
+  shortcodes.PageHeader = withFrontmatter(PageHeader, mdx?.frontmatter);
 
   return (
     <MainLayout
