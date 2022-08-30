@@ -1,17 +1,17 @@
-import React, { useState, useRef } from "react";
-import Dropdow from "./dropdown.js";
-import { StaticImage } from "gatsby-plugin-image";
-import { useMsal, useIsAuthenticated } from "@azure/msal-react";
-import { graphql } from "gatsby";
-import { useStaticQuery } from "gatsby";
-import { useIntl } from "react-intl";
-import { loginRequest } from "../../utils/auths/authConfig.js";
-import InternationalLink from "./international-link.js";
-import LanguageSwitcher from "../language-switcher/language-switcher.js";
-import MenuItem from "./menu-item.js";
+import React, { useState, useRef } from 'react';
+import Dropdow from './dropdown.js';
+import { StaticImage } from 'gatsby-plugin-image';
+import { useMsal, useIsAuthenticated } from '@azure/msal-react';
+import { graphql } from 'gatsby';
+import { useStaticQuery } from 'gatsby';
+import { useIntl } from 'react-intl';
+import { loginRequest } from '../../utils/auths/authConfig.js';
+import InternationalLink from './international-link.js';
+import LanguageSwitcher from '../language-switcher/language-switcher.js';
+import MenuItem from './menu-item.js';
 
 const Menu = ({ siteMetadata, navbarExtraStyles }) => {
-  const { menuLinks, siteTitle, isAuthentication } = siteMetadata;
+  const { menuLinks, title: siteTitle, isAuthentication } = siteMetadata;
 
   const data = useStaticQuery(
     graphql`
@@ -29,7 +29,7 @@ const Menu = ({ siteMetadata, navbarExtraStyles }) => {
   const i18nPluginOptions = data?.allSitePlugin.nodes[0].pluginOptions;
 
   const { locale } = useIntl();
-  console.log("the current locale is : ", locale);
+  console.log('the current locale is : ', locale);
   const { instance, accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
@@ -39,7 +39,7 @@ const Menu = ({ siteMetadata, navbarExtraStyles }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <nav className={`navbar ${navbarExtraStyles ? navbarExtraStyles : ""}`}>
+    <nav className={`navbar ${navbarExtraStyles ? navbarExtraStyles : ''}`}>
       <InternationalLink
         className="navbar__brand"
         i18nPluginOptions={i18nPluginOptions}
@@ -63,7 +63,7 @@ const Menu = ({ siteMetadata, navbarExtraStyles }) => {
       </button>
 
       <div
-        className={`navbar__menu ${collapsed ? "navbar__menu--collapse" : ""}`}
+        className={`navbar__menu ${collapsed ? 'navbar__menu--collapse' : ''}`}
         id="navbarSupportedContent"
       >
         <ul className="navbar__menu__list">
@@ -104,7 +104,7 @@ const Menu = ({ siteMetadata, navbarExtraStyles }) => {
 
 const LoginItem = ({ msalInstance }) => {
   return (
-    <li key={"li-login"} className="navbar__menu__list__item">
+    <li key={'li-login'} className="navbar__menu__list__item">
       <span
         className="navbar__menu__list__item__link"
         onClick={() => onSigningIn(msalInstance)}
@@ -122,7 +122,7 @@ const LoginItem = ({ msalInstance }) => {
 
 const LogoutItem = ({ msalInstance }) => {
   return (
-    <li key={"li-logout"} className="navbar__menu__list__item">
+    <li key={'li-logout'} className="navbar__menu__list__item">
       <span
         className="navbar__menu__list__item__link"
         onClick={() => onSigningOut(msalInstance)}
@@ -136,11 +136,11 @@ const LogoutItem = ({ msalInstance }) => {
 // call the redirect function from MS Azure AD
 const onSigningIn = (msalInstance) => {
   try {
-    console.log("ON SIGNING IN...");
+    console.log('ON SIGNING IN...');
     msalInstance.loginRedirect(loginRequest);
   } catch (error) {
     // handle error, either in the library or coming back from the server
-    console.log("error during login redirect :", error);
+    console.log('error during login redirect :', error);
   }
 };
 
@@ -149,7 +149,7 @@ const onSigningOut = async (msalInstance) => {
     msalInstance.logoutRedirect();
   } catch (error) {
     // handle error, either in the library or coming back from the server
-    console.log("error during logout redirect :", error);
+    console.log('error during logout redirect :', error);
   }
 };
 

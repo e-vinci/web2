@@ -12,14 +12,14 @@ module.exports = {
   pathPrefix: `/web2`,
   siteMetadata: {
     title: siteTitle,
-    description: "myjscourse : Apprendre JavaScript et Node.js",
+    description: "web2course : Apprendre JavaScript et Node.js",
     url: siteURL,
     siteUrl: siteURL, // config for gatsby-plugin-robots-txt
     youtubeUrl: youtubeUrl,
     authorEmail: authorEmail,
     facebookUrl: facebookUrl,
     instagramUrl: instagramUrl,
-    languages: { langs: ["fr", "en"], defaultLangKey: defaultLanguage },
+    languages: { langs: ["fr"], defaultLangKey: defaultLanguage },
     defaultAssociatedProjectGroupName: defaultAssociatedProjectGroupName,
     isAuthentication: true, // currently there is only Vinci MSAL
     //twitterUsername: "@whoever; )",
@@ -68,10 +68,6 @@ module.exports = {
       {
         name: `L'essentiel`,
         link: `/essentials`,
-      },
-      {
-        name: `Other tools`,
-        link: `/other-tools`,
       },
       {
         name: `Projet`,
