@@ -1560,16 +1560,145 @@ Néanmoins, si vous êtes passionné d'Orienté Objet, nous vous conseillons cet
 
 # <a id="e"></a> e) 🍬 Les animations et jeux
 ## <a id="e1"></a> e.1) 🍬 Animations via l'API Canvas
+### e.1.1) Introduction
 L'API Canvas offerte par le browser permet de créer des animations (2D ou 3D) à l'aide de JS et 
 de l'élément HTML **`<canvas>`**.
 
 Il existe d'autres API fournies par le browser pour dessiner dans un browser qui ne seront pas 
 vues dans ce cours : WebGL, SVG DOM Interface...
 
+### e.1.2) Créer une animation avec l'API Canvas
+
+Voici les étapes pour créer une animation à l'aide de l'API Canvas :
+
+1. Ajout d'un élément **`<canvas>`** dans votre HTML et accès à cet objet via du JS ;
+*Voici un exemple où l'on crée un élément **canvas** dans le main d'**index.html** à l'aide de JS* :
+```js
+const main = document.querySelector('main');  
+main.innerHTML = '<canvas />';
+const canvas = document.querySelector('canvas');
+```
+
+2. Si nécessaire, définition du style du **canvas** et éventuellement du **body** à l'aide de CSS, Bootstrap ou autres, ou directement du JS.
+*Voici un exemple où l'on gère la taille du canvas via du JS* :
+```js
+const main = document.querySelector('main');
+const mainWidth = main.clientWidth;
+const mainHeight = main.clientHeight;
+const canvas = document.querySelector('canvas');
+canvas.width = mainWidth;
+canvas.height = mainHeight;
+```
+
+3. Accès au contexte de rendu du canvas pour pouvoir dessiner dessus en 2D en utilisant les **Canvas API**.  
+*Voici un exemple où l'on dessine un carré de couleur bleu à une position aléatoire dans le main :*
+```js
+const DEFAULT_COLOR = 'blue';
+const main = document.querySelector('main');
+const mainWidth = main.clientWidth;
+const mainHeight = main.clientHeight;
+const canvas = document.querySelector('canvas');
+canvasContext = canvas.getContext('2d');
+canvasContext.fillStyle = DEFAULT_COLOR;
+canvasContext.fillRect(Math.random() * mainWidth, Math.random() * mainHeight, 20, 20);
+```
+
+4. Création d'une animation en affichant successivement des "frames".
+*On pourrait appeler la fonction `setInterval`, néanmoins cette fonction n'est pas optimisée pour s'assurer que le browser a les ressources pour effectuer les appels périodiques demandés.  On utilise donc la fonction `window.requestAnimationFrame(callback)` qui permet d'appeler une **callback** environ 60 fois / s, quand le browser est prêt. Voici la structure du code JS qui permet de créer une animation à l'aide des Canvas API : *
+```js
+requestAnimationFrame(drawOneFrame);
+function drawOneFrame() {
+  // 1. clear de canvas
+  // 2. draw the current frame   
+  // 3. refresh automatically the animation via a recursive call
+  requestAnimationFrame(drawOneFrame);
+}
+```
+
+### e.1.3) Exemple d'animation
+Nous vous offrons un exemple d'animation faite à l'aide des Canvas API : [canvas](https://github.com/e-vinci/js-demos/tree/main/frontend/canvas).  
+
+N'hésitez pas à exécuter cette application et à comprendre le code associé. Ce code va être utilisé à l'exercie 3.2 un peu plus loin.
+
 
 ## <a id="e2"></a> e.2) 🍬 Animations via une librairie externe
+### e.2.1) Introduction
+Il existe de nombreuses librairies JS animant différentes propriétés :  CSS, attributs DOM, objets JS, SVG...
+
+Voici quelques librairies Open Source que nous recommandons :
+- Pour les animations 2D : [anime](https://animejs.com/)
+- Pour les jeux en 2D : [Phaser](https://phaser.io/)
+- Pour les animations 3D : [three.js](https://threejs.org/)
+
+Il existe aussi une librairie commerciale qui reste néanmoins intéressante : [GreenSock](https://greensock.com/).
+
+Si vous souhaitez utiliser les librairies recommandées pour créer des animations, vous avez les connaissance en JS suffisante pour le faire par vous-même, à l'aide de la documentation proposée sur le site de la librairie que vous choisiriez.
+
+Le truc concernant les animations, c'est d'avancer pas à pas, et de réfléchir à ce que vous souhaitez faire en terme d'objectifs fonctionnels.  
+
+Imaginez que je souhaite faire une animation qui mette à disposition un mot tournant comme une hélice : 
+- Ce mot doit tourner comme une hélice au passage de la souris sur le mot. 
+- En cliquant sur la flèche haut ou bas du clavier, l'hélice doit monter ou descendre.
+- En cliquant sur le mot, celui-ci doit :
+  - arrêter de tourner
+  - se mettre à grandir puis rapetissir.
+
+Fonctionnellement, il semble clair ce que nous souhaitons faire.
+
+Maintenant, à l'aide d'éléments HTML, de propriétés CSS, et de JS, comment pourrions nous aborder ce problème ?
+
+- Nous avons besoin d'une hélice qui tourne. Nous allons problement pouvoir utiliser une **div** pour cela qui prendra la largeur du mot. 
+*Dans le code associé, nous pourrions identifier cette balise par l'id `propeller`*.
+- Nous avons besoin de faire monter ou descendre notre hélice. Pourquoi ne pas utiliser une **div** qui fera office d'ascenceur, et qui contiendra notre hélice.  
+*Dans le code associé, nous pourrions identifier cette balise par l'id `lift`*.
+- Ensuite, il reste à gérer des écouteurs d'événements sur le clavier, et sur ces divs. Il serait pratique d'utiliser une librairie d'animation 2D pour faciliter les mouvements de l'hélice.
+
+La suite montre comment cela a été implémenté à l'aide de la librairie **anime**.
+
+### e.2.2) Exemple d'animation à l'aide d'anime.js
+
+Nous vous offrons un exemple d'animation faite à l'aide d'**anime** : [anime](https://github.com/e-vinci/js-demos/tree/main/frontend/anime) pour implémenter un mot qui tourne comme une hélice.  
+
+N'hésitez pas à exécuter cette application et à comprendre le code associé.
+
+Voici quelques explications :
+- Nous avons statiquement implémenté la structure de l'hélice et de l'ascenceur dans le fichier **index.html** ;  
+ ```html 
+<div id="lift">
+  <!-- d-inline-block allow to wrap the div to the width of its content -->
+  <div class="text-center bg-secondary d-inline-block" id="propeller">
+    XXX<a href="#" class="btn btn-primary" id="message">Welcome</a>XXX
+  </div>
+</div>
+ ```
+
+- Nous avons installé **anime.js** et appris à l'utiliser grâce à la documentation https://github.com/juliangarnier/anime/ :
+    - Installation :  
+    ```bash
+    npm i animejs
+    ```
+    - Utilisation de la librairie dans un module :  
+    ```js
+    import anime from 'animejs/lib/anime.es.js';
+    ```
+- On utilise la fonction `anime` pour réaliser les animations que l'on cible aux **div** via leur **id** dans la propriété **`targets`**.
 
 ## <a id="e3"></a> e.3) 🍬 Jeux vidéo en 2D via Phaser
+### e.3.1) Introduction
+Si vous souhaitez créer un jeu vidéo en 2D pour des browsers, nous vous conseillons la librairie [Phaser](https://phaser.io/).
+
+### e.3.2) Cours de Phaser offert
+Rudi Giot, un incroyable enseignant à l'ISIB (HE2B), met généreusement à notre disposition son cours nommé "Phaser - Jeux vidéo 2D" : https://github.com/RudiGiot/Phaser.
+
+La dernière version du Syllabus au format pdf est disponible ici : <LinkFile name="Phaser.pdf" target="_blank" download>Phaser - Jeux vidéo 2D en Javascript</LinkFile>.
+
+### e.3.3) Boilerplate pour réaliser un jeu Phaser à l'aide de Webpack
+Il n'est pas simple d'intégrer Phaser au sein de Webpack et des outils de développement offerts dans ce cours de JS. Cela peut prendre plusieurs jours avant d'obtenir une bonne configuration, ce qui est peut vite devenir frustrant.
+
+Nous vous offrons donc un boilerplate si vous souhaitez créer un jeu vidéo Phaser en utilisant les outils modernes mis en place dans ce cours :  [js-phaser-boilerplate](https://github.com/e-vinci/js-phaser-boilerplate).
+
+Pour information, la source de la configuration de Webpack provient principalement de [Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template).  
+Le jeu présenté dans le boilerplate est basé sur le tutoriel nommé [Modern JavaScript Phaser 3 Tutorial : Part 1 to Part 5](https://blog.ourcade.co/posts/2020/make-first-phaser-3-game-modern-javascript-part1/) et utilise Webpack au lieu de Parcel comme module bundler.
 
 # <a id="f"></a> f) Exercice 3.2 : Gérer des événements associés à une animation
 Veuillez adapter une application web permettant l'affichage de différents scintillements 
