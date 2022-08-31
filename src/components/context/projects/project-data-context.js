@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
-import callAPI from "../../../utils/api/fetch";
-import { useMsal } from "@azure/msal-react";
-import { getAsyncIdToken } from "../../../utils/auths/use-id-token";
-
+import React, { useContext, useState } from 'react';
+import callAPI from '../../../utils/api/fetch';
+import { useMsal } from '@azure/msal-react';
+import { getAsyncIdToken } from '../../../utils/auths/use-id-token';
 
 const ProjectDataContext = React.createContext([
   {},
@@ -40,9 +39,8 @@ const ProjectDataProvider = ({ children }) => {
 };
 
 const useProjectData = () => {
-  
   const { instance, accounts } = useMsal();
-  
+
   const [
     projectGroupData,
     setProjectGroupData,
@@ -59,26 +57,31 @@ const useProjectData = () => {
       const idToken = await getAsyncIdToken(accounts, instance);
       const tempProjectGroup = await callAPI(
         `projectgroups/${associatedProjectGroupName}`,
-        "get",
+        'get',
         idToken,
         undefined
       );
       setProjectGroupData(tempProjectGroup);
-      console.log("STATE NOW ????", projectGroupData);
+      console.log('STATE NOW ????', tempProjectGroup);
       return tempProjectGroup;
     } catch (err) {
-      console.error("useProjectData:error:", err);
+      console.error('useProjectData:error:', err);
     }
   };
 
-  const updateUserData = async () => {
+  const updateUserData = async (associatedProjectGroupName) => {
     try {
       const idToken = await getAsyncIdToken(accounts, instance);
-      const tempUser = await callAPI("users/role", "get", idToken, undefined);
+      const tempUser = await callAPI(
+        `users/role/?projectgroupname=${associatedProjectGroupName}`,
+        'get',
+        idToken,
+        undefined
+      );
       setUserData(tempUser);
       return tempUser;
     } catch (err) {
-      console.error("useProjectData:updateUserData:error:", err);
+      console.error('useProjectData:updateUserData:error:', err);
     }
   };
 
@@ -87,32 +90,34 @@ const useProjectData = () => {
       const idToken = await getAsyncIdToken(accounts, instance);
       setIsLoaded(false);
       let tempProject = await callAPI(
-        "projects/projectgroups/" + projectGroupName,
-        "get",
+        'projects/projectgroups/' + projectGroupName,
+        'get',
         idToken,
         undefined
       );
       setProjectData(tempProject);
-      console.log("project array updated", tempProject);
+      console.log('project array updated', tempProject);
       setIsLoaded(true);
       return tempProject;
     } catch (err) {
-      console.error("useProjectData:updateProjectDataerror:", err);
+      console.error('useProjectData:updateProjectDataerror:', err);
     }
   };
 
   /**
-   * To be improved if app was to deal with more than one project !
-   * @param {*} projectGroupName  : to be later used if the app was to provide multiple projects !
+   * Add one project to an existing projectGroupName !
+   * @param {*} projectGroupName
    */
   const addOneProject = async (projectGroupName) => {
     try {
       const idToken = await getAsyncIdToken(accounts, instance);
-      const newProject = await callAPI("projects", "post", idToken, undefined);
+      const newProject = await callAPI('projects', 'post', idToken, {
+        projectGroupName,
+      });
       //return await updateProjectData(projectGroupName);
       return newProject;
     } catch (err) {
-      console.error("useProjectData:addOneProject:error:", err);
+      console.error('useProjectData:addOneProject:error:', err);
     }
   };
 
@@ -120,15 +125,15 @@ const useProjectData = () => {
     try {
       const idToken = await getAsyncIdToken(accounts, instance);
       const deletedProject = await callAPI(
-        "projects/" + project._id,
-        "DELETE",
+        'projects/' + project._id,
+        'DELETE',
         idToken,
         undefined
       );
       //return await updateProjectData(projectGroupName);
       return deletedProject;
     } catch (err) {
-      console.error("useProjectData:deleteOneProject:error:", err);
+      console.error('useProjectData:deleteOneProject:error:', err);
     }
   };
 
@@ -136,15 +141,15 @@ const useProjectData = () => {
     try {
       const idToken = await getAsyncIdToken(accounts, instance);
       const projectUpdated = await callAPI(
-        "projects/" + project._id + "/member",
-        "POST",
+        'projects/' + project._id + '/member',
+        'POST',
         idToken,
         undefined
       );
 
       return projectUpdated;
     } catch (err) {
-      console.error("useProjectData:addMemberToProject:error:", err);
+      console.error('useProjectData:addMemberToProject:error:', err);
     }
   };
 
@@ -152,33 +157,33 @@ const useProjectData = () => {
     try {
       const idToken = await getAsyncIdToken(accounts, instance);
       const projectUpdated = await callAPI(
-        "projects/" + project._id + "/member",
-        "DELETE",
+        'projects/' + project._id + '/member',
+        'DELETE',
         idToken,
         undefined
       );
 
       return projectUpdated;
     } catch (err) {
-      console.error("useProjectData:deleteMemberFromProject:error:", err);
+      console.error('useProjectData:deleteMemberFromProject:error:', err);
     }
   };
 
   const updateProject = async (data, id) => {
-    console.log("project to be updated:", data);
+    console.log('project to be updated:', data);
     try {
       const idToken = await getAsyncIdToken(accounts, instance);
       const projectUpdated = await callAPI(
-        "projects/" + id,
-        "PATCH",
+        'projects/' + id,
+        'PATCH',
         idToken,
         data
       );
 
-      console.log("project updated:", projectUpdated);
+      console.log('project updated:', projectUpdated);
       return projectUpdated;
     } catch (err) {
-      console.error("useProjectData:updateProject:error:", err);
+      console.error('useProjectData:updateProject:error:', err);
     }
   };
 

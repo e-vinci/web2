@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import he from "he";
+import React, { useState } from 'react';
+import he from 'he';
 
 /**
  * Make a div editable with text (could also be some HTML if needed).
@@ -27,15 +27,19 @@ const ContentEditable = ({
   };
 
   let currentContent;
-  if (isBeingEdited) currentContent = he.decode(startContent);// startContent//content;
+  if (isBeingEdited)
+    currentContent = startContent
+      ? he.decode(startContent)
+      : ''; 
   else if (children) currentContent = children;
-  else if (startContent) currentContent = he.decode(startContent); // he.decode(content);
+  else if (startContent)
+    currentContent = startContent ? he.decode(startContent) : '';
 
   let allClasses;
-  allClasses = className ? className : "";
+  allClasses = className ? className : '';
   if (isBeingEdited)
-    allClasses += " index__card__content__description--is-being-edited";
-  if (isInline) allClasses += " index__card__content__description--is-inline";
+    allClasses += ' index__card__content__description--is-being-edited';
+  if (isInline) allClasses += ' index__card__content__description--is-inline';
 
   return (
     <div

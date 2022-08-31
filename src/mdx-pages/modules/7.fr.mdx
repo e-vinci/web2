@@ -4,8 +4,7 @@ description: "Sécurisation de SPA à l'aide d'authentification & autorisation J
 ---
 
 # Module 7 : SPA & sécurisation
-Ce module vous offre principalement la sécurisation de SPA à l'aide 
-d'authentification & autorisation JWT.
+Ce module vous offre principalement la sécurisation de SPA à l'aide d'authentification & autorisation JWT.
 
 Dans un premier temps, nous allons voir comment sécuriser les accès aux opérations d'une API.  
 Puis, nous allons voir comment intégrer ces API sécurisées au sein d'IHM.
@@ -57,14 +56,14 @@ Traditionnellement, ou anciennement, nous avons l'authentification qui est suppo
 Après l'authentification, à chaque requête du client sur ce serveur, le cookie est envoyé, et le serveur, qui a sauvegardé la session, va retrouver la session sur base de l'id de session présent dans le cookie et va autoriser ou non l'accès à l'opération demandée par le client.  
 C'est ce qu'on appelle une authentification **stateful**.
 
-Un mécanisme d'authenfication **stateful** indique que le serveur est responsable de sauvegarder les données de session des utilisateurs. 
+Un mécanisme d'authentification **stateful** indique que le serveur est responsable de sauvegarder les données de session des utilisateurs. 
 
-On parle de **session** d'un utilisateur commme étant toute la durée où le client s'authentifie à l'application web jusqu'à ce qu'il quitte cette application, lorsqu'il ferme son browser.
+On parle de **session** d'un utilisateur comme étant toute la durée où le client s'authentifie à l'application web jusqu'à ce qu'il quitte cette application, lorsqu'il ferme son browser.
 
 De manière plus moderne, nous avons des mécanismes d'authentification qui sont dits **stateless**. Dans ce genre de mécanisme, c'est le client qui doit sauvegarder les données de session, et donc le browser. L'authentification à l'aide de **tokens** devient très populaires.  
-Il existe différents moyen de l'implémenter. Dans le cadre de ce cours, nous focuserons sur la façon la plus habituel, les **JSON Web Token**, ou **JWT**.
+Il existe différents moyen de l'implémenter. Dans le cadre de ce cours, nous focusserons sur la façon la plus habituel, les **JSON Web Token**, ou **JWT**.
 
-Il existe d'autres méchanismes très modernes qui utilisent des tokens, mis en place par des tiers : **OAuth**, **OpenId**... Ces méchanismes sont mis en place par Microsoft, Google, Facebook... Nous ne les verrons pas dans le cadre de cours. Néanmoins, à la fin de ce cours, vous devriez être aptes à pouvoir les utiliser, sous réserve de bien lire la documentation.
+Il existe d'autres mécanismes très modernes qui utilisent des tokens, mis en place par des tiers : **OAuth**, **OpenId**... Ces mécanismes sont mis en place par Microsoft, Google, Facebook... Nous ne les verrons pas dans le cadre de cours. Néanmoins, à la fin de ce cours, vous devriez être aptes à pouvoir les utiliser, sous réserve de bien lire la documentation.
 
 ### ## <a id="a1.4"></a>  a.1.4) Stateful VS stateless authentication 
 Quels sont les avantages & inconvénients d'une authentification stateful ? et d'une authentification stateless ?
@@ -88,7 +87,7 @@ Comme le serveur ne retient plus l'utilisateur en mémoire, il doit utiliser de 
 - Evolutif, utilisation facile de plusieurs serveurs si du load balancing est nécessaire ; en effet, comme chaque requête du client contient toutes les infos pour se faire autoriser, peu importe quel est le serveur qui va prendre en charge la requête.
 
 Notons que la "scalability" horizontale, la possibilité de permettre à une application d'augmenter sa capacité de répondre à une charge grandissante simplement en ajoutant des machines, est quelque chose de très important à notre époque.  
-Certaines applications web ont des centaines de millions d'utilisateurs ; pour celles-ci, on ne peut pas compter sur la "scalability" veriticale, c'est-à-dire le fait d'augmenter les ressources d'une machine, en augmentant sa RAM, son processeur, son espace de stockage...
+Certaines applications web ont des centaines de millions d'utilisateurs ; pour celles-ci, on ne peut pas compter sur la "scalability" verticale, c'est-à-dire le fait d'augmenter les ressources d'une machine, en augmentant sa RAM, son processeur, son espace de stockage...
 
 Dès lors, dans le cadre de ce cours, nous allons préférer les applications web qui peuvent tourner sur des serveurs **stateless**.
 
@@ -117,11 +116,11 @@ Et bien la signature ne correspondra plus à ce token là ! L'API le détectera.
 Pour que le hackeur réussisse son acte malicieux, il est obligé de connaître le secret privé qui ne doit être connu que de l'API.  
 Seulement dans le cas où le hackeur ou la hackeuse connaît le secret privé, pourra-t-il ou pourra-t-elle générer un nouveau token qui sera validé par l'API. Pas évident...
 
-Ainsi, on peut imaginer un token comme une enveloppe sécurisé par un cadena très spécial : ce cadenas, qui est mis sur l'enveloppe contenant, par exemple, l'identifiant d'un utilisateur, est fermé par la clé 🔑 que seulement connaît l'API.
-Si quelqu'un touche à l'enveloppe, le cadena ne s'ouvrira plus avec la 🔑 de l'API : la tentative de hackage sera détectée ! 
-Si quelqu'un tente de créer une enveloppe sécurisé, il le fera avec une autre clé, **🗝** par exemple, car il ne connaît pas 🔑. L'API, tentant d'ouvrir l'enveloppe sécurisée à l'aide de 🔑, elle ne s'ouvrira pas : la tentative de hackage sera détectée ! 
+Ainsi, on peut imaginer un token comme une enveloppe sécurisé par un cadenas très spécial : ce cadenas, qui est mis sur l'enveloppe contenant, par exemple, l'identifiant d'un utilisateur, est fermé par la clé 🔑 que seulement connaît l'API.
+Si quelqu'un touche à l'enveloppe, le cadenas ne s'ouvrira plus avec la 🔑 de l'API : la tentative de hackage sera détectée ! 
+Si quelqu'un tente de créer une enveloppe sécurisé, il le fera avec une autre clé, **🗝** par exemple, car il ne connaît pas 🔑. L'API, tentant d'ouvrir l'enveloppe sécurisée à l'aide de 🔑, elle ne s'ouvrira pas : la tentative de hacking sera détectée ! 
 
-💭 Est-ce que cette méthaphore d'enveloppe sécurisée vous parle ?
+💭 Est-ce que cette métaphore d'enveloppe sécurisée vous parle ?
 Attention que dans la réalité, le payload classique d'un token sera décodable, que l'on connaisse ou pas le secret privé. Il est encodé en base64 ! Ne mettez donc jamais de secrets dans le payload d'un token !  
 Si vraiment un jour vous deviez mettre un secret dans un payload, bien que déconseillé, vous pourriez toujours le faire en cryptant le payload.
 
@@ -409,7 +408,7 @@ Vous comprenez pourquoi on n'ajoute pas des secrets dans un token 😉.
 Dans ce cours-ci, nous ne verrons pas directement comment faire en sorte que le secret,  permettant de signer & vérifier les token, ne soit pas présent sur le web repository de vos API (par exemple ici le modèle **users.js** hardcode ce secret). En effet, pour des raisons de sécurité, si votre secret est visible pour tous les développeurs qui accède à votre repository public, c'est un problème.  
 Si vous souhaitez découvrir comment faire en sorte de rendre invisible des informations sensibles sur un web repository, tout en pouvant bénéficiant de ces infos dans votre environnement de développement, vous pouvez utiliser la librairie [dotenv]/(https://www.npmjs.com/package/dotenv) qui vous permet de gérer facilement des variables d'environnement. C'est ce genre de librairies qui est utilisée par les professionnels pour cacher leurs secrets et certaines variables de configuration, comme le password pour se connecter à une DB, l'URL vers une API, le port de l'application...
 
-### a.3.3) Mécanisme d'autorisaton et vérification du token
+### a.3.3) Mécanisme d'autorisation et vérification du token
 Suite au **register** ou au **login** de l'utilisateur, tel qu'il a été décidé pour notre RESTful API, celui-ci a reçu un token. C'est le job de l'application cliente de trouver un moyen de sauvegarder ce token. 
 
 Lorsqu'une application client souhaite créer une pizza, on souhaite autoriser cette opération qu'à l'administrateur du site gérant la pizzéria.  
@@ -494,7 +493,7 @@ Quelques explications sur le code de la fonction middleware **authorize** :
 Imaginez que vous faites un appel à une base de données externes à chaque fois que vous souhaitez obtenir les informations d'un utilisateur... Cela est très consommateur en temps... Lorsque vous allez utiliser d'autres fonctions middleware comme **isAdmin**, vous n'avez plus besoin de faire appel à la base de données.
 - 💭 Qu'est-ce que ce code : `const { username } = decoded;` ?  
 C'est ce que l'on appelle du **destructuring assignement**, c'est une façon très concise en JS de créer des variables à partir de propriétés d'objets ou des valeurs d'arrays.  
-Imaginez ici que la valeur de `decoded` soit `{ username: 'admin', iat: 1661251095, exp: 1747651095 }`. Ce code `const { username } = decoded;` est l'équivalent de `const username = decoded.username;`. OK, mais ça n'a pas vraiment de valeur ajoutée ici, c'est juste un poil plus concis... Cela devient vraiment intéressant quand vous souhaitez creer plusieur variables, comme pour l'exemple donné, on pourrait créer 3 variables ainsi `const { username, iat, exp } = decoded;` au lieu d'écrire :
+Imaginez ici que la valeur de `decoded` soit `{ username: 'admin', iat: 1661251095, exp: 1747651095 }`. Ce code `const { username } = decoded;` est l'équivalent de `const username = decoded.username;`. OK, mais ça n'a pas vraiment de valeur ajoutée ici, c'est juste un poil plus concis... Cela devient vraiment intéressant quand vous souhaitez créer plusieurs variables, comme pour l'exemple donné, on pourrait créer 3 variables ainsi `const { username, iat, exp } = decoded;` au lieu d'écrire :
 ```js
 const username = decoded.username;
 const iat = decoded.iat;
@@ -539,7 +538,7 @@ Ainsi, nous avons juste fait l'appel de deux fonctions middleware pour vérifier
 - **que l'utilisateur est authentifié** via **authorize** ; si tout est OK au niveau du token fournit par l'application cliente, **authorize** fait appel via **next()** à la prochaine fonction middleware. Dans ce cas-ci, c'est **isAdmin**. S'il y a un problème, **authorize** termine le traitement de la requête en envoyant un code d'erreur au client et les prochaines fonctions middleware (**isAdmin**, puis la fonction arrow) ne sont pas exécutées.
 - **que l'utilisateur est admin** via **isAdmin** ; si tout est OK, que l'utilisateur authentifié est l'admin, **isAdmin** fait appel via **next()** à la prochaine fonction middleware. Dans ce cas-ci, c'est la fonction arrow qui appelle `createOnePizza` pour créer la pizza, la fonction traitant l'opération demandée. Si l'utilisateur authentifié n'est pas l'admin, alors **isAdmin** termine le traitement en envoyant un code d'erreur au client et la fonction traitant de l'opération de création n'est pas exécutée.
 
-Comment pouvons nous tester l'opération de création d'une pizza ? Via REST Client.
+Comment pouvons-nous tester l'opération de création d'une pizza ? Via REST Client.
 Tentons le coup à l'aide de cette requête (elle est déjà présente dans **/REST Client/pizzas.http**) :
 ```http
 POST {{baseUrl}}/pizzas
@@ -811,7 +810,7 @@ export default RegisterPage;
 
 ```
 
-Veuillez exécuter le fronted et vous assurer que l'utilisateur que vous tentez de créer est bien créé par votre API. Si tout fonctionne, vous aurez une confirmation dans la console de votre browser.
+Veuillez exécuter le frontend et vous assurer que l'utilisateur que vous tentez de créer est bien créé par votre API. Si tout fonctionne, vous aurez une confirmation dans la console de votre browser.
 
 Bien, nous souhaitons pour l'instant sauvegarder **authenticatedUser** de manière temporaire, car cet objet contient comme info le username et le token de l'utilisateur. 
 💭 Comment faire pour que cet objet soit disponible dans d'autres modules ?
@@ -1156,7 +1155,7 @@ const Logout = () => {
 export default Logout;
 ```
 
-Attention, même si nous avons mis à jour la **Navbar** et créé le composant **Logout**, le boilerplate du frontend impose de rajouter une route au sein du **Router** pour qu'un clic sur l'élément **Logout** de la **Navbar** ammène à appeler le composant **Logout**.
+Attention, même si nous avons mis à jour la **Navbar** et créé le composant **Logout**, le boilerplate du frontend impose de rajouter une route au sein du **Router** pour qu'un clic sur l'élément **Logout** de la **Navbar** amène à appeler le composant **Logout**.
 Veuillez donc mettre à jour **`routes`** au sein de **/src/Components/Router/Router.js** :
 ```js {1,12}
 import Logout from '../Logout/Logout';
@@ -1277,13 +1276,13 @@ En cas de souci, vous pouvez utiliser le code du tutoriel :
 💭 Est-ce que c'est "safe" que notre IHM affiche le menu "Add a pizza" pour un utilisateur qui n'est pas l'admin ?  
 En fait oui, c'est "safe", vous l'avez testé. L'API ne doit jamais faire confiance aux applications clientes pour appliquer la sécurité. Ainsi, même si le frontend autorise l'accès à des opérations qui ne devraient pas être permises, au regard des autorisations appliquées par l'API, ça n'a pas d'importance point de vue sécurité.  
 De la même façon, c'est pour ça qu'une API doit aussi toujours valider les paramètres qu'elle reçoit. Elle ne peut pas faire confiance aux applications clientes, comme par exemple à une application web tournant dans un browser, pour valider tous les champs d'un formulaire avant de faire la requête.  
-La raison est simple, l'API est développée indépendemment des applications clientes, elle ne peut pas supposer que les requêtes seront toujours bien construites.
+La raison est simple, l'API est développée indépendamment des applications clientes, elle ne peut pas supposer que les requêtes seront toujours bien construites.
 
 💭 OK, tout est "safe" si l'API fait toutes les vérifications nécessaires. Néanmoins, n'y a-t-il pas des règles de bonnes pratiques au niveau des IHM, pour ne pas permettre de faire n'importe quelles requêtes vers des API ?  
 Et bien oui, au niveau des IHM, pour des questions d'**ergonomie**, d'expérience utilisateur, on va faire en sorte :
 - de ne pas offrir des opérations qui ne seront pas autorisées. Par exemple, dans le cadre de ce tutoriel sur un site permettant de gérer une pizzeria, si l'utilisateur n'est pas **admin**, alors il ne faut pas frustrer les utilisateurs en leur faisant croire qu'ils ont accès à l'opération de créer une pizza ! Imaginez-vous, vous créer une nouvelle pizza de 32 ingrédients, et lors de la soumission, vous recevez un message comme quoi vous n'êtes pas l'admin du site et que vous n'avez donc pas le droit de créer une pizza 😲!
 - de ne pas demander du travail à une API quand l'IHM peut détecter que ça n'est pas utile. 
-Ainsi, quand une IHM offre des formulaires, qui amèneront à des requêtes vers des API, on évitera d'autoriser la soumission des données tant que les champs n'ont pas été validés. Tout ce que l'IHM peut valider côté client, elle doit le faire. Le feedback sera plus rapide pour l'utilisateur, et les ressouces de l'API seront économisées (pas d'appel inutile).
+Ainsi, quand une IHM offre des formulaires, qui amèneront à des requêtes vers des API, on évitera d'autoriser la soumission des données tant que les champs n'ont pas été validés. Tout ce que l'IHM peut valider côté client, elle doit le faire. Le feedback sera plus rapide pour l'utilisateur, et les ressources de l'API seront économisées (pas d'appel inutile).
 
 N'hésitez donc pas à mettre à jour ce tutoriel pour faire en sorte de n'afficher "Add a pizza" que si l'utilisateur est **admin**.
 
@@ -1307,8 +1306,8 @@ Lors de l'exercice précédent (Exercice 6.1), vous aviez une application qui pe
 
 A cet exercice, veuillez introduire l'authentification d'utilisateur via ces deux nouveaux cas d'utilisation :
 - UC5 : un utilisateur doit pouvoir créer un compte (register).
-- UC6 : un utilisateur doit pouvoir se logguer (login).
-- UC7 : un utilisateur doit pouvoir se délogguer (logout).
+- UC6 : un utilisateur doit pouvoir se loguer (login).
+- UC7 : un utilisateur doit pouvoir se déconnecter (logout).
 
 Vous allez intégrer le frontend de **myMovies** réalisé au module 3 (Exercice 3.1) avec la RESTful API développée au module 5 (Exercice 5.2).
 
@@ -1342,9 +1341,9 @@ Voici les opérations qui doivent être mises à disposition par votre API :
 
 
 Afin de réaliser cet exercice, voici les contraintes d'implémentation :
--	Commencez par mettre à jour l'API pour ajouter les opérations de register, de login, ainsi que les autorisations pour les fonctions d'écritures sur des ressources de type films. Utilisez le contenu de votre répertoire d'exercices **/exercises/module5/5.2** comme point de départ pour créer,dans votre repository local et votre web repository (normalement appelé **web2**), le répertoire nommé **/exercises/module7/7.1/api**.
+-	Commencez par mettre à jour l'API pour ajouter les opérations de register, de login, ainsi que les autorisations pour les fonctions d'écritures sur des ressources de type films. Utilisez le contenu de votre répertoire d'exercices **/exercises/module5/5.2** comme point de départ pour créer, dans votre repository local et votre web repository (normalement appelé **web2**), le répertoire nommé **/exercises/module7/7.1/api**.
 - Veuillez tester votre API via REST Client pour vous assurer que les autorisations JWT fonctionnent correctement. Quand tout est OK, vous pouvez passer au développement de votre frontend.
--	Pour le frontend, utilisez le contenu de votre répertoire d'exercices **/exercises/module6/6.1** comme point de départ pour créer,dans votre repository local et
+-	Pour le frontend, utilisez le contenu de votre répertoire d'exercices **/exercises/module6/6.1** comme point de départ pour créer, dans votre repository local et
 votre web repository (normalement appelé **web2**), le répertoire nommé
 **/exercises/module7/7.1/hmi**.
 -	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
@@ -1396,7 +1395,7 @@ Veuillez lancer le frontend **jwt-fetch** et le backend **auths** du site de la 
 
 Evidemment, un hackeur, pour tenter l'attaque XSS, doit d'abord trouver un moyen d'usurper la session d'**admin**. Nous ne verrons pas dans ce cours le genre d'attaques qui permettrait de le faire. Nous allons considérer que cette première attaque est réussie et prendre le rôle d'un hackeur pouvant accéder au compte **admin**.
 
-Veuillez vous logger à l'aide du compte **admin** (et le password **admin**).  
+Veuillez vous loguer à l'aide du compte **admin** (et le password **admin**).  
 Veuillez vous rendre sur la page **Add a pizza**.
 
 Pour le titre de la pizza, vous pouvez ajouter n'importe quoi.
@@ -1408,7 +1407,7 @@ Dans le contenu de la pizza, veuillez ajouter cela et soumettre :
 
 En fait, nous avons ajouté une balise **`img`** contenant du inline JS. **`oneerror`** est un gestionnaire d'événements qui sera d'office appelé car la source (**`src="#"`** ) donné à **`img`** n'est pas une image.
 
-Maintenant, tout utilisateur connecté ou pas qui se loggera sur le site va exécuter ce script "malicieux". Il verra le pop-up appraître avec le message "You have been hacked !".  
+Maintenant, tout utilisateur connecté ou pas qui se loguera sur le site va exécuter ce script "malicieux". Il verra le pop-up apparaître avec le message "You have been hacked !".  
 En effet, le menu des pizzas, tel qu'il est construit, est basé sur toutes les ressources de type "pizzas" renvoyées par l'API, dont une des pizzas contient le JS malicieux qui est exécuté dans une cellule de la table via ce code de la **HomePage** de l'IHM :
 ```js {7}
 function getAllTableLinesAsString(menu) {
@@ -1425,9 +1424,9 @@ function getAllTableLinesAsString(menu) {
 }
 ```
 ### d.2.3) Empêcher les attaques XSS
-Par rapport à l'attaque précédente, le plus simple pour protéger de l'attaque pourrait être de faire en sorte que l'application cliente n'interprête pas d'HTML / JS / CSS envoyé par l'API.
+Par rapport à l'attaque précédente, le plus simple pour protéger de l'attaque pourrait être de faire en sorte que l'application cliente n'interprète pas d'HTML / JS / CSS envoyé par l'API.
 
-Ici, dans la **HomePage**, en fait on utilise la propriété **`innerHTML`** d'une **`td`**. Ainsi, l'HTML et l'inline JS associé est exécuté. Si l'on utilisais la propriété **`innerText`** des **`td`**, alors, ni l'HTML et le JS serait interprêté par le browser, et donc pas de possibilité de script malicieux au niveau de la **HomePage**.
+Ici, dans la **HomePage**, en fait on utilise la propriété **`innerHTML`** d'une **`td`**. Ainsi, l'HTML et l'inline JS associé est exécuté. Si l'on utilisais la propriété **`innerText`** des **`td`**, alors, ni l'HTML et le JS serait interprété par le browser, et donc pas de possibilité de script malicieux au niveau de la **HomePage**.
 
 Oui mais si nous allions vers cette solution, cela serait problématique si nous souhaitions réellement développer plusieurs applications clientes, il faudrait toujours faire attention à cette contrainte.
 
@@ -1451,7 +1450,7 @@ npm i jsonwebtoken
 
 Nous allons supprimer, s'il existe, le fichier reprenant le code malicieux introduit précédemment : veuillez supprimer le fichier **/data/pizzas.json**.
 
-Nous allons à présent mettre à jour le modèle de pizzas pour echapper les caractères dangereux.
+Nous allons à présent mettre à jour le modèle de pizzas pour échapper les caractères dangereux.
 Veuillez modifier **/models/pizzas.js** :
 ```js {1,9-10}
 const escape = require('escape-html');
@@ -1475,7 +1474,7 @@ function createOnePizza(title, content) {
 ```
 
 Nous allons maintenant tester si tout est réglé au niveau de l'attaque XSS.  
-Veuillez vous logger à l'aide du compte **admin** (et le password **admin**).  
+Veuillez vous loguer à l'aide du compte **admin** (et le password **admin**).  
 Veuillez vous rendre sur la page **Add a pizza**.
 
 Comme précédemment : 
@@ -1666,7 +1665,7 @@ router.post('/login', async (req, res) => {
 module.exports = router;
 ```
 
-Nous avons simplement chaîné les réponses à faire au client seulement une fois les opération `register` et `login` terminéés. Pour ce faire, nous avons précédé le nom de ces méthodes par **await**. Nous avons donc du ajouter **async** aux fonctions middleware s'occupant des routes **POST /auths/register** et **POST /auths/login**.
+Nous avons simplement chaîné les réponses à faire au client seulement une fois les opération `register` et `login` terminées. Pour ce faire, nous avons précédé le nom de ces méthodes par **await**. Nous avons donc du ajouter **async** aux fonctions middleware s'occupant des routes **POST /auths/register** et **POST /auths/login**.
 
 Veuillez vérifier que votre application fonctionne correctement.  
 Via l'IHM, veuillez faire un register d'un nouvel utilisateur.  
@@ -1701,13 +1700,13 @@ A l'exercice précédent (Exercice 7.1), vous avez développé le mécanisme d'a
 
 Néanmoins, cette API n'est pas encore sécurisée. Les passwords sont disponibles en clair dans un fichier JSON et il est probable de faire des attaques XSS.
 
-Commencez par hacker votre site en faisant une injection de Javascript. Ce script "malicieux" affichera un pop-up à chaque utilisateur affichant la liste des films ; ce pop-up sera suffisamment explicite pour que vos utilisateurs sachent qu'ils ont été hacké.
+Commencez par hacker votre site en faisant une injection de Javascript. Ce script "malicieux" affichera un pop-up à chaque utilisateur affichant la liste des films ; ce pop-up sera suffisamment explicite pour que vos utilisateurs sachent qu'ils ont été piratés.
 
 Ensuite, veuillez sécuriser l'API pour échapper les caractères dangereux et pour hacher les password.
 
 Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 -	Pour le frontend, il n'y a rien à développer, veuillez exécuter  le contenu de votre répertoire d'exercices **/exercises/module7/7.1/hmi**.
--	Pour l'API, utilisez le contenu de votre répertoire d'exercices **/exercises/module7/7.1/api** comme point de départ pour créer,dans votre repository local et
+-	Pour l'API, utilisez le contenu de votre répertoire d'exercices **/exercises/module7/7.1/api** comme point de départ pour créer, dans votre repository local et
 votre web repository (normalement appelé **web2**), le répertoire nommé
 **/exercises/module7/7.2/api**.
 

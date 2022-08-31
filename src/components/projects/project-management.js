@@ -48,7 +48,7 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
 
   const onProjectAdd = async () => {
     console.log("add and", projectGroupData._id);
-    await addOneProject();
+    await addOneProject(projectGroupData._id);
     const newListOfProjects = await updateProjectData(projectGroupData._id);
     setFilteredContents(undefined);
   };
@@ -63,7 +63,7 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
       // Deal with project group data
       const group = await updateProjectGroupData(associatedProjectGroupName);
       // Deal with user role data {role:..., isAdmin:...}
-      const user = await updateUserData();
+      const user = await updateUserData(associatedProjectGroupName);
       // Deal with project data
       const temp = await updateProjectData(group._id);
     } catch (error) {
@@ -79,7 +79,7 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
       ) : (
         // deal with project view
         <div className="pl-3 pt-3 pb-3 pr-3">
-          <h3 className="">Projets des groupes de {projectGroupData._id}</h3>
+          <h3 className="">Projets des groupes de {projectGroupData?._id}</h3>
           <div className="index">
             <input
               type="text"

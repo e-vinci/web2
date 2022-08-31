@@ -4,8 +4,7 @@ description: "Gestion de session utilisateurs pour suivre des opérations sur de
 ---
 
 # Module 8 : SPA & sessions & déploiement
-Ce module vous offre principalement la gestion de session utilisateurs 
-pour faciliter les opérations sur des ressources ainsi que le déploiement de SPA sur le cloud.
+Ce module vous offre principalement la gestion de session utilisateurs pour faciliter les opérations sur des ressources ainsi que le déploiement de SPA sur le cloud.
 
 Voici les sujets traités :
 - a) [Gestion de sessions côté client](#a)
@@ -20,8 +19,6 @@ Voici les sujets traités :
     - c.4) [Déploiement d'une API sur des providers gratuits](#c3)
 - d) [Exercice 8.2 : Déploiement de myMovies sur le cloud](#d)
 - e) [🍬 Exercice 8.3 : l'essentiel du cours en action](#e)
-
-
 
 # <a id="a"></a> a) Gestion de sessions côté client
 
@@ -166,7 +163,7 @@ Dans **`clearAuthenticatedUser`**, on efface la clé / valeur associée à l'uti
 Veuillez bien mettre à jour votre code et tester l'application.  
 Connectez-vous à l'aide de l'utilisateur **manager**.  Veuillez fermer votre browser.  
 Veuillez le réouvrir.  
-Voila, vous devriez automatiquement être authentifié, veuillez observer l'état de la Navbar pour vous en assurer.
+Voilà, vous devriez automatiquement être authentifié, veuillez observer l'état de la Navbar pour vous en assurer.
 
 💭 Où puis-je observer l'état des données sauvegardées dans le web storage de mon browser ?  
 Tout en ayant la fenêtre de votre application ouverte, via Chrome, allez dans vos outils de développeurs : **F12**.  
@@ -192,24 +189,24 @@ Le browser peut sauver ce cookie. Pour chaque requête faite au serveur sur la m
 
 Il fut un temps où les cookies étaient utilisé comme un mécanisme général de stockage de données côté client. 
 
-👍 Actuellement, si les cookies sont utilisés pour sauvegarder les données de session, il faut se protéger contre les attaques XSS et rendre les cookies inacessibles au JavaScript. On utilise donc les cookies **HttpOnly** qui sont innacessible à la **Document.cookie API**. 
+👍 Actuellement, si les cookies sont utilisés pour sauvegarder les données de session, il faut se protéger contre les attaques XSS et rendre les cookies inaccessibles au JavaScript. On utilise donc les cookies **HttpOnly** qui sont inaccessibles à la **Document.cookie API**. 
 
 Du coup, si des données de session doivent être utilisée pour l'IHM, on ne peut pas se passer du **web storage** !
 
 Pour la suite, on va donc voir :
 - comment utiliser Express pour créer des cookies au niveau d'une API ;
-- pour rendre ces cookies inacessibles aux attaques XSS en configurant **HttpOnly** ;
+- pour rendre ces cookies inaccessibles aux attaques XSS en configurant **HttpOnly** ;
 - comme les cookies sont envoyés automatiquement au serveur, il faudra mettre à jour notre IHM pour ne plus envoyer le token via un authorization header. L'API va charger le token dans le cookie, et comme le cookie sera automatiquement envoyé au serveur via le browser, l'IHM et les fetch seront plus simples. 
 - l'embêtant dans ce que nous allons faire, c'est que comme nous allons sécuriser le cookie, nous n'aurons pas accès au username via le cookie... Nous pourrions :
     - soit toujours utiliser le web storage pour sauvegarder le username, 
     - soit accepter de ne plus afficher le nom du username et avoir aucun nouveau code à ajouter au niveau du frontend (juste enlever les authorization header inutiles) ;
-    - soit mettre à jour l'API pour offrir une route de type **GET /users/me** qui renvoie les données d'un utilisateur à la demande d'une requête cliente. Dans ce cas là, à chaque fois que l'utilisateur ouvre le browser, la première chose à faire serait d'appeler cette opération.
+    - soit mettre à jour l'API pour offrir une route de type **GET /users/me** qui renvoie les données d'un utilisateur à la demande d'une requête cliente. Dans ce cas-là, à chaque fois que l'utilisateur ouvre le browser, la première chose à faire serait d'appeler cette opération.
 
 Pour le tutoriel, nous avons choisi la première option. Dans vos exercices optionnels, n'hésitez pas à explorer une autre option.
 
-💭 Mais pourquoi sécuriser le cookie et le rendre inacessible au JS ?  
+💭 Mais pourquoi sécuriser le cookie et le rendre inaccessible au JS ?  
 Hé bien, imaginez qu'un attaquant arrive à faire une attaque XSS, via un JS malicieux, renvoyant le cookie de chaque utilisateur qui affiche le menu des pizzas...  
-Via ce cookie, qui contient le token de l'utilisateur, le hackeur pourra l'impersonnifier !  
+Via ce cookie, qui contient le token de l'utilisateur, le pirate peut se faire passer pour l'utilisateur piraté !  
 Bon, pour la pizzeria, c'est p-e pas si grave, mais imaginez si c'est le token associé à votre compte banquaire !  
 Si le cookie est inaccessible au JS, il est donc impossible pour un hackeur, via du JS malicieux, d'accéder au token, et donc, de l'envoyer 😌.
 
@@ -271,7 +268,7 @@ app.use('/auths', authsRouter);
 module.exports = app;
 ```
 
-Nous avons donc bien indiqué que le cookie est innacessible au JS via : `httpOnly: true,`.
+Nous avons donc bien indiqué que le cookie est inaccessible au JS via : `httpOnly: true,`.
 
 Nous avons fait en sorte que le cookie soit signé via la clé `cookieSecreteKey`.  
 Le mécanisme de signature correspond à ce qui a été vu dans le cadre des tokens JWT.  
@@ -579,7 +576,7 @@ GET {{baseUrl}}/auths/logout
 ```
 
 Pour ajouter une pizza, il suffit juste :
-1. De logguer l'admin.
+1. De loguer l'admin.
 2. De créer une nouvelle pizza ; le cookie est automatiquement envoyé.
 
 Admettons que vous souhaitez tester l'ajout d'une pizza sans envoyer de token :
@@ -610,7 +607,7 @@ Veuillez donc mettre à jour **/src/Components/AddPizzaPage.js** en enlevant ces
 - la ligne s'occupant de l'authorization header : `Authorization: authenticatedUser.token`.
 
 Veuillez tester votre dernière version du frontend.
-Loggez-vous avec l'utilisateur **admin** (et le password **admin**).  
+Loguez-vous avec l'utilisateur **admin** (et le password **admin**).  
 Ajoutez une pizza et vérifiez qu'elle s'affiche bien.  
 
 💭 Comment vérifier le cookie ?
@@ -640,7 +637,7 @@ Veuillez faire en sorte que vos données de session soient sauvegardées :
 
 Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 - Veuillez démarrer votre API développée précédemment : **/exercises/module7/7.2/api**.
-- Pour le frontend, utilisez le contenu de votre répertoire d'exercices **/exercises/module7/7.1/hmi** comme point de départ pour créer,dans votre repository local et
+- Pour le frontend, utilisez le contenu de votre répertoire d'exercices **/exercises/module7/7.1/hmi** comme point de départ pour créer, dans votre repository local et
 votre web repository (normalement appelé **web2**), le répertoire nommé
 **/exercises/module8/8.1/hmi**.
 -	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
@@ -672,9 +669,9 @@ Voici un diagramme qui exprime bien les différentes façons de déployer une ap
 Sur ce diagramme, tout à gauche, nous sommes entièrement responsable de la mise à disposition de l'infrastructure. Il faut donc d'énormes connaissances réseaux, au niveau OS, afin de mettre à disposition des serveurs, les sécuriser,...
 
 Lorsqu'on va vers la droite du diagramme, on passe vers la dématérialisation des services, vers le cloud, qui offre principalement trois types de services :
-- **IaaS** ou Infrastructure as a Service : nous reçevons toute l'infrastructure, nous devons encore nous occuper du reste, la gestion d'un OS (Linux, Windows...), les bases de données, les applications et leurs données ; Amazon Web Services, Microsoft Azure, Google Cloud, OVHcloud offrent ce genre de services...
-- **PaaS** ou Platform as a Service : nous reçevons tout ce qu'il faut pour simplement développer des applications ; heroku, Amazon Web Services, Microsoft Azure, Google Cloud, OVHcloud offrent ce genre de services...
-- **SaaS** ou Software as a Service : nous reçevons des applications prêtes à être utilisées ; office 365 est un exemple, Github en est un autre.
+- **IaaS** ou Infrastructure as a Service : nous recevons toute l'infrastructure, nous devons encore nous occuper du reste, la gestion d'un OS (Linux, Windows...), les bases de données, les applications et leurs données ; Amazon Web Services, Microsoft Azure, Google Cloud, OVHcloud offrent ce genre de services...
+- **PaaS** ou Platform as a Service : nous recevons tout ce qu'il faut pour simplement développer des applications ; heroku, Amazon Web Services, Microsoft Azure, Google Cloud, OVHcloud offrent ce genre de services...
+- **SaaS** ou Software as a Service : nous recevons des applications prêtes à être utilisées ; office 365 est un exemple, Github en est un autre.
 
 Lorsque nous allons déployer nos RESTful API, nous allons donc très souvent utiliser un **PaaS**. En effet, voici les étapes principales pour le déploiement :
 - créer et configurer le type d'application que nous allons déployer avec les outils offerts par le provider : indiquer que nous souhaitons développer une application **Node.js** ;
@@ -715,7 +712,7 @@ Comme il n'est pas si facile de s'y retrouver, voici ci-dessous un résumé des 
 **Préparation de votre application**
 
 1. Utilisez les bonnes variables d'environnement dans Node.js en vérifiant que **`process.env.PORT`** est bien écrit dans `/bin/www`.  
-*La variable d'environnement `PORT`, accessible sous Node via `process.env.PORT` , est alloué par Heroku lors du démarrage de l'application. Pour `HOST`, le plus simple est de ne pas en avoir : votre serveur écoute sur toutes les IPs. C'est ce qui est fait par défaut lorsqu'une application Express est générée.*
+*La variable d'environnement `PORT`, accessible sous Node via `process.env.PORT` , est alloué par Heroku lors du démarrage de l'application. Pour `HOST`, le plus simple est de ne pas en avoir : votre serveur écoute sur toutes les IP. C'est ce qui est fait par défaut lorsqu'une application Express est générée.*
 2. Vérifiez **`package.json`** : Le script "start" sera ce que heroku lance en 1er.  
 *Il n'y a normalement rien à faire, `package.json` doit contenir pour "start" :*
 ``` json
@@ -777,7 +774,7 @@ Pour le backend, si vous êtres étudiant, nous vous recommandons de vous inscri
 Pensez à créer un repository pour votre frontend et un repository pour votre backend.  
 La racine de vos repositories doivent correspondre à la racine de vos projets. Pour vous en assurer, à la racine de chaque repo, doit se trouver un fichier `/packages.json`.
 
-⚡ Attention, Git ne tracque pas les repos dans les repos. Ainsi, vos deux projets ne peuvent pas se trouver dans le repos **web2** de votre cours !  
+⚡ Attention, Git ne traque pas les repos dans les repos. Ainsi, vos deux projets ne peuvent pas se trouver dans le repos **web2** de votre cours !  
 N'oubliez pas d'inclure un fichier **.gitignore** pour éviter de mettre en configuration **node_modules** !
 
 # <a id="e"></a> e) 🍬 Exercice 8.3 : Déploiement de myMovies sur le cloud
@@ -811,7 +808,7 @@ Vous devez créer deux pages :
 Contraintes d'implémentation : 
 -	Veuillez utiliser le fichier **/question1/src/utils/places.js** qui reprend des lieux de vacances. Vous devez mettre à jour ce fichier pour pouvoir l'utiliser dans votre code JS comme module.
 -	Aucune autre page ne doit être disponible sur le site web.
--	Vous devez implémenter le carrousel vous-même, vous ne pouvez pas utiliser un carrousel de bootstrap.
+-	Vous devez implémenter le carrousel vous-même, vous ne pouvez pas utiliser un carrousel de Bootstrap.
 -	Utilisez les images importées statiquement dans la liste des lieux de vacances et changez la source de l'image affichée quand l'utilisateur clique sur un bouton.
 
 Voici un exemple de ce à quoi pourrait ressembler votre site web :

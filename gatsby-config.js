@@ -6,7 +6,7 @@ const authorEmail = "raphael.baroni@vinci.be";
 const facebookUrl = "";
 const instagramUrl = "";
 const defaultLanguage = "fr";
-const defaultAssociatedProjectGroupName = "Web2 2021";
+const defaultAssociatedProjectGroupName = "Web2 2022";
 
 module.exports = {
   pathPrefix: `/web2`,
@@ -70,12 +70,12 @@ module.exports = {
         link: `/essentials`,
       },
       {
-        name: `Projet`,
+        name: `Projets`,
         link: `/project-page`,
         protected: true,
       },
       {
-        name: "Revues de projet",
+        name: "Revues de projets",
         link: "",
         protected: true,
         subMenu: [

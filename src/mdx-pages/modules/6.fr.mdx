@@ -7,7 +7,7 @@ description: 'Création de SPA et gestion des communications entre une RESTful A
 
 Ce module vous offre principalement la création de SPA et la gestion des communications asynchrones entre une RESTful API et une IHM.
 
-A cette étape-ci, nous allons simplement intégrer des RESTful API au sein d'IHM.
+A cette étape-ci, nous allons simplement intégrer des RESTful API au sein d'IHM.  
 C'est donc principalement du développement frontend que nous allons faire, à l'inverse des deux derniers modules où nous avons fait que du développement backend.
 
 Voici les sujets traités :
@@ -36,35 +36,25 @@ Voici les sujets traités :
 
 Une SPA (Single Page Application) offre de belles caractéristiques :
 
-- **Pas de rechargement de page pendant l'utilisation** : en effet, on télécharge une seule fois
-  l'ensemble du frontend (et donc de toutes les pages) ;
-- **La réécriture dynamique du contenu de la page** : lorsque l'on navigue d'une page à une autre,
-  on change que les parties de l'IHM qui doivent être mises à jour.
-- **Pas d'interruption de l'expérience de l'utilisateur** : lorsque l'utilisateur, via ses actions,
-  amène par exemple à un appel à une API, l'IHM reste disponible. Le browser peut réaliser des actions
-  de manière asynchrone (ou autrement dit, en parallèle) et ne bloque pas l'expérience utilisateur
-  lors de long chargements (à l'exception bien sûr du tout premier accès à l'application nécessitant
-  le chargement complet du frontend).
+- **Pas de rechargement de page pendant l'utilisation** : en effet, on télécharge une seule fois l'ensemble du frontend (et donc de toutes les pages) ;
+- **La réécriture dynamique du contenu de la page** : lorsque l'on navigue d'une page à une autre, on change que les parties de l'IHM qui doivent être mises à jour.
+- **Pas d'interruption de l'expérience de l'utilisateur** : lorsque l'utilisateur, via ses actions, amène par exemple à un appel à une API, l'IHM reste disponible. Le browser peut réaliser des actions
+  de manière asynchrone (ou autrement dit, en parallèle) et ne bloque pas l'expérience utilisateur lors de long chargements (à l'exception bien sûr du tout premier accès à l'application nécessitant le chargement complet du frontend).
 
-Voici un exemple de workflow associé à la SPA qui gérera le site de la pizzeria, afin d'afficher le
-menu au sein de l'IHM :
+Voici un exemple de workflow associé à la SPA qui gérera le site de la pizzeria, afin d'afficher le menu au sein de l'IHM :
 
 <ScrollableImage name="readPizzas.png" minWidth="523px" maxWidth="523px" />
 <figcaption>Exemple de Workflow classique d'une SPA</figcaption>
 
-Une fois la page **index.html** chargée par le browser, celui-ci va faire des appels multiples
-au serveur de fichiers statiques afin de télécharger tous les assets nécessaires à l'IHM.
+Une fois la page **index.html** chargée par le browser, celui-ci va faire des appels multiples au serveur de fichiers statiques afin de télécharger tous les assets nécessaires à l'IHM.
 
-Une fois l'IHM chargée, le browser lance en parallèle un appel à la RESTful API pour lire
-toutes les pizzas, tout en étant à l'écoute d'événements qui pourrait se passer au niveau de
-l'IHM.
+Une fois l'IHM chargée, le browser lance en parallèle un appel à la RESTful API pour lire toutes les pizzas, tout en étant à l'écoute d'événements qui pourrait se passer au niveau de l'IHM.
 
 ## <a id="a2"></a> a.2) Architectures associées à une SPA
 
 Il existe différentes architectures associées à une SPA.
 
-Dans le cadre de ce cours, nous avons choisi d'avoir une IHM qui soit entièrement indépendante
-de la RESTful API :
+Dans le cadre de ce cours, nous avons choisi d'avoir une IHM qui soit entièrement indépendante de la RESTful API :
 
 <ScrollableImage
   name="independentFrontBackSPA.png"
@@ -73,35 +63,27 @@ de la RESTful API :
 />
 <figcaption>Frontend indépendant de l'API</figcaption>
 
-Lors du développement, nous utiliserons donc le boilerplate du cours pour avoir une IHM qui soit
-entièrement indépendante de l'API. Webpack sera utilisé comme serveur de fichiers statiques
-lors du développpement. Notons qu'il est possible d'utiliser d'autres serveurs lors du développement,
-comme **Live Server** de VS Code, ou un package npm comme **serve**.
-En production, lorsque nous mettrons l'IHM sur le web, nous devrons
-nous tourner vers un autre serveur de fichiers statiques.
+Lors du développement, nous utiliserons donc le boilerplate du cours pour avoir une IHM qui soit entièrement indépendante de l'API. Webpack sera utilisé comme serveur de fichiers statiques lors du développement. Notons qu'il est possible d'utiliser d'autres serveurs lors du développement, comme **Live Server** de VS Code, ou un package npm comme **serve**.  
+En production, lorsque nous mettrons l'IHM sur le web, nous devrons nous tourner vers un autre serveur de fichiers statiques.
 
 Voici l'architecture de l'API telle que développée dans les modules précédents :
 
 <ScrollableImage name="architecture.png" minWidth="859px" maxWidth="859px" />
 <figcaption>RESTful API indépendante du frontend</figcaption>
 
-Nous voyons que ces architectures (frontend & backend) amènent à deux projets bien distincts, un projet pour le frontend,
-et un autre pour le backend.
+Nous voyons que ces architectures (frontend & backend) amènent à deux projets bien distincts, un projet pour le frontend, et un autre pour le backend.
 
-Pour votre information, il est aussi possible d'avoir une architecture monolithique pour une SPA.
-Dans ce scénario, la RESTful API s'occupe tant de fournir l'IHM via un serveur de fichiers statiques
-que d'offrir les opérations sur les ressources via un serveur dynamique.
+Pour votre information, il est aussi possible d'avoir une architecture monolithique pour une SPA.  
+Dans ce scénario, la RESTful API s'occupe tant de fournir l'IHM via un serveur de fichiers statiques que d'offrir les opérations sur les ressources via un serveur dynamique.
 
 Voici un exemple d'architecture monolithique possible à l'aide de Node.js :
 
 <ScrollableImage name="monolithicSPA.png" minWidth="758px" maxWidth="758px" />
 <figcaption>SPA monolithique sous Express : chargement du frontend</figcaption>
 
-Une fois le frontend chargé, le browser pourra faire appel aux API et c'est le ou les router(s)
-de l'API qui prendront en compte les appels.
+Une fois le frontend chargé, le browser pourra faire appel aux API et c'est le ou les router(s) de l'API qui prendront en compte les appels.
 
-Nous n'appliquerons pas cette architecture dans le cadre de ce cours. Néanmoins, vous aurez toutes les
-connaissances pour l'appliquer si vous le souhaitez.
+Nous n'appliquerons pas cette architecture dans le cadre de ce cours. Néanmoins, vous aurez toutes les connaissances pour l'appliquer si vous le souhaitez.
 
 Voici en résumé les caractéristiques des deux architectures présentées ci-dessus :
 
@@ -114,38 +96,26 @@ Voici en résumé les caractéristiques des deux architectures présentées ci-d
   - Même serveur pour déployer le backend & le frontend
   - Même port pour le frontend & le backend
 
-Pour information, les ports permettent à un même appareil de communiquer sur un réseau en offrant
-plusieurs services. Chaque service, ou application, communique sur un et un seul port.
+Pour information, les ports permettent à un même appareil de communiquer sur un réseau en offrant plusieurs services. Chaque service, ou application, communique sur un et un seul port.
 
 # <a id="b"></a> b) Gestion des communications d'une SPA
 
 ## <a id="b1"></a> b.1) Introduction aux protocoles de communications d'une SPA
 
-Quelles protocoles & techniques principales allons nous utiliser pour communiquer au sein d'une SPA ?  
-Il en existe plusieurs. Dans le cadre de ce cours, nous allons simplement voir la technique
-principale, **AJAX** (ou **A**synchronous **Ja**vaScript and **X**ML).
+Quelles protocoles & techniques principales allons-nous utiliser pour communiquer au sein d'une SPA ?   
+Il en existe plusieurs. Dans le cadre de ce cours, nous allons simplement voir la technique principale, **AJAX** (ou **A**synchronous **Ja**vaScript and **X**ML).
 
-**AJAX** est une combinaison de technologies (HTML/CSS, DOM, JSON ou XML, XMLHttpRequest, JS)
-pour réaliser une application web asynchrone.  
-C'est-à-dire que le frontend reste disponible aux actions des utilisateurs même lorsqu'il fait des
-requêtes HTTP asynchrone à des API.
-Le transport de données entre le frontend et l'API se faisait autrefois via **XML**, or actuellement,
-il se fait via **JSON**.
+**AJAX** est une combinaison de technologies (HTML/CSS, DOM, JSON ou XML, XMLHttpRequest, JS) pour réaliser une application web asynchrone.  
+C'est-à-dire que le frontend reste disponible aux actions des utilisateurs même lorsqu'il fait des requêtes HTTP asynchrone à des API.
+Le transport de données entre le frontend et l'API se faisait autrefois via **XML**, or actuellement, il se fait via **JSON**.
 
-Notons que dans le cadre d'architectures MPA "old school" (non vues dans le cadre de ce cours),
-généralement, l'appel aux API se fait pas par le frontend, mais par le backend. Pendant toute la durée de l'appel du frontend au backend,
-celui-ci reste en attente car la demande faite au backend est synchrone : par exemple, lorsqu'un
-formulaire est envoyé au serveur, l'action du formulaire est de faire l'appel à une nouvelle page
-au serveur (via la propriété "action" du formulaire HTML) ; jusqu'à la réponse du backend, aucune
-action d'un utilisateur ne sera possible au niveau de l'IHM.
+Notons que dans le cadre d'architectures MPA "old school" (non vues dans le cadre de ce cours), généralement, l'appel aux API se fait pas par le frontend, mais par le backend. Pendant toute la durée de l'appel du frontend au backend,
+celui-ci reste en attente car la demande faite au backend est synchrone : par exemple, lorsqu'un formulaire est envoyé au serveur, l'action du formulaire est de faire l'appel à une nouvelle page au serveur (via la propriété "action" du formulaire HTML) ; jusqu'à la réponse du backend, aucune action d'un utilisateur ne sera possible au niveau de l'IHM.
 
-Il existe d'autres moyens de communiquer entre applications web. Par exemple, les **websockets**
-sont une technologie de communication temps-réel client / serveur et bidirectionnelle.  
-A la fin de ce cours, vous devriez être apte à découvrir cette technologie par vous même si vous
-le souhaitiez.
+Il existe d'autres moyens de communiquer entre applications web. Par exemple, les **websockets** sont une technologie de communication temps-réel client / serveur et bidirectionnelle.  
+A la fin de ce cours, vous devriez être apte à découvrir cette technologie par vous même si vous le souhaitiez.
 
-Avec **AJAX**, c'est le client qui doit initier la communication. Ca n'est pas le cas pour les
-**websockets**, le serveur peut le faire. Ainsi, avec **AJAX**, le client doit créer une connexion HTTP à chaque requête.
+Avec **AJAX**, c'est le client qui doit initier la communication. Ca n'est pas le cas pour les **websockets**, le serveur peut le faire. Ainsi, avec **AJAX**, le client doit créer une connexion HTTP à chaque requête.
 
 ## <a id="b2"></a> b.2) Introduction aux librairies liées aux requêtes HTTP
 
@@ -154,10 +124,10 @@ Voici une liste de librairies bien connues pouvant parfois être utilisée tant 
 <ScrollableImage name="ajax.png" minWidth="569px" maxWidth="569px" />
 <figcaption>Comparaison de librairies AJAX/HTTP [R.60]</figcaption>
 
-Ancienement, il y a environ 20 ans, c'est la librairie **XMLHttpRequest** qui était utilisée.
+Anciennement, il y a environ 20 ans, c'est la librairie **XMLHttpRequest** qui était utilisée.  
 Puis la librairie **ajax** avait pris l'ascendant via la méthode **$.ajax()**.
 
-Le standard actuel pour le Vanilla JS, au niveau des browser, c'est la **Fetch API**. Dans ce cours, Nous allons utiliser cette API offerte par tous les browsers pour faire des requêtes vers nos API.  
+Le standard actuel pour le Vanilla JS, au niveau des browser, c'est la **Fetch API**. Dans ce cours, Nous allons utiliser cette API offerte par tous les browsers pour faire des requêtes vers nos API.   
 Notez que si vous souhaitez un jour utiliser une librairie pour vos requêtes HTTP, probablement que la plus utilisée actuellement c'est **axios**.
 
 ## <a id="b3"></a> b.3) Requêtes asynchrones & introduction aux promesses
@@ -251,7 +221,7 @@ function attachOnMouseEventsToGoGreen() {
 
 On essaie d'accéder à la table HTML qui doit être créée par la méthode **`renderMenuFromString()`** qui n'a pas encore été appelée...  
 💭 Mais pourquoi la table n'a pas été créée alors que le morceau de code **`attachOnMouseEventsToGoGreen(pizzas);`** se trouve plus haut ?  
-Hé bien c'est ça la programmation asynchrone, ça n'est qu'une fois le programme principal exécuté que les tâches asynchrones, de priorité plus basses, pourront s'executer.
+Hé bien c'est ça la programmation asynchrone, ça n'est qu'une fois le programme principal exécuté que les tâches asynchrones, de priorité plus basses, pourront s'exécuter.
 
 Comment réecrire ce code pour chaîner l'appel de **`attachOnMouseEventsToGoGreen(pizzas);`**
 au succès de l'opération **fetch** ?
@@ -378,7 +348,7 @@ Deux URL ont une même **origine** si ces caractéristiques sont les mêmes :
 - **host** ; l'URL pointe vers le même appareil connecté à internet ou à un réseau local
 
 Il est possible de relaxer la sécurité via des **Cross Origin Resource Sharing** (**CORS**).  
-**CORS** est un méchanisme qui utilise des headers HTTP pour indiquer aux browsers qu'ils peuvent autoriser les accès à des ressources d'origines différentes.
+**CORS** est un mécanisme qui utilise des headers HTTP pour indiquer aux browsers qu'ils peuvent autoriser les accès à des ressources d'origines différentes.
 
 Cela signifie qu'une application web qui utilise une API ne peut le faire que si les ressources demandées à l'API proviennent d'une même origine, à moins que la réponse de l'API inclue les bonnes **CORS** (via des header HTTP).
 
@@ -394,7 +364,7 @@ Les résultats peuvent être dramatiques, l'attaquant peut faire des versements 
 
 Bien sûr, grâce à la **SOP** appliquée par nos browser, par défaut, dès que le site malicieux communique avec l'API de la banque, celui-ci bloque l'accès aux ressources de l'API car l'origine du site malicieux est différente de l'origine de l'API.
 
-Les **CORS** permettent de relacher la sécurité, afin notamment, dans le scénario évoqué, d'autoriser l'origine `https://my-bank.com` à accéder à l'origine `https://api.my-bank.com`. En effet, c'est ce que le site de la banque souhaite.  
+Les **CORS** permettent de relâcher la sécurité, afin notamment, dans le scénario évoqué, d'autoriser l'origine `https://my-bank.com` à accéder à l'origine `https://api.my-bank.com`. En effet, c'est ce que le site de la banque souhaite.  
 Par contre, si la banque possède des développeurs nuls au niveau sécurité et que ceux-ci autorisent toutes les origines à interroger l'API, là, nous pourrions arriver au hacking décrit ci-dessus.
 
 Attention à ne pas confondre les attaques associées à une mauvaise gestion des **CORS** aux attaques **XSS**. Les attaques **XSS**, ou **Cross-Site Scripting**, sont un type d'injection de scripts malicieux dans une application web.
@@ -614,10 +584,10 @@ Pour tester ce code, il ne faut pas oublier de démarrer la RESTful API auparava
 
 Voici quelques caractéristiques importantes de **async** / **await** :
 
-- **await** est utilisé pour chaîner une tâche asynchrone (sur une fonction renvoyant une promesse) et ne peut se faire qu'au sein d'une fonction taggée par **async** ; c'est donc le remplaçant du **.then(callback)**.  
+- **await** est utilisé pour chaîner une tâche asynchrone (sur une fonction renvoyant une promesse) et ne peut se faire qu'au sein d'une fonction taguée par **async** ; c'est donc le remplaçant du **.then(callback)**.  
   ⚡ Attention, il est donc important qu'au niveau de la fonction arrow, à la ligne 1 du code donné ci-dessus, on indique le **async** !
   ⚡ Dans le code donné ci-dessus, il est aussi très important de ne pas oublier les **await**. N'hésitez pas à faire le test en enlevant le **await** de **`const pizzas = await response.json();`**. Que se passe-t-il dans ce cas ? **`response.json()`** étant une fonction asynchrone, on passera directement à la fonction **`renderMenuFromString(pizzas);`** avant même d'avoir récupéré les pizzas de notre RESTful API !
-- Toute fonction "taggée" par **async** renvoie automatiquement une promesse ; cela signifie dans le code ci-dessus que la fonction **HomePage** est elle même asynchrone.
+- Toute fonction "taguée" par **async** renvoie automatiquement une promesse ; cela signifie dans le code ci-dessus que la fonction **HomePage** est elle même asynchrone.
   💭 Il est à parier, et n'hésitez pas à trouver un moyen de vous en rendre compte visuellement, que le footer s'affiche avant le menu !
 - On utilise des blocs **try** / **catch** pour gérer les erreur ; c'est donc le remplaçant du **.catch(callback)**.
 

@@ -32,14 +32,14 @@ const YoutubeImage = ({ src }) => {
       //error just print a link
       return (
         <a href={src} target="_blank">
-          ${src}
+          {src}
         </a>
       );
     }
   } else {
     return (
       <a href={src} target="_blank">
-        ${src}
+          {src}
       </a>
     );
   }

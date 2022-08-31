@@ -56,7 +56,7 @@ const MyReviewsManagement = ({associatedProjectGroupName}) => {
       // Deal with project group data
       const group = await updateProjectGroupData(associatedProjectGroupName);
       // Deal with user role data {role:..., isAdmin:...}
-      const user = await updateUserData();
+      const user = await updateUserData(associatedProjectGroupName);
       // Deal with review data
       const temp = await updateMyReviewSummaryData(user.userName, group._id);
       const myReviewsTemp = await updateMyReviewsData(user.userName, group._id);
@@ -88,7 +88,7 @@ const MyReviewsManagement = ({associatedProjectGroupName}) => {
 
         <div className="pl-3 pt-3 pb-3 pr-3">
           <h3 className="">
-            Mes revues des groupes de {projectGroupData._id}
+            Mes revues des groupes de {projectGroupData?._id}
           </h3>
           {
             /* ONLY SHOW ALL REVIEWS IF
