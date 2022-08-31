@@ -1,0 +1,957 @@
+---
+title: 'Module 6 : SPA & comms'
+description: 'Création de SPA et gestion des communications entre une RESTful API et une IHM'
+---
+
+# Module 6 : SPA & comms
+
+Ce module vous offre principalement la création de SPA et la gestion des communications asynchrones entre une RESTful API et une IHM.
+
+A cette étape-ci, nous allons simplement intégrer des RESTful API au sein d'IHM.  
+C'est donc principalement du développement frontend que nous allons faire, à l'inverse des deux derniers modules où nous avons fait que du développement backend.
+
+Voici les sujets traités :
+
+- a) [Introduction aux Single Page Applications](#a)
+  - a.1) [Caractéristiques et workflow associés à une SPA](#a1)
+  - a.2) [Architectures associées à une SPA](#a2)
+  - a.3) [Gestion des communications d'une SPA](#a3)
+- b) [Gestion des communications d'une SPA](#b)
+  - b.1) [Introduction aux protocoles de communications d'une SPA](#b1)
+  - b.2) [Introduction aux librairies liées aux requêtes HTTP](#b2)
+  - b.3) [Requêtes asynchrones & introduction aux promesses](#b3)
+- c) [Gestion de la sécurité des communications du browser](#c)
+  - c.1) [Single Origin Policy & CORS](#c1)
+  - c.2) [Relaxer la sécurité via des CORS](#c2)
+  - c.3) [Contourner le SOP via un proxy](#c3)
+- d) [Programmation asynchrone à l'aide de promesses & async / await](#d)
+  - d.1) [Utilisation de promesses](#d1)
+  - d.2) [Création de fonctions asynchrones renvoyant une promesse](#d2)
+- e) [Exercice 6.1 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy](#e)
+- f) [🍬 Exercice 6.2 : Autoriser des nouvelles origines via la RESTful API](#f)
+
+# <a id="a"></a> a) Introduction aux Single Page Applications
+
+## <a id="a1"></a> a.1) Caractéristiques et workflow associés à une SPA
+
+Une SPA (Single Page Application) offre de belles caractéristiques :
+
+- **Pas de rechargement de page pendant l'utilisation** : en effet, on télécharge une seule fois l'ensemble du frontend (et donc de toutes les pages) ;
+- **La réécriture dynamique du contenu de la page** : lorsque l'on navigue d'une page à une autre, on change que les parties de l'IHM qui doivent être mises à jour.
+- **Pas d'interruption de l'expérience de l'utilisateur** : lorsque l'utilisateur, via ses actions, amène par exemple à un appel à une API, l'IHM reste disponible. Le browser peut réaliser des actions
+  de manière asynchrone (ou autrement dit, en parallèle) et ne bloque pas l'expérience utilisateur lors de long chargements (à l'exception bien sûr du tout premier accès à l'application nécessitant le chargement complet du frontend).
+
+Voici un exemple de workflow associé à la SPA qui gérera le site de la pizzeria, afin d'afficher le menu au sein de l'IHM :
+
+<ScrollableImage name="readPizzas.png" minWidth="523px" maxWidth="523px" />
+<figcaption>Exemple de Workflow classique d'une SPA</figcaption>
+
+Une fois la page **index.html** chargée par le browser, celui-ci va faire des appels multiples au serveur de fichiers statiques afin de télécharger tous les assets nécessaires à l'IHM.
+
+Une fois l'IHM chargée, le browser lance en parallèle un appel à la RESTful API pour lire toutes les pizzas, tout en étant à l'écoute d'événements qui pourrait se passer au niveau de l'IHM.
+
+## <a id="a2"></a> a.2) Architectures associées à une SPA
+
+Il existe différentes architectures associées à une SPA.
+
+Dans le cadre de ce cours, nous avons choisi d'avoir une IHM qui soit entièrement indépendante de la RESTful API :
+
+<ScrollableImage
+  name="independentFrontBackSPA.png"
+  minWidth="914px"
+  maxWidth="914px"
+/>
+<figcaption>Frontend indépendant de l'API</figcaption>
+
+Lors du développement, nous utiliserons donc le boilerplate du cours pour avoir une IHM qui soit entièrement indépendante de l'API. Webpack sera utilisé comme serveur de fichiers statiques lors du développement. Notons qu'il est possible d'utiliser d'autres serveurs lors du développement, comme **Live Server** de VS Code, ou un package npm comme **serve**.  
+En production, lorsque nous mettrons l'IHM sur le web, nous devrons nous tourner vers un autre serveur de fichiers statiques.
+
+Voici l'architecture de l'API telle que développée dans les modules précédents :
+
+<ScrollableImage name="architecture.png" minWidth="859px" maxWidth="859px" />
+<figcaption>RESTful API indépendante du frontend</figcaption>
+
+Nous voyons que ces architectures (frontend & backend) amènent à deux projets bien distincts, un projet pour le frontend, et un autre pour le backend.
+
+Pour votre information, il est aussi possible d'avoir une architecture monolithique pour une SPA.  
+Dans ce scénario, la RESTful API s'occupe tant de fournir l'IHM via un serveur de fichiers statiques que d'offrir les opérations sur les ressources via un serveur dynamique.
+
+Voici un exemple d'architecture monolithique possible à l'aide de Node.js :
+
+<ScrollableImage name="monolithicSPA.png" minWidth="758px" maxWidth="758px" />
+<figcaption>SPA monolithique sous Express : chargement du frontend</figcaption>
+
+Une fois le frontend chargé, le browser pourra faire appel aux API et c'est le ou les router(s) de l'API qui prendront en compte les appels.
+
+Nous n'appliquerons pas cette architecture dans le cadre de ce cours. Néanmoins, vous aurez toutes les connaissances pour l'appliquer si vous le souhaitez.
+
+Voici en résumé les caractéristiques des deux architectures présentées ci-dessus :
+
+- SPA dont le frontend est indépendant du backend :
+  - Frontend avec Serveur de fichiers statiques pour déployer l'IHM
+  - 2 serveurs : 1 serveur pour le frontend, 1 serveur pour le backend
+  - Ports différents pour le Frontend & le Backend
+- SPA monolithique :
+  - RESTful API avec Serveur de fichiers statiques pour déployer l'IHM
+  - Même serveur pour déployer le backend & le frontend
+  - Même port pour le frontend & le backend
+
+Pour information, les ports permettent à un même appareil de communiquer sur un réseau en offrant plusieurs services. Chaque service, ou application, communique sur un et un seul port.
+
+# <a id="b"></a> b) Gestion des communications d'une SPA
+
+## <a id="b1"></a> b.1) Introduction aux protocoles de communications d'une SPA
+
+Quelles protocoles & techniques principales allons-nous utiliser pour communiquer au sein d'une SPA ?   
+Il en existe plusieurs. Dans le cadre de ce cours, nous allons simplement voir la technique principale, **AJAX** (ou **A**synchronous **Ja**vaScript and **X**ML).
+
+**AJAX** est une combinaison de technologies (HTML/CSS, DOM, JSON ou XML, XMLHttpRequest, JS) pour réaliser une application web asynchrone.  
+C'est-à-dire que le frontend reste disponible aux actions des utilisateurs même lorsqu'il fait des requêtes HTTP asynchrone à des API.
+Le transport de données entre le frontend et l'API se faisait autrefois via **XML**, or actuellement, il se fait via **JSON**.
+
+Notons que dans le cadre d'architectures MPA "old school" (non vues dans le cadre de ce cours), généralement, l'appel aux API se fait pas par le frontend, mais par le backend. Pendant toute la durée de l'appel du frontend au backend,
+celui-ci reste en attente car la demande faite au backend est synchrone : par exemple, lorsqu'un formulaire est envoyé au serveur, l'action du formulaire est de faire l'appel à une nouvelle page au serveur (via la propriété "action" du formulaire HTML) ; jusqu'à la réponse du backend, aucune action d'un utilisateur ne sera possible au niveau de l'IHM.
+
+Il existe d'autres moyens de communiquer entre applications web. Par exemple, les **websockets** sont une technologie de communication temps-réel client / serveur et bidirectionnelle.  
+A la fin de ce cours, vous devriez être apte à découvrir cette technologie par vous même si vous le souhaitiez.
+
+Avec **AJAX**, c'est le client qui doit initier la communication. Ca n'est pas le cas pour les **websockets**, le serveur peut le faire. Ainsi, avec **AJAX**, le client doit créer une connexion HTTP à chaque requête.
+
+## <a id="b2"></a> b.2) Introduction aux librairies liées aux requêtes HTTP
+
+Voici une liste de librairies bien connues pouvant parfois être utilisée tant au niveau d'un browser (frontend) que via Node.js (backend) :
+
+<ScrollableImage name="ajax.png" minWidth="569px" maxWidth="569px" />
+<figcaption>Comparaison de librairies AJAX/HTTP [R.60]</figcaption>
+
+Anciennement, il y a environ 20 ans, c'est la librairie **XMLHttpRequest** qui était utilisée.  
+Puis la librairie **ajax** avait pris l'ascendant via la méthode **$.ajax()**.
+
+Le standard actuel pour le Vanilla JS, au niveau des browser, c'est la **Fetch API**. Dans ce cours, Nous allons utiliser cette API offerte par tous les browsers pour faire des requêtes vers nos API.   
+Notez que si vous souhaitez un jour utiliser une librairie pour vos requêtes HTTP, probablement que la plus utilisée actuellement c'est **axios**.
+
+## <a id="b3"></a> b.3) Requêtes asynchrones & introduction aux promesses
+
+La méthode **fetch** permet de faire des requêtes HTTP d'un browser vers des API.
+
+Cette méthode est asynchrone, c'est-à-dire quelle n'est pas bloquante, elle renvoie des promesses de résultats via des objets **Promise**. Nous allons de manière intuitive découvrir la programmation asynchrone. Nous pourrons voir plus en détails par la suite ce qu'est la programmation asynchrone à l'aide de **promises** (les promesses).
+
+Si un jour vous avez besoin de plus de documentation sur la méthode **fetch**, n'hésitez pas à consulter la [documentation MDN](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) [[R.61]](/references/#r61).
+
+Pour la pizzeria, l'IHM que nous avons développé au module 3 s'est terminée avec ce code :
+[routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi)).
+
+Cette IHM était entièrement frontend, le **MENU** étant hardcodé dans la **HomePage**.  
+Nous souhaitons maintenant changer cela, l'IHM doit faire une requête **fetch** à notre RESTful API développée au module 5 :
+[fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+
+Nous n'allons donc plus utiliser REST Client mais une fonction offerte par le browser pour faire l'équivalent de cette requête :
+
+```http
+### Read all pizzas with File variable
+GET {{baseUrl}}/pizzas
+```
+
+Veuillez démarrer la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
+[fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+
+Nous allons maintenant continuer le développement de l'IHM [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi).
+
+Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/basic-fetch** sur base d'un copié collé de **/web2/tutorials/pizzeria/hmi/routing-hmi** (ou [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**/web2/tutorials/pizzeria/hmi/basic-fetch**.
+
+Veuillez mettre à jour le fichier **src/Components/Pages/HomePage.js** en supprimant l'array **MENU** et en remplaçant la ligne **`renderMenuFromString(pizzas);`** par cette requête **fetch** pour lire toutes les pizzas :
+
+```js numbered {4-14}
+const HomePage = () => {
+  clearPage();
+
+  fetch('http://localhost:3000/pizzas')
+    .then((response) => {
+      if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+      return response.json();
+    })
+    .then((pizzas) => {
+      renderMenuFromString(pizzas);
+    })
+    .catch((err) => {
+      console.error('HomePage::error: ', err);
+    });
+
+  attachOnMouseEventsToGoGreen();
+
+  renderDrinksFromNodes(DRINKS);
+};
+```
+
+Veuillez exécuter le frontend.  
+Ca ne fonctionne pas, nous obtenons ces erreurs dans la console du browser :
+
+<ScrollableImage name="errors.png" minWidth="589px" maxWidth="589px" />
+
+La première erreur, est très intéressante pour comprendre la nature asynchrone de la fonction
+**fetch**.
+
+Par défaut, la fonction **fetch** fait une requête de type **GET**.  
+Ici on a donc demandé à la RESTful API, qui tourne sur le port **8080** de votre machine locale, la lecture (requête GET) de toutes les ressources de type "pizzas" :
+
+```js
+  fetch('http://localhost:3000/pizzas')
+};
+```
+
+Comme la fonction **fetch** est asynchrone, le programme principal ne se bloque pas et n'attend
+donc pas les résultats de l'appel de **fetch**. Directement après le début du **fetch**, on passe à la ligne 16 du morceau de code précédent : **`attachOnMouseEventsToGoGreen(pizzas);`**.  
+Dans cette fonction, voici ce qui est fait :
+
+```js numbered {2-3}
+function attachOnMouseEventsToGoGreen() {
+  const table = document.querySelector('table');
+  table.addEventListener('mouseover', () => {
+    table.className = 'table table-success';
+  });
+
+  table.addEventListener('mouseout', () => {
+    table.className = 'table table-danger';
+  });
+}
+```
+
+On essaie d'accéder à la table HTML qui doit être créée par la méthode **`renderMenuFromString()`** qui n'a pas encore été appelée...  
+💭 Mais pourquoi la table n'a pas été créée alors que le morceau de code **`attachOnMouseEventsToGoGreen(pizzas);`** se trouve plus haut ?  
+Hé bien c'est ça la programmation asynchrone, ça n'est qu'une fois le programme principal exécuté que les tâches asynchrones, de priorité plus basses, pourront s'exécuter.
+
+Comment réecrire ce code pour chaîner l'appel de **`attachOnMouseEventsToGoGreen(pizzas);`**
+au succès de l'opération **fetch** ?
+
+La méthode **fetch** renvoie une **Promise**, qui est un objet représentant un état intermédiaire d'une opération. Le code des callbacks s'exécute quand la tâche asynchrone est finie avec succès ou si la tâche échoue.
+
+Les états d'une promesse sont les suivants :
+
+- **pending** : état initial,
+- **fulfilled** : l'opération asynchrone a été terminée avec succès ; par exemple la requête
+  fetch() a obtenu un flux de données avec la RESTful API,
+- **rejected** : l'opération asynchrone a échouée ; par exemple la requête **fetch** est mal construite.
+
+Pour récupérer le résultat d'une méthode asynchrone, on va faire appel :
+
+- **.then( callback )** : ce morceau de code permet de chaîner des traitements asynchrones. Par exemple, à la fin du premier traitement asynchrone associé au **fetch()**, on appelle
+
+```js numbered {2-5}
+fetch('http://localhost:3000/pizzas')
+  .then((response) => {
+    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+    return response.json();
+  })
+  .then((pizzas) => {
+    renderMenuFromString(pizzas);
+  })
+  .catch((err) => {
+    console.error('HomePage::error: ', err);
+  });
+};
+```
+
+La callback sera appelée et recevra comme paramètre un objet de type **Response**, un objet ne contenant pas encore le contenu du body de la réponse sous forme d'un objet JS. En fait, **Response.body** est un flux de données (un stream), il faudra donc faire appel à un traitement asynchrone pour obtenir le contenu du body sous forme d'un objet JS.  
+C'est ce qui est fait en renvoyant **`return response.json();`** : la fonction **json()** renvoie une promesse, c'est à dire qu'une fois le traitement terminé, nous pourrons chaîner celui-ci via un autre **.then()**.
+C'est ainsi que nous chaînons, une fois le **body** (au format JSON) disponible, l'appel d'une deuxième callback qui s'occupe de faire un render du menu de la pizzeria. Cette deuxième callback recevra en paramètre le body de la réponse sous forme d'un objet JS :
+
+```js numbered {6-8}
+fetch('http://localhost:3000/pizzas')
+  .then((response) => {
+    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+    return response.json();
+  })
+  .then((pizzas) => {
+    renderMenuFromString(pizzas);
+  })
+  .catch((err) => {
+    console.error('HomePage::error: ', err);
+  });
+};
+```
+
+Si nous souhaitons chaîner l'ajout des écouteurs d'événements sur la table HTML, puis l'affichage des boissons, c'est donc dans cette callback qu'il faut le faire. Veuillez mettre à jour le code afin d'éliminer la première erreur qu'il y avait dans la console :
+
+```js numbered {9-13}
+const HomePage = () => {
+  clearPage();
+
+  fetch('http://localhost:3000/pizzas')
+    .then((response) => {
+      if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+      return response.json();
+    })
+    .then((pizzas) => {
+      renderMenuFromString(pizzas);
+      attachOnMouseEventsToGoGreen();
+      renderDrinksFromNodes(DRINKS);
+    })
+    .catch((err) => {
+      console.error('HomePage::error: ', err);
+    });
+};
+```
+
+La console de votre browser devrait afficher une erreur en moins.
+
+- **.catch( callback )** : ce morceau de code permet d'exécuter une callback lorsque la tâche asynchrone associée à la promesse échoue. Dans le code, on voit que l'on affiche juste un message dans la console :
+
+```js numbered {11-13}
+fetch('http://localhost:3000/pizzas')
+  .then((response) => {
+    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+    return response.json();
+  })
+  .then((pizzas) => {
+    renderMenuFromString(pizzas);
+    attachOnMouseEventsToGoGreen();
+    renderDrinksFromNodes(DRINKS);
+  })
+  .catch((err) => {
+    console.error('HomePage::error: ', err);
+  });
+};
+```
+
+- **.finally( callback )** : si l'on souhaite exécuter une callback quelque soit le résultat de la promesse, en cas de succès ou d'échec.
+
+⚡ Pour le chaînage des traitements via plusieurs callback appelées au sein de **.then()**, cela n'est possible que s'il y a un **return** dans les callback.
+
+En effet, si une callback dans la gestion de promesses retourne :
+
+- **Une valeur** : la promesse retournée par **then** est résolue avec la valeur.
+- **Pas de valeur** : la promesse retournée par **then** est résolue avec **undefined**.
+- **Une autre promesse "pending"**: la promesse retournée par **then** est résolue/rejetée à la suite de la résolution/rejet de la promesse retournée par la callback.
+
+Pour info, autrefois, pour la programmation asynchrone en JS, nous utilisions simplement les callbacks, des fonctions que l'on passait en argument d'autres fonctions. Le code pouvait facilement devenir illisible et donc difficilement maintenable.
+
+💭 OK, nous avons appris les fondements de la programmation asynchrone moderne en JS...  
+Mais ça ne fonctionne pas, nous n'avons toujours l'erreur associée aux "CORS policy".  
+Cette erreur, c'est un mur classique contre lequel tous les programmeurs web doivent se cogner au moins une fois dans leur carrière.
+
+# <a id="c"></a> c) Gestion de la sécurité des communications du browser
+
+## <a id="c1"></a> c.1) Single Origin Policy & CORS
+
+La **Single Origin Policy** (**SOP**) sont des règles appliquées par le browser afin :
+
+- de restraindre les interactions entre un document ou script chargé par une origine avec une ressource d'une autre origine
+- d'isoler des documents ou scripts malicieux, afin de réduire le risque des attaques.
+
+Deux URL ont une même **origine** si ces caractéristiques sont les mêmes :
+
+- **protocole** ;
+- **port** ;
+- **host** ; l'URL pointe vers le même appareil connecté à internet ou à un réseau local
+
+Il est possible de relaxer la sécurité via des **Cross Origin Resource Sharing** (**CORS**).  
+**CORS** est un mécanisme qui utilise des headers HTTP pour indiquer aux browsers qu'ils peuvent autoriser les accès à des ressources d'origines différentes.
+
+Cela signifie qu'une application web qui utilise une API ne peut le faire que si les ressources demandées à l'API proviennent d'une même origine, à moins que la réponse de l'API inclue les bonnes **CORS** (via des header HTTP).
+
+Si l'on autorise trop d'origine, voici un exemple classique d'attaque :
+
+<ScrollableImage name="cors-issue.png" minWidth="500px" maxWidth="700px" />
+
+Imaginez qu'un site d'une banque ne soit pas sécurisé avec des techniques modernes. Ce site utiliserait une IHM (`https://my-bank.com`), qui, via un formulaire, permettrait de faire un versement, sous réserve d'envoyer un cookie qui contiendrait une variable de session (simple mécanisme de sécurité) lors d'une requête à l'API de la banque.
+
+Maintenant, prenons le cas d'un utilisateur qui adore jouer sur le web, un gamer en puissance. Il joue à un jeu de pinguins, mais soudainement, il est redirigé vers un site malicieux (`https://malicious.com`), qui lui offre un nouveau jeu avec des dinosaures. Ce site malicieux, en arrière plan, pourrait faire une requête vers la même API utilisée par `my-bank`.  
+Comme c'est le même browser utilisé par notre gamer, tant pour faire ses virements, que pour jouer, toute requête faite vers `https://api.my-bank.com` enverra d'office les cookies existants et associés au domaine `api.my-bank.com`.
+Les résultats peuvent être dramatiques, l'attaquant peut faire des versements jusqu'à vider le compte de notre pauvre gamer.
+
+Bien sûr, grâce à la **SOP** appliquée par nos browser, par défaut, dès que le site malicieux communique avec l'API de la banque, celui-ci bloque l'accès aux ressources de l'API car l'origine du site malicieux est différente de l'origine de l'API.
+
+Les **CORS** permettent de relâcher la sécurité, afin notamment, dans le scénario évoqué, d'autoriser l'origine `https://my-bank.com` à accéder à l'origine `https://api.my-bank.com`. En effet, c'est ce que le site de la banque souhaite.  
+Par contre, si la banque possède des développeurs nuls au niveau sécurité et que ceux-ci autorisent toutes les origines à interroger l'API, là, nous pourrions arriver au hacking décrit ci-dessus.
+
+Attention à ne pas confondre les attaques associées à une mauvaise gestion des **CORS** aux attaques **XSS**. Les attaques **XSS**, ou **Cross-Site Scripting**, sont un type d'injection de scripts malicieux dans une application web.
+
+Imaginez le forum web de la banque décrite précédente et ce scénario :
+
+<ScrollableImage name="xss.png" minWidth="500px" maxWidth="700px" />
+
+L'API de la banque permet d'enregistrer des messages qui sont associés à des forums sur lesquels leurs clients peuvent poster des messages.  
+Si l'API de la banque était mal sécurisée et qu'elle permettait d'enregistrer n'importe quels types d'information en tant que "messages" du forum, il serait possible à un attaquant d'injecter du JS malicieux dans l'API.  
+Plus tard, lors de l'affichage des messages par le forum de la banque (`https://forum.my-bank.com `), le JS malicieux pourra s'exécuter dans le browser de n'importe quel utilisateur, y-compris le gamer décrit ci-dessus !
+Et vous avez vu que via du JS, on peut envoyer de l'information n'importe où, notamment à l'aide de **fetch**. Ce qui permettrait donc à notre hacker, via son script malicieux, d'envoyer des cookies contenant des infos sensibles à son API malicieuse, en vue de futures attaques encore plus malicieuses, comme notamment vider son compte en banque.
+
+La protection contre des attaques XSS se fait à différents niveaux. Ca n'est pas l'objet de ce cours, mais nous verrons néanmoins, plus tard, certaines techniques pour éviter les attaques XSS.
+
+Nous allons voir comment nous pouvons communiquer entre un frontend et une API fonctionnant sous deux origines différentes, à l'aide de deux techniques différentes.
+
+## <a id="c2"></a> c.2) Relaxer la sécurité via des CORS
+
+A cette partie-ci, nous allons voir comment mettre à jour une API afin que dans chaque réponse faite à un client, on ajoute un header permettant d'autoriser une ou plusieurs origines.
+
+Nous allons partir de la dernière version de la RESTful de pizzas.
+
+Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/cors** sur base d'un copié collé de **/web2/tutorials/pizzeria/api/fat-model** (ou [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model)).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**/web2/tutorials/pizzeria/api/cors**.
+
+Dans ce projet, veuillez installer le package **cors** :
+
+```bash
+npm i cors
+```
+
+Nous allons configurer les headers de la RESTful API à l'aide du middleware **cors** offert par
+la librairie **cors**.
+
+Pour configurer et utiliser les **CORS**, veuillez mettre à jour le fichier **/app.js** :
+
+```js numbered {4-8,21}
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
+
+const corsOptions = {
+  origin: 'http://localhost:8080',
+};
+
+const usersRouter = require('./routes/users');
+const pizzaRouter = require('./routes/pizzas');
+
+const app = express();
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use('/users', usersRouter);
+app.use('/pizzas', cors(corsOptions), pizzaRouter);
+
+module.exports = app;
+```
+
+Ici, nous précisons que l'API doit autoriser l'origine associée au port sur lequel tourne
+le serveur de fichiers statiques de Webpack (**8080**). Notons que nous n'avons pas relâché la sécurité pour les ressources de type "users", la fonction middleware **cors** n'est pas appelée au niveau du router de pizza.
+
+Veuillez vous assurer que l'API **fat-model** est fermée et veuillez démarrer votre nouvelle version de l'API (**api-cors**).
+
+Il vous reste à vous assurer que votre frontend (**/web2/tutorials/pizzeria/hmi/basic-fetch**) est lui aussi bien démarré et peut enfin réaliser son fetch implémenté dans **HomePage.js**.
+
+Tout fonctionne correctement ?
+
+Normalement oui, vous devriez avoir le site de la pizzeria qui affiche le menu des pizzas suite à un appel à l'API (api-cors).
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
+"**api-cors**".
+
+En cas de souci, vous pouvez accéder au code du tutoriel ici :
+
+- pour l'API : [api-cors](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cors).
+- pour le frontend :
+  [basic-fetch-no-proxy](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
+
+💭 OK, ça fonctionne bien... Mais cela est possible seulement si nous sommes les propriétaires de la RESTful API. Maintenant, que faire si une API tierce doit être intégrée dans notre frontend ?  
+Imaginez que vous souhaitez intégrer une opération d'une API offerte par Google...  
+Pensez-vous que vous pouvez leur donner un coup de téléphone et dire : "Google, peux-tu STP autoriser l'origine associée à mon site web ?".
+
+Il y a peu de chances...
+Nous allons donc voir un autre moyen de contourner la **SOP** (Single Origin Policy) imposée par le browser.
+
+## <a id="c3"></a> c.3) Contourner le SOP via un proxy
+
+Il est possible de mettre en place un proxy au niveau du frontend afin de faire croire au browser que l'API et le frontend ont la même origine.
+
+Ici, nous sommes dans la situation où nous ne souhaitons pas, ou nous n'avons pas les moyens, d'ajouter des origines au niveau de l'API.
+
+Pour le tutoriel, veuillez donc stopper l'exécution de l'API nommée **api-cors**.
+
+Veuillez démarrer l'API précédente développée au module 5 : **/web2/tutorials/pizzeria/api/fat-model** ou via le code de ce web repo si vous avez un souci [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+
+Il vous reste aussi à vous assurer que votre frontend (**/web2/tutorials/pizzeria/hmi/basic-fetch**) est lui aussi bien démarré. Il devrait toujours y avoir l'erreur associées aux **CORS** donnée au sein de la console.
+
+Nous allons mettre en place un mécanisme au niveau du frontend pour faire passer toutes les requêtes à destination de l'API par un proxy ; le proxy aura la même origine que le serveur de fichiers statiques ayant offert le frontend.
+
+Voici le workflow que nous allons appliquer à notre site gérant la pizzeria :
+
+<ScrollableImage name="proxy.png" minWidth="691px" maxWidth="691px" />
+<figcaption>Redirections des requêtes via un proxy</figcaption>
+
+Grâce à ce diagramme, on voit comment mettre à jour le tutoriel précédent qui affichait une erreur au niveau des **CORS** : on va faire une requête GET vers **/api/pizzas** et non plus vers **http://localhost:3000/pizzas**.
+
+Pour cela, nous avons besoin d'un proxy. Et bien ça tombe bien, le serveur de développement de Webpack met à disposition un proxy. Celui-ci est d'ailleurs configuré ainsi dans le boilerplate (voir fichier **./webpack.config.js**) :
+
+```js
+proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        pathRewrite: { '^/api': '' },
+      },
+    },
+```
+
+Cela signifie qu'à chaque fois qu'une requête sera faite sur **/api** (on reste sur la même origine que le serveur de fichiers statiques, **8080** tel que configuré dans **./webpack.config.js** du boilerplate), celle-ci sera redirigée vers le port **3000**, le port de l'API.
+Le **pathRewrite** permet de ne pas reprendre **/api** dans l'URL de la redirection :
+**GET /api/pizzas** devient **GET http://localhost:3000/pizzas**.
+
+Dans le code du tutoriel en cours (**basic-fetch**), veuillez mettre à jour l'URL au niveau du **fetch** dans **HomePage.js** :
+
+```js numbered {4}
+const HomePage = () => {
+  clearPage();
+
+  fetch('/api/pizzas')
+    .then((response) => {
+      if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+      return response.json();
+    })
+    .then((pizzas) => {
+      renderMenuFromString(pizzas);
+      attachOnMouseEventsToGoGreen();
+      renderDrinksFromNodes(DRINKS);
+    })
+    .catch((err) => {
+      console.error('HomePage::error: ', err);
+    });
+};
+```
+
+N'oubliez pas que votre API (**fat-model**) doit être exécutée, tout comme votre frontend (**basic-fetch**).
+
+A ce stade-ci, là aussi, tout devrait fonctionner, le menu des pizzas est affiché suite à l'appel à notre RESTful API ne relaxant pas la sécurité !
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
+"**hmi-proxy**".
+
+En cas de souci, vous pouvez utiliser le code du tutoriel :
+
+- pour le frontend : [basic-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
+- pour l'API : [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+
+🍬 Voici quelques infos non capitales pour ce cours-ci :
+
+- Il existe une multitude de proxy pour un environnement de développement : **Webpack devServer** et son proxy, **VS Code proxy**, proxy léger de **Node** directement configurable via **package.json** (`"proxy": "http://localhost:3000",`), ...
+- Il existe par exemple un proxy complet sous Node : **http-proxy-middleware**.
+- Pour la production, lorsque vous déployer une application web sur le cloud, il faudra trouver les instructions de votre provider pour voir comment configurer le proxy.  
+  Par exemple, pour configurer un **static file server** et son **proxy** sous **heroku** (provider de services d'hébergements sur le cloud), il faut configurer le fichier **/static.json**.
+
+💭 Que pensez-vous du code associé aux tâches asynchrones, afin de chaîner des actions suite au **fetch** ?  
+Ca n'est pas des plus lisibles... imaginez que vous avez des tonnes de **.then()**, dans lesquels vous allez aussi faire appel à des fonctions asynchrones... Ca deviendra vite compliqué comme code.
+
+Nous allons donc voir comment rendre la programmation asynchrone plus légère, à l'aide de promesses et de **async** / **await**.
+
+# <a id="d"></a> d) Programmation asynchrone à l'aide de promesses & async / await
+
+## <a id="d1"></a> d.1) Utilisation de promesses
+
+### d.1.1) Introduction
+
+Plutôt que d'utiliser des **.then()** pour chaîner des traitements asynchrones, il est possible de simplifier la syntaxe des promesses à l'aide de **async** et **await**.
+
+On va donc écrire du code d'une manière équivalente à ce qui serait fait en programmation synchrone.
+
+### d.1.2) async / await & opération asynchrone de lecture de ressources
+
+Nous allons refactorer l'IHM [basic-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
+
+Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/async-await** sur base d'un copié collé de **/web2/tutorials/pizzeria/hmi/basic-fetch** (ou [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**/web2/tutorials/pizzeria/hmi/async-await**.
+
+Nous allons donc refactorer le code où est fait le **fetch**, c'est à dire **/src/Components/Pages/HomePage.js** (veuillez mettre à jour tout le code de la fonction arrow associée à la variable **HomePage**) :
+
+```js numbered {1,5,9}
+const HomePage = async () => {
+  try {
+    clearPage();
+
+    const response = await fetch('/api/pizzas');
+
+    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+
+    const pizzas = await response.json();
+
+    renderMenuFromString(pizzas);
+    attachOnMouseEventsToGoGreen();
+    renderDrinksFromNodes(DRINKS);
+  } catch (err) {
+    console.error('HomePage::error: ', err);
+  }
+};
+```
+
+Pour tester ce code, il ne faut pas oublier de démarrer la RESTful API auparavant : **/web2/tutorials/pizzeria/api/fat-model** ou via le code de ce web repo si vous avez un souci [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+
+Voici quelques caractéristiques importantes de **async** / **await** :
+
+- **await** est utilisé pour chaîner une tâche asynchrone (sur une fonction renvoyant une promesse) et ne peut se faire qu'au sein d'une fonction taguée par **async** ; c'est donc le remplaçant du **.then(callback)**.  
+  ⚡ Attention, il est donc important qu'au niveau de la fonction arrow, à la ligne 1 du code donné ci-dessus, on indique le **async** !
+  ⚡ Dans le code donné ci-dessus, il est aussi très important de ne pas oublier les **await**. N'hésitez pas à faire le test en enlevant le **await** de **`const pizzas = await response.json();`**. Que se passe-t-il dans ce cas ? **`response.json()`** étant une fonction asynchrone, on passera directement à la fonction **`renderMenuFromString(pizzas);`** avant même d'avoir récupéré les pizzas de notre RESTful API !
+- Toute fonction "taguée" par **async** renvoie automatiquement une promesse ; cela signifie dans le code ci-dessus que la fonction **HomePage** est elle même asynchrone.
+  💭 Il est à parier, et n'hésitez pas à trouver un moyen de vous en rendre compte visuellement, que le footer s'affiche avant le menu !
+- On utilise des blocs **try** / **catch** pour gérer les erreur ; c'est donc le remplaçant du **.catch(callback)**.
+
+### d.1.3) Opération asynchrone d'écriture d'une ressource
+
+A présent, nous souhaiterions que notre IHM puisse créer une ressource au sein de la RESTful API. Dans un premier temps, nous allons mettre à jour le frontend en acceptant que n'importe quel utilisateur puisse créer une pizza et l'ajouter au menu de la pizzeria.  
+Bien entendu, cela est temporaire. Nous verrons plus tard comment sécuriser cette opération, en autorisant un admin seulement à réaliser l'ajout d'une pizza au menu.
+
+Nous allons créer une nouvelle page nommée **AddPizzaPage.js**.
+Dans un premier temps, nous allons juste réaliser une page statique car il est toujours plus aisé de d'abord avoir une version visuelle d'une application web, avec la navigation entre les pages, avant de peaufiner chaque page et leurs interactions avec les utilisateurs et les APIS.
+Veuillez ajouter ce code dans la nouvelle page **/src/Components/Pages/AddPizzaPage.js**:
+
+```js
+import { clearPage, renderPageTitle } from '../../utils/render';
+
+const AddPizzaPage = () => {
+  clearPage();
+  renderPageTitle('Add a pizza to the menu');
+  renderAddPizzaForm();
+};
+
+function renderAddPizzaForm() {
+  const main = document.querySelector('main');
+  const form = document.createElement('form');
+  form.className = 'p-5';
+  const title = document.createElement('input');
+  title.type = 'text';
+  title.id = 'title';
+  title.placeholder = 'title of your pizza';
+  title.required = true;
+  title.className = 'form-control mb-3';
+  const content = document.createElement('input');
+  content.type = 'text';
+  content.id = 'content';
+  content.required = true;
+  content.placeholder = 'Content of your pizza';
+  content.className = 'form-control mb-3';
+  const submit = document.createElement('input');
+  submit.value = 'Add pizza to the menu';
+  submit.type = 'submit';
+  submit.className = 'btn btn-danger';
+  form.appendChild(title);
+  form.appendChild(content);
+  form.appendChild(submit);
+  main.appendChild(form);
+}
+
+export default AddPizzaPage;
+```
+
+Nous devons aussi ajouter un élément dans la Navbar afin de pouvoir accéder à cette nouvelle page. Pour ce faire, veuillez mettre à jour **/src/Components/Navbar/Navbar.js** :
+
+```js numbered {36-38}
+// eslint-disable-next-line no-unused-vars
+import { Navbar as BootstrapNavbar } from 'bootstrap';
+
+const Navbar = () => {
+  renderNavbar();
+};
+
+function renderNavbar() {
+  const navbar = document.querySelector('#navbarWrapper');
+  navbar.innerHTML = `
+  <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">e-Pizzeria</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#" data-uri="/">Home</a>
+              </li>
+              <li id="loginItem" class="nav-item">
+                <a class="nav-link" href="#" data-uri="/login">Login</a>
+              </li>
+              <li id="registerItem" class="nav-item">
+                <a class="nav-link" href="#" data-uri="/register">Register</a>
+              </li>  
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-uri="/add-pizza">Add a pizza</a>
+              </li>           
+            </ul>
+          </div>
+        </div>
+      </nav>
+  `;
+}
+
+export default Navbar;
+```
+
+Et finalement, comme le frontend de ce tutoriel utilise le boilerplate du cours, il faut encore configurer le router de l'IHM afin d'indiquer la page à afficher lorsqu'on clique sur le lien dont **`data-uri`** vaut **add-pizza**. Pour ce faire, veuillez mettre à jour le fichier **/src/Components/Router/Router.js** pour ajouter ces deux lignes :
+
+```js {1,10}
+import AddPizzaPage from '../Pages/AddPizzaPage';
+import HomePage from '../Pages/HomePage';
+import LoginPage from '../Pages/LoginPage';
+import RegisterPage from '../Pages/RegisterPage';
+
+const routes = {
+  '/': HomePage,
+  '/login': LoginPage,
+  '/register': RegisterPage,
+  '/add-pizza': AddPizzaPage,
+};
+```
+
+A ce stade-ci, votre application **/web2/tutorials/pizzeria/hmi/async-await** devrait être fonctionnelle, vous devriez pouvoir naviguer vers la nouvelle page contenant un formulaire pour ajouter une pizza.
+
+Nous allons maintenant ajouter l'interaction avec l'API au sein de **AddPizzaPage**.
+Lorsque nous soumettons le formulaire, nous voulons faire une requête de création de pizza à la RESTful API, c'est donc une requête de type **POST /pizzas** qui doit être l'équivalent de ce que nous faisions avec REST Client. Pour rappel, nous faisions une requête de ce genre :
+
+```http
+### Create a pizza
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Ici, c'est le JS à rajouter dans **AddPizzaPage** qui doit, lors du clic, aller chercher les valeurs des deux champs du formulaire pour créer la représentation des données à créer (**title** et **content**) et faire un **fetch** de l'opération de création offerte par l'API.  
+Si l'ajout se fait avec succès, on souhaite faire en sorte que l'utilisateur soit redirigé vers la **HomePage**.
+
+Pour arriver à nos fins, veuillez ajouter ce code dans la page **/src/Components/Pages/AddPizzaPage.js** :
+
+```js numbered {34,37-63}
+import { clearPage, renderPageTitle } from '../../utils/render';
+import Navigate from '../Router/Navigate';
+
+const AddPizzaPage = () => {
+  clearPage();
+  renderPageTitle('Add a pizza to the menu');
+  renderAddPizzaForm();
+};
+
+function renderAddPizzaForm() {
+  const main = document.querySelector('main');
+  const form = document.createElement('form');
+  form.className = 'p-5';
+  const title = document.createElement('input');
+  title.type = 'text';
+  title.id = 'title';
+  title.placeholder = 'title of your pizza';
+  title.required = true;
+  title.className = 'form-control mb-3';
+  const content = document.createElement('input');
+  content.type = 'text';
+  content.id = 'content';
+  content.required = true;
+  content.placeholder = 'Content of your pizza';
+  content.className = 'form-control mb-3';
+  const submit = document.createElement('input');
+  submit.value = 'Add pizza to the menu';
+  submit.type = 'submit';
+  submit.className = 'btn btn-danger';
+  form.appendChild(title);
+  form.appendChild(content);
+  form.appendChild(submit);
+  main.appendChild(form);
+  form.addEventListener('submit', onAddPizza);
+}
+
+async function onAddPizza(e) {
+  e.preventDefault();
+
+  const title = document.querySelector('#title').value;
+  const content = document.querySelector('#content').value;
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      title,
+      content,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const response = await fetch('/api/pizzas', options); // fetch return a promise => we wait for the response
+
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+
+  const newPizza = await response.json(); // json() returns a promise => we wait for the data
+
+  console.log('New pizza added : ', newPizza);
+
+  Navigate('/');
+}
+
+export default AddPizzaPage;
+```
+
+Quelques explications sur ce code, pour les parties déjà connues :
+
+- La gestion d'événements n'est pas nouvelle. Ici, on met un écouteur d'événements de type **submit** sur le formulaire. Cela permet d'écouter tant les clics sur le champs de type **submit** (le bouton) que si l'utilisateur appuie sur **Enter**.  
+  👍 On recommande, pour les formulaires, d'utiliser des événements de type "submit" plutôt que des événements de type "click" sur le bouton "submit" afin notamment de prendre en compte si l'utilisateur appuie sur **Enter** pour tenter de soumettre le formulaire.
+- L'action par défaut d'un formulaire, lors d'un submit, et de faire une requête synchrone vers l'URL du backend indiqué dans la propriété **action** du formulaire, ou sur la même URL que la page en cours si **action** n'est pas donné. Pour éviter un chargement de page non désiré dans le cadre d'une SPA, on stoppe cette action par défaut via **`e.preventDefault()`**.
+
+Pour la nouveauté et le **fetch** :
+
+- pour faire une requête de type **POST**, tout comme pour les requêtes de type **DELETE**, **PATCH**, **UPDATE**..., il faut l'indiquer à la méthode **fetch**.  
+  Cela est indiqué dans un objet que nous appelons généralement **options** qui doit contenir la propriété **method**.
+- lorsque l'on doit envoyer des données dans le **body** d'une requête, alors il faut le faire au sein de la propriété **body**. Ici, nous souhaitons envoyer un objet content les propriétés **title** et **content** au format JSON. Nous devons donc utiliser la méthode **`JSON.stringify`** qui permet de créer une représentation JSON d'un objet JS. Notez ici que nous avons écrit l'objet JS selon une notation simplifiée :
+
+```js {4-7,9-12}
+const title = document.querySelector('#title').value;
+const content = document.querySelector('#content').value;
+
+{
+  title,
+  content,
+}
+// Cet object literal est l'équivalent de :
+{
+  title: title,
+  content: content,
+}
+```
+
+- Il est très important de spécifier le type de la représentation de l'objet qui devrait être utilisé par l'API et qui se trouve dans le body de la requête. Cela est fait via un **header** et la propriété **Content-Type** (**`'Content-Type': 'application/json',`**).  
+⚡ Si vous oubliez cela, l'API ne pourra pas parser les données au format JSON vers des objets JS et donc les opérations d'écriture de ressources échoueront !
+- Finalement, si l'opération de création de la pizza réussi, nous redirigeons l'utilisateur vers la **HomePage** à l'aide de la fonction **`Navigate`** offert par le dossier **Router** du boilerplate du frontend.
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
+"**async-await**".
+
+En cas de souci, vous pouvez accéder au code du tutoriel ici :
+[async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await).
+
+# <a id="d2"></a> d.2) Création de fonctions asynchrones renvoyant une promesse
+
+Il est si simple, à l'aide d'**async** / **await**, de créer des fonctions asynchrones qui renvoient une promesse, qu'il serait dommage de ne pas le voir.
+
+Imaginons que nous souhaitons créer une fonction asynchrone qui renvoie toutes les pizzas qui sont offertes par l'opération de lecture des pizzas de la RESTful API.
+
+Voici comment nous écririons ce code :
+
+```js
+async function getAllPizzas() {
+  try {
+    const response = await fetch('/api/pizzas');
+
+    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+
+    const pizzas = await response.json();
+
+    return pizzas;
+  } catch (err) {
+    console.error('getAllPizzas::error: ', err);
+    throw err;
+  }
+}
+```
+
+Cette fonction **getAllPizzas** ne renvoie pas un array de pizzas, mais une **Promise** !  
+Si la promesse :
+- résout avec succès, alors c'est bien un array de pizzas qui sera renvoyé par cette fonction.
+- échoue, c'est une exception qui sera renvoyée.  
+Pour que cela fonctionne, vous devez donc faire en sorte, dans vos fonctions asynchrones, de faire un **throw** d'une erreur en cas d'échec du traitement asynchrone.
+
+Comment utiliser ce code au sein de la **HomePage** ?  
+Voici comment le code pourrait être mis à jour pour utiliser la fonction asynchrone **getAllPizzas** au sein de **HomePage.js** :
+
+```js {1,5}
+const HomePage = async () => {
+  try {
+    clearPage();
+
+    const pizzas = await getAllPizzas();
+
+    renderMenuFromString(pizzas);
+    attachOnMouseEventsToGoGreen();
+    renderDrinksFromNodes(DRINKS);
+  } catch (err) {
+    console.error('HomePage::error: ', err);
+  }
+};
+```
+
+# <a id="e"></a> e) Exercice 6.1 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy
+
+Vous allez intégrer le frontend de **myMovies** réalisé au module 3 (Exercice 3.1) avec la RESTful API développée au module 5 (Exercice 5.2).
+
+L'application **myMovies** doit permettre ces nouveaux cas d'utilisation (ou use cases):
+-	UC1 : l'affichage, sous forme de tableau, de toutes les ressources de type films.
+-	UC2 : l'ajout d'une ressource de type films via un formulaire d'ajout d'un film.
+- UC3 : la suppression d'un film.
+- UC4 : la mise à jour des données d'un film (à l'exception de l'id associé à un film).
+
+Nous acceptons, à ce stade-ci, que des utilisateurs anonymes puissent réaliser des opérations qui normalement devraient être sécurisées. Nous verrons au module prochain comment authentifier et autoriser des utilisateurs afin de protéger l'accès aux opérations d'API.
+
+Afin de réaliser cet exercice, voici les contraintes d'implémentation :
+-	Exécutez votre API se trouvant dans **/exercises/module5/5.2**.
+-	Utilisez le contenu de votre répertoire d'exercices **/exercises/module3/myMovies** comme point de départ pour créer,dans votre repository local et
+votre web repository (normalement appelé **web2**), le répertoire nommé
+**/exercises/module6/6.1**.
+-	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
+- Veuillez développer de manière incrémentale votre IHM, use case par use case, en vérifiant le bon fonctionnement de chaque cas d'utilisation avant de passer au développement de l'UC suivant (=> développer UC1, puis UC2, puis UC3, puis UC4).
+
+#### 🤝 Tips
+Cet exercice de consommation d'une API consiste simplement en la mise-à-jour du frontend **myMovies** réalisé au module 3 (Exercice 3.1) : vous devriez créer de nouvelles pages et ajouter des opérations de type **fetch** vers votre RESTful API développée au module 5 (Exercice 5.2). Il n'y a normalement rien à faire au niveau de la RESTFul API, si ce n'est de l'exécuter.
+
+Comment gérer l'UC de suppression d'un film ?
+- Vous pourriez avoir un bouton **Delete** pour chaque ligne du tableau affichant les films. Lors du clic sur un bouton **Delete**, vous feriez une requête de type **DELETE** vers la RESTful API. Attention, pour une requête de type **DELETE**, l'identifiant de l'objet à supprimer doit être donnée dans l'URL associée au **fetch**.
+- Comment retrouver l'identifiant du film affiché dans le tableau ? 
+  Pensez au **data-attribute**, vous pouvez cacher de l'information dans l'HTML. Par exemple, chaque bouton **Delete** pourrait contenir un **data-attribute** étant l'id du film. Il est aussi possible d'utiliser la propriété **id** du bouton.
+
+Comment gérer la mise à jour des données d'un film ?
+  - Option 1 (la plus cool à découvrir 😉) : Vous pourriez faire en sorte que l'HTML du tableau affichant les films, lors d'un clic, devienne éditable. Pour cette option :
+    - Voici, à quoi pourrait ressembler votre application à la fin de l'exercice. Vous avez bien sûr la liberté de faire qqch de totalement différent visuellement !
+    <ScrollableImage name="movies.png" minWidth="700px" maxWidth="1268px" />
+    - Vous pouvez utiliser la propriété HTML **contenteditable="true"** pour rendre les cellules du tableau éditables. Voici un exemple pour rendre une cellule associée au titre éditable :
+    ```js {1}
+    <td class="fw-bold text-info" contenteditable="true">${
+                element.title
+    }</td>
+    ``` 
+    - Pour accéder aux cellules qui se trouvent dans une même ligne que vous mettez à jour, vous pouvez utiliser la DOM API de votre browser :
+      - on obtient le parent d'un élément HTML via l'attribut **parentElement** ; par exemple, si vous avez un écouteur d'événements de clics sur un bouton **Save**, ce bouton se trouvant au sein d'une **td** qui se trouve elle-même au sein d'une **tr** : **`e.target.parentElement.parentElement`**  donne accès à la **tr** associée au bouton **Save** sur lequel on a cliqué.
+      - on accède aux enfants d'un élément HTML via l'attribut **children** ; par exemple, **`tr.children[0]`** donne accès à la première **td** au sein de **tr**.
+    - Vous pourriez avoir un bouton **Save** pour chaque ligne du tableau affichant un film. Lors d'un clic sur un bouton **Save**, vous faites appel à l'API en faisant la requête de mettre à jour toutes les propriétés du film, même celle n'ayant pas de nouvelles valeurs.
+    - Attention, pour une requête de type **PUT** (mise à jour de toutes les propriétés d'une ressource) ou de type **PATCH** (mise à jour partielle d'une ressource), vous devez indiquer l'id dans l'URL du **fetch**, et la représentation de données à mettre à jour doit se trouver dans le body de la requête (ce sont les conventions REST que nous avons fixées dans le cadre de ce cours).
+    -	Si vous aviez besoin de réaliser une action en cas de changement du contenu d'une cellule dont **contenteditable** est activé, vous pouvez gérer le type d'événement **input**.
+  
+  <br/>
+
+  - Option 2 : il est aussi possible de créer un nouveau composant Javascript (une page, une modal ou autre) qui reprendrait un formulaire dont les inputs contiendraient déjà les valeurs existantes des propriétés d'un film. 
+
+Veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 6 : integration with RESTful API**"".
+
+NB : Le code de votre application web se trouve dans votre repository local et
+votre web repository (normalement appelé **web2**) toujours le répertoire nommé
+**/exercises/module6/6.1**.
+
+# <a id="f"></a> f) 🍬 Exercice 6.2 : Autoriser des nouvelles origines via la RESTful API
+S'il vous reste du temps, n'hésitez pas à mettre à jour l'API se trouvant dans **/exercises/module5/5.2** afin d'autoriser toutes les origines locales : faites en sorte que tous les ports soient autorisés !
+
+Veuillez ensuite créer une copie de votre frontend développé à l'exercice précédent (Exercice 6.1) et le mettre à jour pour ne plus utiliser le proxy du frontend. Vous consommez directement l'API en indiquant son URL complète, y compris le port. Par exemple, pour lire les pizzas du menu, vous faites un fetch à l'URL : `http://localhost:300/pizzas`.
+
+Une fois l'API mise à jour, veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 6 : cors**"".
+
+Le code de votre API se trouve dans votre repository local et
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module6/6.2/api-cors**.
+
+Une fois le frontend mis à jour, veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 6 : integration with RESTful API without proxy**"".
+
+Le code de votre application web se trouve dans votre repository local et
+votre web repository (normalement appelé **web2**) toujours le répertoire nommé
+**/exercises/module6/6.2/hmi-no-proxy**.

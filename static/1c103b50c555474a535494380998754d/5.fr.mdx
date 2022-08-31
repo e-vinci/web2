@@ -1,0 +1,984 @@
+---
+title: 'Module 5 : Service web persistant via JSON et architecturé'
+description: "Persistance des ressources via fichiers JSON & refactor du code d'une RESTful API"
+---
+
+# Module 5 : Service web persistant via JSON et architecturé
+
+Ce module vous offre principalement la persistance des ressources via des fichiers JSON et le refactoring de web services afin de faciliter la maintenabilité et lisibilité du code.
+
+Voici les sujets traités :
+
+- a) [Introduction au JSON et persistance des données](#a)
+  - a.1) [Introduction](#a1)
+  - a.2) [Introduction au JSON](#a2)
+  - a.3) [Communication de données en JSON](#a3)
+  - a.4) [Sauvegarde de données JSON](#a4)
+- b) [Amélioration des outils de développement](#b)
+  - b.1) [Introduction](#b1)
+  - b.2) [Redémarrage automatique au changement d'un fichier](#b2)
+  - b.3) [Debugging](#b3)
+  - b.4) [Autres outils de développement](#b4)
+- c) [Exercice 5.1 : Persistance de la RESTfull API pour myMovies](#c)
+- d) [Refactoring à l'aide d'un "fat model"](#d)
+  - d.1) [Architectures possibles ?](#d1)
+  - d.2) [Architecture Express & "fat model"](#d2)
+- e) [Exercice 5.2 : Refactor de la RESTfull API pour myMovies](#e)
+
+# <a id="a"></a> a) Introduction au JSON et persistance des données
+
+## <a id="a1"></a> a.1) Introduction générale
+
+Au module 4, nous avons développé notre première RESTful API.  
+Nous avons implicitement découvert le JSON, notamment lorsque nous avons fait des requêtes vers nos API.
+
+Nous allons maintenant voir ce que permet le JSON, notamment la création de fichiers permettant de sauvegarder des données facilement en JS.
+
+## <a id="a2"></a> a.2) Introduction au JSON
+
+JSON vient de **J**ava**S**cript **O**bject **N**otation.
+
+C'est une syntaxe pour **échanger** et **faire persister des données**.
+
+Du JSON, c'est du texte en notation JS.
+
+Voici les types de données qui sont valides en JSON :
+
+- string
+- number
+- object
+- array
+- boolean
+- null
+
+⚡ Il n'y a donc pas de **function**, **date** et **undefined**.
+
+Voici un exemple de représentations de données en JSON qui correspond à ce que très souvent une API renvoie, un array d'objets :
+
+```json
+[
+  {
+    "email": "raphael@voila.com",
+    "fullname": "Raphael Baroni"
+  },
+  {
+    "email": "jkj@herenqn.com",
+    "fullname": "JK Roling"
+  },
+  {
+    "email": "serena@gmail.com",
+    "fullname": "Serena Here"
+  }
+]
+```
+
+## <a id="a3"></a> a.3) Communication de données en JSON
+
+### a.3.1) Sérialisation d'objets JS vers du JSON
+
+#### a.3.1.1) Envoi d'une application serveur vers un client
+
+Via Express, nous pouvons très facilement convertir un objet JS en JSON afin de l'envoyer vers une application cliente grâce à la méthode **`res.json()`**.
+
+C'est ce que nous appelons de la sérialisation de données, nous passons du monde "objets en mémoire" vers du texte (ou des octets) qui vont voyager sur un réseau.
+
+Le code actuel de notre RESTful API renvoyant un array de pizzas au format JSON est géré automatiquement via :
+
+```js
+res.json(orderedMenu ?? MENU);
+```
+
+Lorsque l'API renvoie **`MENU`** avec les pizzas par défaut, voici le JSON qui voyage sur le réseau :
+
+```json
+[
+  {
+    "id": 1,
+    "title": "4 fromages",
+    "content": "Gruyère, Sérac, Appenzel, Gorgonzola, Tomates"
+  },
+  {
+    "id": 2,
+    "title": "Vegan",
+    "content": "Tomates, Courgettes, Oignons, Aubergines, Poivrons"
+  },
+  {
+    "id": 3,
+    "title": "Vegetarian",
+    "content": "Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives"
+  },
+  {
+    "id": 4,
+    "title": "Alpage",
+    "content": "Gruyère, Mozarella, Lardons, Tomates"
+  },
+  {
+    "id": 5,
+    "title": "Diable",
+    "content": "Tomates, Mozarella, Chorizo piquant, Jalapenos"
+  }
+]
+```
+
+💭 La puissance du JSON peut déjà s'exprimer ici. Mais comment ?
+
+L'API renvoie un array d'objets, des pizzas, au format JSON, qui correspond en fait à un format texte avec des conventions.  
+Il est donc possible à n'importe quelle application cliente d'utiliser ces données, quelque soit la technologie, le langage utilisé pour développer cette application cliente.   
+Ainsi, par exemple, une application Android, développée en Java, pourrait consommer cette API pour afficher un menu de pizzas !
+
+#### a.3.1.2) Envoi d'une application cliente vers un serveur
+
+Il est possible aussi, et nous le verrons plus tard en détails, de communiquer des données d'une IHM vers une API.
+
+Nous avons déjà envoyé du JSON à une API via REST Client.  
+Voici la requête envoyant, dans son body, la représentation JSON d'une ressource de type "pizzas" à créer :
+
+```http
+### Create a pizza
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Il est important de communiquer le "media type" (ou **MIME**) du corps de la requête : "**application/json"**.  
+Cela indique à l'application qui est la cible de la requête quelle genre d'outil elle devra utiliser pour décoder les données.  
+Par exemple, il faut faire un traitement différent pour récupérer des données au format JSON que pour récupérer des données directement associées à un fichier image.
+
+Si l'on considère une IHM, il sera utile plus tard d'avoir un formulaire permettant d'ajouter des pizzas.  
+Le JS associé à l'IHM permettra d'envoyer les données du formulaire au format JSON, via la méthode **`fetch`**, vers notre RESTful API gérant les ressources de type pizzas.
+
+Voici un exemple de code que vous ne devez pas encore comprendre :
+
+```js
+const options = {
+  method: 'POST',
+  body: JSON.stringify({
+    title: title.value,
+    content: content.value,
+  }),
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
+
+const response = await fetch('/api/pizzas', options);
+const pizza = await response.json();
+```
+
+### a.3.2) Parsing de données JSON vers un objet JS
+
+#### a.3.2.1) Réception par une application serveur
+
+Via Express, nous pouvons très facilement convertir du JSON vers un objet JS à l'aide du middleware **`express.json()`**.
+
+C'est ce que nous appelons du parsing de données, ou de la désérialisation, c'est quand nous passons du monde texte / JSON (ou des octets) vers des "objets en mémoire".
+
+Le code actuel de notre RESTful API récupérant les données d'une pizza à créer est très simple :
+
+```js
+const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
+const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
+```
+
+Automatiquement grâce à Express et au middleware appelé dans **apps.js** (**`app.use(express.json());`**), **`req.body`** contient un objet JS représentant toutes les données JSON qui étaient présentes dans le body de la requête cliente, comme par exemple :
+
+```http {5-8}
+### Create a pizza
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+#### a.3.2.2) Réception par une application cliente
+
+Plus tard, nous verrons comment une IHM peut utiliser les données envoyées par une API.
+
+La méthode **`fetch`** en collaboration avec la méthode **`json`** sur la réponse d'une API permet de récupérer et parser des données JSON vers un objet JS.  
+Par exemple, cette requête de création d'une pizza parse la ressource qui a été rajoutée côté API au sein de la variable **`pizza`** :
+
+```js {13}
+const options = {
+  method: 'POST',
+  body: JSON.stringify({
+    title: title.value,
+    content: content.value,
+  }),
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
+
+const response = await fetch('/api/pizzas', options);
+const pizza = await response.json();
+```
+
+## <a id="a4"></a> a.4) Sauvegarde de données JSON
+
+### a.4.1) Sérialisation d'objets JS vers du JSON
+
+#### a.4.1.1) Application côté serveur
+
+La fonction JS **`JSON.stringify(objectToSerialised)`** permet de créer une **string** contenant la représentation JSON de l'objet à sérialiser.
+
+Côté serveur, il est ensuite facile de sauvegarder les données JSON au sein d'un fichier.
+
+Voici un exemple de code, une fonction, permettant à une application Express de sauvegarder au format JSON un objet dans un fichier **.json** dont son chemin et nom complet sont indiqués dans le paramètre **filePath** :
+
+```js
+/**
+ * Serialize the content of an Object within a file
+ * @param {String} filePath - path to the .json file
+ * @param {Array} object - Object to be written within the .json file.
+ * Even if the file exists, its whole content is reset by the given object.
+ */
+function serialize(filePath, object) {
+  const objectSerialized = JSON.stringify(object);
+  fs.writeFileSync(filePath, objectSerialized);
+}
+```
+
+Imaginez que, au sein du router traitant des ressources de type "pizzas", vous passiez la valeur suivante à **filePath** :
+
+```js
+const jsonDbPath = __dirname + '/../data/pizzas.json';
+serialize(jsonDbPath, MENU);
+```
+
+Cela signifie que dans le projet contenant notre API, nous allons sauvegarder le menu des pizzas au format JSON dans le fichier JSON **/data/pizzas.json**.
+
+Ce fichier est en fait une base de données simplifiée !  
+Nous allons prochainement voir comment récupérer ces données au sein d'un array.
+
+Nous allons maintenant réaliser un tutoriel pour rendre persistant les ressources de type "pizzas".  
+Nous allons repartir de l'API créée au module 4.
+
+Dans votre repo **web2**, veuillez copier / coller le répertoire **/tutorials/pizzeria/api/basic** et le renommer en **/tutorials/pizzeria/api/persistence**.
+
+En cas de souci, vous pouvez télécharger le code du tutoriel précédent ici : [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
+
+Veuillez ouvrir un terminal au niveau de ce répertoire.
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/pizzeria/api/persistence** (ou **/web2/tutorials/pizzeria/api/persistence** si l'on considère le nom du répertoire du repo).
+
+Veuillez créer un nouveau répertoire **/utils**. Au sein de ce répertoire, veuillez créer le module **/utils/json.js** dans lequel vous allez ajouter ces fonctions :
+
+```js
+const fs = require('fs');
+
+/**
+ * Parse items given in a .json file
+ * @param {String} filePath - path to the .json file
+ * If the file does not exist or it's content cannot be parsed as JSON data,
+ * use the default data.
+ * @param {Array} defaultArray - Content to be used when the .json file does not exists
+ * @returns {Array} : the array that was parsed from the file (or defaultArray)
+ */
+function parse(filePath, defaultArray = []) {
+  if (!fs.existsSync(filePath)) return defaultArray;
+  const fileData = fs.readFileSync(filePath);
+  try {
+    // parse() Throws a SyntaxError exception if the string to parse is not valid JSON.
+    return JSON.parse(fileData);
+  } catch (err) {
+    return defaultArray;
+  }
+}
+
+/**
+ * Serialize the content of an Object within a file
+ * @param {String} filePath - path to the .json file
+ * @param {Array} object - Object to be written within the .json file.
+ * Even if the file exists, its whole content is reset by the given object.
+ */
+function serialize(filePath, object) {
+  const objectSerialized = JSON.stringify(object);
+  createPotentialLastDirectory(filePath);
+  fs.writeFileSync(filePath, objectSerialized);
+}
+
+/**
+ *
+ * @param {String} filePath - path to the .json file
+ */
+function createPotentialLastDirectory(filePath) {
+  const pathToLastDirectory = filePath.substring(0, filePath.lastIndexOf('/'));
+
+  if (fs.existsSync(pathToLastDirectory)) return;
+
+  fs.mkdirSync(pathToLastDirectory);
+}
+
+module.exports = { parse, serialize };
+```
+
+L'opération de sérialisation des données est faite via la fonction **serialize** de **/utils/json.js**. Pour se simplifier la vie et ne pas obliger les développeurs à devoir créer manuellement un répertoire qui contiendra la mini DB de pizzas (le fichier **pizzas.json** dans la suite de l'exemple), une fonction a été créée qui s'appelle **createPotentialLastDirectory**.La fonction **serialize** fait appel à cette fonction qui va, si nécessaire, créer le dernier répertoire donné dans le chemin vers le fichier JSON (le répertoire **/data** dans la suite de l'exemple).
+
+Il n'est pas intéressant de retenir par coeur le code donné dans **/utils/json.js**. Par contre, il est important que vous compreniez celui-ci, ce qu'il fait.
+
+A présent, nous allons convertir le code du router de "pizzas" pour rendre persistant les données.    
+Voici ce que nous devons faire pour les opérations de :
+- **lecture de ressources** : il suffit de faire appel à la fonction **`parse`** qui tentera de charger les ressources qui devraient se trouver dans le répertoire **/data/pizzas.json**. Notons que le chemin vers ce fichier JSON est un simple choix, il doit être configurable.
+- **écriture de ressources** : lors d'une opération d'écriture pour créer une nouvelle ressource, ou pour mettre à jour une ressource existante, voici les étapes :
+  - création d'une liste de toutes les pizzas dans un array : cela correspond à l'utilisation de la fonction **`parse`** pour tenter de charger ce qui est contenu dans la mini DB de pizzas.
+  - mise à jour de l'array soit en ajoutant un nouvel objet (une pizza), soit en modifiant un objet existant, soit en supprimant un objet.
+  - réécriture complète du fichier JSON contenant la liste de pizzas sur base de l'array de pizzas qui a précédemment été mis à jour via la méthode **`serialize`**.
+
+  Voici le code du router mis à jour afin de gérer la persistance selon la stratégie définie ci-dessus, les modifications étant surlignées :
+
+```js numbered {2,5,45,47,51,58,60,64,76-78,87,89,98,100,104,107,123,125,129,131,133}
+var express = require('express');
+const { serialize, parse } = require('../utils/json');
+var router = express.Router();
+
+const jsonDbPath = __dirname + '/../data/pizzas.json';
+
+const MENU = [
+  {
+    id: 1,
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
+  },
+  {
+    id: 2,
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
+  },
+  {
+    id: 3,
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
+  },
+  {
+    id: 4,
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
+  },
+  {
+    id: 5,
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
+  },
+];
+
+/* Read all the pizzas from the menu
+   GET /pizzas?order=title : ascending order by title
+   GET /pizzas?order=-title : descending order by title
+*/
+router.get('/', (req, res, next) => {
+  const orderByTitle =
+    req?.query?.order?.includes('title') ? req.query.order : undefined;
+  let orderedMenu;
+  console.log(`order by ${orderByTitle ?? 'not requested'}`);
+
+  const pizzas = parse(jsonDbPath, MENU);
+  
+  if (orderByTitle) orderedMenu = [...pizzas].sort((a, b) => a.title.localeCompare(b.title));
+  if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
+
+  console.log('GET /pizzas');
+  return res.json(orderedMenu ?? pizzas);
+});
+
+// Read the pizza identified by an id in the menu
+router.get('/:id', (req, res) => {
+  console.log(`GET /pizzas/${req.params.id}`);
+
+  const pizzas = parse(jsonDbPath, MENU);
+
+  const indexOfPizzaFound = pizzas.findIndex(pizza => pizza.id == req.params.id);
+
+  if (indexOfPizzaFound < 0) return res.sendStatus(404);
+
+  return res.json(pizzas[indexOfPizzaFound]);
+});
+
+// Create a pizza to be added to the menu.
+router.post('/', (req, res) => {
+  const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
+  const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
+
+  console.log('POST /pizzas');
+
+  if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
+
+  const pizzas = parse(jsonDbPath, MENU);
+  const lastItemIndex = pizzas?.length !== 0 ? pizzas.length - 1 : undefined;
+  const lastId = lastItemIndex ? pizzas[lastItemIndex]?.id : undefined;
+  const nextId = lastItemIndex !== 0 ? lastId + 1 : 1;
+
+  const newPizza = {
+    id: nextId,
+    title: title,
+    content: content,
+  };
+
+  pizzas.push(newPizza);
+
+  serialize(jsonDbPath, pizzas);
+
+  return res.json(newPizza);
+});
+
+// Delete a pizza from the menu based on its id
+router.delete('/:id', (req, res) => {
+  console.log(`DELETE /pizzas/${req.params.id}`);
+
+  const pizzas = parse(jsonDbPath, MENU);
+
+  const foundIndex = pizzas.findIndex(pizza => pizza.id == req.params.id);
+
+  if (foundIndex < 0) return res.sendStatus(404);
+
+  const itemsRemovedFromMenu = pizzas.splice(foundIndex, 1);
+  const itemRemoved = itemsRemovedFromMenu[0];
+
+  serialize(jsonDbPath, pizzas);
+
+  return res.json(itemRemoved);
+});
+
+// Update a pizza based on its id and new values for its parameters
+router.patch('/:id', (req, res) => {
+  console.log(`PATCH /pizzas/${req.params.id}`);
+
+  const title = req?.body?.title;
+  const content = req?.body?.content;
+
+  console.log('POST /pizzas');
+
+  if ((!title && !content) || title?.length === 0 || content?.length === 0) return res.sendStatus(400);
+
+  const pizzas = parse(jsonDbPath, MENU);
+
+  const foundIndex = pizzas.findIndex(pizza => pizza.id == req.params.id);
+
+  if (foundIndex < 0) return res.sendStatus(404);
+
+  const updatedPizza = {...pizzas[foundIndex], ...req.body};
+
+  pizzas[foundIndex] = updatedPizza;
+
+  serialize(jsonDbPath, pizzas);
+
+  return res.json(updatedPizza);
+});
+
+module.exports = router;
+```
+
+Veuillez mettre à jour votre fichier **/router/pizzas.js** sur base du code donné et testez le bon fonctionnement de l'application. Faites quelques requêtes pour ajouter et modifier des données et vérifiez, une fois que vous redémarrer votre application, que les données persistent.
+
+#### a.4.1.2) Application côté client
+
+Au niveau d'une IHM, il doit aussi être possible de sauvegarder des informations.  
+Or, pour des raisons de sécurité, le browser ne peut pas créer des fichiers JSON de manière transparente à l'utilisateur.  
+Afin de sauvegarder des données, le browser met néanmoins à disposition un web storage dans lequel on peut sauvegarder des données sous forme de clé / valeur, au format texte.  
+Nous verrons cela plus tard en détails.
+
+Voici déjà malgré tout un exemple de code, une fonction, permettant de sauvegarder les données de session d'un utilisateur dans le web storage d'un browser :
+
+```js
+const setUserSessionData = (user) => {
+  const storageValue = JSON.stringify(user);
+  localStorage.setItem(STORE_NAME, storageValue);
+};
+```
+
+### a.4.2) Parsing de données JSON vers un objet JS
+
+#### a.4.2.1) Application côté serveur
+
+La fonction JS **`JSON.parse(objectSerialized) `** permet de créer un objet JS à partir d'une **string** contenant des données au format JSON.
+
+Côté serveur, il est ensuite facile de sauvegarder les données JSON au sein d'un fichier.
+
+Voici un exemple de code, une fonction, permettant à une application Express de créer un objet JS sur base de données JSON se trouvant dans un fichier **.json** dont le chemin et nom complet sont indiqués dans le paramètre **filePath** :
+
+```js
+/**
+ * Parse items given in a .json file
+ * @param {String} filePath - path to the .json file
+ * If the file does not exist or it's content cannot be parsed as JSON data,
+ * use the default data.
+ * @param {Array} defaultArray - Content to be used when the .json file does not exists
+ * @returns {Array} : the array that was parsed from the file (or defaultData)
+ */
+function parse(filePath, defaultArray = []) {
+  if (!fs.existsSync(filePath)) return defaultArray;
+  const fileData = fs.readFileSync(filePath);
+  try {
+    // parse() Throws a SyntaxError exception if the string to parse is not valid JSON.
+    return JSON.parse(fileData);
+  } catch (err) {
+    return defaultArray;
+  }
+}
+```
+
+Imaginez que, au sein du router traitant des ressources de type "pizzas", que l'on récupère le menu des pizzas à l'aide du fichier JSON dont le chemin et nom complet est donné dans **jsonDbPath**. Voici ce que donnerait l'opération de lecture de toutes les pizzas :
+
+```js
+// Read all the pizzas from the menu
+router.get('/', function (req, res) {
+  console.log('GET /pizzas');
+  const pizzas = parse(jsonDbPath, DEFAULT_MENU);
+  res.json(pizzas);
+});
+```
+
+#### a.4.2.2) Application côté client
+
+Au niveau d'une IHM, il doit aussi être possible de récupérer des données JSON qui auraient été sauvegardées au sein du web browser.
+
+Nous verrons cela plus tard en détails. Voici déjà malgré tout un exemple de code, une fonction, permettant de parser les données de session d'un utilisateur se trouvant dans le web storage d'un browser :
+
+```js
+const getUserSessionData = () => {
+  const retrievedUser = localStorage.getItem(STORE_NAME);
+  if (!retrievedUser) return;
+  return JSON.parse(retrievedUser);
+};
+```
+
+# <a id="b"></a> b) Amélioration des outils de développement
+
+## <a id="b1"></a> b.1) Introduction
+
+Dans le développement de nos API, nous souhaitons plus de facilités.  
+Notamment, à chaque changement de notre code, nous ne souhaitons pas devoir redémarrer manuellement notre application.
+
+Nous souhaiterions aussi bénéficier d'un debugger et d'autres outils, comme un linter...
+
+## <a id="b2"></a> b.2) Redémarrage automatique au changement d'un fichier
+
+### b.2.1) Configuration de l'utilisation de nodemon
+
+Il est possible de faire en sorte qu'à chaque fois que vous sauvez un fichier, votre application **node.js** redémarre automatiquement.
+
+Voici la précédure :
+
+- Installez **nodemon** au niveau du répertoire du projet :
+
+```bash
+npm i nodemon -D
+```
+
+- Pour lancer **nodemon** (au lieu du simple **node**) quand on tape **`npm run dev`** : Veuillez ajouter la ligne **`"dev": "nodemon /bin/www"`** dans **package.json** :
+
+```json {2}
+"scripts": {
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www"
+  },
+```
+
+### b.2.2) Configuration des fichiers à ignorer pour éviter des rédémarrages
+
+Il est possible d'indiquer les fichiers qui doivent être ignorés par **nodemon** via l'ajout dans **package.json** :
+
+```json
+"nodemonConfig": {
+    "ignore": [
+      "data/*"
+    ]
+  },
+```
+
+Dans la configuration ajoutée ci-dessous, tous les fichiers qui seraient mis à jour dans le répertoire **/data** ne provoqueront pas de redémarrage du serveur **nodemon** lorsqu'il est lancé (en mode 'dev').
+
+Veuillez installer **nodemon** dans le cadre de votre tutoriel **api-persistence** et configurer celui-ci pour que l'application ne redémarre pas à chaque fois que vous créez une nouvelle pizza.   
+N'hésitez pas à tester la création d'une pizza avant de dire à **nodemon** d'ignorer les fichiers se trouvant dans **/data**.
+
+## <a id="b3"></a> b.3) Debugging
+
+### b.3.1) Introduction
+
+Est-ce que nous pouvons utiliser VS Code pour débugger notre API ?  
+Oui, heureusement, car le debugger est probablement le meilleur ami des développeurs.
+
+Il est toujours là pour aider, à l'écoute de nos investigations, mettant régulièrement en lumière des pistes de sortie de problèmes, tout cela de manière bienveillante, sans jamais nous brusquer 😁.
+
+[Debugging via VS Code](https://code.visualstudio.com/docs/editor/debugging) [[R.59]](/references/#r59) fournit le détails de comment débugger sous VS Code. Nous vous offrons par la suite une façon pratique de rapidement débugger.
+
+### b.3.2) Debugging sans configuration
+
+Sans aucune configuration, il est possible de débugger une application **Node.js**.
+
+Il suffit d'ouvrir le script d'entrée de votre application dans VS Code. Pour une application Express, le script d'entrée est **/bin/www**. Cliquez dans l'Explorer de VS Code sur **/bin/www** de votre tutoriel **api-persistence**. Une fois le script **/bin/www** ouvert, il ne reste plus qu'à exécuter le **Debug**.  
+Pour ce faire :
+- soit vous cliquez sur l'icône "Run and Debug" à gauche de l'Explorer, puis sur le bouton "Run and Debug";
+- soit vous cliquez sur "Run" puis sur "Start Debugging";
+- soit vous cliquez sur "F5",
+- Il est probable que la première fois que vous lancez le **Debug**, vous devrez sélectionner **Node.js**   (il sera indiqué : "Select debugger") comme debugger dans une liste.
+
+En résumé, une fois le debugger lancé, il suffit d'ajouter des breakpoints dans le code source et d'exécuter le code pas à pas.
+
+N'hésitez pas à exécuter pas à pas une opération de votre api, comme la création d'une pizza par exemple.
+
+### b.3.3) Debugging avec une bonne configuration
+
+Trouver une configuration qui permet de bien débugger n'est pas si aisé. Nous allons donc voir ensemble comment mettre en place une configuration des plus utiles dans le cadre de ce cours.
+
+Premièrement, il est important que quand on lance le debugger, on puisse bénéficier de **nodemon** et des redémarrages automatiques en cas de changement de code.  
+Pour ce faire, veuillez mettre à jour le fichier **packages.json** pour rajouter un script de démarrage :
+
+```json {2}
+"scripts": {
+    "debug": "nodemon ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www"
+  },
+```
+
+Nous allons maintenant créer une configuration de debugging associée à notre repo **web2** :
+
+- Cliquez sur l'icône "Run and Debug" à gauche de l'Explorer, puis sur le lien "create launch.json file" (.vscode/launch.json).
+- Quand il sera indiqué "Select debugger", sélectionnez **Node.js**.  
+  NB : Peu importe le debugger que vous sélectionnez, car vous aller par la suite copier / coller la configuration proposée.
+- Une fois le debugger **Node.js** choisi, VS Code crée un répertoire **.vscode** à la racine du folder ouvert au sein de VS Code (normalement vous devriez avoir ouvert votre repo local **web2**) contenant un fichier **launch.json** et une configuration initiale. Veuillez remplacer le contenu de ce fichier par celui-ci :
+
+```json {10-14,19}
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch via NPM",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "debug"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node",
+      "cwd": "${fileDirname}"
+    }
+  ]
+}
+```
+
+**runtimeArgs** permet de sélectionner le script à lancer par le debugger, à savoir ici : **debug**.  
+Ainsi, quand on lancera le debugger, celui-ci lancera le programme avec l'équivalent de la commande **`npm run debug`**.
+
+**`"cwd":"${fileDirname}"`** : **cwd** permet d'indiquer le chemin vers la racine du programme à débugger. La variable **fileDirname** permet de sélectionner le programme à débugger sur base du fichier ouvert et actif dans VS Code.
+
+Si vous avez plusieurs applications au sein d'un folder de VS Code, pour débugger une application en particulier, nous vous conseillons cette approche :
+- Ouvrez le fichier **package.json** de l'application à débugger ;
+- Cliquez sur l'icône **Run and Debug** à gauche de l'Explorer, puis cliquez sur **Start Debugging** (ou cliquez juste sur **F5**) en vérifiant que la configuration de debugging sélectionnée est bien nommée **Launch via NPM**.
+
+Nottons que le nom de la configuration de debugging peut facilement être modifiée en changeant la valeur de l'attribut **name** dans **/.vscode/launch.json**.
+
+Veuillez tester cette configuration de debugging au sein de votre repo local **web2**.  
+Vous pourriez par exemple observer pas à pas une opération de suppression d'une pizza, afin de voir à quel moment le contenu de l'array **pizzas** est mis à jour, ainsi que le fichier **/data/pizzas.json**.
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**api-persistence**".
+
+En cas de souci, vous pouvez accéder au code du tutoriel ici :
+[api-persistence](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/persistence).
+
+## <a id="b4"></a> b.4) Autres outils de développement
+
+Il serait utile de bénéficier :
+
+- d'un linter : celui-ci devrait imposer un "style guide" qui est équivalent à notre style de programmation pour les IHM.
+- d'un formater : celui-ci devrait automatiquement permettre d'améliorer le style de notre code pour se rapprocher de ce qui est imposé par le linter.
+
+Un boilerplate a été créé afin de mettre en place ces outils :
+[basic-api-boilerplate](https://github.com/e-vinci/basic-api-boilerplate)
+
+Vous ne devez pas savoir comment créer et configurer un tel boilerplate.  
+Néanmoins, pour les personnes très curieuses, la création du boilerplate est expliquée dans le **README** du boilerplate.
+
+Pour la suite du cours, nous n'utiliserons plus le générateur d'application Express, mais ce boilerplate.
+
+Il est important d'avoir installé **ESLint** et **prettier** au sein de VS Code pour bien utiliser le boilerplate d'une API.  
+Vous l'avez normalement déjà fait au module 2. Si non, veuillez suivre la procédure donnée ici : [Module 2 : a.6) Installation des extensions pour le linter et le formater](/modules/2/#a6)
+
+# <a id="c"></a> c) Exercice 5.1 : Persistance de la RESTfull API pour myMovies
+
+Vous allez faire un refactor de la RESTful API de **myMovies**, afin d'utiliser les outils de développement modernes mis à disposition dans un boilerplate et afin de rendre les données persistantes dans un fichier JSON.
+
+Afin de réaliser cet exercice, voici les contraintes d'implémentation :
+
+- Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **web2**) nommé **/exercises/module5/5.1** sur base du boilerplate : [basic-api-boilerplate](https://github.com/e-vinci/basic-api-boilerplate).
+- Reprenez le code du router que vous avez développé à l'exercice précédent (Exercice 4.1) et intégrez le dans votre nouveau projet.
+- Faites un refactor de votre API gérant les films afin que les ressources persistent au sein du fichier **/data/films.json** ou **/data/movies.json**.
+- Veuillez tester toutes les fonctions de la RESTful API pour la collection de films à l'aide du REST Client en copiant les requêtes développées pour l'Exercice 4.1 (fichier **films.http** du répertoire **REST Client**). Normalement, il n'y a pas de nouvelles requêtes à écrire, il suffit juste de les exécuter.
+
+Le code de votre application web doit donc se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module5/5.1**.
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : module 5 : persistent API**".
+
+# <a id="d"></a> d) Refactoring à l'aide d'un "fat model"
+
+## <a id="d1"></a> d.1) Architectures possibles ?
+
+Si nous reprenons le code actuel du tutoriel de l'API gérant des pizzas ([api-persistence](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/persistence)), nous pouvons détecter que celui-ci pourrait être plus propre.
+
+Par exemple, le routeur de "pizzas" s'occupe tant de gérer les requêtes des clients que d'accéder directement aux données.  
+Généralement, nous préférons séparer le code gérant les accès aux données du code gérant la présentation du résultat des opérations.
+
+On peut donc se demander comment séparer le code traitant de sujets différents, où ayant des responsabilités fort différentes. Il existe une multitude d'architectures possibles, voici par exemple certains des plus grands noms :
+- **Architecture MVC (Model View Controller)** ; au niveau backend, ce genre d'architecture est généralement très utile quand on fait des MPA (ou Multi-Page Applications) via du Server-Side Rendering. Les **Views** permettent de générer le frontend à l'aide d'un moteur de templating ; le **Controller** s'occupe de traiter les requêtes en appelant le **Model** pour l'accès aux opérations sur les données et en renvoyant les **Views** adéquates. Pour une API, cette architecture n'est pas la plus adaptée.
+- **Architecture classique "three-tiers"** ; au nivau backend, quand on développe une architecture trois tiers, cela signifie que l'on découpe notre API en trois couches :
+  - **couche de présentation** : cette couche est responsable de présenter les ressources aux clients et d'interpréter les représentations des ressources données dans les requêtes ;
+  - **couche business** : cette couche s'occupe de toute la logique de l'API, elle fait l'intermédiaire entre la couche de présentation et la couche de données ;
+  - **couche de données** : cette couche s'occupe des accès aux données et permet notamment la persistance des ressources au sein de bases de données.  
+  Le modèle trois tiers est fort intéressant, mais il demande un peu trop d'écriture de codes sans grande valeur ajoutée quand nous utilisons le framework Express.
+- ...
+
+Finalement, parmi les architectures classiques, il n'y a pas réellement une architecture qui colle parfaitement à ce qui est offert par le framework Express, sans devoir écrire du code sans valeur ajoutée.  
+Ainsi, nous allons simplement créer notre propre architecture "maison", sur base de ces points :
+- On souhaite pouvoir facilement remplacer la couche d'accès aux données sans changer la représentation des ressources ; en effet, dans un premier temps, nous sauvegarderons des données dans des fichiers JSON. Plus tard, si l'on venait à sauvegarder les données dans un système de gestion de base de données, on ne veut pas devoir mettre à jour le code prenant en compte les requêtes des clients et présentant la réponse à ces requêtes ; en gros, on souhaite que le code de nos routers, au sein d'Express, soit indépendant de l'implémentation des accès aux données.
+- Nous n'avons pas vraiment de contraintes pour l'aspect "business" de nos APIs : la logique de l'application peut soit s'associer à la couche de données, soit à la couche présentation. Néanmoins, nous allons préférez associer un maximum de la logique de notre application à ce que nous allons appeler un **fat model**. Le **fat model** contiendra toutes les opérations possibles sur les ressources, ainsi que les accès aux données.
+- Le **fat model** peut être soit écrit en orienté objet, soit simplement être un module fournissant des fonctions. Dans le cadre de ce cours, nous choisissons de présenter un maximum de programmation fonctionnelle plutôt que de l'orienté objet.  
+  Néanmoins, n'hésitez pas à écrire des classes si cela vous tient à coeur 😉.
+
+## <a id="d1"></a> d.2) Architecture Express & "fat model"
+
+Voici l'architecture que nous allons appliquer dans nos prochaines API :
+
+<ScrollableImage name="architecture.png" minWidth="859px" maxWidth="859px" />
+<figcaption>Architecture recommandée pour ce cours</figcaption>
+
+Voici quelques explications sur ce diagramme que nous allons appliquer dans le prochain tutoriel :
+
+1. Un client fait la requête à l'API demandant de lire toutes les pizzas.
+2. Le router de "pizzas" prend le rôle de "Controller". Il s'occupe de traiter de la requête et d'appeler une opération du **fat model** pour accéder aux ressources.
+3. Le **fat model** s'occupe d'accéder aux données, qui se trouvent au sein d'un fichier JSON, et de les lire.
+4. Le **fat model** retourne un objet JS des données au router de "pizzas".
+5. Le router de "pizzas" renvoient une représentation JSON de l'objet JS, un array de pizzas, au client.
+
+Nous allons maintenant faire un refactor de notre API de gestion des pizzas en créant et utilisant un "fat model".
+
+Au sein de votre repo **web2**, à l'aide du boilerplate du cours [basic-api-boilerplate](https://github.com/e-vinci/basic-api-boilerplate), veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/fat-model**.
+
+Si vous ne voyez pas comment utiliser le boilerplate, tout est expliqué dans le **README** associé au repository.  
+N'hésitez pas à le lire ; )
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**/web2/tutorials/pizzeria/api/fat-model**.
+
+Nous allons commencer par créer le **fat model** offrant les opérations sur les pizzas.   
+Veuillez créer le fichier **/models/pizzas.js**.  
+Au sein de ce fichier, veuillez ajouter le code s'occupant des opérations sur les ressources de type "pizzas" :
+
+```js
+const path = require('node:path');
+const { parse, serialize } = require('../utils/json');
+
+const jsonDbPath = path.join(__dirname, '/../data/pizzas.json');
+
+const defaultPizzas = [
+  {
+    id: 1,
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
+  },
+  {
+    id: 2,
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
+  },
+  {
+    id: 3,
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
+  },
+  {
+    id: 4,
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
+  },
+  {
+    id: 5,
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
+  },
+];
+
+function readAllPizzas(orderBy) {
+  const orderByTitle = orderBy?.includes('title') ? orderBy : undefined;
+  let orderedMenu;
+  const pizzas = parse(jsonDbPath, defaultPizzas);
+  if (orderByTitle)
+    orderedMenu = [...pizzas].sort((a, b) => a.title.localeCompare(b.title));
+  if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
+
+  const allPizzasPotentiallyOrderd = orderedMenu ?? pizzas;
+  return allPizzasPotentiallyOrderd;
+}
+
+function readOnePizza(id) {
+  const idNumber = parseInt(id, 10);
+  const pizzas = parse(jsonDbPath, defaultPizzas);
+  const indexOfPizzaFound = pizzas.findIndex((pizza) => pizza.id === idNumber);
+  if (indexOfPizzaFound < 0) return undefined;
+
+  return pizzas[indexOfPizzaFound];
+}
+
+function createOnePizza(title, content) {
+  const pizzas = parse(jsonDbPath, defaultPizzas);
+
+  const createdPizza = {
+    id: getNextId(),
+    title,
+    content,
+  };
+
+  pizzas.push(createdPizza);
+
+  serialize(jsonDbPath, pizzas);
+
+  return createdPizza;
+}
+
+function getNextId() {
+  const pizzas = parse(jsonDbPath, defaultPizzas);
+  const lastItemIndex = pizzas?.length !== 0 ? pizzas.length - 1 : undefined;
+  if (lastItemIndex === undefined) return 1;
+  const lastId = pizzas[lastItemIndex]?.id;
+  const nextId = lastId + 1;
+  return nextId;
+}
+
+function deleteOnePizza(id) {
+  const idNumber = parseInt(id, 10);
+  const pizzas = parse(jsonDbPath, defaultPizzas);
+  const foundIndex = pizzas.findIndex((pizza) => pizza.id === idNumber);
+  if (foundIndex < 0) return undefined;
+  const deletedPizzas = pizzas.splice(foundIndex, 1);
+  const deletedPizza = deletedPizzas[0];
+  serialize(jsonDbPath, pizzas);
+
+  return deletedPizza;
+}
+
+function updateOnePizza(id, propertiesToUpdate) {
+  const idNumber = parseInt(id, 10);
+  const pizzas = parse(jsonDbPath, defaultPizzas);
+  const foundIndex = pizzas.findIndex((pizza) => pizza.id === idNumber);
+  if (foundIndex < 0) return undefined;
+
+  const updatedPizza = { ...pizzas[foundIndex], ...propertiesToUpdate };
+
+  pizzas[foundIndex] = updatedPizza;
+
+  serialize(jsonDbPath, pizzas);
+
+  return updatedPizza;
+}
+
+module.exports = {
+  readAllPizzas,
+  readOnePizza,
+  createOnePizza,
+  deleteOnePizza,
+  updateOnePizza,
+};
+```
+
+Maintenant, il ne reste plus qu'à mettre à jour le router **/routes/pizzas.js** afin de faire les appels aux fonctions offertes par le modèle :
+
+```js
+const express = require('express');
+const {
+  readAllPizzas,
+  readOnePizza,
+  createOnePizza,
+  deleteOnePizza,
+  updateOnePizza,
+} = require('../models/pizzas');
+
+const router = express.Router();
+
+/* Read all the pizzas from the menu
+   GET /pizzas?order=title : ascending order by title
+   GET /pizzas?order=-title : descending order by title
+*/
+router.get('/', (req, res) => {
+  const allPizzasPotentiallyOrdered = readAllPizzas(req?.query?.order);
+
+  return res.json(allPizzasPotentiallyOrdered);
+});
+
+// Read the pizza identified by an id in the menu
+router.get('/:id', (req, res) => {
+  const foundPizza = readOnePizza(req.params.id);
+
+  if (!foundPizza) return res.sendStatus(404);
+
+  return res.json(foundPizza);
+});
+
+// Create a pizza to be added to the menu.
+router.post('/', (req, res) => {
+  const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
+  const content =
+    req?.body?.content?.length !== 0 ? req.body.content : undefined;
+
+  if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
+
+  const createdPizza = createOnePizza(title, content);
+
+  return res.json(createdPizza);
+});
+
+// Delete a pizza from the menu based on its id
+router.delete('/:id', (req, res) => {
+  const deletedPizza = deleteOnePizza(req.params.id);
+
+  if (!deletedPizza) return res.sendStatus(404);
+
+  return res.json(deletedPizza);
+});
+
+// Update a pizza based on its id and new values for its parameters
+router.patch('/:id', (req, res) => {
+  const title = req?.body?.title;
+  const content = req?.body?.content;
+
+  if ((!title && !content) || title?.length === 0 || content?.length === 0) {
+    return res.sendStatus(400);
+  }
+
+  const updatedPizza = updateOnePizza(req.params.id, { title, content });
+
+  if (!updatedPizza) return res.sendStatus(404);
+
+  return res.json(updatedPizza);
+});
+
+module.exports = router;
+```
+
+Lancer votre API soit via le debugger, soit via la commande **`npm run dev`**.  
+Veuillez ensuite tester que tout fonctionne bien en exécutant les requêtes HTTP déjà présentes dans le répertoire **REST Client** du boilerplate.
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**fat-model**".
+
+En cas de souci, vous pouvez accéder au code du tutoriel ici :
+[fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+
+# <a id="e"></a> e) Exercice 5.2 : Refactoring de la RESTfull API pour myMovies
+
+Vous allez faire un nouveau refactor de la RESTful API de **myMovies**, afin de restructurer l'architecture de l'application selon l'architecture recommandée, en utilisant un "fat model" pour gérer les opérations sur les films.
+
+Afin de réaliser cet exercice, voici les contraintes d'implémentation :
+
+- Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **web2**) nommé **/exercises/module5/5.2** sur base d'une copie de votre Exercice 5.1 ou sur base du boilerplate : [basic-api-boilerplate](https://github.com/e-vinci/basic-api-boilerplate).
+- Faites un refactor de votre API gérant les films afin que tout ce qui traite des opérations sur les ressources soit fait au sein du modèle **/models/films.json** ou **/models/movies.json**.
+- Veuillez tester toutes les fonctions de la RESTful API pour la collection de films à l'aide du REST Client en copiant les requêtes développées pour l'Exercice 4.1 (fichier **films.http** du répertoire **REST Client**). Normalement, il n'y a pas de nouvelles requêtes à écrire, il suffit juste de les exécuter.
+
+Le code de votre application web doit donc se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module5/5.2**.
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : module 5 : API with fat-model**".

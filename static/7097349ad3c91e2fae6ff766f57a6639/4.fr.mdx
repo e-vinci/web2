@@ -1,0 +1,1272 @@
+---
+title: "Module 4 : Service web & clients"
+description: "Création de services web, de RESTful API & requêtes clientes"
+---
+
+# Module 4 : Service web & clients
+Ce module vous offre principalement la création de services web et la mise en place de requêtes clientes pour tester des RESTful API.
+
+Voici les sujets traités :
+- a) [Introduction au backend](#a)
+- b) [Introduction à Node.js](#b)
+  - b.1) [Introduction](#b1)
+  - b.2) [Ou mettre du code Node.js ?](#b2)
+  - b.3) [Les modules CommonJS](#b3)
+  - b.4) [Introduction aux packages](#b4)
+- c) [Introduction à Express](#c)
+  - c.1) [Introduction](#c1)
+  - c.2) [Créer une application Express "from scratch"](#c2)
+  - c.3) [Créer une application Express via un générateur](#c3)
+- d) [Introduction aux RESTful API](#d)
+  - d.1) [Introduction](#d1)
+  - d.2) [Conventions REST](#d2)
+- e) [Introduction aux RESTful API via Express](#e)
+  - e.1) [Introduction](#e1)
+  - e.2) [Configuration et démarrage d'une application Express](#e2)
+  - e.3) [Serveur web intégré](#e3)
+  - e.4) [Les fonctions middleware en Express](#e4)
+  - e.5) [Définition d'une route en Express](#e5)
+  - e.6) [Opération de lecture](#e6)
+  - e.7) [Chemin et paramètres de route](#e7)
+  - e.8) [Chemin et paramètres de requête](#e8)
+  - e.9) [Opération de création & parsing du body](#e9)
+  - e.10) [Client REST](#e10) 
+  - e.11) [Répondre avec un code de statut HTTP](#e11) 
+  - e.12) [Opération de suppression](#e12)
+  - e.13) [Opération de modification](#e13) 
+- f) [Spread operator](#f)
+- g) [Exercice 4.1 : Création d'une RESTfull API non protégée pour myMovies](#g)
+- h) [🍬 Exercice 4.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films](#h)
+
+# <a id="a"></a>a) Introduction au backend
+## a.1) Frontend, backend, c'est quoi ?
+Un **frontend**, c'est une application :
+- qui s'exécute côté client, une IHM, qu'on pourrait aussi appeler UI ;
+- qui est en direct interaction avec l'utilisateur ;
+- implémenté, dans ce cours-ci, en HTML / CSS / JS.
+
+Un **backend**, c'est une application :
+- qui s'exécute côté serveur ; 
+- qui n'offre pas d'interaction directe avec l'utilisateur ;
+- qui parfois met à disposition le **frontend** ;
+- qui parfois offre des opérations sur des données.
+
+## a.2) Rôles principaux du backend
+### a.2.1) Fourniture du frontend
+Un des rôles du backend est de fournir le frontend :
+- **via un serveur de fichiers statiques** ; c'est la mise à disposition des assets : fichiers HTML, CSS, JS, images...
+- **via la génération dynamique de pages HTML** ; c'est ce qui se passe quand le backend fait du Server Side Rendering (SSR), généralement dans le cadre de Multi Page Applications.  
+
+Dans le cadre de ce cours, nous ne ferons pas de génération dynamique d'HTML côté serveur (ou SSR).  
+Par contre, nous avons déjà vu :
+- comment faire de la génération dynamique d'HTML côté client (ou Client Side Rendering = CSR).
+- mettre à disposition notre frontend, notre IHM, à l'aide d'un serveur de fichiers statiques : c'est ce que notamment fait le serveur de développement de Webpack, il me à disposition les assets permettant au browser d'exécuter l'application web.
+
+### a.2.2) Fourniture d'opérations sur des ressources
+Un autre rôle important du backend est de mettre à disposition des opérations sur des ressources, c'est ce qu'on appelle les services web ou web API.
+
+Il existe différents types de technologies et architectures web permettant d'implémenter des web services, notamment :
+- **RESTful API** ; c'est l'architecture qui actuellement est la plus utilisée et qui sera apprise dans le cadre de ce cours.
+- **GraphQL API** ; c'est une technologie récente qui permet de très rapidement créer des requêtes sur des ressources et qui a été créée par Facebook ; nous ne verrons pas cette technologie dans le cadre de ce cours.
+- **SOAP API** ; c'est une façon ancienne de créer des opérations sur des ressources mettant en oeuvre de l'XML pour communiquer entre des applications clients / serveurs. Nous ne verrons pas cette technologie dans le cadre de ce cours.
+
+### a.2.3) Autres rôles du backend ?
+Un backend peut offrir d'autres services, comme :
+- **proxy** : intermédiaire entre les clients demandant une ressource et le serveur fournissant cette ressource. On verra ce type de service, notamment pour masquer l'origine d'une requête à une API.
+- **reverse proxy** : c'est un serveur qui fait l'intermédiaire avec d'autres serveurs, cachant au client qui est le véritable serveur ayant traité de sa requête. Par exemple, un proxy serveur peut mettre à disposition des accès à des serveurs interne à une entreprise (non visibles sur le web) alors que le client interroge un serveur qui est visible sur le web.
+- **serveur d'emails** ;
+- ...
+
+### a.2.3) Technologies backend possibles
+
+Voici un exemple de technologies qui pourrait être mises en oeuvre pour développer une application backend :
+
+<ScrollableImage name="techno.png" minWidth="586px" maxWidth="586px" />
+
+  <figcaption>Technologies backend possibles</figcaption>
+
+### a.2.4) Technologies backend sélectionnées pour ce cours
+
+Voici les technologies qui ont été choisies pour être mises en oeuvre pour développer une application backend en JS :
+
+<ScrollableImage name="techno-course.png" minWidth="721px" maxWidth="721px" />
+
+  <figcaption>Technologies backend en JS choisies pour ce cours</figcaption>
+
+Nous allons utiliser Express comme framework pour rapidement développer des applications Node.js.
+
+# <a id="b"></a>b) Introduction à Node.js
+## <a id="b1"></a> b.1) Introduction
+Node.js est un environnement serveur open source permettant la création d'outils et applications côté serveur en JS.  
+Node.js offre une utilisation optimale des ressources des serveurs sans dépendance à un serveur http externe, tout en étant multiplateforme (Windows, Linux, Mac…).
+
+Pour le développement d'IHM de façon modernes, vous avez déjà installé l'environnement Node.js. Mais si ça n'est pas installé, il est important que vous installiez l'environnement [Node.js en version LTS](https://nodejs.org/en/) [[R.34]](/references/#r34).
+
+Vous ne devez pas apprendre un nouveau langage pour développer des applications backend, Node.js, c'est du JS.  
+Si vous avez besoin d'un rappel du langage, vous pouvez le faire ici : [Introduction au langage JS](/intro/#e).
+
+Très souvent, Node.js est codé en JS conforme au standard CommonJS.  
+La gestion des modules est différente du JS conforme au standard ECMAScript, telle que nous avons appris pour du JS côté browser.
+
+Même s'il est possible d'écrire du Node.js conforme au standard ECMAScript, la majorité du code que vous trouverez sur le web sera conforme à CommonJS.
+
+Dès lors, nous allons vous expliquer plus tard comment gérer des modules en Node.js conforme au standard CommonJS.
+
+## <a id="b2"></a> b.2) Ou mettre du code Node.js ?
+### b.2.1) Directement dans un terminal
+Il est possible d'écrire du code Node.js directement dans un terminal.
+
+Pour rappel, nous vous conseillons d'utiliser Git Bash comme terminal au sein de VS Code. 
+
+Vous devriez déjà avoir configuré VS Code pour avoir comme Terminal par défaut 
+Git Bash. Si ça n'est pas fait, nous vous rappelons la procédure :
+- Vous devez avoir installé Git sur votre machine.
+- Cliquez à droite du **+** au sein d'un terminal ouvert dans VS Code, clic sur **Select Default Profile**, puis sélectionnez "Git Bash". Tous les prochains terminaux que vous ouvrirez le seront sous Git Bash, nettement plus coloré et intéressant que les autres terminaux 😎.
+
+<ScrollableImage name="terminal-2.png" minWidth="933px" maxWidth="933px" />
+
+<figcaption>Choix du terminal par défaut</figcaption>
+
+Veuillez tester du code Node.js directement dans un terminal en tapant cela au sein d'un terminal de VS Code :
+
+```bash
+node
+```
+
+Vous avez maintenant accès au terminal de Node.js.  
+Vous pouvez tenter une opération mathématique de votre choix, comme par exemple : **2 * Math.PI**
+
+Incroyable mais vrai, vous avez maintenant accès à une nouvelle calculatrice sur tous les appareils où vous avez Node.js installé. Et si Node.js n'est pas installé, pas de panique, la console de votre Browser pourra toujours vous aider 😉.
+
+Quand vous souhaitez sortir de l'interpréteur de commandes de Nodes, il faut taper :
+- soit deux fois **`CTRL c`**
+- soit **`CTRL d`**
+
+### b.2.2) Dans un script
+Nous écrivons généralement le code Node.js au sein d'un script externe.
+
+Dans votre repo **web2**, veuillez créer un répertoire **/tutorials/node-start** et y ajouter le fichier **start.js** contenant ce code-ci :
+
+```js
+class Car {
+  constructor(brand, model) {
+    this.brand = brand;
+    this.model = model;
+    this.id = Math.random();
+  }
+
+  getDescription() {
+    return `Car's description : ${this.brand}, ${this.model} , ID:${this.id}`;
+  }
+}
+
+const dacia = new Car('Dacia', 'Sandero');
+
+console.log( dacia.getDescription() );
+```
+
+Pour lancer une application Node.js, il suffit de taper dans un terminal : **`node nomScript`** (**`.js`** est optionnel).
+
+Donc pour lancer le script créé ci-dessus, veuillez ouvrir un terminal au bon endroit.  
+Pour rappel, Il est possible de faire un clic droit dans l'Explorer de VS Code sur le répertoire **node-start**, **Open in Integrated Terminal** pour ouvrir un terminal à l'endroit souhaité.
+
+Il ne vous reste plus qu'à taper :
+
+```bash
+node start # or node start.js
+```
+
+Voilà, c'est une simple application Node.js qui affiche un message dans le terminal.
+
+## <a id="b3"></a> b.3) Les modules CommonJS
+### b.3.1) Introduction
+Un module est une librairie JS fournissant des objets.  
+Comme en JS tout est objet, un module met donc à disposition des fonctions, des constantes, des variables...
+
+### b.3.2) Création d'un module
+Pour créer un module, il suffit de créer un script JS **nomModule.js** et d'exporter des objets au sein de ce module via **module.exports** ou **exports**.
+
+### b.3.3) Exporter des objets
+#### b.3.3.1) Introduction
+Il existe plusieurs façons d'exporter des objets, soit à la volée, soit à la fin d'un script.
+
+👍 Nous vous recommandons de faire vos exports à la fin du script, cela rend les scripts plus lisibles. 
+
+Nous allons néanmoins voir toutes les façons d'exporter des objets en CommonJS, car vous trouverez de tout sur le web.
+
+On exporte toujours un seul objet principal dans un module. Cet objet peut bien sûr contenir une multitude d'objets via ses propriétés.
+
+#### b.3.3.2) Export à la fin d'un script
+C'est la façon la plus propre d'exporter un seul objet :
+
+```js
+module.exports = router;
+```
+
+C'est l'équivalent d'un "default export" tel que vu en ECMAScript.
+
+S'il y a plusieurs objets à exporter, voici la façon recommandée de le faire : 
+
+```js
+module.exports = {authorize, users };
+```
+
+C'est l'équivalent d'un "Named export" tel que vu en ECMAScript.
+
+#### b.3.3.3) Export à la volée
+
+Il est possible de faire des exports à la volée, c'est à dire d'exporter des objets au fur et à mesure qu'ils sont initialisés.
+
+Voici la version longue :
+
+```js
+module.exports.authorize = authorize;
+module.exports.users = users ;
+```
+
+Il est aussi possible d'écourter une export à la volée : 
+```js
+exports.authorize = authorize;
+exports.users = users ;
+```
+
+Voici quelques précisions :
+- **`module.exports`** : c'est la référence de l'objet retournée par l'appel de **`required()`** (méthode qui sera utilisée pour l'import).
+- **`exports`** : c'est la référence vers **`module.exports`**, **`exports`** n'est pas retourné par l'appel de **`required()`**.
+
+⚡ Il faut faire attention au mauvais usage de l'utilisation de **`exports`**.  
+Voici une mauvaise utilisation :
+
+```js
+exports = { authorize, users }; /* exports has a new reference, 
+                                   it is no longer linked to module.exports */
+```
+
+### b.3.4) Importer des objets
+#### b.3.4.1) Introduction
+Pour utiliser des objets (fonctions, constantes, objets, classes...) au sein d'un script JS provenant de modules, on le fait à l'aide de la fonction **`required()`** et du chemin vers le module à utiliser.
+
+Il est possible d'importer tant des objets de modules que l'on a créé soi-même, que de packages mis à disposition via un gestionnaire de packages.
+
+#### b.3.4.2) Import d'un module
+Lorsqu'un seul objet a été exporté, on l'importe en lui donnant le nom que l'on souhaite à l'import et en indiquant le chemin vers le module à utiliser.
+
+```js
+const pizzaRouter = require('./routes/pizzas');
+```
+
+Lorsque plusieurs objets ont été exportés, on importe ce que l'on souhaite en utilisant des accolades et en indiquant le chemin vers le module à utiliser.
+
+```js
+const { users, authorize } = require('../utils/auths');
+```
+
+#### b.3.4.2) Import d'un package
+Il est aussi possible d'importer des objets de packages offerts par la communauté via votre gestionnaire de package.  
+Pour ce faire, il est juste nécessaire d'indiquer le nom du package lors de l'import.
+
+Si un seul objet est exporté par un package, voici un exemple de comment le récupérer :
+
+```js
+// module integrated to the runtime environment
+const http = require('http');
+// module following package installation
+const shortid = require('shortid');
+```
+
+## <a id="b4"></a> b.4) Introduction aux packages
+### b.4.1) Introduction
+Dans le cadre du développement d'IHM modernes, au module 2, nous avons découvert le gestionnaire de packages de Node.js. Nous allons résumer les concepts importants ci-dessous.
+
+### b.4.2) Gestionnaire de packages
+**npm** est le gestionnaire de packages de Node.js. 
+
+On peut faire des recherches de packages qui serait utiles à nos application web sur [npmjs.com](https://www.npmjs.com/) [[R.48]](/references/#r48).
+
+### b.4.3) Fichier de configuration d'un projet
+Tous les packages associés à une app, ses dépendances, sont données dans le fichier : **package.json**.
+
+C'est le fichier qui décrit la configuration d'un projet JS.
+
+On peut manuellement créer ce fichier à l'aide de la commande **`npm init`** si l'on souhaite quelque chose de plus interactif ou **`npm init -y`** si l'on souhaite un fichier avec le minimum autogénéré.
+
+Voici un exemple de fichier **package.json** :
+
+```json
+{
+  "name": "api2",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "debug": "npm run dev",
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "lint": "eslint **/*.js",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "data/*"
+    ],
+    "exec": "npm run lint && node"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "nodemon": "^2.0.19",
+    "prettier-airbnb-config": "^1.0.0"
+  },
+  "author": "e-Baron"
+}
+```
+
+Lors de l'installation d'un package, celui-ci s'ajoute à la liste des dépendances.  
+Ainsi, si des développeurs trouvent votre projet sur Git, ils n'auront qu'à exécuter **`npm i`** afin d'installer toutes les dépendances.
+
+C'est dans le répertoire **node_modules** que toutes les dépendances seront installées.  
+Ces dépendances peuvent être très volumineuses. C'est donc important de ne jamais mettre ce dossier sur vos web repository, via Git.  
+Pour ce faire, n'oubliez pas d'inclure un fichier **.gitignore** dans vos repos pour ignore **node_modules**.
+
+**package.json** indique les scripts de démarrage, en fonction de la façon dont nous souhaitons démarrer l'application.
+
+```json
+  "scripts": {
+    "debug": "npm run dev",
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "lint": "eslint **/*.js",
+    "lint:fix": "npm run lint -- --fix"
+  },  
+```
+
+Au regard de cette configuration, on peut démarrer l'application à l'aide de **`npm start`** ou **`npm run start`**, ce qui exécutera le script **`./bin/www`** à l'aide de **node**.  
+On pourrait aussi démarrer l'application à l'aide de **`npm run dev`**, ce qui démarrerait l'application à l'aide de **nodemon**, un outil permettant de monitorer les changements de fichiers et de redémarrer automatiquement le serveur en cas de changement.
+
+NB : nous verrons plus tard cet outil **nodemon** pour simplifier le développement.
+
+### b.4.4) Installer un package
+Pour installer un package (ou une dépendance), il suffit de faire : **`npm i nomDuPackage`** ou **`npm install nomDuPackage`**.
+
+### b.4.5) Dépendances installées
+On a vu que **`npm i`** permet d'installer toutes les dépendances se trouvant dans **package.json**, ainsi que toutes les dépendances de ces dépendances...
+
+L'arbre exact des dépendances installées, numéro de version..., se trouve dans **package-lock.json**. Ce fichier est généré automatiquement pour chaque opération modifiant **node_modules** ou **package.json**.
+
+⚡ Si un fichier **package-lock.json** est compris dans un repo, lorsque vous introduirez **`npm i`** pour installer toutes les dépendances, npm installera les mêmes versions que celles se trouvant dans **package-lock.json**. Cela peut poser des problèmes si votre environnement Node.js est en version différente. En cas de souci, pensez à effacer le répertoire **node_modules** et le fichier **package-lock.json** avant de relancer l'installation de toutes les dépendances.
+
+### b.4.6) Localisation d'un module ou package par Node
+Node va chercher dans tous les chemins spécifiés dans **module.paths** : **node_modules**, **.**... lorsque **`required()`** est appelé.
+
+### b.4.7) Mise à jour des packages vers leur dernière version
+La mise à jour de toutes les dépendances peut parfois amener à des gros soucis.
+
+Vous pouvez tenter de mettre à jour tous vos package en suivant la documentation de Node.js :
+[Update all the Node.js dependencies to their latest version](https://nodejs.dev/learn/update-all-the-nodejs-dependencies-to-their-latest-version) [[R.49]](/references/#r49)
+
+Mais attention, certains packages parfois subissent des "breaking changes", ce qui impose que vous deviez faire migrer votre code avant que celui-ci soit fonctionnel.
+
+Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à jour de tous vos packages d'un coup, de revenir à la situation initiale, et de faire l'upgrade de chaque package listé dans **package.json** individuellement.
+
+# <a id="c"></a> c) Introduction à Express
+## <a id="c1"></a>  c.1) Introduction
+Voici le moto du framework Express: "Fast, unopinionated, minimalist web framework for Node.js" [Express](https://expressjs.com/) [[R.50]](/references/#r50).
+
+Express est un framework qui permet de rapidement créer des applications en Node.js. 
+
+Il est possible de créer une application Express soit "from scratch", soit à partir d'un boilerplate.
+
+Dans le cadre de ce cours, nous allons plutôt utiliser des boilerplates pour générer des applications. Néanmoins, il est intéressant de voir comment créer une application "from scratch".
+
+## <a id="c2"></a> c.2) Créer une application Express "from scratch"
+Il faut d'abord créer un répertoire pour votre application.
+
+Au sein de votre repo **web2**, veuillez créer le répertoire **/tutorials/express-static-file-server**.
+
+Veuillez, via le terminal, entrer dans ce répertoire.
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/express-static-file-server**.
+
+Dans ce répertoire, veuillez générer le fichier de configuration du projet (**package.json**) : **`npm init`**.  
+Veuillez répondre aux questions pour configurer le point d'entrée de l'application comme étant le script **index.js**.
+
+Veuillez configurer le script de démarrage de votre application en ajoutant cette ligne au sein de **package.json** :
+
+```json {2}
+  "scripts": {
+    "start": "node index.js",
+```
+
+Ainsi, notre application pourra démarrer à l'aide de la commande **`npm start`**.
+
+A ce stade-ci, voilà à quoi devrait ressembler votre **package.json** :
+
+```json
+{
+  "name": "express-static-file-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yourName",
+  "license": "ISC"
+}
+```
+
+Veuillez installer Express, son package : 
+
+```bash
+npm i express
+```
+
+Nous allons créer un simple serveur de fichiers statiques à l'aide du middleware **express.static**, afin de servir tous les fichiers qui se trouveront dans le répertoire **public**.
+
+Tout d'abord, téléchargez ce zip : <LinkFile name="public.zip" target="_blank" download>fichiers statiques</LinkFile>.
+
+Veuillez désarchiver ce répertoire dans votre projet afin d'avoir les fichiers statiques qui seront partagés par votre serveur au sein de **/public**.   
+Vérifiez bien que vous n'avez qu'un seul répertoire **/public** et pas un **/public/public**.
+
+Il ne reste plus qu'à créer le serveur. Veuillez créer le fichier **/index.js** et y ajouter ce code :
+
+```js
+const express = require('express');
+const app = express();
+
+app.use(express.static('public'));
+
+const PORT = 7777;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+On voit que juste cette ligne permet la mise en place d'un serveur de fichier statique, via le middleware **express.static** :
+
+```js
+app.use(express.static('public'));
+```
+
+Et pour démarrer un serveur web qui écoute sur le port **7777**, ces lignes sont suffisantes :
+```js
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+```
+
+Veuillez lancer l'application en tapant cela dans votre terminal au sein du répertoire du projet :
+
+```bash
+npm start
+```
+
+Pour accéder au serveur de fichiers, vous pouvez le faire via un browser : [http://localhost:7777](http://localhost:7777)
+
+Si tout se passe bien, vous devriez avoir accès au site de la pizzeria développé au module 1 de ce cours.
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**express-static-file-server**".
+
+En cas de souci, vous pouvez accéder au code de cette démo ici :
+[express-static-file-server](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/express-static-file-server/).
+
+## <a id="c3"></a> c.3) Créer une application Express via un générateur
+Le générateur d'applications **express-generator** permet de générer le boilerplate d'une application Express de base.
+
+A l'aide du générateur d'applications Express, vous allez créer une application Express sans "view engine" car nous n'allons pas faire du Server Side Rendering dans le cadre de ce cours.
+
+Veuillez ouvrir un terminal au sein de VS Code au niveau du répertoire **/tutorials**.
+
+Ensuite, créez une application nommée **basic-generated-app** en tapant :
+
+```bash
+npx express-generator --no-view basic-generated-app
+```
+
+**npx** permet de directement exécuter un package en mode de commandes en installant une copie locale et temporaire de ce package (et de ses dépendances).
+
+Veuillez installer les dépendances de votre app et la démarrer :
+
+```bash
+cd basic-generated-app
+npm i 
+npm start
+```
+
+Si vous copier / coller le contenu du répertoire **/public** du tutoriel précédent dans le répertoire **public** généré, l'application fournira le même résultat que la précédente, mais sur un port différent : [http://localhost:3000](http://localhost:3000).
+
+Nous allons découvrir en détails ce qui a été généré par **express-generator** un peu plus tard.
+
+Actuellement, on remarquera : 
+- le point d'entrée de l'application est **./bin/www** au regard de **package.json**;
+- que **./bin/www** démarre un serveur web sur le port **3000** en lui demandant de s'occuper de démarrer tous les middlewares en lui passant tout ce qui est exporté de **app.js**.
+- **app.js** met aussi à disposition un serveur de fichier statiques servant le contenu du répertoire **public**.
+
+Avant d'aller dans les détails d'Express que nous souhaitons utiliser pour développer des services web de type RESTful, nous allons voir ce que nous entendons par RESTful.
+
+# <a id="d"></a> d) Introduction aux RESTful API
+## <a id="d1"></a> d.1) Introduction
+**REST** vient de **RE**presentational **S**tate **T**ransfer : c'est un style architectural pour construire des applications web extensibles, où les client et serveurs sont séparés.
+
+Dans une application REST, une **interface uniforme** (ou API) est définie afin de permettre à des applications de coopérer.
+
+Toute application REST se doit d'être **stateless** : il n'y a pas d'enregistrement du contexte d'une session sur le serveur pour comprendre une requête d'un client.  
+Ainsi, les requêtes clientes ne dépendent pas d'un historique de requêtes, elles sont autoportantes.
+
+Une RESTful API met à disposition des **opérations** sur des **ressources** via :
+- des **URI** ; il y a donc une adresse unique pur chaque ressource ;
+- des **méthodes HTTP** (GET, POST, DELETE, PATCH, PUT) représentant les opérations possibles (CRUD, opérations de type Create, Read, Update ou Delete) ;
+- des **représentations** des ressources compréhensibles tant par les clients que les serveurs ; les ressources sont représentées par leur "Media type" : **JSON**, **XML**, **HTML**, **TXT**, **JPEG**... ; dans le cadre de ce cours, les ressources seront quasi toujours représentées via du **JSON**.
+
+## <a id="d2"></a> d.2) Conventions REST
+
+ Le type d'opération CRUD (Create, Read, Update ou Delete) sur une ressource est défini via la méthode http de la requête.  
+ Les opérations possibles sont :
+  - GET = Read
+  - POST = Create
+  - DELETE = Delete 😉
+  - PATCH / PUT = Update
+    - PATCH = Update d'une ou plusieurs propriétés de la ressources
+    - PUT = Update de toutes les propriétés de la ressources, ou création si la ressource n'existe pas
+    
+Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTful API permettant de gérer des films :
+
+| URI | Méthode HTTP | Opération |
+|---|---|---|
+| **films** | GET | READ ALL : Lire toutes les ressources de la collection |
+| **films?minimum-duration=value** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
+| **films/{id}** | GET | READ ONE : Lire la ressource identifiée |
+| **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
+| **films/{id}** | DELETE | DELETE ONE : Effacer la ressource identifiée |
+| **films/{id}** | PUT | UPDATE ONE : Remplacer l'entièreté de la ressource par les données de la requête |
+
+Si cette API est hébergée à l'URL racine **http://ilovemoovies.org**, alors nous pourrions identifier une ressource de type **films** de cette façons : **http://ilovemoovies.org/films/10**.
+
+Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : **http://ilovemoovies.org/films/10**.
+
+# <a id="e"></a> d) Introduction aux RESTful API via Express
+## <a id="e1"></a> e.1) Introduction
+Nous avons précédemment généré une application Express à l'aide du générateur d'applications.
+
+Veuillez avoir devant vous le code de cette application car nous allons découvrir le rôle des répertoires et fichiers importants générés par **express-generator**.
+
+Nous allons maintenant nous attarder à comprendre les concepts associés à l'utilisation d'Express, mais en focalisant sur ceux utiles aux applications REST.
+
+Voici comment une requête faite à une application Express est traitée :
+
+<ScrollableImage name="express-flow.png" minWidth="800px" maxWidth="800px" />
+
+<figcaption>Flux d'une requête vers une application Express [R.51]</figcaption>
+
+Dans ce flux de traitement d'une requête, la responsabilité des développeurs est de s'occuper de la partie "Middleware".
+
+La grande majorité du code écrit sera du "routing middleware" : notre code s'occupera de répondre à des requêtes clientes pour différentes URLs et méthodes HTTP (GET, POST...).
+
+## <a id="e2"></a> e.2) Configuration et démarrage d'une application Express
+On l'a déjà vu, la configuration d'une application Express, comme toutes applications Node.js, est faite au sein de **package.json**.
+
+En fonction de comment est configuré l'application, on la démarrera via **npm start**, **npm run dev**...
+
+## <a id="e3"></a> e.3) Serveur web intégré
+Un serveur web intégré à nos applications Express est démarré au sein du fichier **bin/www**.
+
+C'est ce fichier que vous devez mettre à jour si par exemple vous souhaitez que votre application fonctionne sur un port différent que le port par défaut **3000**.
+
+Un serveur intégré est différent d'une application web offerte par un serveur standalone comme Apache, Tomcat... C'est un serveur très léger dédié à votre application.
+
+## <a id="e4"></a> e.4) Les fonctions middleware en Express
+### e.4.1) C'est quoi une fonction middleware ?
+
+Les fonctions middleware s'occupent du traitement des requêtes des clients et de la préparation des réponses :
+
+<ScrollableImage name="middlewares.jpg" minWidth="638px" maxWidth="638px" />
+
+<figcaption>Les fonctions Middleware et Express [R.52]</figcaption>
+
+Une fonction du middleware a accès aux objets de la requête et de la réponse et peut modifier la requête et la réponse pour ajouter, par exemple, un log, pour autoriser un utilisateur, pour parser des données Json vers des objets JS, pour servir des fichiers statiques, pour faire un traitement pour une route bien spécifique...
+
+Si une fonction du middleware ne termine pas le cycle de requête-réponse, elle doit appeler **`next()`** pour permettre à d'autres fonctions qui sont dans la queue de pouvoir être exécutées.
+
+Voici les éléments associés à l'appel d'une fonction middleware :
+
+<ScrollableImage name="middleware-function.png" minWidth="944px" maxWidth="944px" />
+
+<figcaption>Une fonction middleware [R.53]</figcaption>
+
+Il existe différent types de fonctions middleware ayant différents cas d'utilisation :
+- Application-level middleware : la fonction middleware est liée à l'objet **app** ;
+- Router-level middleware : la fonction middleware est liée à un objet de type **express.router()**, elle est très similaire au "application-level middleware" ;
+- Error-handling middleware : fonction de gestion des erreurs qui se définit comme les fonctions app ou router level middleware, mais qui contient un quatrième paramètre nommé **error**.
+- Built-in middleware : fonctions middleware mises à disposition par Express directement :
+  - **express.static** : pour servir des assets statiques ;
+  - **express.json** : pour parser le body de requêtes en JSON vers des objets JS ;
+  - **express.urlencoded** : pour parser des requêtes dont le body est de type "urlencoded" (type par défaut des formulaires) vers des objets JS. 
+- Third-party middleware : fonctions mises à disposition par la communauté et installables via npm, comme par exemple la fonction middleware **cookieParser**.
+
+Si vous souhaitez approfondir, nous vous conseillons [la documentation d'Express](https://expressjs.com/en/guide/using-middleware.html#middleware.third-party) [[R.54]](/references/#r54).
+
+La suite fournit quelques exemples de fonctions middleware qui seront plus tard rencontrées dans notre code ou extraits de [[R.54]](/references/#r54).
+
+### e.4.2) Application-level middleware : exemple
+Voici une fonction middleware qui sera exécutée à chaque fois qu'il y a une requête, quelque soit le chemin (ou path) associé à la requête :
+
+```js
+var express = require('express');
+var app = express();
+app.use((req, res, next) => {
+  console.log('Time:', Date.now());
+  next();
+});
+```
+
+### e.4.3) Router-level middleware : exemple
+
+```js
+var router = express.Router();
+
+router.use((req, res, next) => {
+  console.log('Time:'', Date.now());
+  next();
+});
+
+router.get('/',(req, res, next) => {
+  return res.json(menu);
+});
+```
+
+La première fonction middleware ne contient pas de méthode HTTP, ni de chemin, elle s'applique donc à toutes les routes associées au router.
+
+```js
+var pizzaRouter = require('./routes/pizzas');
+app.use('/pizzas', pizzaRouter);
+```
+
+Si le router est utilisé de cette façon, la première fonction s'applique donc à toutes les routes qui commencent par '/pizzas'.
+
+La deuxième fonction middleware s'appliquent seulement aux requêtes de type GET sur la route (ou le chemin) '/pizzas' (équivalent de la route '/pizzas/').
+
+### e.4.4) Error-handling middleware : exemple
+Ce type de middleware est à définir après tous les middlewares pouvant générer une erreur et est appelé via **`next(err)`** dans une fonction middleware où un souci est détecté.
+
+Voici la définition d'un "error handler" :
+
+```js
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+});
+```
+
+Attention, il y a bien 4 paramètres au lieu des 3 habituels pour les autres types de fonctions middleware.
+
+### e.4.5) Built-in middleware & third-party middleware : exemple
+
+```js
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+var app = express();
+
+app.use(logger('dev')); // HTTP request logger
+app.use(express.json()); // Parse requests with JSON payloads
+app.use(express.urlencoded({ extended: false })); // Parse requests with URL-
+                                                  // encoded payload 
+app.use(cookieParser()); // Parse cookie header (req.cookies)
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static assets
+```
+
+## <a id="e5"></a> e.5) Définition d'une route en Express
+### e.5.1) Définition d'une route
+Le "Routing", ou routage, contrôle la réponse à une requête client pour un **endpoint** / **URI** / **PATH** et une méthode HTTP.
+
+On va définir une route soit sur l'objet **app**, soit sur un **router**.  
+Un objet de type **router** permet de regrouper toutes les routes associées à un type de ressources.
+
+On définit une route de cette façon : **app.** ou **router.**  **METHOD(PATH, MIDDLEWARE_FUNCTION)**.
+
+👍 Dans notre cours, nous vous recommandons d'organiser vos routes par type de ressources et donc de mettre en place un router.
+
+### e.5.2) Création d'un projet
+Nous allons maintenant réaliser un tutoriel pour créer notre toute première RESTful API.  
+Nous allons créer une API pour permettre à notre site web de la pizzeria de bénéficier d'opérations sur des ressources de type "pizzas".
+
+Dans votre repo **web2**, veuillez créer le répertoire **/tutorials/pizzeria/api**.
+
+Veuillez ouvrir un terminal au niveau de ce répertoire.
+
+Dans ce répertoire, veuillez générer une application express nommée **basic**.  
+Pour ce faire :
+
+```bash
+npx express-generator --no-view basic
+```
+
+Veuillez installer les dépendances :
+```bash
+cd basic
+npm i
+```
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/pizzeria/api/basic** (ou **/web2/tutorials/pizzeria/api/basic** si l'on considère le nom du répertoire du repo).
+
+Nous allons développer des RESTful API qui ne possèdent pas de serveur de fichiers statiques.  
+On n'a donc pas besoin d'avoir un répertoire **/public** ni d'un serveur statique.  
+On peut donc effacer le répertoire **/public** et supprimer le middleware de serveur de fichiers statiques au sein de **/app.js** : 
+
+```js
+app.use(express.static(path.join(__dirname, 'public'))); 
+```
+
+
+## <a id="e6"></a> e.6) Opération de lecture
+Nous souhaitons par commencer à développer une opération permettant de lire toutes les ressources de type "pizzas". En effet, nous aimerions plus tard que notre IHM reçoive de notre API le menu des pizzas.
+
+Veuillez créer un router pour traiter des ressources **/pizzas** au sein de **/routes/pizzas.js**.  
+Le plus simple est d'adapter **indexRouter** dans **app.js** en **pizzaRouter** et **/routers/index.js** en **/routes/pizzas.js**.  
+Il est aussi possible de partir de rien et de créer **pizzaRouter** dans **app.js** et **/routes/pizzas.js**.
+
+Pour l'opération de lecture de toutes les pizzas, selon les conventions REST, il faut faire une requête de type **GET /pizzas**.  
+**/routes/pizzas.js** doit donc offrir une route renvoyant toutes les pizzas qui existent dans le menu.   
+Pour démarrer, nous souhaitons une application basique qui ne gère pas la persistance des données. Le menu est donc un Array d'objets, dont chaque objet représente une pizza.
+
+Notre opération de lecture de pizza va renvoyer du JSON au client, c'est à dire une représentation textuelle du menu. Nous verrons plus tard ce qu'est réellement le JSON. A ce stade-ci, il est suffisant de connaître la fonction d'Express qui permet à un objet JS de circuler sur le réseau : **res.json()**.
+
+Voici le code du router **/routes/pizzas.js** :
+```js
+var express = require('express');
+var router = express.Router();
+
+const MENU = [
+  {
+    id: 1,
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
+  },
+  {
+    id: 2,
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
+  },
+  {
+    id: 3,
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
+  },
+  {
+    id: 4,
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
+  },
+  {
+    id: 5,
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
+  },
+];
+
+// Read all the pizzas from the menu
+router.get('/', (req, res, next) => {
+  console.log('GET /pizzas');
+  res.json(MENU);
+});
+
+module.exports = router;
+```
+
+Et voici le code de **app.js** (les parties modifiées sont surlignées) :
+
+```js numbered {6,16}
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+var pizzaRouter = require('./routes/pizzas');
+var usersRouter = require('./routes/users');
+
+var app = express();
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use('/pizzas', pizzaRouter);
+app.use('/users', usersRouter);
+
+module.exports = app;
+```
+
+Notons que nous pourrions effacer le router s'occupant des ressources de type "users", mais nous préférons le garder car plus tard nous souhaiterons gérer l'authentification d'utilisateurs.
+
+Veuillez démarrer l'API (par défaut elle est configurée sur le port 3000 au sein de **bin/www**) :
+
+```bash
+npm start
+```
+
+Pour consommer l'opération de lecture via un browser, nous pouvons lire toutes les ressources de type "pizzas" ici :
+[http://localhost:3000/pizzas](http://localhost:3000/pizzas)
+
+## <a id="e7"></a> e.7) Chemin et paramètres de route
+Les "route parameters" sont des segments d'une URL qui sont utilisés pour capturer une valeur spécifiée à leur position dans l'URL. On récupère ces paramètres via l'objet **req.params**.
+
+Pour notre pizzeria, nous souhaitons pouvoir lire une pizza identifiée par son **id**.
+
+Nous allons donc ajouter le paramètre de route **id**.  
+En respect des conventions REST, un client, pour faire appel à cette opération, devra faire une requête du genre : **GET /pizzas/2**.
+
+Voici la nouvelle route permettant de traiter de cette opération, à ajouter dans le router **/routes/pizza.js** :
+```js
+// Read the pizza identified by an id in the menu
+router.get('/:id', (req, res) => {
+  console.log(`GET /pizzas/${req.params.id}`);
+
+  const indexOfPizzaFound = MENU.findIndex((pizza) => pizza.id == req.params.id);
+
+  if (indexOfPizzaFound < 0) return res.sendStatus(404);
+
+  res.json(MENU[indexOfPizzaFound]);
+});
+```
+
+Veuillez redémarrer l'API (**`CTRL c`** puis **`npm start`**).
+
+Pour consommer cette nouvelle opération via un browser, nous pouvons lire la ressource de type "pizzas" identifiée par **2** dans le menu ainsi :
+[http://localhost:3000/pizzas/2](http://localhost:3000/pizzas/2)
+
+Le browser fait bien une requête du genre : **GET /pizzas/2**.
+
+Le paramètre de la route "2" est récupéré dans l'URL de la route par Express et est offert via **`req.params.id`**. 
+
+N'hésitez pas à faire une requête pour un identifiant n'existant pas de le menu pour voir ce qui se passe : [http://localhost:3000/pizzas/666](http://localhost:3000/pizzas/666)
+
+
+## <a id="e8"></a> e.8) Chemin et paramètres de requête
+Les "query parameters" sont des paramètres qui peuvent être ajoutés à une URL.  
+On récupère ces paramètres via l'objet **req.query**.
+
+Pour notre pizzeria, nous souhaitons pouvoir lire toutes les ressources de type "pizzas" triées par ordre ascendant ou descendant du titre.
+
+En respect des conventions REST, un client, pour faire appel à cette opération, devra faire une requête du genre : **GET /pizzas?order=title** pour le tri ascendant ou **GET /pizzas?order=-title** pour le tri descendant .
+
+Il n'y a donc pas de nouvelle route à ajouter ici. En effet, ça reste une requête de type GET sur la route "/pizzas". 
+
+Veuillez donc mettre à jour **/routes/pizza.js** pour la lecture de toutes les pizzas :
+```js
+/* Read all the pizzas from the menu
+   GET /pizzas?order=title : ascending order by title
+   GET /pizzas?order=-title : descending order by title
+*/
+router.get('/', (req, res, next) => {
+  const orderByTitle =
+    req?.query?.order?.includes('title')
+      ? req.query.order
+      : undefined;
+  let orderedMenu;
+  console.log(`order by ${orderByTitle ?? 'not requested'}`);
+  if (orderByTitle)
+    orderedMenu = [...MENU].sort((a, b) => a.title.localeCompare(b.title));
+  if (orderByTitle === '-title') orderedMenu = orderedMenu.reverse();
+
+  console.log('GET /pizzas');
+  res.json(orderedMenu ?? MENU);
+});
+```
+
+Veuillez redémarrer l'API (**`CTRL c`** puis **`npm start`**).
+
+Pour consommer cette nouvelle opération via un browser, nous pouvons lire toutes les ressources de type "pizzas" triée par leur titre de manière descendante ainsi :
+[http://localhost:3000/pizzas?order=-title](http://localhost:3000/pizzas?order=-title).
+
+N'hésitez pas à tester d'autres tris.
+
+💭 Est-ce qu'il y a un morceau de code que vous ne comprenez pas dans ce code-ci et cela vous gêne ? Si oui, vous trouverez plus d'info ici : [f.2) Spread operator au niveau d'un array](#f2).  
+Si non, c'est OK de ne pas comprendre tous les éléments du code à ce stade-ci.
+
+## <a id="e9"></a> e.9) Opération de création & parsing du body
+Nous souhaitons développer une opération permettant de créer une ressource de type "pizzas".  
+Selon les conventions REST, il faut faire une requête de type **POST /pizzas** qui offre une représentation de la ressource à créer. La représentation utilisée est le JSON que nous verrons plus en détails plus tard.  
+Si nous souhaitons créer une ressource dont le titre est "Magic Green" et le contenu est "Epinards, Brocolis, Olives vertes, Basilic", la représentation de la ressource à créer sera la suivante :
+```json
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Selon les conventions REST, une requête de création est de type POST et contient ses paramètres 
+au sein du body de la requête.
+
+**/routes/pizzas.js** doit offrir une nouvelle route permettant d'ajouter une nouvelle pizza au menu, qui est un array d'objets. Une nouvelle pizza doit donc être ajoutée à une variable, un array, qui est contenu dans la mémoire vive de votre machine.  
+Lorsque l'ajout d'une pizza au menu a réussi, nous souhaitons renvoyer la représentation de la nouvelle ressource au client. Ainsi, le client aura notamment accès à l'id de la pizza créé par l'API.
+
+Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez le rajouter dans votre application :
+```js
+// Create a pizza to be added to the menu.
+router.post('/', (req, res) => {
+  const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
+  const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
+
+  console.log('POST /pizzas');
+
+  if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
+
+  const lastItemIndex = MENU?.length !== 0 ? MENU.length - 1 : undefined;
+  const lastId = lastItemIndex ? MENU[lastItemIndex]?.id : undefined;
+  const nextId = lastItemIndex !== 0 ? lastId + 1 : 1;
+
+  const newPizza = {
+    id: nextId,
+    title: title,
+    content: content,
+  };
+
+  MENU.push(newPizza);
+
+  res.json(newPizza);
+});
+```
+
+La représentation de la ressource à créer est parsée dans l'objet **req.body** grâce à la fonction middleware **express.json()** appelée dans **/app.js** :
+```js
+app.use(express.json());
+```
+
+Il est donc important de ne pas retirer cette ligne lorsque l'on crée une RESTful API.
+
+
+OK, c'est bien, mais comment tester ce nouveau code ?
+
+Le browser permet de facilement créer des requêtes de type GET, mais pas des requêtes de type POST...   
+Nous avons donc besoin d'un client léger permettant de faire des requêtes HTTP.
+
+## <a id="e10"></a> e.10) Client REST
+### e.10.1) Introduction
+Dans le cadre de ce cours, tout comme généralement dans un environnement professionnel, nous souhaitons pouvoir développer une API indépendamment du développement d'une IHM.
+
+En effet, cela prendrait trop de temps de devoir développer un frontend (HTML / JavaScript / CSS) pour tester nos API.
+
+Nous allons donc utiliser un client léger permettant de faire des requêtes à nos API.  
+Il en existe de nombreux, comme REST Client [[R.55]](/references/#r55) ou Postman [[R.56]](/references/#r56).
+
+Pour ce cours, nous vous présentons et recommandons d'utiliser REST Client pour écrire et exécuter vos requêtes HTTP.
+
+### e.10.2) REST Client
+Dans le cadre de ce cours, nous utilisons REST Client [[R.55]](/references/#r55) de Visual Studio Code pour tester nos API.
+
+Pour installer REST Client au sein de VS Code, veuillez cliquer sur l'onglet **Extensions**. 
+
+Recherchez l'extension **REST Client** et cliquez sur **Install**.
+
+Quelques notions pour utiliser REST Client :
+- Il faut créer un fichier **.http** (ou **.rest**) contenant les requêtes vers vos RESTful APIs.  
+NB : Il est approprié de créer un fichier par par type de ressources.
+- Chaque requête est introduite par **###** (3 "**#**"" ou plus) ; voici la requête permettant de lire toutes les pizzas :
+```http
+### Read all pizzas
+GET http://localhost:3000/pizzas
+```
+- Pour exécuter une requête, il suffit de cliquer sur **Send Request**.
+- Lorsqu'on envoie des données au format JSON, il est important d'avoir un espace avant les accolades (avant le "**&#123;**" ).
+- On peut définir des "**File variables**" via ce genre de syntaxe : **@baseUrl = http://localhost:3000**.
+- Pour utiliser la variable **baseUrl**, il suffit de la mettre entre double accolades. Par exemple, voici la requête permettant de lire toutes les pizzas :  
+```http
+### Read all pizzas with File variable
+@baseUrl = http://localhost:3000
+GET {{baseUrl}}/pizzas
+```
+
+Nous allons maintenant tester l'API de la pizzeria que nous avons créée pour toutes ses opérations.
+
+Au sein de VS Code, dans votre projet **/tutorials/pizzeria/api/basic**, veuillez créer un répertoire nommé **REST Client**. Dans ce répertoire, veuillez créer un fichier nommé **pizzas.http**.
+
+Dans **pizzas.http**, veuillez ajouter cette requête pour la lecture de toutes les pizzas et exécutez la : 
+```http
+### Read all pizzas with File variable
+@baseUrl = http://localhost:3000
+GET {{baseUrl}}/pizzas
+```
+
+Est-ce que cela fonctionne bien ?  Avez vous bien démarré votre API ?  
+Vous devriez obtenir le même résultat que si vous accédiez à votre API à l'aide du browser.
+
+Au sein de **pizzas.http**, veuillez ajouter ces deux requêtes pour la lecture de toutes les pizzas en les triant selon leur titre :
+```http
+### Read all pizzas sorted by title (ascending)
+GET {{baseUrl}}/pizzas/?order=+title
+
+### Read all pizzas sorted by title (descending)
+GET {{baseUrl}}/pizzas/?order=-title
+```
+
+Veuillez exécuter ces deux requêtes.
+
+Il semble que nous sommes prêt pour créer une requête appelant l'opération de création d'une pizza.
+
+Au sein de **pizzas.http**, veuillez ajouter cette requête pour la création d'une pizza :
+```http
+### Create a pizza
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+On remarque qu'il est important de mettre une ligne vide avant les accolades représentant le body de la requête.  N'hésitez pas à tester cette requête avec ou sans la ligne vide pour y croire.
+
+💭 Comment tester que l'opération de création a fonctionnée ?
+
+Et bien il suffit d'exécuter l'opération de lecture de toutes les pizzas 😎 !
+Si la nouvelle ressource apparaît, c'est qu'elle a bien été créée !
+Faites le test.
+
+## <a id="e11"></a> e.11) Répondre avec un code de statut HTTP
+On ne peut pas toujours renvoyer du JSON suite à une requête client ainsi qu'un code HTTP correspondant au fait que tout est OK ("200 OK").
+
+Quand vous exécutez cette requête :
+```http
+### Read all pizzas with File variable
+GET {{baseUrl}}/pizzas
+```
+
+Vous faites appel à l'opération de lecture de toutes les pizzas. La dernière ligne de cette opération est la suivante :
+```js
+res.json(orderedMenu ?? MENU);
+```
+
+En fait, la fonction **json** renvoie une réponse au format JSON, mais de plus, elle renvoie un "status code" **200** indiquant au client que tout s'est bien passé.
+
+Au sein de **pizzas.http**, veuillez ajouter cette requête pour tenter de créer une pizza en oubliant un paramètre :
+```http
+### Create a pizza which lacks a property
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Veuillez exécuter cette requête. Que se passe-t-il ?  
+On récupère un code d'erreur "400 Bad Request".
+
+En effet, lorsqu'on omet un paramètre dans la représentation de la ressource à créer, voici les lignes de code amenant au renvoi du code d'erreur 400 au sein de **pizzas.js** :
+```js numbered {3,4,8}
+// Create a pizza to be added to the menu.
+router.post('/', (req, res) => {
+  const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
+  const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
+
+  console.log('POST /pizzas');
+
+  if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
+
+  const lastItemIndex = MENU?.length !== 0 ? MENU.length - 1 : undefined;
+  const lastId = lastItemIndex ? MENU[lastItemIndex]?.id : undefined;
+  const nextId = lastItemIndex !== 0 ? lastId + 1 : 1;
+
+  const newPizza = {
+    id: nextId,
+    title: title,
+    content: content,
+  };
+
+  MENU.push(newPizza);
+
+  res.json(newPizza);
+});
+```
+
+Le client est donc bien informé qu'il y a eu un problème lors de l'exécution de l'opération.   
+Il pourrait par exemple utiliser cette information pour présenter un message d'erreur au niveau d'une IHM.
+
+Voici les grandes catégories de "status codes" :
+- Réponses informatives : **100-199**
+- Réponses en cas de succès : **200-299**
+- Redirections : **300-399**
+- Erreurs du client : **400-499**
+- Erreurs du serveur : **500-599**
+
+Voici les "status codes" que nous allons généralement utiliser :
+- **200 OK** : tout s'est bien passé, Express ajoute ce code automatiquement pour nous quand nous utilisons une méthode comme **res.json()**.
+- **400 Bad Request** : pour indiquer au client que la requête contient des paramètres non valides ou n'est pas complète.
+- **401 Unauthorized** : pour indiquer au client qu'il doit s'authentifier pour accéder à cette opération. On renvoie aussi ce code d'erreur quand un client fournit un mauvais username ou password.
+- **403 Forbidden** : le client est connu du serveur, mais il n'a pas les privilèges pour accéder à cette opération (par exemple, le client n'est pas admin et tente d'accéder à une opération seulement accessible à un admin).
+- **404 Not Found** : la ressource demandée n'existe pas, bien que l'URL semble valide.
+- **409 Conflict** : l'état du serveur entre en conflit avec la requête. Par exemple, la requête demande de créer un utilisateur qui existe déjà.
+- **500 Internal Server Error** : le serveur a rencontré une erreur qu'il ne peut pas régler. Par exemple, le serveur de base de données ne répond pas et ne permet donc pas d'accéder aux ressources.
+
+## <a id="e12"></a> e.12) Opération de suppression
+Nous souhaitons développer une opération permettant de supprimer une ressource de type "pizzas" à l'aide de son identifiant.  
+Selon les conventions REST, il faut faire une requête de type **DELETE /pizzas/{id}** contenant l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter".
+
+Une opération de suppression ne contient donc pas de body et est de type DELETE. 
+
+Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez la rajouter dans votre application :
+```js
+// Delete a pizza from the menu based on its id
+router.delete('/:id', (req, res) => {
+  console.log(`DELETE /pizzas/${req.params.id}`);
+
+  const foundIndex = MENU.findIndex(pizza => pizza.id == req.params.id);
+
+  if (foundIndex < 0) return res.sendStatus(404);
+
+  const itemsRemovedFromMenu = MENU.splice(foundIndex, 1);
+  const itemRemoved = itemsRemovedFromMenu[0];
+
+  res.json(itemRemoved);
+});
+```
+
+Au sein de **pizzas.http**, veuillez ajouter cette requête pour supprimer la pizza possédant l'identifiant "2" :
+```http
+### Delete pizza identified by 2
+DELETE {{baseUrl}}/pizzas/2
+```
+
+Veuillez exécuter cette requête et vérifier que la pizza a bien été supprimée.
+
+## <a id="e13"></a> e.13) Opération de modification
+Nous souhaitons développer une opération permettant de modifier une ressource de type "pizzas" à l'aide de son identifiant et de nouvelles valeurs pour ses propriétés.  
+Selon les conventions REST, comme on accepte de modifier que certaines des propriétés d'une pizza, qu'il ne faut pas fournir toutes les propriétés d'une pizza, il faut faire une requête de type **PATCH /pizzas/{id}** contenant 
+l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter" ainsi que les nouvelles données au sein du body de la requête.
+
+Si nous souhaitons modifier une ressource identifiée par 6 en fournissant un nouveau titre "Magic Green 2", la représentation des données de la ressource à modifier sera la suivante :
+```json
+{
+    "title":"Magic Green 2"
+}
+```
+
+Selon les conventions REST, la requête de modification est de type PATCH et contient ses paramètres au sein du body de la requête.
+
+Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez la rajouter dans votre application :
+```js
+// Update a pizza based on its id and new values for its parameters
+router.patch('/:id', (req, res) => {
+  console.log(`PATCH /pizzas/${req.params.id}`);
+
+  const title = req?.body?.title;
+  const content = req?.body?.content;
+
+  console.log('POST /pizzas');
+
+  if ((!title && !content) || title?.length === 0 || content?.length === 0) return res.sendStatus(400);
+
+  const foundIndex = MENU.findIndex(pizza => pizza.id == req.params.id);
+
+  if (foundIndex < 0) return res.sendStatus(404);
+
+  const updatedPizza = {...MENU[foundIndex], ...req.body};
+
+  MENU[foundIndex] = updatedPizza;
+
+  res.json(updatedPizza);
+});
+```
+
+Au sein de **pizzas.http**, veuillez ajouter cette requête pour modifier la pizza possédant l'identifiant "6" :
+```http
+### Update the pizza identified by 6
+PATCH {{baseUrl}}/pizzas/6
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2"
+}
+```
+
+Veuillez exécuter cette requête et vérifier que la pizza a bien été modifiée.
+
+💭 Cela ne fonctionne pas ?  
+Avez vous précédemment exécuté la requête permettant de créer une sixième pizza.
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**api-basic**".
+
+En cas de souci, vous pouvez accéder au code du tutoriel ici : [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
+
+# <a id="f"></a> f) Spread operator
+## <a id="f1"></a> f.1) Spread operator au niveau d'un objet
+💭 Avez-vous observé un morceau de code inconnu au niveau de l'opération de modification, dans le router ?
+```js
+const updatedPizza = {...MENU[foundIndex], ...req.body};
+```
+
+Le **spread operator** est très utile en JS, ce sont les **"..."**.  
+Ici, nous créons un nouvel objet en intégrant deux objets : **`MENU[foundIndex]`** et **`req.body`**.  
+Le **spread operator** permet de faire une "Shallow copy", ou copie peu profonde, d'une pizza du menu, à l'aide de **`...MENU[foundIndex]`**.  
+Cela reprend toutes les propriétés de la pizza identifiée par **`foundIndex`**.  
+Ensuite, nous remplaçons les propriétés existantes de cette pizza par les propriétés données dans **`req.body`** à l'aide de **`...req.body`**.  
+
+## <a id="f2"></a> f.2) Spread operator au niveau d'un array
+Au niveau de l'opération de lecture de toutes les pizzas, nous avons rencontré le **spread operator**.
+```js
+orderedMenu = [...MENU].sort((a, b) => a.title.localeCompare(b.title));
+```
+
+En effet, lorsque nous faisons un tri du menu, nous souhaitons le faire sur une copie de celui-ci.  
+💭 Mais pourquoi le faire sur une copie ?  
+Et bien, si nous autorisons à trier l'array associé au MENU, lorsque nous tenterons d'ajouter une nouvelle pizza, le dernier élément de l'array ne contiendra plus le dernier id (ou l'id le plus haut) !  
+Comme la fonction **sort** modifie l'array sur lequel la méthode est appelée, nous travaillons sur une copie de cet array : **`[...MENU]`** crée un nouveau tableau contenant tous les éléments du **MENU**.
+
+## <a id="f3"></a> f.3) Conclusion
+Le **spread operator** est incroyablement puissant, il permet d'écrire du code concis et lisible.  
+Il est utilisé dans les objets, les arrays, ainsi que comme paramètre de fonction.  
+
+N'hésitez pas à consulter la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) [[R.57]](/references/#r57) pour en savoir plus.
+
+# <a id="g"></a> g) Exercice 4.1 : Création d'une RESTfull API non protégée pour myMovies
+Veuillez continuer le développement de **myMovies**. Vous allez créer la première version de la RESTful API de **myMovies**, sous Express, afin de mettre à disposition toutes les opération de type CRUD sur des films.
+
+
+Afin de réaliser cet exercice, voici les contraintes d'implémentation :
+-	Veuillez créer une RESTful API pour la collection de films, qui réponde sur le port par défaut d'une application Express (3000), et qui couvre ces opérations :
+
+| URI | Méthode HTTP | Opération |
+|---|---|---|
+| **films** | GET | READ ALL : Lire toutes les ressources de la collection |
+| **films?minimum-duration=value** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
+| **films/{id}** | GET | READ ONE : Lire la ressource identifiée |
+| **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
+| **films/{id}** | DELETE | DELETE ONE : Effacer la ressource identifiée |
+| **films/{id}** | PATCH | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
+
+- Une ressource de type **films** doit contenir les propriétés suivantes :
+  - **id** : un entier
+  - **title** : titre du film (String)
+  - **duration** : durée du film en minutes
+  - **budget** : pour informer du coût qu'a couté la production du film, en millions
+  - **link** : pour donner une URL vers la description du film (lien vers imdb, rottentomatoes ou autre)
+-	Les ressources ne doivent pas persister : dès lors, ajoutez les données associées aux films dans un array.
+-	Veuillez tester toutes les fonctions de la RESTful API pour la collection de films à l'aide du REST Client dans VS Code (extension à installer au sein de VS Code). Veuillez ajouter vos requêtes au sein du fichier **films.http** dans le répertoire **REST Client** du dossier associé à cet exercice.
+
+Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module4/4.1**.
+
+Veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 4 : basic API**".
+
+# <a id="h"></a> h) 🍬 Exercice 4.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films
+N'hésitez pas, c'est optionnel, de gérer de nouvelles opérations au sein de votre RESTful API de **myMovies** :
+-	Filtrez tous les films qui commencent par une certaines chaînes de caractères.
+-	Gérez l'ordre de présentation des films.
+
+#### 🤝 Tips
+Besoin d'inspiration pour l'aspect filtrage et la gestion de l'ordre des ressources ? [REST API Guide](https://dev.to/drminnaar/rest-api-guide-14n2) [[R.58]](/references/#r58).
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : module 4 : ordering & filtrering**".
+
+🍬 Et si vraiment vous avez encore du temps et souhaitez déjà approfondir les RESTful APIs, n'hésitez pas aussi à implémenter la gestion de la pagination.
