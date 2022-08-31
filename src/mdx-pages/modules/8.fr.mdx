@@ -800,7 +800,7 @@ Nous allons développer deux frontends et une API pour une agence de voyages.
 Nous souhaitons afficher des lieux de vacances proposés par l'agence de voyages. Il y a 5 lieux différents, chacun avec un id, un nom et une image.
 
 Le boilerplate pour cette question se trouve dans **/question1**.
-Vous trouverez 5 images correspondant à chaque lieu dans le répertoire **/question1/src/img**, ainsi qu'un fichier contenant une liste des lieux avec leur id, leur nom et leur image au format JSON dans le fichier **/question1/src/utils/places.js**.
+Vous trouverez 5 images correspondant à chaque lieu dans le répertoire **/question1/src/img**, ainsi qu'un fichier contenant une liste des lieux avec leur id, leur nom et leur image dans **/question1/src/utils/places.js**.
 
 Vous devez créer deux pages :
 -	La page d'accueil, accessible avec l'URI "/" ou avec un lien nommé "Home" dans la barre de navigation, doit afficher une liste de tous les noms de lieux de vacances.
@@ -823,7 +823,7 @@ Voici un exemple de ce à quoi pourrait ressembler votre site web :
 ## e.4) Question 2 : Créer un service web
 Nous souhaitons développer une RESTful API pour gérer les lieux de vacances proposés par l'agence, les utilisateurs du site, ainsi que les lieux favoris de ces utilisateurs.
 
-Le boilerplate pour l'API de cette question se trouve dans **/question2**. Nous avons généré pour vous une application Express et rajouté un fichier **/question2/utils/json.js**.
+Le boilerplate pour l'API de cette question se trouve dans **/question2**, c'est une copie du boilerplate du cours.
 
 Veuillez créer les opérations suivantes :
 -	**Créer un nouveau lieu de vacances**. L'opération doit prendre en entrée le nom du lieu ainsi que sa description, et doit retourner l'ID du lieu créé au format JSON. L'opération doit renvoyer une erreur si le nom ou la description ne sont pas fournis.
