@@ -1,0 +1,1537 @@
+---
+title: "Module 2 : IHM moderne & dynamique"
+description: "Utilisation d'outils de développeurs pour créer une IHM moderne & génération d'HTML dynamique"
+---
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+# Module 2 : IHM moderne & dynamique
+Ce module vous offre principalement une découverte de l'utilisation d'outils de développeurs pour créer une IHM moderne ainsi que la génération d'HTML dynamique et de pages web esthétiques.
+
+Voici les sujets traités :
+- a) [Développement d'IHM modernes](#a)
+  - a.1) [Introduction](#a1)
+  - a.2) [Les modules bundlers](#a2)
+  - a.3) [Comment créer une IHM moderne ?](#a3)
+  - a.4) [Création du squelette d'une IHM à partir d'un boilerplate](#a4)
+  - a.5) [Installation de toutes les dépendances d'une application](#a5)
+  - a.6) [Installation des extensions pour le linter et le formater](#a6)
+  - a.7) [Exécution de l'application à l'aide d'un serveur de développement de Webpack](#a7)
+  - a.8) [Fonctionnement de Webpack pour gérer des assets](#a8)
+  - a.9) [Installation d'un package](#a9)
+- b) [Développement d'IHM esthétiques](#b)
+  - b.1) [Introduction](#b1)
+  - b.2) [Introduction à Bootstrap](#b2)
+  - b.3) [Le Layout en Bootstrap](#b3)
+  - b.4) [Les breakpoints en Bootstrap](#b4)
+  - b.5) [Les composants Bootstrap](#b5)
+  - b.6) [Utilisation de Bootstrap dans un frontend moderne](#b6)
+- c) [Développement d'IHM dynamiques](#c)
+  - c.1) [Introduction](#c1)
+  - c.2) [Génération d'HTML à partir d'une string](#c2)
+  - c.3) [Ajout dynamique d'écouteurs d'événements une fois le DOM rendu](#c3)
+  - c.4) [Génération d'HTML à partir de Nodes](#c4)
+  - c.5) [Ajout dynamique d'écouteurs d'événements avant de rendre le DOM](#c5)
+  - c.6) [Utilisation de Bootstrap dans un frontend moderne](#c6)
+- d) [Debbuging d'un frontend tournant sous Webpack](#d)
+- e) [Exercice 2.1 : Homepage statique de myMovies & Webpack](#e)
+- f) [Exercice 2.2 : Génération dynamique de la Homepage de myMovies](#f)
+- g) [Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire](#g)
+- h) [🍬 Exercice 2.4 : design responsive](#g)
+
+# <a id="a"></a>a) Développement d'IHM modernes
+## <a id="a1"></a>a.1) Introduction
+Au module 1, nous avons développé des applications web façon "old school".
+
+Dans le tutoriel du module 1, nous avons créé la HomePage du site d'une pizzeria, en y ajoutant facilement deux animations grâce à une librairie externe ([Animate.css](https://animate.style/)).
+
+Imaginez maintenant que le site web de la pizzeria continue à grandir.  
+Au fur et à mesure que nous allons lui ajouter des fonctionnalités, nous allons souhaiter utiliser de nouvelles librairies externes.
+
+Pour chaque librairie externe que nous souhaitons ajouter, nous aurons à inclure une balise **`<script>`** a sein d'**index.html**.
+
+Nous allons donc facilement, lors du développement d'une application web, utiliser une ou plusieurs dizaine(s) de librairies externes, que l'on appelle aussi dépendances.
+
+La gestion de ces dépendances est difficile à gérer et à maintenir :
+- si vous souhaitez avoir des versions locales de ces dépendances, vous devez vous même manuellement télécharger les fichiers **.js** et **.css** associés à vos librairies, inclure ensuite le bon chemin pour la propriété **src** des balises **scripts**.
+- en cas de nouvelle version d'une librairie, vous êtes difficilement informé ;
+- la mise à jour d'une dépendance impose pas mal de manipulations : si vous utilisez des versions locales des dépendances, re-téléchargement de celles-ci, changement des propriétés **src** des balises **scripts** impactées...
+- lorsque vous travaillez à plusieurs développeurs sur un même projet, pour que tout le monde obtienne les dépendances si vous utiliser des versions locales au serveur web, vous risquez de devoir mettre celles-ci en configuration (via Gitlab ou Github) ; c'est vraiment dommage de mettre en configuration les dépendances, le code de quelqu'un d'autre.
+
+Ainsi, pour créer des IHM de manière moderne, nous souhaiterions bénéficier d'outils facilitant le développement.
+
+Nous souhaiterions :
+- une gestion moderne des dépendances (et de leur dépendances), via un gestionnaire de packages ;
+- écrire du JS moderne et utiliser, si nécessaire, un outil pour générer du JS pour d'anciens browsers ; 
+- du hot reload : lorsque l'on modifie un script, l'application web se rafraichisse dans le browser ;
+- que notre éditeur de code nous informe quand nous écrivons du JS qui ne répond pas à des conventions de programmation ;
+- transformer les assets à la compilation (optimisation d'images, SASS vers CSS...)
+- ...
+
+Ainsi, nous allons abandonner la programmation "old school" dans ce module et découvrir des outils de programmation modernes, principalement les **module bundlers**.
+
+## <a id="a2"></a> a.2) Les modules bundlers
+Un module bundler est un outil mis à la disposition des développeurs.
+
+Il permet la gestion aisée des modules, packages et de leurs dépendances.
+
+Probablement sa plus grande utilité et de permettre d'utiliser des packages faits pour Node.js (un environnement serveur) au sein d'un browser (un environnement client).
+
+Certains modules bundler permettent d'autres fonctionnalités comme la gestion aisée des assets, la transpilation de code moderne vers du code ancien…
+
+Voici quelques modules bundlers parmi les plus connus : Webpack [[R.33]](/references/#r33), browserify, parcel.
+
+Dans le cadre de ce cours, nous avons choisi Webpack.
+
+Pour pouvoir installer cet outil, tout comme n'importe quel package, nous utiliserons le gestionnaire de packages de Node.js **npm**.
+
+A ce stade-ci, si ça n'est pas déjà fait, il est important que vous installiez l'environnement [Node.js en version LTS](https://nodejs.org/en/) [[R.34]](/references/#r34): 
+
+⚡ Attention à ne pas installer la dernière version de Node.js, mais bien la version LTS, sinon vous risquez beaucoup d'incompatibilités lors de l'exécution des boilerplates, tutoriels & démos du cours.
+
+## <a id="a3"></a> a.3) Comment créer une IHM moderne ?
+Nous avons vu que pour créer une application web moderne, il est important d'utiliser un module bundler.
+
+Il reste néanmoins encore à décider comment nous allons initier la création de nos projets pour bénéficier d'outils de développement modernes.
+
+Voici les options possibles :
+- **Utiliser un boilerplate contenant le squelette d'une IHM (incluant une bonne configuration des outils de développement) et ses dépendances** ; nous allons utiliser cette option dans le cadre de ce cours ;
+- **Utiliser un framework ou une librairie comme React, Vue ou Angular** ; comme expliqué dans l'introduction, nous n'allons pas utiliser de Framework pour créer nos IHM. Nous trouvons ces frameworks très utiles, néanmoins nous estimons 
+qu'il est primordial de bien pratiquer le Vanilla JS avant de se lancer dans un framework pour votre frontend.
+- **Créer et configurer son projet "from scratch"** ; c'est une partie qui sera faite par les initiés ; en règle générale, les développeurs préfèrent utiliser des outils de développement déjà configurés plutôt que de devoir mettre en place tout l'environnement de développement. C'est ce qui fait notamment le succès de l'utilisation de frameworks, car ils offrent des outils de développement généralement bien configurés "out of the box" (dans les boilerplates de base). 
+
+Comme expliqué ci-dessus, vous ne devez pas connaître comment configurer un module bundler pour bénéficier d'outils de développement modernes.
+
+Nous estimons qu'il est important que vous compreniez comment pouvoir utiliser, et éventuellement modifier, une configuration de base offerte au sein d'un boilerplate. 
+
+🍬 Si néanmoins vous souhaitez approfondir la configuration d'un environnement de développement pour un frontend, à l'aide de Webpack, vous pouvez suivre ces deux tutoriels :
+- [webpack-part1-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/webpack-part1-hmi).
+- [webpack-part2-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/webpack-part2-hmi).
+
+Ces deux tutoriels, totalement optionnels, expliquent comment le [boilerplate de base du cours](https://github.com/e-vinci/js-basic-boilerplate.git) a été créé.
+
+## <a id="a4"></a> a.4) Création du squelette d'une IHM à partir d'un boilerplate
+Nous allons faire un refactor du site de la pizzeria développé façon "Old School" au module 1 en utilisant des outils de développement modernes.
+
+Pour ce faire, nous allons utiliser le [boilerplate de base du cours](https://github.com/e-vinci/js-basic-boilerplate.git) qui met à disposition un projet bien configuré.
+
+Au fur et à mesure du tutoriel qui suit, nous allons comprendre ce qu'offre Webpack en tant que module bundler.
+
+Dans votre repo **web2**, nous allons créer le répertoire **/tutorials/pizzeria/hmi/modern** en clonant le boilerplate.
+
+Pour ce faire, veuillez ouvrir un terminal dans le répertoire **/tutorials/pizzeria/hmi**.
+
+Il est possible de faire un clic droit dans l'Explorer de VS Code sur le répertoire **hmi**, **Open in Integrated Terminal** pour ouvrir un terminal au bon endroit :
+
+<ScrollableImage name="terminal-1.png" minWidth="481px" maxWidth="500px" />
+
+<figcaption>Accès rapide à un terminal au chemin désiré</figcaption>
+
+Nous vous conseillons, au sein de VS Code, de configurer pour avoir comme Terminal par défaut Git Bash.
+
+Pour ce faire, vous devez avoir installé Git sur votre machine.
+
+Cliquez à droite du **+** au sein d'un terminal ouvert dans VS Code, clic sur **Select Default Profile**, puis sélectionnez "Git Bash".  
+Tous les prochains terminaux que vous ouvrirez le seront sous Git Bash, nettement plus coloré et intéressant que les autres terminaux 😎.
+
+<ScrollableImage name="terminal-2.png" minWidth="933px" maxWidth="933px" />
+
+<figcaption>Choix du terminal par défaut</figcaption>
+
+Pour cloner le boilerplate dans **/tutorials/pizzeria/hmi** en portant le nom de projet **modern**, veuillez tapez au sein du terminal :
+
+```bash
+git clone https://github.com/e-vinci/js-basic-boilerplate.git modern
+```
+
+A ce stade-ci, tous les fichiers nécessaires sont disponibles dans votre répertoire **modern**.
+
+⚡ Comme vous avez cloné votre projet au sein d'un repo existant (**web2**), Git ne trackera pas ce nouveau projet ; en effet, Git ne tracque pas des projets Git dans des projets Git. 
+
+Pour vous assurer que Git traque votre nouveau projet **modern**, vous devez effacer le répertoire **`.git`** se trouvant dans votre nouveau projet.  
+N'hésitez pas aussi à effacer **`.gitignore`** se trouvant dans votre nouveau projet.
+
+**package.json** est le fichier de configuration de votre projet.
+
+Veuillez le mettre à jour afin de :
+- donner un nom à votre projet & une description ;
+- vous identifier comme auteur.
+
+## <a id="a5"></a> a.5) Installation de toutes les dépendances d'une application
+Veuillez entrer dans le répertoire **modern** à l'aide d'une commande bash, au sein du Terminal de VS Code :
+
+```bash
+cd modern # (or the name given to your project)
+npm i # (equivalent to `npm install` to install all dependencies )
+npm start # run the project
+```
+
+Veuillez ensuite installer toutes les dépendances, c'est-à-dire tous les packages qui sont indiqués dans **package.json**
+
+```bash
+npm i # (equivalent to `npm install` to install all dependencies )
+```
+
+Notons que dans ce cas-ci, ce sont tous ces packages qui sont installés (voir **package.json**):
+
+```json
+"devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "eslint": "^8.18.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.1",
+    "prettier-airbnb-config": "^1.0.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "bootstrap": "^5.0.1"
+  },
+```
+
+💭 Mais où sont installé tous ces packages ?
+C'est dans le répertoire **node_modules**. Il peut vite s'y trouver plusieurs centaines de MB de dépendances. C'est donc très important de ne jamais mettre ce dossier sur vos web repository, via Git. Pour ce faire, n'oubliez pas d'inclure un fichier **.gitignore** dans vos projets pour ignore **node_modules**.
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/pizzeria/hmi/modern** (ou **/web2/tutorials/pizzeria/hmi/modern** si l'on considère le nom du répertoire du repo).
+
+## <a id="a6"></a> a.6) Installation des extensions pour le linter et le formater
+### a.6.1) Le linter
+Nous souhaitons ajouter un outil qui permette de détecter des erreurs de programmation lors de l'écriture de nos scripts, un linter.   
+Nous voulons que le linter impose le style d'Airbnb décrit dans le **Airbnb JS style guide**.   
+Pour ce faire, grâce au boilerplate, lorsque nous lançons la commande **`npm start`**, nous utilisons **ESLint** (cet outil est aussi utilisé par Facebook au sein d'applications React) qui impose un style de programmation conforme aux règles d'Airbnb.   
+Lors du build de l'application, nous bénéficions de feedback sur notre code.
+
+Pour bénéficier de plus de feedback sur le code, veuillez installer l'extension **ESLint** au sein de VS Code.    
+Vous ne devez plus attendre le build pour avoir du feedback sur votre code, cela se fait dès l'écriture ! Vous avez même des propositions de "Quick fix" !
+
+Pour votre info, la configuration des règles de **ESLint** se fait dans le fichier **.eslintrc.js** devant se trouver à la racine d'un projet et offert au sein du boilerplate.
+
+### a.6.2) Le formater
+Pour formater facilement votre code, le boilerplate fournit une configuration de **prettier** conforme à ce qui est attendu pour coller au style imposé par le linter, c'est à dire au style d'Airbnb.
+
+💭 Vous souhaitez reformater votre code en accord avec le linter, lors de l'appui sur plusieurs touches ?
+
+Vous devriez répondre "oui" à cette question, car c'est un gain de temps d'avoir un outil permettant d'améliorer la qualité de son code, sans efforts.
+
+Pour que la configuration du formater offerte dans le boilerplate soit utile, veuillez installer l'extension **prettier** au sein de VS Code.
+
+Une fois **prettier** installé dans VS Code, vous pouvez facilement formatter votre code conformément au style d'Airbnb :
+- soit en tapant **Shift Alt F** ;
+- soit en faisant un clic droit sur votre script, **Format Document** ; la première fois, il se peut que vous deviez sélectionner **prettier** comme formater.
+
+Pour votre info, la configuration des règles de **prettier** se fait dans le fichier **.prettierrc.js** devant se trouver à la racine d'un projet et offert au sein du boilerplate.
+
+## <a id="a7"></a> a.7) Exécution de l'application à l'aide d'un serveur de développement de Webpack
+Veuillez exécuter l'application de base offerte par le boilerplate :
+
+```bash
+npm start # run the project, equivalent of : npm run start
+```
+
+**package.json** indique les scripts de démarrage, en fonction de la façon dont nous souhaitons démarrer l'application :
+
+```json
+"scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development"
+  },
+```
+
+Lorsque nous tapons **npm start** à la racine du projet (**modern** ici), c'est en fait le serveur de développement de Webpack qui va démarrer notre application, 
+et une page s'ouvre dans notre browser par défaut, affichant le texte "Replace with your page content".
+
+Webpack offre de nombreux outils de développement qui sont configurés dans le fichier **webpack.config.js**. 
+
+Veuillez jeter un oeil à ce fichier. Vous verrez notamment qu'un serveur web de développement doit démarrer sur le port 8080.
+
+Il n'est désormais plus nécessaire d'utiliser le Live Server de VS Code pour visualiser nos applications. Cela est directement géré par Webpack.
+
+Pour stopper l'application, et donc le serveur de développement de Webpack, il suffit de taper sur **`CTRL + c`** au sein du terminal.
+
+Et pour la redémarrer ? 
+
+**`npm start`**.
+
+## <a id="a8"></a> a.8) Fonctionnement de Webpack pour gérer des assets
+Webpack a été configuré afin de générer une fichier **index.html** sur base d'un template donné dans **/src/index.html**.
+
+Ce template HTML ne contient pas de balises **`<script>`**.
+
+C'est Webpack qui va s'occuper d'aller chercher toutes les dépendances qui doivent être indiquées via des imports dans le fichier **/src/index.js**. Webpack va générer un bundle, une sorte de paquet cadeau, reprenant toutes les dépendances ainsi que vos scripts JS et vos autres assets (fichiers CSS, images...).
+
+Dans le boilerplate du cours, **src/index.js** fait l'import de tout ce qui est nécessaire pour pouvoir utiliser **Bootstrap** pour pouvoir styler ses pages web à l'aide de classes prédéfinies ; de plus, **/stylesheets/main.css** et importé afin de pouvoir créer votre propre style : 
+
+```js
+// Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+// Custom styles
+import './stylesheets/main.css';
+```
+
+Nous verrons plus tard comment utiliser Bootstrap.
+
+Nous comprenons donc que pour importer une librairie, un asset (image, CSS...), il suffit de le faire à l'aide du mot-clé **import**.
+
+Pour comprendre l'utilisation de Webpack, nous allons maintenant faire un refactor de notre site de la pizzeria réalisé au module 1 en l'intégrant à notre nouveau projet.
+
+Veuillez copier / coller le CSS qui était contenu dans **/stylesheets/style.css** au sein de **/stylesheets/main.css** :
+
+```css
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body { 
+    /*to easily deal with sticky footer*/
+    display: flex;
+    flex-direction: column;
+    background-image : url(../img/pizza.jpg);
+    background-size : cover;
+}
+
+
+header{
+    text-align: center;
+}
+
+main{
+    text-align: center;
+     /*to easily deal with sticky footer:
+     grow the main to fill the space*/
+    flex: 1 0 auto;
+}
+
+footer{
+    text-align: center;    
+}
+
+footer img {
+    height: 50px;
+}
+
+footer h1{
+    color: white;
+}
+```
+
+Nous allons maintenant créer le layout HTML de base de notre application sur base de l'ancien **index.html**. 
+
+Les changements à opérer sont : 
+- Enlever l'import de la feuille de style directement dans l'HTML : `<link rel="stylesheet" href="./stylesheets/style.css" />`
+- Enlever l'import de la librairie externe directement dans l'HTML : ` <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />`
+- Enlever l'import du script externe **index.js** directement dans l'HTML : <script src="./index.js"></script>
+
+Le contenu de **/src/index.html** doit devenir :
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizzeria</title>
+    <link rel="icon" href="./img/pizza-svgrepo-com.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header>
+      <h1 class="animate__animated animate__bounce">We love Pizza</h1>
+    </header>
+    <main>
+      <audio id="audioPlayer" controls autoplay>
+        <source src="./sound/Infecticide-11-Pizza-Spinoza.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </main>
+    <footer>
+      <h1 class="animate__animated animate__bounce animate__delay-2s">
+        But we also love JS
+      </h1>
+      <img src="./img/js-logo.png" alt="" />
+    </footer>
+  </body>
+</html>
+```
+
+Veuillez ajouter les images et le son du tutoriel précédent dans les répertoires **/src/img** et **src/sound**.
+
+Veuillez ajouter le contenu de l'ancien **index.js** au sein de **/src/index.js** afin de gérer les clics sur toute la page :
+
+```js
+// Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+// Custom styles
+import './stylesheets/main.css';
+
+import 'animate.css';
+
+const body = document.querySelector('body');
+
+body.addEventListener('click', startOrStopSound);
+
+function startOrStopSound() {
+  const myAudioPlayer = document.querySelector('#audioPlayer');
+
+  if (myAudioPlayer.paused) myAudioPlayer.play();
+  else myAudioPlayer.pause();
+}
+```
+
+Veuillez exécuter l'application. 
+
+On voit que quasi tout est fonctionnelle.
+
+Il est important de comprendre que le chargement d'un fichier (image ou son) à l'aide de Webpack suit un processus lors du build de votre application.
+
+Lorsque vous tapez **npm start**, vous lancez le build de votre application.
+Grâce à l'installation et à la configuration du module **`html-loader`**, Webpack émet le fichier dans le "output directory", généralement **`/dist`**, et remplace la valeur de **`src`** avec le chemin final vers le fichier.
+
+Pour vous en rendre compte, au sein de votre browser, allez dans vos outils de développeur de Chrome (**F12** par exemple), au sein de l'onglet **Sources**. Vous allez pouvoir observer :
+- **bundle.js** : c'est le fichier contenant notamment toutes les dépendances ainsi que votre code JS.
+- **`index.html`** ou **`(index)`** dans Chrome : c'est votre page web, il est intéressant de voir son contenu. On voit que le bundle y est intégré dans le **`<head>`**, l'attribut **defer** assurant que l'exécution du script ne se fasse qu'une fois que le parsing de la page, la création du DOM, soit terminée ! 
+- des fichiers avec des noms du style **`c731ea9152350c35fb1d.jpg`** : ce sont vos assets, vos images, dont le nom et chemin ont été modifiés lors du build de votre application. Notez que Webpack pourrait transformer ces fichiers (par exemple en créant une représentation mémoire en base64 des images) lors du build.
+- tout les assets sont gérés par le serveur de développement, il n'y a rien de mis dans le répertoire **`/dist`**. Nous allons voir juste après comment gérer un build de production et observer la création du répertoire **`/dist`**.
+
+Pour le chargement d'une photo via le CSS, du moment que la photo est dans `/src`, le **Asset Module** de Webpack reconnaît la photo localement et va remplacer le chemin final de la photo lors du build.
+
+Nous allons maintenant stopper l'exécution de notre serveur (au sein du terminal, tapez **`CTRL C`**).
+
+Nous pouvons lancer la création d'un build de production. 
+
+Un build de production est une version optimisée de votre application web, les espaces blancs sont retirés, les commentaires...
+
+Pour lancer le build, veuillez taper cette commande dans un terminal : 
+
+```bash
+npm run build
+```
+
+Veuillez observer ce qui est offert dans le répertoire **/dist** du projet.
+
+On voit notamment que **bundle.js** et **index.html** ont été optimisé pour la production.
+
+Pour mettre à disposition un build de production par un serveur web, nous pouvons utiliser le package **serve** qui offre un serveur de fichiers statiques. Nous allons utiliser une version temporaire de cette application, à l'aide de la commande **npx**, qui permet d'installer une copie locale et temporaire d'une application, et de directement exécuter cette application.
+
+Veuillez vous rendre dans le répertoire **/dist** et exécuter le serveur **serve**. Pour ce faire, tapez dans votre terminal :
+
+```bash
+cd dist
+npx serve
+```
+
+🎉 Le serveur web tombe sur le fichier **index.html** et met à disposition votre build de production !
+
+Pour terminer le refactoring du site de la pizzeria, il reste à installer la dépendance permettant de créer des animations.
+
+Veuillez stopper l'exécution du serveur web (au sein du terminal, tapez **`CTRL C`**) et revenir à la racine du projet.
+
+```bash
+cd ..
+```
+
+## <a id="a9"></a> a.9) Installation d'un package
+Afin de gérer des animations, il faut réinstaller la dépendance via **npm**, le gestionnaire de packages.
+
+Pour installer un package (ou une dépendance), il suffit de faire : **npm i nomDuPackage** ou **npm install nomDuPackage**.
+
+Pour installer la librairie [Animate.css](https://animate.style/) [[R.32]](/references/#r32), il suffit de taper dans un terminal, lorsqu'on se trouve à la racine du projet (**modern** ici) :
+
+```bash
+npm install animate.css
+```
+
+Veuillez aller jeter un oeil à votre fichier **package.json**.  
+Lors de l'installation d'un package, celui-ci s'ajoute à la liste des dépendances.  
+Ainsi, si des développeurs trouvent votre projet sur Git, ils n'auront qu'à exécuter **`npm i`** afin d'installer toutes les dépendances.
+
+En lisant la documentation, nous voyons que pour utiliser la librairie au sein de notre application, il suffit de faire l'import de celle-ci.
+
+Veuillez faire l'import de **Animate.css** au sein de **index.js** en ajoutant cette ligne :
+
+```js
+import 'animate.css';
+```
+
+Une fois la librairie importée, le refactoring du site de la pizzeria est terminé.
+
+Vérifiez bien que tout est fonctionnel !
+
+Si tout fonctionne bien, faites un commit de votre repo (**web2**) avec le message "**modern-hmi**".
+
+En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : [modern-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-hmi).
+
+# <a id="b"></a>b) Développement d'IHM esthétiques
+## <a id="b1"></a>b.1) Introduction
+Le design de UI (User Interface) est un métier réprésenté par tout un univers de technologies.
+
+L'objectif de ce cours est de pouvoir créer une IHM de qualité, avec peu d'efforts, qui paraisse bien sur tous les appareils (Responsive Web Design).
+
+Il existe de nombreuses façon de gérer le design, le graphisme d'une UI, en passant par l'utilisation :
+- de Vanilla CSS / HTML 
+- de SASS (pour faciliter la génération de CSS)
+- de librairies ; les plus connues sont **Bootstrap** et **tailwindcss**.
+
+Dans le cadre de ce cours, nous vous conseillons d'utiliser **Bootstrap** pour travailler le style de vos applications. Toutes les futurs démos données dans le cadre de ce cours utiliseront **Bootstrap**.
+
+Néanmoins, si vous avez déjà beaucoup d'affinités avec le Vanilla CSS, vous pouvez continuer à approfondir le CSS.
+
+<AuthenticatedBlock>
+
+Le style de vos IHM ne sera pas évalué lors des examens.
+
+Par contre, dans le cadre de votre projet web, le style de vos UI, tout comme l'ergonomie (UX), feront partie intégrante de l'évaluation.
+
+</AuthenticatedBlock>
+
+## <a id="b2"></a>b.2) Introduction à Bootstrap
+Bootstrap est une librairie permettant de créer rapidement des sites web "responsive".
+
+Nous faisons une petite introduction à cet outil dans le cadre de ce cours, afin que vous puissiez facilement découvrir en autonomie cet technologie via son site web : [Bootstrap](https://getbootstrap.com/) [[R.36]](/references/#r36).
+
+Bootstrap offre principalement : 
+- Un système de **Layout** : un **Grid** est constitué de **Container**, de **Rows** et de **Columns**. Le tout est construit en utilisant "flexbox" et est donc entièrement responsive.
+- 6 **responsive breakpoints** : ce sont des règles permettant d'affecter tout ce qui se trouve à une certaine largeur ou au-delà. Ils permettent d'indiquer les parties du **Layout** qui doivent s'adapter à une particulière taille d'un appareil.
+- Des **Components** : ce sont des éléments d'UI prédéfinis, comme par exemple des **Alerts** pour fournir des messages de feedback, des **Cards** pour afficher des infos mêlant images et textes...
+- Des **Helpers** et des **Utilities** notamment afin de gérer la couleurs, la taille et l'affichage des **Components**.
+
+En Bootstrap, quand on souhaite créer un composant, on va simplement créer un élément HTML, souvent des **`<div>`**, et indiquer des classes CSS issues de Bootstrap pour styler ces composants.
+
+Voici un exemple de comment afficher ce composant **Alert** affichant un message de feedback :
+
+<div class="alert alert-primary" role="alert">
+  A simple primary alert—check it out!
+</div>
+
+Le code associé est le suivant :
+
+```html
+<div class="alert alert-primary" role="alert">
+  A simple primary alert—check it out!
+</div>
+```
+
+On voit donc que la classe **alert** défini le style globale du message de feedback, et **alert-primary** définit les couleurs (background, texte et bordures).
+
+
+## <a id="b3"></a>b.3) Le Layout en Bootstrap
+En Bootstrap, il y a 12 colonnes disponibles par ligne (12 **col** par **row**).
+
+Le Layout permet notamment d'organiser les contenus d'une page, de définir son squelette.
+
+Admettons que nous souhaitons avoir ce genre de layout :
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      1 of 2
+    </div>
+    <div class="col">
+      2 of 2
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      1 of 3
+    </div>
+    <div class="col">
+      2 of 3
+    </div>
+    <div class="col">
+      3 of 3
+    </div>
+  </div>
+</div>
+
+<br/>
+
+Le code associé est le suivant :
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col">
+      1 of 2
+    </div>
+    <div class="col">
+      2 of 2
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      1 of 3
+    </div>
+    <div class="col">
+      2 of 3
+    </div>
+    <div class="col">
+      3 of 3
+    </div>
+  </div>
+</div>
+```
+
+Et si l'on souhaitait ajouter une couleur de background et des bordures à l'aide des **Utilities**, on pourrait le faire avec **.bg-info** et **.border .border-primary** :
+
+<div class="container">
+  <div class="row">
+    <div class="col bg-info border border-primary">
+      1 of 2
+    </div>
+    <div class="col bg-info border border-primary">
+      2 of 2
+    </div>
+  </div>
+  <div class="row">
+    <div class="col bg-info border border-primary">
+      1 of 3
+    </div>
+    <div class="col bg-info border border-primary">
+      2 of 3
+    </div>
+    <div class="col bg-info border border-primary">
+      3 of 3
+    </div>
+  </div>
+</div>
+
+<br/>
+
+Le code associé est le suivant :
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col bg-info border border-primary">
+      1 of 2
+    </div>
+    <div class="col bg-info border border-primary">
+      2 of 2
+    </div>
+  </div>
+  <div class="row">
+    <div class="col bg-info border border-primary">
+      1 of 3
+    </div>
+    <div class="col bg-info border border-primary">
+      2 of 3
+    </div>
+    <div class="col bg-info border border-primary">
+      3 of 3
+    </div>
+  </div>
+</div>
+```
+
+
+## <a id="b4"></a>b.4) Les breakpoints en Bootstrap
+Admettons que nous souhaitons construire une page qui contient un header et un footer : sur toute la largeur de la page, et un body qui lui contient : 
+- pour les appareils **large** (≥992px) 1 colonne à gauche de la taille de 2 / 12 pour un menu et une colonne à droite prenant l'espace restant.
+- pour les appareils **extra small** (<576px) jusque **large**, une seule colonne. Ainsi, le menu sera présenté sur une 1ère ligne...
+
+Comment ferions nous cela ?
+
+<div class="container">
+  <div class="row">
+    <div class="col bg-info border border-primary">
+     Header
+    </div>   
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-2 bg-info border border-primary">
+     Menu within body part
+    </div>   
+    <div class="col-12 col-lg bg-info border border-primary">
+     Main body part
+    </div> 
+  </div>
+  <div class="row">
+    <div class="col bg-info border border-primary">
+     Footer
+    </div>   
+  </div>
+</div>
+
+<br/>
+
+Veuillez utiliser le mode développeur de votre browser (**F12** par exemple) afin de faire varier la taille de la fenêtre de votre browser et d'observer le changement au niveau du layout des composants.
+
+Voici le code associé :
+
+```html numbered {8,11}
+<div class="container">
+  <div class="row">
+    <div class="col bg-info border border-primary">
+     Header
+    </div>   
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-2 bg-info border border-primary">
+     Menu within body part
+    </div>   
+    <div class="col-12 col-lg bg-info border border-primary">
+     Main body part
+    </div> 
+  </div>
+  <div class="row">
+    <div class="col bg-info border border-primary">
+     Footer
+    </div>   
+  </div>
+</div>
+```
+
+Via **col-12**, cela signifie que les 12 colonnes disponibles dans une ligne sont prises.
+
+Via **col-lg-2**, on indique que dès que l'on égale ou dépasse les 992px, on ne prend que 2/12 d'espace d'une ligne. Notons que **col-lg** prend l'espace restant, on aurait pu indiquer **col-lg-10** pour obtenir le même résultat.
+
+Voici tous les breakpoints par défaut offerts par Bootstrap :
+
+| Breakpoint	| Class infix |	Dimensions |
+|---|---|---|
+| Extra small |	None |	<576px |
+| Small	|sm	| ≥576px |
+| Medium |	md |	≥768px |
+| Large	| lg	| ≥992px |
+| Extra large |	xl | ≥1200px |
+| Extra extra large	| xxl |	≥1400px |
+
+<br/>
+
+## <a id="b5"></a>b.5) Les composants Bootstrap
+Lorsque vous construisez vos UI, il est préférable de bénéficier de composants existants au design soigné. Il en existe de nombreux : **Card**, **Navbar**, **Alert**, **Button**, **Modal**...
+
+Pour les découvrir, allez observer la documentation de [Bootstrap](https://getbootstrap.com/) [[R.36]](/references/#r36).
+
+Pour utiliser certains composants qui offre une interactivité, il est nécessaire d'inclure le JavaScript associé.
+
+Par exemple, afin d'offrir une **Navbar** comme celle-ci :
+
+ <nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"/></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<br/>
+
+Il est nécessaire de faire l'import suivant, notamment afin que la **Dropdown** s'affiche quand on clique dessus (le reste du code est un copier / coller de la documentation de Bootstrap) : 
+
+```js {1}
+import { Navbar } from 'bootstrap';
+
+ <nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"/></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+```
+
+## <a id="b6"></a>b.6) Utilisation de Bootstrap dans un frontend moderne
+Nous avons configuré les boilerplates du cours afin que Bootstrap soit déjà installé.
+
+Il n'y a donc plus rien à installer, sauf si p-e vous souhaitez utiliser des icônes.
+
+Si un jour vous veniez à devoir installer Bootstrap au sein d'un projet qui utilise un module bundler, vous devriez faire ces manipulations :
+- Installation de Bootstrap & de ses dépendances : 
+```bash
+npm i bootstrap @popperjs/core
+```
+- Chargement du CSS de Bootstrap : 
+```js
+import 'bootstrap/dist/css/bootstrap.min.css';
+```
+
+Et puis finalement, si vous utilisez un composant qui offre des interactions, vous devrez inclure le JS associé à ce composant. Par exemple pour une **Navbar** :
+```js
+import { Navbar } from 'bootstrap';
+```
+
+Nous allons maintenant convertir le style du site de la pizzeria à l'aide de Bootstrap.  
+Reprenez donc au sein de VS Code votre projet **modern**.  
+La seule chose que nous allons laisser dans **/src/stylesheets/main.css** est la gestion d'une image en background car Bootstrap ne prévoit pas de solution.
+
+Veuillez donc mettre à jour **/src/stylesheets/main.css** pour ne garder que l'image en background :
+
+```css
+body { 
+    background-image : url(../img/pizza.jpg);
+    background-size : cover;
+}
+```
+
+Il faut maintenant mettre à jour **index.html** et indiquer les bonnes classes de Bootstrap :
+- **`text-center`** : pour centrer nos titres et le main
+- **`text-white font-weight-bold py-2`** : pour le style du texte dans le footer. **`py-2`** met du padding sur l'axe des **y**, est donc tant en haut qu'en bas du footer.
+- Pour que le layout de la page fasse toujour, au minimum, la hauteur complète du navigateur et donne l'effet au **`<footer>`** d'être "sticky" en bas de page, on utilise :
+  - **`vh-100 d-flex flex-column`** au sein du **`<body>`**.
+  - **`flex-grow-1`** dans le **`<main>`** pour lui imposer de remplir l'espace disponible. Ainsi, le footer donne l'effet d'être "sticky" en bas de la page.
+- Pour la taille du logo JS, Bootstrap offre des classe pour le **Sizing** en fonction de la taille du parent ou du **viewport** (le browser). Ici, on préfère avoir une taille fixe de 50 pixel, donc on va indiquer cette taille directement dans l'attribut **`height`** de **`<img>`**.
+
+Voilà à quoi doit ressembler votre **index.html** suite aux changements :
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizzeria</title>
+    <link rel="icon" href="./img/pizza-svgrepo-com.svg" type="image/svg+xml" />
+  </head>
+  <body class="vh-100 d-flex flex-column">
+    <header>
+      <h1 class="animate__animated animate__bounce text-center">We love Pizza</h1>
+    </header>
+    <main class="flex-grow-1 text-center">
+      <audio id="audioPlayer" controls autoplay>
+        <source src="./sound/Infecticide-11-Pizza-Spinoza.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </main>
+    <footer class="text-center text-white font-weight-bold py-2">
+      <h1 class="animate__animated animate__bounce animate__delay-2s text-center">
+        But we also love JS
+      </h1>
+      <img src="./img/js-logo.png" height="50px" alt="" />
+    </footer>
+  </body>
+</html>
+```
+
+Si tout fonctionne bien, faites un commit de votre repo (**web2**) avec le message "**modern-esthetic-hmi**".
+
+En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : [modern-esthetic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-esthetic-hmi).
+
+# <a id="c"></a>c) Développement d'IHM dynamiques
+## <a id="c1"></a>c.1) Introduction
+Nous souhaitons parfois générer des parties d'IHM dynamiquement, à l'aide de JS.
+
+Nous pourrions souhaiter générer de l'HMTL dynamiquement pour plusieurs raisons. Par exemple, si nous souhaiterions afficher différentes pages sans faire appel au serveur.
+Lors d'un clic sur un élément d'une Navbar, nous pourrions générer dynamiquement l'HTML de la page associée à cet élément.
+
+Un autre exemple serait l'affichage d'un tableau HTML suite à la réception de données envoyées par un web service.
+
+Il existe principalement deux façon de générer des éléments HTML, soit à partir de String, soit à partir de "Nodes" (ou HTML elements).
+
+## <a id="c2"></a>c.2) Génération d'HTML à partir d'une string
+Nous pouvons utiliser la propriété **innerHTML** d'un élément existant pour créer de l'HTML à l'aide d'une String.
+
+Lorsque nous allons ajouter une String à la propriété **innerHTML** d'un élément, le browser va s'occuper de créer des "Node elements" et les attacher au "DOM tree" au sein de l'élément que nous modifions. 
+
+Nous souhaitons ajouter un menu à notre site de la pizzeria à générer à partir d'un array.
+
+Voici le nouveau code à ajouter pour générer ce menu au sein de **/src/index.js** : 
+
+
+```js numbered {5-31,37,46-81}
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './stylesheets/main.css';
+import 'animate.css';
+
+const MENU = [
+  {
+    id: 1,
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
+  },
+  {
+    id: 2,
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
+  },
+  {
+    id: 3,
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
+  },
+  {
+    id: 4,
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
+  },
+  {
+    id: 5,
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
+  },
+];
+
+const body = document.querySelector('body');
+
+body.addEventListener('click', startOrStopSound);
+
+renderMenuFromString(MENU);
+
+function startOrStopSound() {
+  const myAudioPlayer = document.querySelector('#audioPlayer');
+
+  if (myAudioPlayer.paused) myAudioPlayer.play();
+  else myAudioPlayer.pause();
+}
+
+function renderMenuFromString(menu) {
+  const menuTableAsString = getMenuTableAsString(menu);
+
+  const main = document.querySelector('main');
+
+  main.innerHTML += menuTableAsString;
+}
+
+function getMenuTableAsString(menu) {
+  const menuTableLines = getAllTableLinesAsString(menu);
+  const menuTable = addLinesToTableHeadersAndGet(menuTableLines);
+  return menuTable;
+}
+
+function addLinesToTableHeadersAndGet(tableLines) {
+  const menuTable = `
+  <div class="table-responsive pt-5">
+    <table class="table table-danger">
+      <tr>
+        <th>Pizza</th>
+        <th>Description</th>
+      </tr>
+      ${tableLines}    
+    </table>
+  </div>
+  `;
+  return menuTable;
+}
+
+function getAllTableLinesAsString(menu) {
+  let pizzaTableLines = '';
+
+  menu?.forEach((pizza) => {
+    pizzaTableLines += `<tr>
+      <td>${pizza.title}</td>
+      <td>${pizza.content}</td>
+    </tr>`;
+  });
+
+  return pizzaTableLines;
+}
+```
+
+Dans un premier temps, nous avons accéder à l'élément **main** en tant qu'HTML element (ou Node).
+
+Nous avons ensuite généré une String multilignes à l'aide des `template literals` pour représenter le menu, pour finalement ajouter au **main** de nouveaux éléments en concaténant cette String à sa propriété **innerHTML**. 
+
+## <a id="c3"></a>c.3) Ajout dynamique d'écouteurs d'événements une fois le DOM rendu
+
+A ce stade-ci, nous souhaiterions ajouter un gestionnaire de passage de souris sur le menu.  
+Au passage sur le menu, nous souhaitons changer la couleur du background afin que le menu devienne vert. Lorsqu'on quitte le menu, celle-ci doit reprendre sa couleur initiale.
+
+Voici le code mis à jour de **index.js** :
+
+```js numbered {39,85-94}
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './stylesheets/main.css';
+import 'animate.css';
+
+const MENU = [
+  {
+    id: 1,
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
+  },
+  {
+    id: 2,
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
+  },
+  {
+    id: 3,
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
+  },
+  {
+    id: 4,
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
+  },
+  {
+    id: 5,
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
+  },
+];
+
+const body = document.querySelector('body');
+
+body.addEventListener('click', startOrStopSound);
+
+renderMenuFromString(MENU);
+
+attachOnMouseEventsToGoGreen();
+
+function startOrStopSound() {
+  const myAudioPlayer = document.querySelector('#audioPlayer');
+
+  if (myAudioPlayer.paused) myAudioPlayer.play();
+  else myAudioPlayer.pause();
+}
+
+function renderMenuFromString(menu) {
+  const menuTableAsString = getMenuTableAsString(menu);
+
+  const main = document.querySelector('main');
+
+  main.innerHTML += menuTableAsString;
+}
+
+function getMenuTableAsString(menu) {
+  const menuTableLines = getAllTableLinesAsString(menu);
+  const menuTable = addLinesToTableHeadersAndGet(menuTableLines);
+  return menuTable;
+}
+
+function addLinesToTableHeadersAndGet(tableLines) {
+  const menuTable = `
+  <div class="table-responsive pt-5">
+    <table class="table table-danger">
+      <tr>
+        <th>Pizza</th>
+        <th>Description</th>
+      </tr>
+      ${tableLines}    
+    </table>
+  </div>
+  `;
+  return menuTable;
+}
+
+function getAllTableLinesAsString(menu) {
+  let pizzaTableLines = '';
+
+  menu?.forEach((pizza) => {
+    pizzaTableLines += `<tr>
+      <td>${pizza.title}</td>
+      <td>${pizza.content}</td>
+    </tr>`;
+  });
+
+  return pizzaTableLines;
+}
+
+function attachOnMouseEventsToGoGreen() {
+  const table = document.querySelector('table');
+  table.addEventListener('mouseover', () => {
+    table.className = 'table table-success';
+  });
+
+  table.addEventListener('mouseout', () => {
+    table.className = 'table table-danger';
+  });
+}
+```
+
+Une fois le menu rendu, nous y accédons en obtenant une référence vers le Node représentant ce menu au sein du DOM tree.
+
+Nous accédons à l'attribut **class** d'une **table** en modifiant, en JS, l'attribut **className**.  
+Il est aussi possible d'affiner la gestion des classes CSS en ajoutant ou supprimant des classes via la propriété **classList** d'un Node (ou HTML element).
+
+Ici, nous avons utilisé les classes Bootstrap "table-success" pour mettre en vert, et "table-danger" pour que ça soit en rouge.
+
+Il est à noter ces dangers quand on utilise des Strings pour générer de l'HTML.
+
+### ⚡ Danger N°1 : oubli de mettre à jour le DOM avant d'attacher ses écouteurs
+
+Il arrive très souvent aux jeunes développeurs web de faire une erreur de ce genre.  
+Regarder le code d'**index.js** et imaginez que vous attachiez les écouteurs d'événements dans **renderMenuFromString()** et plus après l'appel de cette fonction :
+
+```js {6}
+function renderMenuFromString(menu) {
+  const menuTableAsString = getMenuTableAsString(menu);
+
+  const main = document.querySelector('main');
+
+  attachOnMouseEventsToGoGreen();
+
+  main.innerHTML += menuTableAsString;
+}
+```
+
+Comme la **table** n'a pas été rendue dans le DOM, il n'est pas possible d'accéder à celle-ci !  
+Une exception serait donc lancée dans la console de votre browser.
+
+Tout cela semble logique, mais pensez-y en cas de souci avec vos écouteurs d'événements 😉.
+
+## ⚡ Danger N°2 : mise à jour du DOM après avoir ajouté ses écouteurs
+
+Il arrive aussi régulièrement aux jeunes développeurs web de faire une erreur de ce style.  
+Regardez le code d'**index.js** et imaginez que vous souhaitiez ajouter une légende au menu :
+
+```js {5-6}
+renderMenuFromString(MENU);
+
+attachOnMouseEventsToGoGreen();
+
+const mainWrapper = document.querySelector('main');
+mainWrapper.innerHTML += '<figcaption class="text-light text-decoration-underline">Our pizzas</figcaption>';
+```
+
+⚡ L'update du DOM d'un élément fait un reset de tous les écouteurs d'événements précédemment attachés ! Pensez-y en cas de souci avec vos écouteurs d'événements 😉.
+
+## <a id="c4"></a>c.4) Génération d'HTML à partir de Nodes
+Il est possible de directement créer un Node (ou HTML element) à l'aide de la méthode **`document.createElement()`**.
+
+Une fois un Node créé, on demande de l'ajouter au "DOM tree" via la méthode **`appendChild()`**.
+
+Voici un petit exemple d'ajout d'un titre au **main** :
+
+```js
+const mainWrapper = document.querySelector('main');
+// Create the child element
+const h1 = document.createElement('h1');
+// Change its property
+h1.innerText = 'Hello World';
+// Attach the child element to its parent
+mainWrapper.appendChild(h1);
+```
+
+Nous souhaitons ajouter un nouveau menu pour les boissons à notre site de la pizzeria, à générer à partir d'un array.
+
+Voici le nouveau code à ajouter pour générer la liste des boissons au sein de **/src/index.js** : 
+
+
+```js numbered {33-49,59,121-159}
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './stylesheets/main.css';
+import 'animate.css';
+
+const MENU = [
+  {
+    id: 1,
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
+  },
+  {
+    id: 2,
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
+  },
+  {
+    id: 3,
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
+  },
+  {
+    id: 4,
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
+  },
+  {
+    id: 5,
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
+  },
+];
+
+const DRINKS = [
+  {
+    id: 1,
+    title: 'Lemonade',
+    content: 'Sparkling water, lemon, ice cubes',
+  },
+  {
+    id: 2,
+    title: 'Ice tea',
+    content: 'Mint, ginger, water',
+  },
+  {
+    id: 3,
+    title: 'Exotic Kombucha',
+    content: 'Mango, Sparkling water, Fermented tea',
+  },
+];
+
+const body = document.querySelector('body');
+
+body.addEventListener('click', startOrStopSound);
+
+renderMenuFromString(MENU);
+
+attachOnMouseEventsToGoGreen();
+
+renderDrinksFromNodes(DRINKS);
+
+function startOrStopSound() {
+  const myAudioPlayer = document.querySelector('#audioPlayer');
+
+  if (myAudioPlayer.paused) myAudioPlayer.play();
+  else myAudioPlayer.pause();
+}
+
+function renderMenuFromString(menu) {
+  const menuTableAsString = getMenuTableAsString(menu);
+
+  const main = document.querySelector('main');
+
+  main.innerHTML += menuTableAsString;
+}
+
+function getMenuTableAsString(menu) {
+  const menuTableLines = getAllTableLinesAsString(menu);
+  const menuTable = addLinesToTableHeadersAndGet(menuTableLines);
+  return menuTable;
+}
+
+function addLinesToTableHeadersAndGet(tableLines) {
+  const menuTable = `
+  <div class="table-responsive pt-5">
+    <table class="table table-danger">
+      <tr>
+        <th>Pizza</th>
+        <th>Description</th>
+      </tr>
+      ${tableLines}    
+    </table>
+  </div>
+  `;
+  return menuTable;
+}
+
+function getAllTableLinesAsString(menu) {
+  let pizzaTableLines = '';
+
+  menu?.forEach((pizza) => {
+    pizzaTableLines += `<tr>
+      <td>${pizza.title}</td>
+      <td>${pizza.content}</td>
+    </tr>`;
+  });
+
+  return pizzaTableLines;
+}
+
+function attachOnMouseEventsToGoGreen() {
+  const table = document.querySelector('table');
+  table.addEventListener('mouseover', () => {
+    table.className = 'table table-success';
+  });
+
+  table.addEventListener('mouseout', () => {
+    table.className = 'table table-danger';
+  });
+}
+
+function renderDrinksFromNodes(drinks) {
+  const drinksTableAsNode = getDrinksTableAsNode(drinks);
+
+  const main = document.querySelector('main');
+
+  main.appendChild(drinksTableAsNode);
+}
+
+function getDrinksTableAsNode(drinks) {
+  const tableWrapper = document.createElement('div');
+  tableWrapper.className = 'table-responsive pt-5';
+  const table = document.createElement('table');
+  const tbody = document.createElement('tbody');
+  table.id = 'table-drinks';
+  table.className = 'table table-success';
+  tableWrapper.appendChild(table);
+  table.appendChild(tbody);
+  const header = document.createElement('tr');
+  const header1 = document.createElement('th');
+  header1.innerText = 'Drink';
+  const header2 = document.createElement('th');
+  header2.innerText = 'Description';
+  header.appendChild(header1);
+  header.appendChild(header2);
+  tbody.appendChild(header);
+
+  drinks?.forEach((drink) => {
+    const line = document.createElement('tr');
+    const title = document.createElement('td');
+    const description = document.createElement('td');
+    title.innerText = drink.title;
+    description.innerText = drink.content;
+    line.appendChild(title);
+    line.appendChild(description);
+    tbody.appendChild(line);
+  });
+
+  return tableWrapper;
+}
+```
+
+## <a id="c5"></a>c.5) Ajout dynamique d'écouteurs d'événements avant de rendre le DOM
+Lorsque l'on vient de créer un Node, il est possible de directement lui attacher un écouteur d'événements.
+
+Nous souhaiterions ajouter un gestionnaire de passage de souris sur la liste des boissons.  
+Au passage sur la liste, nous souhaitons changer la couleur du background afin qu'elle devienne rouge. Lorsqu'on quitte la liste, celle-ci doit reprendre sa couleur initiale.
+
+Voici le code que vous devez ajouter à la méthode **getDrinksTableAsNode()** au sein de **index.js** :
+
+```js numbered {30-36}
+function getDrinksTableAsNode(drinks) {
+  const tableWrapper = document.createElement('div');
+  tableWrapper.className = 'table-responsive pt-5';
+  const table = document.createElement('table');
+  const tbody = document.createElement('tbody');
+  table.id = 'table-drinks';
+  table.className = 'table table-success';
+  tableWrapper.appendChild(table);
+  table.appendChild(tbody);
+  const header = document.createElement('tr');
+  const header1 = document.createElement('th');
+  header1.innerText = 'Drink';
+  const header2 = document.createElement('th');
+  header2.innerText = 'Description';
+  header.appendChild(header1);
+  header.appendChild(header2);
+  tbody.appendChild(header);
+
+  drinks?.forEach((drink) => {
+    const line = document.createElement('tr');
+    const title = document.createElement('td');
+    const description = document.createElement('td');
+    title.innerText = drink.title;
+    description.innerText = drink.content;
+    line.appendChild(title);
+    line.appendChild(description);
+    tbody.appendChild(line);
+  });
+
+  table.addEventListener('mouseover', () => {
+    table.className = 'table table-danger';
+  });
+
+  table.addEventListener('mouseout', () => {
+    table.className = 'table table-success';
+  });
+
+  return tableWrapper;
+}
+```
+
+Nous avons ajouté deux écouteurs d'événements à la **table** en cours de construction.  
+Notons que ces écouteurs peuvent être ajoutés avant ou après avoir fait l'ajout de la table dans le "DOM tree", cela ne change rien.
+
+Regardez le code d'**index.js** et imaginez que vous souhaitiez ajouter une légende à la liste de boissons, en utilisant des Nodes :
+
+```js {3-7}
+renderDrinksFromNodes(DRINKS);
+
+const mainWrapper = document.querySelector('main');
+const figcaption = document.createElement('figcaption');
+figcaption.innerText = 'Our drinks';
+figcaption.className = 'text-light text-decoration-underline';
+mainWrapper.appendChild(figcaption);
+```
+
+Le fait d'ajouter un Node au "DOM tree" ne fait pas de reset des écouteurs d'événements précédemment attachés ! C'est un avantage à générer de l'HTML à partir de Nodes plutôt qu'à partir d'une string.
+
+N'hésitez pas à tester ce morceau de code pour vous rendre compte que la liste de boissons continue à bien gérer les mouvements de la souris.
+
+## <a id="c6"></a>c.6) Ajout dynamique d'images ou d'autres assets 
+Lorsque l'on souhaite ajouter une image ou tout autre assets (son, vidéo...) via du JS et que l'on utilise un module bundler comme Webpack, on ne peut pas juste ajouter une balise **`<image`** avec le chemin en relatif vers celle-ci.
+
+Pourquoi pas ?  Parce qu'en fait, le bundler va s'occuper de copier, et parfois d'optimiser les assets dans le "build", généralement généré dans le répertoire **/dist** de votre projet.
+Ainsi, lorsque vous développez votre code, l'image se trouve à un endroit différent d'où se trouvera l'image lors du build.
+
+Pour bien gérer les URL au sein de votre JS, vous devez d'abord importer vos assets.  
+Voici un exemple pour ajouter une image dynamiquement au sein du **`<footer>`** : 
+
+```js
+import pizzaImage from './src/img/pizza2.png';
+
+renderPizzaImage(pizzaImage);
+
+function renderPizzaImage(pizzaUrl) {
+  const image = new Image(); // or document.createElement('img');
+  image.src = pizzaUrl;
+  image.height = 50;
+  const footer = document.querySelector('footer');
+  footer.appendChild(image);
+}
+```
+
+Le type du Asset Module configuré dans **webpack.config.js** est **'asset/resource'**.  
+Cela signifie que pour chaque fichier importé dans le JS, il sera émis dans le "output directory", (ou "build directory"), généralement dans **/dist**, avec comme non de fichier qqch qui ressemble à un hash (par exemple 151cfcfa1bd74779aadb.png) et leur chemins (paths) seront injecté dans le bundle.
+
+Dans l'exemple, le chemin de l'image **pizza2.png** lors de l'exécution de l'application sera donné dans la variable **pizzaImage**.
+
+Veuillez mettre à jour votre site de la pizzeria pour afficher cette image dans le footer : <LinkFile name="pizza2.jpg" target="_blank" download>Pizza à ajouter dans le footer [R.38]</LinkFile>.
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**modern-dynamic-hmi**".
+
+En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : [modern-dynamic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-dynamic-hmi).
+
+Si vous souhaitez plus d'informations sur la gestion des assets via Webpack, vous pouvez le faire via les [Asset Modules](https://webpack.js.org/guides/asset-modules/) [[R.37]](/references/#r37).
+
+
+# <a id="d"></a> d) Debbuging d'un frontend tournant sous Webpack
+💭 Qui est votre meilleur ami ?
+
+Il est possible qu'à ce stade-ci, vous ignorez une des bonnes réponses, car pour les développeurs, le debugger est son meilleur ami !
+
+Le debugger est toujours là pour vous, prêt à vous faire voyager pas à pas dans votre code, à vous donner des pistes dans les moments difficiles, sans imposer de solutions, il vous offre une liberté totale !  Et il acceptera toujours votre code tel qu'il est, sous réserve bien sûr que celui-ci compile.  
+C'est exactement ce que l'on attend d'un ami 😁.
+
+Le tutoriel qui suit apprend à débugger un frontend qui est développé en JS et qui utilise Webpack comme module bundler.
+
+<ul className="card mt-3">
+    <div className="card__header">Debugging d'un frontend tournant sous Webpack</div>
+    <li className="card__content">
+      <span className="card__content__title">Tutoriel vidéo</span>
+      <div className="card__content_description">
+        <div width="100px" style={{display:"inline-block"}}>
+          <YoutubeImage src="https://youtu.be/Fdo7zwhxaf4" />
+        </div>
+      </div>
+    </li>          
+    <li className="card__content">
+      <span className="card__content__title">Description</span>
+      <div className="card__content_description">
+        Débuggez pas à pas une application en ajoutant des breakpoints, en voyageant pas à pas dans le code à l'aide de Chrome et de ses outils de développeurs.
+      </div>
+    </li>
+</ul>
+
+<br/>
+
+# <a id="e"></a> e) Exercice 2.1 : Homepage statique de myMovies & Webpack
+Vous allez démarrer le développement d'une application web permettant de partager des informations sur vos films préférés. 
+
+Notez que cette application va vous suivre jusqu'à la fin de ce cours : nous allons la faire évoluer pour traiter de tous les concepts associés à ce cours.  
+Nous l'appellerons **myMovies**.
+
+Veuillez créer la **Homepage** de votre application **myMovies** en y incluant au minimum deux images et un peu de texte.
+
+Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémentation :
+-	Utilisez Webpack pour un frontend moderne, en utilisant le [boilerplate de base](https://github.com/e-vinci/js-basic-boilerplate.git) offert dans le cadre du cours.
+-	Veuillez créer de l'HTML de manière statique. Pas besoin de gérer de JS à ce stade-ci (**index.js** du boilerplate ne doit pas être complété).
+
+Le code de votre application web doit se retrouver dans votre repository local et votre web repository (normalement appelé **web2**) dans un répertoire nommé **/exercises/module2/2.1**.
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : bundler**"".
+
+# <a id="f"></a> f) Exercice 2.2 : Génération dynamique de la Homepage de myMovies
+Faites un refactor de votre application **myMovies** afin de générer dynamiquement l'HTML des images et du texte au chargment d'**index.html**.
+
+Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémentation :
+-	Utilisez Webpack pour un frontend moderne, en utilisant le code l'exercice précédent (**/exercises/module2/2.1**).
+-	Veuillez créer un container statique, ou autrement dit un "wrapper", dans votre page **index.html** (par exemple une balise **main** ou une **div**).
+-	Ajoutez dynamique les images et le texte associé à votre **Homepage** dans votre "wrapper".
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : module 2 : dynamic homepage**"".
+
+NB : Le code de votre application web se trouve dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module2/2.2**.
+
+# <a id="g"></a> g) Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire
+Vous allez réaliser une application web permettant de générer des tables sur base d'un formulaire.
+
+Créez un formulaire permettant d'introduire un nombre de lignes, un nombre de colonne, et une chaine de base.  
+Utilisez Bootstrap pour formater votre application web.  
+Néanmoins, si vous êtes à l'aise avec une autre technologie, n'hésitez pas à créer votre UI via du Vanilla CSS ou une autre librairie (tailwindcss…).
+
+Voilà à quoi pourrait ressembler votre formulaire :
+
+<ScrollableImage name="form.png" minWidth="182px" maxWidth="182px" />
+
+Veuillez valider chacun des champs du formulaire lors du clic sur le bouton.
+
+Si tous les champs sont validés, veuillez générer et afficher une table HTML.   
+Voici un exemple de résultat :
+
+<ScrollableImage name="table.png" minWidth="219px" maxWidth="219px" />
+
+
+Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémentation :
+-	Créez une 1ère fonction qui retourne un **Array** à deux dimensions avec :
+  - comme valeur pour chaque élément : une String au format `"chaine de base[numéro de ligne][ numéro de colonne]"`,
+  - sur base de 3 paramètres : le nombre de lignes, de colonnes, et la chaine de base à afficher dans chaque élément du tableau.
+-	Créez une deuxième fonction qui renvoie, sous forme de string, une table HTML basée sur l'**Array** créé par la 1ère fonction.
+-	Appelez ces deux fonctions afin d'afficher la table de manière dynamique au sein d'un "wrapper" (une **div** est conseillée).
+
+
+#### 🤝 Tips 
+- Vous pouvez utiliser la propriété **.innerHtml** de votre wrapper pour afficher dynamiquement la table.
+- Pour gérer le submit d'un formulaire, il existe plusieurs façon de le faire. La façon recommandée est d'écouter les événements de type "submit" sur le formulaire. Il est ainsi possible de faire un submit d'un formulaire à l'aide de la touche **Enter**.
+- N'oubliez pas que lors d'un clic sur un élément qui amène à un « submit », le comportement par défaut du formulaire est de recharger la page. Vous devez donc stopper ce comportement par défaut pour assurer que le tableau que vous générez ne soit pas "effacé".
+
+
+Le code de votre application web doit se retrouver dans votre repository local et votre web repository (normalement appelé **web2**) dans un répertoire nommé **/exercises/module2/2.3**.
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**Exercice 2.3**"".
+
+## <a id="h"></a> h) 🍬 Exercice 2.4 : design responsive
+
+N'hésitez pas à libérer votre créativité et améliorer la UI de la Homepage de **myMovies**.  
+Voici quelques idées : 	
+-	Assurez-vous qu'elle soit design responsive.
+-	Prévoyez deux layouts : un layout pour les appareils mobile, un autre layout pour les appareils ayant un écran moyen voire large.
+-	Peaufinez votre favicon, header, footer…

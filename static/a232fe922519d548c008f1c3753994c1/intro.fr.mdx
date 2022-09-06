@@ -1,0 +1,1135 @@
+---
+title: 'Introduction'
+description: 'Introduction au JavaScript'
+---
+
+# Introduction
+
+<AuthenticatedBlock>
+
+Voici les sujets traités dans cette introduction :
+
+- a) [Informations générales](#a)
+  - a.1) [Public ciblé](#a1)
+  - a.2) [Licence & auteurs](#a2)
+  - a.3) [Compétences à la fin du cours](#a3)
+  - a.4) [Découpes des compétences en modules & planning](#a4)
+  - a.5) [Qu'est-ce qu'il est attendu de vous ?](#a5)
+  - a.6) [Modalités d'évaluation](#a6)
+- b) [Contexte d'utilisation du JS](#b)
+- c) [Librairies & frameworks JS sélectionnés pour ce cours](#c)
+- d) [Architectures classiques d'applications web](#d)
+  - d.1) [Introduction](#d1)
+  - d.2) [Multi Page Applications](#d2)
+  - d.3) [Single Page Applications](#d3)
+  - d.4) [Autres types d'architectures web](#d4)
+- e) [Introduction au langage JS](#e)
+  - e.1) [Les instructions](#e1)
+  - e.2) [Les commentaires](#e2)
+  - e.3) [Les variables et constantes](#e3)
+  - e.4) [Les opérateurs](#e4)
+  - e.5) [Les instructions](#e5)
+  - e.6) [Les fonctions](#e6)
+  - e.7) [Les boucles](#e7)
+  - e.8) [Les tableaux](#e8)
+  - e.9) [Les template literals](#e9)
+  - e.10) [Les objets](#e10)
+  - e.11) [Les exceptions](#e11)
+- f) [Repositories](#f)
+
+</AuthenticatedBlock>
+
+<UnAuthenticatedBlock>
+
+Voici les sujets traités dans cette introduction :
+
+- a) [Informations générales](#a)
+  - a.1) [Public ciblé](#a1)
+  - a.2) [Licence & auteurs](#a2)
+  - a.3) [Compétences à la fin du cours](#a3)
+  - a.4) [Découpes des compétences en modules & planning](#a4)
+- b) [Contexte d'utilisation du JS](#b)
+- c) [Librairies & frameworks JS sélectionnés pour ce cours](#c)
+- d) [Architectures classiques d'applications web](#d)
+  - d.1) [Introduction](#d1)
+  - d.2) [Multi Page Applications](#d2)
+  - d.3) [Single Page Applications](#d3)
+  - d.4) [Autres types d'architectures web](#d4)
+- e) [Introduction au langage JS](#e)
+  - e.1) [Les instructions](#e1)
+  - e.2) [Les commentaires](#e2)
+  - e.3) [Les variables et constantes](#e3)
+  - e.4) [Les opérateurs](#e4)
+  - e.5) [Les instructions](#e5)
+  - e.6) [Les fonctions](#e6)
+  - e.7) [Les boucles](#e7)
+  - e.8) [Les tableaux](#e8)
+  - e.9) [Les template literals](#e9)
+  - e.10) [Les objets](#e10)
+  - e.11) [Les exceptions](#e11)
+- f) [Repositories](#f)
+
+</UnAuthenticatedBlock>
+
+<br />
+
+# <a id="a"></a> a) Informations générales
+
+## <a id="a1"></a> a.1) Public ciblé
+
+Ce cours est à destination de toute personne souhaitant apprendre le développement d'applications web modernes via du JS.
+
+En prérequis, vous devriez posséder ces compétences :
+
+- Développer dans un langage de programmation (variables, structures conditionnelles, boucles, fonctions…).
+- Créer et structurer une Interface Homme-Machine (IHM) via les bases de l'HTML, incluant les formulaires HTML.
+- Soigner l'apparence d'une IHM via les bases du CSS.
+- Comprendre la documentation technique en Anglais ; les références du cours sont données en anglais.
+- Gérer la configuration du code en utilisant les bases de Git (Version Control).
+
+Si vous souhaitez récupérer les prérequis associés au web, nous vous conseillons de suivre
+ces tutoriels :
+
+- [Tutoriel de MDN sur les bases de l'HTML](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics) [_[16.]_](/references/#r16)
+- [Tutoriel de MDN sur les bases du CSS](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics) [_[17.]_](/references/#r17)
+
+Concernant Git (Version Control), le cours offre des tutoriels reprenant les points essentiels : [Introduction à Git](/git).
+
+## <a id="a2"></a> a.2) Licence & auteurs
+
+Tout le contenu de ce cours est sous [License Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.fr)
+[_[15.]_](/references/#r15) et son auteur initial est Raphaël Baroni.
+
+Ce cours est revu & corrigé tant par vos apports à tous que par le corps enseignant de Vinci.
+
+## <a id="a3"></a> a.3) Compétences à la fin du cours
+
+A la fin du cours, vous serez apte à :
+
+- **Créer une Interface Homme-Machine (IHM) interactive, moderne & esthétique** ; c'est ce que ferait des développeurs frontend ;
+- **Créer un service web** ; c'est ce que ferait des développeurs backend ; ainsi on créera plus spécifiquement des RESTful API, une application mettant à disposition de clients des opérations sur des ressources ;
+- **Créer une Single Page Application (SPA) intégrant une IHM et un web service** ; c'est ce que ferait des frontend développeurs en développant une application web selon une architecture web moderne ;
+- **Intégrer l'authentification, l'autorisation et les sessions d'utilisateurs au sein de SPA**; c'est ce que ferait tant des développeurs frontend que des développeurs backend pour sécuriser l'accès à des opérations sur des ressources.
+- **Déployer une SPA sur le cloud** ; c'est ce que ferait des développeurs ou des administrateurs ; en effet, on préfère accéder à une application web via Internet que de devoir l'installer localement sur chaque machine où l'on souhaiterait l'utiliser.
+
+<AuthenticatedBlock>
+
+Et pour vous, chers étudiants de Vinci, par le biais du projet Web 2, vous serez apte à :
+
+- **Intégrer au développement d'une SPA des technologies non vues en cours** ; vous aurez l'opportunité de sélectionner et appliquer des librairies JS non pratiquées directement dans les exercices de ce cours ; c'est ce que ferait tant des développeurs frontend que backend, ils doivent régulièrement analyser et appliquer la documentation associée à de nouvelles librairies ;
+- **Documenter et présenter en vidéo le développement d'une SPA** ; tous les développeurs doivent à un moment où l'autre documenter, présenter et "vendre" le travail réalisé.
+- **Analyser le développement de SPA faites par des pairs** ; les développeurs doivent régulièrement participer au processus de revue du travail fait par d'autres personnes ; cela permet d'augmenter la qualité d'une application, tout comme cela donne des idées pour ses futurs projets.
+
+</AuthenticatedBlock>
+
+## <a id="a4"></a> a.4) Découpes des compétences en modules & planning
+
+Les supports de cours sont découpés en modules afin de traiter de concepts directement en lien avec les compétences visées par ce cours.
+
+Voici comment les modules de cours sont liés aux compétences :
+
+<UnAuthenticatedBlock>
+
+<ScrollableImage
+  name="modules-breakdown.png"
+  minWidth="900px"
+  maxWidth="900px"
+/>
+
+
+<figcaption>Lien entre les compétences et les modules du cours</figcaption>
+
+</UnAuthenticatedBlock>
+
+<AuthenticatedBlock>
+
+
+<ScrollableImage name="planning.PNG" minWidth="2095px" maxWidth="2095px" />
+
+<figcaption>
+  Lien entre les compétences, les modules du cours et le planning des activités
+</figcaption>
+
+</AuthenticatedBlock>
+
+<AuthenticatedBlock>
+
+## <a id="a5"></a> a.5) Qu'est-ce qu'il est attendu de vous ?
+
+### Introduction
+
+Il est important que vous puissiez vous situer par rapport à l'investissement attendu de votre part dans le cadre de ce cours, tant en terme de charge de travail qu'en terme d'actions à réaliser.
+
+### Charge globale
+
+En terme de charge globale, même si le cours est constitué de 48h de cours en présentiel, nous attendons de votre part, au total, environ **115h de travail pour une réussite en première session**, ou **environ 135h pour une réussite suite à une deuxième session**.
+
+Selon le système de crédits ECTS et le ETCS's User Guide [[R.62]](/references/#r62), la charge de travail étudiante attendue est d'environ 25h-30h par crédit ECTS. Cette charge varie selon le pays de l'UE, cela fait environ 125h-150h pour un cours de 5 ECTS ; sachez qu'en Belgique, on s'attend plutôt à 30h de travail par crédit ECTS... Bien sûr, cela est une charge de travail typique, elle variera en fonction de chaque individu.
+
+D'où proviennent la charge d'environ 115h de travail pour une réussite en première session ou 135h pour une réussite en deuxième session ?  
+Voici un résumé en considérant les activités pédagogiques et les évaluations :
+
+- 8 modules couvrant 32h d'activités en présentiel et 24h d'activités en distanciel ; chaque module couvre ces activités et cette charge :
+  - Activité pédagogique n°1 - découverte des concepts via des tutoriels et des applications existantes : 1h en présentiel
+  - Activité pédagogique n°2 - pratique des concepts via des exercices : environ 2,5h en présentiel et 2.5h en distanciel
+  - Activité pédagogique n°3 - vérification de la compréhension des concepts et présentation si nécessaire : environ 0,5h en présentiel et 0,5h en distanciel
+- Activité pédagogique n°4 - projets : environ 16h en présentiel et 24h en distanciel
+- Activité pédagogique n°5 - revues de projets par les pairs : environ 4h en distanciel
+- Examen de 1ère session : 3h de travail en présentiel, 16h en distanciel
+- Examen de 2ème session : 3h de travail en présentiel, 16h en distanciel
+
+### Actions attendues de votre part
+
+#### Etape 1. Découvertes des SPA
+
+Voici les actions attendues de votre part dans le cadre de chacun des 8 modules du cours et de leur activités pédagogiques associées.
+
+##### Activité pédagogique n°1 - découverte des concepts via des tutoriels et des applications existantes
+
+- En présentiel, ou à domicile si nécessaire, vous découvrez en autonomie les concepts associés aux modules de la semaine en lisant les supports de cours sur ce site web.
+- C'est en exécutant du code donné, et par le biais d'explications écrites, que vous créez vos premières applications.
+- Vous êtes invités à poser vos questions ou à demander de l'aide quand nécessaire.
+- Au sein des tutoriels, vous prenez le temps de réfléchir aux questions écrites qui sont posées afin de stimuler vos apprentissage.
+
+##### Activité pédagogique n°2 - pratique des concepts via des exercices
+
+- Suite à la première activité, en présentiel ou à domicile, vous pratiquez les concepts via des exercices. Ces exercices sont donnés sur ce site web, vous invitant à écrire du code sur base de consignes bien dirigées.
+- Vous êtes encouragés à poser vos questions ou à demander de l'aide en cas de difficultés sur un exercice.
+- Dans la mesure du possible, pour permettre une différenciation dans l'apprentissage en autonomie, des conseils écrits sont offerts pour chaque exercice, ainsi que des challenges optionnels. Si vous éprouvez de la difficulté, vous choisirez de réaliser un exercice en utilisant ou pas les conseils donnés.
+- De même, si vous souhaitez approfondir ou élargir votre apprentissage, vous pourrez le faire en implémentant les challenges proposés.
+
+##### Activité pédagogique n°3 - vérification de la compréhension des concepts et présentation si nécessaire
+
+- Avant le début de la deuxième séance de cours d'un module, vous vous assurez d'avoir compris tous les concepts découverts lors de l'activité n°1 et vous préparez vos questions s'il y a des points que vous souhaitez éclaircir ou approfondir.
+- Lors du début de la deuxième séance de cours, nous écoutons chaque question et toute la classe participe, dans la mesure du possible, pour apporter une réponse. Nous souhaitons que vous participiez activement à ces échanges, cela enrichira l'expérience de tous !
+- Des questions vous seront posées afin de s'assurer de la bonne compréhension des concepts. N'hésitez pas à répondre. En fonction des échanges, si nécessaire, des explications, illustrations et présentations vous seront offertes quand approprié.
+- Afin d'améliorer les interactions lors de cette activité pédagogique, il est planifié de régulièrement demander votre avis et de décrire des points positifs et négatifs de ce qui a été vu.
+
+#### Etape 2. Projet et revues de projets par les pairs
+
+Voici les actions attendues dans le cadre du projet et des activités associées.
+
+##### Activité pédagogique n°4 - projets
+
+- La deuxième partie du cours est constituée d'un projet mettant en œuvre toutes les compétences du cours. Vous devrez créer un groupe de 4-5 étudiants pour réaliser un projet vous tenant à coeur, à votre rythme, sous réserve du respect des jalons imposés.
+- Tout au long du développement associé au projet, vous devez compléter un rapport individuel en utilisant le modèle de document qui vous sera donné. Vous devez notamment vous exprimer par rapport à l'atteinte des objectifs fonctionnels, aux difficultés rencontrées et à d'autres questions ouvertes.
+- Durant votre projet, vous devez compléter un rapport de groupe en utilisant le modèle de document qui vous sera offert. Vous devez notamment vous exprimer par rapport à l'atteinte de vos objectifs fonctionnels, aux difficultés rencontrées, aux conseils pour appliquer la technologie.
+- A la fin de votre projet, vous devez réaliser une présentation vidéo de 5 à 10 minutes ayant notamment pour but de promouvoir votre projet.
+- Vous êtes encouragés à poser vos questions ou à demander de l'aide en cas de difficultés sur votre projet, tant pour les difficultés techniques, organisationnelles ou relationnelles.
+
+##### Activité pédagogique n°5 - revues de projets par les pairs
+
+- Une fois la deadline de soumission des projets atteinte, la saison de revues des projets est ouverte. Vous participez à la revue bienveillante, aux critiques constructives, de sites web faits par vos pairs.
+
+## <a id="a6"></a> a.6) Modalités d'évaluation
+
+Le seuil de réussite pour le cours est fixé à une note de 10 sur 20 ; il est possible de le réussir sans avoir atteint toutes les compétences.
+
+### Evaluation du projet
+
+Les critères d'évaluations et leur poids par rapport à la note du projet sont donnés via le modèle de document associé au projet : ce sont les critères 1 à 8 repris dans le Tableau ci-dessous qui permettent de déterminer la côte du projet sur 20.
+
+Au niveau d'une équipe de projet, vous êtes individuellement côté pour certaines compétences (C7 et C8), mais pour la majorité des compétences, vous êtes côtés au niveau du travail du groupe.
+
+Votre engagement est principalement visible via vos rapports individuels (avancement par rapport aux objectifs fonctionnels et individuels) et via les commits sur les web repositories du projet.
+S'il est détecté que vous ne participez pas activement au projet, vous serez automatiquement mis en échec.
+
+Les projets sont évalués par rapport à chaque critère et un feedback est documenté dans un rapport d'évaluation. Ce rapport vous est envoyé après l'examen de 1ère session.
+
+### Examen de 1ère session
+
+Cette évaluation certificative principale (70% des points du cours) est un examen se déroulant en juin. Elle se présente sous forme d'une production de code en réponse à un énoncé couvrant les compétences essentielles du cours : C1, C2, C3 et C4. Ce sont les critères 1, 2 et 3 définis au Tableau ci-dessous, ainsi que leurs poids associés, qui permettent de déterminer les points de l'examen. Un rapport d'évaluation vous est envoyé lors de la publication des points vous offrant un feedback sur votre examen.
+
+### Examen de 2ème session
+
+Le déroulement de l'évaluation certificative en deuxième session est la même qu'en première session. La différence en août, c'est que l'examen compte pour 100% des points du cours. Ainsi, quel que soit votre résultat pour le projet, celui-ci n'est plus pris en compte.
+Certaines compétences évaluées sur le projet sont difficilement évaluables lors d'un examen : C5, C6, C7 et C8. Comme ce sont des compétences transversales, l'atteinte de ces compétences n'est pas considérée essentielle à la réussite du cours car vous pratiquerez des compétences similaires dans d'autres cours.
+
+### Compétences et critères d'évaluation
+
+<ScrollableImage name="critere-eval.png" minWidth="895px" maxWidth="895px" />
+
+</AuthenticatedBlock>
+
+# <a id="b"></a>b) Contexte d'utilisation du JS
+
+## b.1) Utilisation de JS
+
+En 2021, suite au grand sondage annuel de StackOverflow, le JS est le langage le plus utilisé depuis plus de 9 ans !
+
+<ScrollableImage
+  name="most-pop-programming.png"
+  minWidth="400px"
+  maxWidth="600px"
+/>
+
+[_Programming, scripting, and markup languages [1.]_](/references/#r1)
+
+## b.2) (Sur)Diversité de JS
+
+#### b.2.1) Applications frontend web classiques
+
+Il existe une multitude de librairies & frameworks JS pour aider à réaliser des d'Interfaces Homme-Machine (IHM) : JQuery, Phaser, Anime.js, AngularJS, React…
+
+Voici quelques librairies et frameworks JS utilisés en 2021 côté client :
+
+<ScrollableImage
+  name="frontend-technos.jpg"
+  minWidth="400px"
+  maxWidth="600px"
+/>
+
+[_Best JavaScript Frameworks, Libraries and Tools to Use in 2021 [2.]_](/references/#r2)
+
+#### b.2.2) Applications backend
+
+Il existe aussi un nombre incroyables de librairies & frameworks JS permettant de réaliser des applications côté serveur, aussi appelées applications backend : Node.js, Express, Next.js...
+
+Voici quelques frameworks JS utilisés en 2020 côté serveur :
+
+<ScrollableImage
+  name="backend-frameworks.png"
+  minWidth="400px"
+  maxWidth="600px"
+/>
+
+[_Top 10 JavaScript Frameworks for Server Side Development in 2020 [3.]_](/references/#r3)
+
+#### b.2.3) Communication de données
+
+Le JavaScript Object Notation (JSON) est notamment utilisé dans le cadre de communications entre applications, notamment afin de standardiser l'échange de message et de permettre une interopérabilité entre applications développées selon des technologies différentes.
+
+#### b.2.4) Applications mobiles clientes / Cross Platform applications
+
+Le JS est utilisé pour réaliser des applications multi-plateformes. Il existe beaucoup de types d'architecture et de librairies & framework JS pour écrire une base de code commune en JS et permettre de générer des application qui s'exécuteront sous différentes plateformes (Android, iOS, Windows, Mac, Linux, Web...) :
+
+- Progressive Web Applications (PWA).
+- Hybrid Applications : Cordova, Ionic…
+- Real Native Applications : React Native, NativeScript…
+
+#### b.2.5) Sur-ensemble de JS / langage transpilant vers JS
+
+Certaines applications peuvent être écrites dans un langage qui se base sur le JS :
+
+- TypeScript
+- CoffeeScript
+- ...
+
+#### b.2.6) Embedded scripts
+
+Le JS sert aussi à intégrer des fonctionnalités, des plugins, à certains logiciels très connus.
+Par exemple :
+
+- Chrome extensions
+- Google Apps Script
+- ...
+
+#### b.2.7) Autres
+
+Il existe encore d'autres contextes où le JS est utilisé. C'est une belle motivation pour apprendre ce langage, il permet de faire de nombreuses choses en tant que programmeur.
+
+Pour ce cours, nous avons donc du faire des choix afin de sélectionner les technologies les plus appropriées.
+
+# <a id="c"></a>c) Librairies & frameworks JS sélectionnés pour ce cours
+
+## c.1) Côté client / frontend
+
+Côté client, pour le développement d'IHM, la priorité est mise sur l'apprentissage de Vanilla JS [[3.]](/references/#r3), ou JS pure, sans utilisation de framework.
+
+En effet, comme le JS est devenu interopérable grâce à des standards (les normes **ECMAScript**) qui doivent être implémentés par tous les browsers modernes, il n'est plus nécessaires d'utiliser des librairies comme **jQuery**.
+
+<ScrollableImage name="js-evolution.png" minWidth="400px" maxWidth="600px" />
+
+[_Evolution du JS [4.]_](/references/#r4)
+
+## c.2) Côté serveur / backend
+
+Par contre, côté serveur, nous utiliserons le framework **Express** afin de faciliter le développement de web services.
+
+# <a id="d"></a> d) Architectures classiques d'applications web
+
+## <a id="d1"></a> d.1) Introduction
+
+Il existe quelques architectures classiques d'applications web frontend / backend :
+
+- Les Multi Page Applications (MPA) : le serveur est responsable de générer l'HTML et de le renvoyer aux clients ;
+- Les Single Page Applications (SPA) : le serveur met à disposition des opérations sur des données aux clients via des web services ; les clients sont principalement responsables de générer l'HTML. Les web services peuvent prendre plusieurs formes :
+  - RESTful API
+  - GraphQL
+  - WebSocket
+  - ...
+
+## <a id="d2"></a> d.2) Multi Page Applications
+
+Voici une représentation d'une MPA tel que vous l'avez potentiellement déjà implémentée :
+
+<ScrollableImage name="mpa.png" minWidth="400px" maxWidth="600px" />
+
+<figcaption>MPA communiquant avec un web service</figcaption>
+
+A chaque demande d'une page par un client, généralement une requête HTTP de type `GET` faite par un browser :
+
+- le client est mis en attente jusqu'à ce qu'il reçoive la page HTML correspondant à sa requête ;
+- le browser affiche l'HTML reçu par le serveur.
+
+Il existe d'autres types d'architectures associées à des MPA, comme par exemple :
+
+<ScrollableImage name="mpa-api.png" minWidth="600px" maxWidth="800px" />
+
+<figcaption>MPA communiquant avec un web service</figcaption>
+
+Dans cet exemple, le serveur, pour pouvoir générer de l'HTML, va devoir utiliser des opérations mises à disposition par un web service.
+
+Les MPA ne seront pas vue dans ce cours.
+
+## <a id="d3"></a> d.3) Single Page Applications
+
+Voici une représentation d'une SPA :
+
+<ScrollableImage name="spa.png" minWidth="600px" maxWidth="800px" />
+
+<figcaption>
+  SPA communiquant avec un web service : frontend indépendant du backend
+</figcaption>
+
+Dans un premier temps, la première requête d'un client est généralement une requête HTTP de type `GET` faite par un browser. L'application web agit comme un serveur de fichiers statiques et va renvoyer le layout HTML de base au browser.
+Notons que le browser, une fois le layout HTML de base reçu, va demander à l'application web l'ensemble des fichiers nécessaires au bon fonctionnement de l'application : fichiers JS, CSS, images. On appelle ces fichiers les "assets".
+
+A chaque future demande d'un client pour afficher une page, le browser va faire appel de manière asynchrone à des opérations offertes par une web service.
+
+Comme cet appel est asynchrone, l'IHM du browser reste disponible pour des interactions avec l'utilisateur. Une fois la réponse reçue du web service, le browser s'occupe de mettre à jour dynamiquement l'HTML du browser.
+
+L'architecture représentée ci-dessous, qui est celle qui sera étudiée dans ce cours, met en oeuvre deux modules "serveur" bien distincts pour créer une SPA :
+
+- un serveur de fichiers statiques offrant tous les fichiers permettant de créer un rendu de l'IHM (nommé "Application web" dans la figure) ;
+- un web service offrant des opérations sur des ressources ; ce web service suivra, dans le cadre de ce cours, une architecture de type "RESTful". Nous verrons plus tard ce que cela implique.
+
+Un des gros avantages de l'architecture web que nous appliquerons dans ce cours, c'est que nous pourrons développer l'IHM indépendamment de la RESTful API (ou web service).
+
+Voici une représentation d'un autre type d'architecture associé à une SPA :
+
+<ScrollableImage name="spa-monolithic.png" minWidth="600px" maxWidth="800px" />
+
+<figcaption>SPA monolithique</figcaption>
+
+Dans cet exemple-ci, la SPA est monolithique : c'est le même serveur qui s'occupe tant de fournir les web "assets" (ou les fichiers statiques) que d'offrir des opérations sur des ressources (ou web services).
+
+Nous ne verrons pas cette architecture dans le cadre de ce cours. Néanmoins, à la fin de ce cours-ci, vous devriez avoir tous les outils pour pouvoir la mettre en oeuvre si vous le souhaitiez.
+
+## <a id="d4"></a> d.4) Autres types d'architectures web
+
+Il existe bien sûr d'autres types d'architectures web que celles présentées ci-dessus.
+
+Vous pourrez explorer par vous-même, si vous le souhaitez et totalement optionnellement, les architectures suivantes :
+
+- Progressive Web Applications
+- Hybrid Applications : Cordova, Electron, Ionic…
+- Microservices
+- JAMStack [[6.]](/references/#r6)
+
+Faites-nous savoir SVP si une architecture particulière vous intéresse et n'est pas reprise ci-dessus ; )
+
+# <a id="e"></a>e) Introduction au langage JS
+
+## e.1) Introduction
+
+Le JS s'écrit tant dans un browser que dans un environnement serveur.
+
+Quand on écrit du JS au niveau client, on écrira du JS conforme au standard `ECMAScript`.
+
+Quand on écrit du JS au niveau serveur, on écrira du Node.js, du JS conforme au standard `CommonJS`.
+
+Il existe des différences lorsqu'on écrit du JS pour un browser ou lorsqu'on écrit du JS pour une application serveur. Néanmoins, il existe une syntaxe commune que nous allons voir dans ce chapitre.
+
+## <a id="e1"></a>e.1) Les instructions
+
+👍 Même si ça n'est pas obligatoire, on recommande de séparer chaque instruction par un " **;** ".
+
+Cela permet d'augmenter la lisibilité du code.
+
+```js
+let x = 1;
+console.log('x = ', x);
+```
+
+`console.log()` : c'est une méthode qui permet d'afficher un message dans la console du browser ou de l'environnement Node.js. En Java, c'est l'équivalent de `System.out.println()`.
+
+## <a id="e2"></a>e.2) Les commentaires
+
+On ajoute des commentaires dans son code via :
+
+- " **//** " : une seule ligne commentée.
+- " **/\*** " et " **\*/** " : un bloc de lignes commenté.
+- " **/\*\*** " et " **\*/** " : un bloc de lignes commenté pour générer la `JSDoc` d'une fonction.
+
+```js
+/**
+ * JSDoc as comments
+ * @param {message} message to be displayed in console
+ */
+function raiseAlert(message) {
+  // Single line comment
+  console.log(message); /* Regular comment
+    on multiple lines
+    */
+  console.log('An alert has been raised.');
+}
+```
+
+## <a id="e3"></a>e.3) Les variables et constantes
+
+### e.3.1 Variable key sensitive
+
+En JS, on ne déclare pas le type de variable, c'est un langage dynamiquement typé, c'est-à-dire que le type d'une variable est déterminé à l'exécution.
+
+Les variables sont sensibles à la casse (ou "case sensitive") :
+
+```js
+// two different variables
+let monBrowser;
+let monbrowser;
+```
+
+### e.3.2 Variables locales
+
+Pour définir une variable locale dont sa portée est associée à un bloc,
+on utilise : **let**.
+
+```js
+if (true) {
+  let blockScope = 'Hello';
+  console.log(blockScope); // Hello
+}
+console.log(blockScope); // Uncaught ReferenceError: blockScope is not defined
+```
+
+Une variable **let** [[7.]](/references/#r7) :
+
+- n'est pas accessible en dehors du bloc où elle est définie ;
+- est processée à l'exécution seulement ;
+- ne peut pas être redéclarée dans le même bloc.
+
+### e.3.3 constantes locales
+
+Pour définir une constante dont sa portée est associée à un bloc,
+on utilise : **const** [[8.]](/references/#r8).
+
+```js
+if (true) {
+  const constVar = 'Hello';
+  console.log(constVar); // Hello
+  const SITE_URL = 'http://MyCMS.org';
+  console.log(SITE_URL); // http://MyCMS.org
+  constVar = 'Hi'; // Uncaught TypeError: Assignment to constant variable.
+  console.log(constVar);
+}
+```
+
+### e.3.4 Variables globales
+
+Pour définir une variable globale si elle est déclarée en dehors d'une fonction, on utilise : **var**.
+
+```js
+if (true) {
+  var globalVar = 'Hello';
+  console.log(globalVar); // Hello
+}
+console.log(globalVar); // Hello
+```
+
+Une variable **var** est:
+
+- processée avant l'execution du code ("hoisting") ;
+- accessible au travers de tout le programme ;
+- redéclarable dans n’importe quel bloc.
+
+### e.3.5 Variables dont la portée est associée à une fonction
+
+Pour définir une variable ou constante dont la portée est associée à une fonction, on peut utiliser : **let**,**const** ou **var**.
+
+```js
+function checkScopeVarInFunction() {
+  var varInFunction = 'Hello';
+  console.log(varInFunction); // Hello
+}
+checkScopeVarInFunction();
+console.log(varInFunction); // Uncaught ReferenceError: varInFunction is not defined
+```
+
+👍 Nous vous recommandons d'utiliser **let** ou **const** lorsque vous déclarer une variable ou constante au sein d'une fonction.
+
+<br />
+
+### e.3.6 Assignation d'une valeur à une variable non déclarée
+
+L'assignation d'une valeur à une variable non déclarée crée implicitement une variable globale.
+
+```js
+function checkScopeVarInFunction() {
+  varInFunction = 'Hello';
+  console.log(varInFunction); // Hello
+}
+checkScopeVarInFunction();
+console.log(varInFunction); // Hello
+```
+
+👍 Nous vous recommandons de ne jamais utiliser de variables non déclarées.
+
+<br />
+
+### e.3.7 Les dangers des variables globales
+
+⚡ L'utilisation de variables globales peut s'avérer dangereux.
+
+On crée une variable globale soit via **var**, soit en initialisant une variable non déclarée.
+
+```js
+var index = 1;
+for (index; index <= 3; index++) {
+  console.log(index); // 1 2 3
+}
+print();
+function print() {
+  for (index; index <= 5; index++) {
+    console.log('Print ' + index); // Print 4 Print 5
+  }
+}
+```
+
+Dans cet exemple de code, on s'attendrait à ce que la deuxième boucle affiche :
+
+`Print 1 Print 2 Print 3 Print 4 Print 5`.
+
+### e.3.8 Recommandations concernant la portée de vos variables
+
+⚡ L'utilisation de variables globales peut s'avérer dangereux quand on souhaiterait que la durée de vie de celle-ci corresponde à un bloc de code bien précis.
+
+👍 Nous vous recommandons de définir des variables dont la portée est correctement exprimée par le mot-clé utilisé lors de la définition :
+
+- utilisez **let** ou **const** pour des variables ou constantes disponibles au sein d'un bloc de code uniquement;
+- utilisez **var** (ou **const**) que si une variable (ou constante) doit être disponible au sein de tous les blocs d'un script.
+
+### e.3.9 Types de variables
+
+Voici les types principaux de variables qui seront déterminés lors de l'initialisation d'une variable :
+
+- **Number** (Nombre) : un seul type pour les entiers, réels, doubles…
+- **String** (Chaîne) : comprise entre guillemets simples, doubles ou entre **\`** et **\`**.
+- **Bool** (Booléen).
+- **Array** (Tableau).
+- **Object** (Objet).
+
+Afin de renvoyer sous forme d'une string le type d'une expression, on utilise l'opérateur **typeof**.
+
+```js
+console.log(typeof 12); // number
+console.log(typeof 'I love JS'); // string
+console.log(typeof true); // boolean
+console.log(typeof undeclaredVariable); // undefined
+```
+
+## <a id="e4"></a>e.4) Les opérateurs
+
+### e.4.1 Opérateurs d'égalité ou de non égalité
+
+Pour une comparaison stricte, sans conversion de type, on utilise **===** ou **!==**.
+
+Pour une comparaison avec conversion de type, on utilise **==** ou **!=**.
+
+```js
+1 === 1; // true
+'1' === 1; // false
+1 == 1; // true
+'1' == 1; // true
+0 == false; // true
+0 == null; // false
+var object1 = { key: 'value' },
+  object2 = { key: 'value' };
+object1 == object2; //false
+```
+
+👍 Nous recommandons en général d'utiliser l'égalité stricte sauf si vous souhaitez convertir le type des variables comparées.
+
+### e.4.2 Optional chaining operator : ?.
+
+L'opérateur **?.** permet de lire la valeur d'une propriété d'un objet sans devoir contrôler si la référence de l'objet est valide.
+
+Il agit comme l'opérateur **.** sauf qu'au lieu de causer une erreur si une référence (d'une variable) est "nullish", c'est-à-dire **null** ou **undefined**, l'expression est court-circuitée et renvoie **undefined**.
+
+Sans test de condition, voici un morceau de code qui soulève une exception :
+
+```js
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah',
+  },
+};
+
+const dogName = adventurer.dog.name; //Error: Cannot read properties of undefined (reading 'name')
+console.log(dogName);
+```
+
+En effet, la référence dog est **undefined**.  
+Avant le récent "optional chaining operateur", voici ce que nous aurions pu écrire comme code avant d'initialiser **dogName** :
+
+```js
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah',
+  },
+};
+
+let dogName;
+
+if (adventurer !== undefined && adventurer.dog !== undefined)
+  // often simplified to : if(adventurer && adventurer.dog)
+  dogName = adventurer.dog.name;
+
+console.log(dogName); // undefined
+```
+
+Si la propriété d'un objet renvoyait jamais une valeur valide qui était à **false** ou **0**, alors on simplifiait souvent le check des valeurs nullish à qqch du style :
+`if(adventurer && adventurer.dog)` .
+
+Maintenant, grâce à l'opérateur **?.**, nous pouvons écrire du code très concis et ne plus écrire de tests de conditions pour les valeurs de type "nullish" :
+
+```js
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah',
+  },
+};
+
+const dogName = adventurer?.dog?.name;
+
+console.log(dogName); // undefined
+
+console.log(adventurer?.someNonExistentMethod?.()); // undefined
+
+console.log(adventurer?.kids?.[0]?.name); // undefined
+
+const kids = [{ name: 'John' }];
+let kids2;
+
+console.log(kids?.[0]?.name); // "John"
+console.log(kids2?.[0]?.name); // undefined
+```
+
+### e.4.2 Nullish coalescing operator : ??
+
+Le "nullish coalescing operator" permet de renvoyer ce qui se trouve à droite de l'opérateur quand ce qui se trouve à gauche est "nullish" (**null** ou **undefined**).
+
+```js
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah',
+  },
+};
+
+const dogName = adventurer?.dog?.name ?? 'No dog';
+console.log(dogName); // "No dog"
+
+const catName = adventurer?.cat?.name ?? 'No cat';
+console.log(catName); // "Dinah"
+```
+
+### e.4.3 Les autres opérateurs
+
+Nous ne verrons pas tous les opérateurs logiques dans ce cours, ils sont sensés être connus.
+
+Par exemple, les opérateurs logiques sont les habituels : **&&**, **||**, **!**
+
+Néanmoins, vous avez tous les opérateurs disponibles dans [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators) [[9.]](/references/#r9).
+
+## <a id="d5"></a>d.5) Les conditions
+
+Comme dans la majorité des langages, les instructions conditionnelles sont construites à l'aide de **if** ... **else**.
+
+Si vous souhaitez revoir les instructions conditionnelles, vous pouvez le faire dans la [documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#conditional_statements) [[10.]](/references/#r10).
+
+```js
+let isAuthenticated = false;
+if (isAuthenticated) {
+  console.log('Render the HomePage.');
+  console.log('You are authenticated.');
+} else {
+  console.log('Render the Login Page.'); // Render the Login Page.
+  console.log('You are not authenticated.'); // You are not authenticated.
+}
+```
+
+Voici un exemple de **switch** :
+
+```js
+let foo = 0;
+switch (foo) {
+  case -1:
+    console.log('negative 1');
+    break;
+  case 0: // foo is 0 so criteria met here so this block will run
+    console.log(0);
+  case 1: // no break statement in 'case 0:' so this case will run as well
+    console.log(1);
+    break; // it encounters this break so will not continue into 'case 2:'
+  case 2:
+    console.log(2);
+    break;
+  default:
+    console.log('default');
+}
+```
+
+## <a id="e6"></a>e.6) Les fonctions
+
+En JS, il existe plusieurs façon de déclarer des fonctions.
+
+### e.6.1 ) Les fonctions personnalisées
+
+Ce sont des fonctions qui portent un nom, définies à l'aide du mot-clé **function**.
+
+```js
+function welcomeMessage(message) {
+  return 'Message : ' + message;
+}
+let message = welcomeMessage('Welcome to everyone!');
+console.log(message); // Message : Welcome to everyone!
+```
+
+### e.6.2 ) Les fonctions comme valeurs de variables
+
+En JS, on peut assigner une fonction comme valeur de variable :
+
+```js
+function welcomeMessage(message) {
+  return 'Message : ' + message;
+}
+let x = welcomeMessage;
+message = x('Hi');
+console.log(message); // Message : Hi
+```
+
+### e.6.3 ) Les fonctions anonymes
+
+Ce sont des fonctions qui ne portent pas de nom.
+
+```js
+const welcome = function (message) {
+  return 'Message : ' + message;
+};
+message = welcome('Hello world ; )');
+console.log(message); // Message : Hello world ; )
+```
+
+Si une fonction n'est jamais réutilisée et est très courte, il est parfois pratique de ne pas lui donner de nom.
+
+### e.6.4 ) Les fonctions "arrow"
+
+Ce sont des fonctions qui ne portent pas de nom et qui s'écrivent sous une forme encore plus courte que les fonctions anonymes.
+
+```js
+const welcome2 = (message) => {
+  return 'Message : ' + message;
+};
+message = welcome2('Hello world...');
+console.log(message); // Message : Hello world...
+// OTHER EXAMPLE
+const higher = (n) => n + 1;
+console.log(higher(1)); // 2
+```
+
+On peut ne pas mettre les parenthèses si et seulement si la fonction ne possède qu'un seul paramètre.
+
+On peut ne pas mettre les accolades si et seulement si le code est une expression, c'est-à-dire si la fonction renvoie quelque chose ; dans ce cas, on ne met pas de **return**.
+
+### e.6.5 ) Les paramètres de fonctions
+
+Les paramètres d'une fonction sont optionnels. Lors de l'appel d'une fonction, le valeur **undefined** est allouée aux paramètres manquants.
+
+Les paramètres ont une portée locale au sein de la fonction.
+
+Le passage des paramètres se fait par valeur, sauf pour les objets où il se fait par référence.
+
+Voici un exemple de passage d'un paramètre par valeur (la variable utilisée dans la fonction est un clone du paramètre qui a été passé à la fonction lors de l'appel) :
+
+```js
+let myMessage = 'Hello';
+print(myMessage);
+function print(myMessage) {
+  console.log(myMessage); // Hello
+  myMessage = 'Good bye';
+}
+console.log(myMessage); // Hello
+```
+
+Voici un exemple de passage d'un paramètre, un objet, par référence (la variable utilisée dans la fonction n'est pas un clone du paramètre qui a été passé à la fonction lors de l'appel, c'est l'objet lui-même) :
+
+```js
+let myMessage = { content: 'Hello' };
+consolePrint(myMessage);
+function consolePrint(myMessage) {
+  console.log(myMessage.content); // Hello
+  myMessage.content = 'Good bye';
+}
+console.log(myMessage.content); // Good bye
+```
+
+Les fonctions acceptent des paramètres optionnels avec une valeur par défaut qui est allouée lorsque ces paramètres sont omis lors de l'appel :
+
+```js
+let welcome3 = function (message = 'HI DEAR HUMAN!') {
+  return 'Message : ' + message;
+};
+message = welcome3();
+console.log(message); // HI DEAR HUMAN
+```
+
+### e.6.6 ) Autres caractéristiques des fonctions
+
+Il existe encore d'autres caractéristiques pour les fonctions.
+
+Par exemple, une fonction retourne une valeur à l'aide de **return**.
+
+Si vous souhaitez en savoir plus, vous pouvez lire [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions) [[11.]](/references/#r11).
+
+### <a id="e7"></a>e.7) Les boucles
+
+Les boucles permettent de répéter certaines tâches.
+
+Si vous souhaitez en savoir plus sur l'utilisation de différents types de boucles en JS, vous pouvez le faire via la [documentation MDN ici](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code) [[12.]](/references/#r12).
+
+On utilise ces mots-clés pour définir des boucles en JS :
+**for**, **for**/**in**, **for**/**of**, **while**, **do**/**while**.
+
+Nous verrons aussi plus tard qu'il existe des fonctions sur des `Array` permettant de boucler sur les éléments d'un tableau.
+
+S'il y a un type de boucle à retenir, c'est la boucle **for**, la plus classique, qui fonctionne dans tous les langages et avec la majorité des structures de données :
+
+```js
+for (let index = 0; index < 5; index++) {
+  console.log(index); // 0 1 2 3 4
+}
+```
+
+## <a id="e8"></a>e.8) Les tableaux
+
+### e.8.1) Introduction
+
+Les tableaux sont des variables ou constantes de type **Array**.  
+Un array (ou tableau) est un ensemble ordonné de valeurs auxquelles ont fait référence avec un nom et un indice.
+
+### e.8.2) Création de tableaux
+
+```js
+const LIBRARIES = ["Anime.js", "Three.js", "Phaser.io"];
+const emptyArray = [];
+const LIBRARIES_NOT_RECOMMENDED = new Array("Anime.js", "Three.js", "Phaser.io");
+const emptyArrayNotRecommended = new Array();
+const arr = new Array(10, 100) ; // What is the result ? 
+const arr2 = new Array(10) ; // What is the result ? 
+}
+```
+
+⚡ Dans l'exemple ci-dessus, **arr** est un tableau de deux éléments contenant les valeurs **10** et **100**. Or **arr2** est un tableau de **10** éléments ne contenant aucune valeur...
+C'est assez déroutant et donc déconseillé de créer un tableau à l'aide du constructeur.
+
+👍 Il est recommandé de créer un array à l'aide de **[]**.
+
+### e.8.3) Parcourir un tableau
+
+On peut parcourir un tableau soit à l'aide des boucles classiques (**for** & **.length**), soit à l'aide de la méthode **forEach()**.
+
+```js
+for (let index = 0; index < LIBRARIES.length; index++) {
+  console.log(LIBRARIES[index]); // Anime.js Three.js Phaser.io
+}
+
+LIBRARIES.forEach((item, index) => console.log('[' + index + ']: ' + item));
+// [0]: Anime.js [1]: Three.js [2]: Phaser.io
+
+LIBRARIES.forEach(function (item) {
+  return console.log(item); // Anime.js Three.js Phaser.io
+});
+```
+
+### e.8.4) Les tableaux multidimensionnels
+
+Un tableau à deux dimensions, en JS, est un tableau dont tous ses éléments sont des tableaux.
+
+```js
+const numberOfRows = 2,
+const numberOfColumns = 2;
+const myTab = [];
+for (let x = 0; x < numberOfRows; x++) {
+  myTab.push([]); // cleaner than : myTab[x] = [];
+  for (let y = 0; y < numberOfColumns; y++) {
+    myTab[x].push("[" + x + "][" + y + "]"); 
+    // myTab[x][y] = "[" + x + "][" + y + "]"; not recommended
+    console.log(myTab[x][y]);
+  }
+}
+```
+
+### e.8.5) Autres méthodes associées aux tableaux
+
+Il existe de nombreuses méthodes intéressantes associées aux tableaux, comme : `pop()`, `map()`, `indexOf()`.
+
+Si vous souhaitez approfondir ce sujet, vous pouvez consulter [la MDN documentation ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) [[13.]](/references/#r13).
+
+## <a id="e9"></a>e.9) Les template literals
+
+On peut écrire des String sur plusieurs lignes à l'aide de **\` \`**.
+
+Il est possible d'inclure des expressions, généralement les valeurs de variables, dans des String en utilisant **${}**.
+
+```js
+for (let i = 0; i < LIBRARIES.length; i++) {
+  htmlText += `<li class='list-group-item'>
+                  ${LIBRARIES[i]}
+               </li>`;
+}
+```
+
+## <a id="e10"></a>e.10) Les objets
+
+### e.10.1) Introduction
+
+En JS, tout est objet : les Strings, les tableaux, les API du browser, les objets personnalisés...
+
+Cette partie ne donne que les bases de la gestion d'objets. Une autre partie du cours, appelée l'orienté objet en JS, fournit plus de détails.
+
+### e.10.2) Création d'objets
+
+#### e.10.2.1 Introduction
+
+Il existe plusieurs façons de créer un objet en JS.
+
+#### e.10.2.2) Création d'un "object literal"
+
+On peut créer un "object literal", qui est une liste de paires clé/valeur.
+
+La clé sera le nom de la propriété d'un objet.
+
+```js
+let raphael = {
+  firstname: 'Raphael',
+  lastname: 'Baroni',
+  sayHello: () => 'Hi everyone !',
+};
+```
+
+#### e.10.2.3) Création d'objets vide
+
+On crée un objet vide via **{}**.
+
+⚡ Il n'est pas recommandé de créer un objet en utilisant le constructeur d' **Object** via le mot clé **new**.
+
+```js
+let sandra = {};
+sandra.firstname = 'Sandra';
+sandra.lastname = 'Parisi';
+```
+
+### e.10.3) Accéder aux propriétés d’un objet
+
+#### e.10.3.1 Introduction
+
+Il existe deux façons d'accéder aux propriétés d'un objet.
+
+#### e.10.3.2) Accès à une propriété via un .
+
+On accède régulièrement aux propriétés d'un objet via un **.** :
+
+```js
+console.log(raphael.firstname, ' :', raphael.sayHello()); // Raphael  : Hi everyone !
+```
+
+#### e.10.3.2) Accès à une propriété via un ["object_key"]
+
+On utilisera la clé, c'est-à-dire le nom de la propriété recherchée, sous forme de String, principalement dans les cas où l'on souhaite, lors de l'exécution, accéder à une propriété :
+
+```js
+console.log(sandra['firstname'], ',', sandra['lastname']);
+// Sandra , Parisi
+```
+
+## <a id="e11"></a>e.11) Les exceptions
+
+### d.11.1) Lancer une expression
+
+Les exceptions permettent de gérer des cas d'erreur se produisant lors de l'exécution de vos scripts.
+
+On lance une exception à l'aide du mot clé **throw** et d'une expression.
+
+On peut construire ses propres exception, en faisant un **throw** de String, Number, Boolean ou Object.
+
+```js
+function divideXByY(x, y) {
+  if (y === 0) throw 'Division by 0 ! ';
+  return x / y;
+}
+divideXByY(5, 0); // Uncaught Division par 0 !
+```
+
+On peut aussi lancer des exceptions à l'aide d'objets qui facilitent la gestion des exceptions : cela peut être l'objet **Error** ou d'autres types d'erreurs prédéfinies par l'environnement JS (**RangeError**, **SyntaxError**)
+
+```js
+function RegularDivideXByY(x, y) {
+  if (y === 0) throw new RangeError('Division by 0 ! ');
+  return x / y;
+}
+try {
+  RegularDivideXByY(5, 0);
+} catch (err) {
+  console.log('RegularDivideXbyY():', err.name, ':', err.message);
+  // RegularDivideXbyY() : RangeError: Division by 0 !
+}
+```
+
+Les deux propriétés intéressantes de "JS built-in error objects" sont : **name** & **message**.
+
+Il est possible de créer vos propres classes d'erreur (en héritant de la classe **Error**).
+
+Si vous souhaitez plus de détails sur les "JS built-in error objects", vous pouvez parcourir [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#error_types) [[14.]](/references/#r14).
+
+### e.11.2) Intercepter une expression
+
+On gère l'apparition d'une exception au sein d'un bloc de code à l'aide de **try** ... **catch** et éventuellement **finally** :
+
+- **try{...}** : partie de code monitorée ;
+- **catch(err){...}** : instructions à exécuter en réponses à une exception ;
+- **finally{...}** : code à exécuter dans tous les cas après le **try** ... **catch**, qu'il y ait eu une exception ou pas.
+
+```js
+let result;
+try {
+  result = RegularDivideXByY(5, 0);
+} catch (err) {
+  console.log('RegularDivideXbyY():', err.name, ':', err.message); // RegularDivideXbyY() : RangeError: Division by 0 !
+} finally {
+  console.log(
+    'RegularDivideXbyY() results:',
+    result,
+    "JS Divion's result",
+    5 / 0
+  );
+  // RegularDivideXbyY() results: undefined JS Division's result Infinity
+}
+```
+
+# <a id="f"></a>f) Repositories
+
+Vous trouverez tous les repositories associés à ce cours via ces liens :
+
+- [**boilerplate de base d'un frontend**](https://github.com/e-vinci/js-basic-boilerplate) ; il offre le squelette d'un frontend, utilisant Webpack pour gérer les dépendances (les packages), les assets, et offrir d'autres fonctionnalités nécessaires aux développeurs web modernes.
+- [**boilerplate de base d'une RESTful API**](https://github.com/e-vinci/basic-api-boilerplate) ; il offre le squelette d'une RESTful API créé à l'aide du générateur d'application d'Express et offre des outils nécessaire aux développeurs web modernes : linter, formater...
+- [**boilerplate pour vos frontends nécessitant un router**](https://github.com/e-vinci/js-router-boilerplate) ; c'est l'intégration du boilerplate donné ci-dessus avec un router permettant de facilement circuler au niveau des pages d'une SPA.
+- [**boilerplate pour vos frontends utilisant Phaser**](https://github.com/e-vinci/js-phaser-boilerplate) ; si vous souhaitez développer un jeu en 2D de manière moderne tout en utilisant Phaser, ce boilerplate pourrait bien vous économiser quelques jours de travail.
+- [**code des démos**](https://github.com/e-vinci/js-demos) ;
+- [**solutions des exercices**](https://github.com/e-vinci/js-exercises.git) ; les solutions sont ajoutées de manière progressive au cours d'une année.
+- [**frontend du cours**](https://github.com/e-vinci/web2) ; le frontend a été développé à l'aide de JavaScript. Il met en place une architecture moderne de type "Jamstack". Il repose sur Gatsby, qui lui même utilise React, ainsi que Webpack.
+
+Si vous souhaitez participer à la mise à jour du cours, n'hésitez pas à proposer des modifications en soumettant des Pull Requests ou des des Issues via ces repositories.
