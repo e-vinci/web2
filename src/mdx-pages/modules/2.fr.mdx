@@ -32,10 +32,11 @@ Voici les sujets traités :
   - c.4) [Génération d'HTML à partir de Nodes](#c4)
   - c.5) [Ajout dynamique d'écouteurs d'événements avant de rendre le DOM](#c5)
   - c.6) [Utilisation de Bootstrap dans un frontend moderne](#c6)
-- d) [Exercice 2.1 : Homepage statique de myMovies & Webpack](#d)
-- e) [Exercice 2.2 : Génération dynamique de la Homepage de myMovies](#e)
-- f) [Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire](#f)
-- g) [🍬 Exercice 2.4 : design responsive](#g)
+- d) [Debbuging d'un frontend tournant sous Webpack](#d)
+- e) [Exercice 2.1 : Homepage statique de myMovies & Webpack](#e)
+- f) [Exercice 2.2 : Génération dynamique de la Homepage de myMovies](#f)
+- g) [Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire](#g)
+- h) [🍬 Exercice 2.4 : design responsive](#g)
 
 # <a id="a"></a>a) Développement d'IHM modernes
 ## <a id="a1"></a>a.1) Introduction
@@ -1431,7 +1432,38 @@ En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : 
 
 Si vous souhaitez plus d'informations sur la gestion des assets via Webpack, vous pouvez le faire via les [Asset Modules](https://webpack.js.org/guides/asset-modules/) [[R.37]](/references/#r37).
 
-# <a id="d"></a>d) Exercice 2.1 : Homepage statique de myMovies & Webpack
+
+# <a id="d"></a> d) Debbuging d'un frontend tournant sous Webpack
+💭 Qui est votre meilleur ami ?
+
+Il est possible qu'à ce stade-ci, vous ignorez une des bonnes réponses, car pour les développeurs, le debugger est son meilleur ami !
+
+Le debugger est toujours là pour vous, prêt à vous faire voyager pas à pas dans votre code, à vous donner des pistes dans les moments difficiles, sans imposer de solutions, il vous offre une liberté totale !  Et il acceptera toujours votre code tel qu'il est, sous réserve bien sûr que celui-ci compile.  
+C'est exactement ce que l'on attend d'un ami 😁.
+
+Le tutoriel qui suit apprend à débugger un frontend qui est développé en JS et qui utilise Webpack comme module bundler.
+
+<ul className="card mt-3">
+    <div className="card__header">Debugging d'un frontend tournant sous Webpack</div>
+    <li className="card__content">
+      <span className="card__content__title">Tutoriel vidéo</span>
+      <div className="card__content_description">
+        <div width="100px" style={{display:"inline-block"}}>
+          <YoutubeImage src="https://youtu.be/Fdo7zwhxaf4" />
+        </div>
+      </div>
+    </li>          
+    <li className="card__content">
+      <span className="card__content__title">Description</span>
+      <div className="card__content_description">
+        Débuggez pas à pas une application en ajoutant des breakpoints, en voyageant pas à pas dans le code à l'aide de Chrome et de ses outils de développeurs.
+      </div>
+    </li>
+</ul>
+
+<br/>
+
+# <a id="e"></a> e) Exercice 2.1 : Homepage statique de myMovies & Webpack
 Vous allez démarrer le développement d'une application web permettant de partager des informations sur vos films préférés. 
 
 Notez que cette application va vous suivre jusqu'à la fin de ce cours : nous allons la faire évoluer pour traiter de tous les concepts associés à ce cours.  
@@ -1447,7 +1479,7 @@ Le code de votre application web doit se retrouver dans votre repository local e
 
 Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : bundler**"".
 
-# <a id="e"></a>e) Exercice 2.2 : Génération dynamique de la Homepage de myMovies
+# <a id="f"></a> f) Exercice 2.2 : Génération dynamique de la Homepage de myMovies
 Faites un refactor de votre application **myMovies** afin de générer dynamiquement l'HTML des images et du texte au chargment d'**index.html**.
 
 Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémentation :
@@ -1459,7 +1491,7 @@ Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies
 
 NB : Le code de votre application web se trouve dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module2/2.2**.
 
-# <a id="f"></a>f) Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire
+# <a id="g"></a> g) Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire
 Vous allez réaliser une application web permettant de générer des tables sur base d'un formulaire.
 
 Créez un formulaire permettant d'introduire un nombre de lignes, un nombre de colonne, et une chaine de base.  
@@ -1496,7 +1528,7 @@ Le code de votre application web doit se retrouver dans votre repository local e
 
 Veuillez faire un **commit** de votre code avec le message suivant : "**Exercice 2.3**"".
 
-## <a id="g"></a> g) 🍬 Exercice 2.4 : design responsive
+## <a id="h"></a> h) 🍬 Exercice 2.4 : design responsive
 
 N'hésitez pas à libérer votre créativité et améliorer la UI de la Homepage de **myMovies**.  
 Voici quelques idées : 	
