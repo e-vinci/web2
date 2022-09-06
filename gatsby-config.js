@@ -50,6 +50,10 @@ module.exports = {
             name: "Module 8 : SPA & sessions & déploiement",
             link: "/modules/8",
           },
+          {
+            name: "🍬 Introduction à Git",
+            link: "/git",
+          },
           { name: "Bibliographie", link: "/references" },
         ],
       },

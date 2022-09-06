@@ -23,6 +23,7 @@ import {
 import AuthenticatedBlock from "../components/auth/authenticated-block.js";
 import UnAuthenticatedBlock from "../components/auth/unauthenticated-block.js";
 import NestedMdxBlock from "../components/mdx/nested-mdx-block.js";
+import YoutubeImage from "../components/image/youtube-image.js";
 
 const shortcodes = {
   Link,
@@ -40,6 +41,7 @@ const shortcodes = {
   AuthenticatedBlock,
   UnAuthenticatedBlock,  
   NestedMdxBlock,
+  YoutubeImage,
 };
 
 export default function PageTemplate({ data: { mdx, allImages } }) {
