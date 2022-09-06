@@ -7,6 +7,7 @@ const ScrollableImage = ({ children, name, alt, minWidth, maxWidth }) => {
   if (minWidth) style.minWidth = minWidth;
   if (maxWidth) style.maxWidth = maxWidth;
   const isSVG = name.includes(".svg");
+  const isGif = name.includes(".gif");
 
   const data = useStaticQuery(graphql`
     {
@@ -22,11 +23,11 @@ const ScrollableImage = ({ children, name, alt, minWidth, maxWidth }) => {
     }
   `);
 
-  if (isSVG) {
-    const requiredSVG = data.allFile.edges.find(
+  if (isSVG || isGif) {
+    const requiredSvgOrGif = data.allFile.edges.find(
       (file) => file.node.base === name
     );
-    if (!requiredSVG) {
+    if (!requiredSvgOrGif) {
       return (
         <div>
           <h3 style={{ color: "red" }}>The file {name} does not exist !</h3>
@@ -39,7 +40,7 @@ const ScrollableImage = ({ children, name, alt, minWidth, maxWidth }) => {
       <div className="scrollable-image">
         <div className="scrollable-image__wrapper" style={style}>
           <img
-            src={requiredSVG.node.publicURL}
+            src={requiredSvgOrGif.node.publicURL}
             alt={alt}
             style={{ height: "100%", width: "100%", zIndex: 2 }}
           >

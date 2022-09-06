@@ -1208,7 +1208,9 @@ Ce même message doit être affiché dans la console.
 Pour ce faire, vous allez créer, puis appeler, une fonction **addDateTime(message)** qui renvoie une string concaténant :
 
 - La date et l'heure à l'appel de la fonction
-- Le message passé en argument de la fonction
+- Le **message** passé en argument de la fonction
+
+Par exemple, si le **message** est "This is the best moment to have a look at this website !", le pop-up affichera quelque chose du genre "06/09/2022 14:59 : This is the best moment to have a look at this website !".
 
 #### 🤝 Tips
 Vous pouvez vous aider du code donné ci-dessous :
@@ -1229,8 +1231,8 @@ Le code de votre application web doit se retrouver dans votre repository local e
 Veuillez réaliser une application web permettant d'afficher un compteur de clics sur votre page web.
 
 Affichez le message suivant sur votre page web :
-- Au 5ème clic : « Bravo, bel échauffement ! »
-- Au 10ème clic : « Vous êtes passé maître en l'art du clic ! »
+- Au 5ème clic jusqu'au 9ème clic : « Bravo, bel échauffement ! »
+- Au 10ème clic et au-delà : « Vous êtes passé maître en l'art du clic ! »
 
 N'oubliez pas, bien sûr, d'afficher le compteur de clics sur votre page.
 
@@ -1247,20 +1249,31 @@ Le code de votre application web doit se retrouver dans votre repository local e
 
 Veuillez réaliser une application web permettant d'afficher un feu rouge.
 
-Votre feu rouge devra continuellement alterner l'affichage de trois couleurs :
+Votre feu rouge devra continuellement alterner l'affichage de ce cycle de trois couleurs :
 - rouge pendant 2 secondes
 - orange pendant 2 secondes
 - vert pendant 2 secondes
+- orange pendant 2 secondes
+- rouge pendant 2 secondes
+- ...
 
-Lors d'un clic sur votre feu rouge, veuillez stopper ou réactiver le rafraîchissement de son affichage.
+Voila à quoi pourrait ressembler votre application web :
+
+<ScrollableImage name="red-light.gif" minWidth="308px" maxWidth="308px" />
 
 #### 🤝 Tips
 
 - Vous avez besoin d'un container pour afficher une couleur.
   Vous pourriez utiliser la propriété **style.backgroundColor** d'une div.
 - Quelles sont les fonctions permettant de lancer & stopper des appels à intervalles de
-  temps bien déterminés ? N'hésitez pas à jeter un oeil
-  au § [b.3.7) Gestion d'intervalles de temps](#b3.7).
+  temps bien déterminés ? N'hésitez pas à jeter un oeil au § [b.3.7) Gestion d'intervalles de temps](#b3.7).
+- Comment afficher une **div** vide avec une bordure ? N'hésitez pas à vous inspirer de ce morceau de code :
+``` js
+<div
+  class="red"
+  style="display: inline-block; min-width: 50px; min-height: 50px; border:1px solid black"
+></div>
+```
 
 Le code de votre application web doit se retrouver dans votre repository local et votre web repository (normalement appelé **web2**) dans un répertoire nommé **/exercises/module1/1.4**.
 
