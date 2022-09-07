@@ -91,11 +91,10 @@ module.exports = {
     ],
   },
   plugins: [
-    // comment this plugin out if you don't want to deal with projects in your course
     {
       resolve: `web-projects-source-plugin`,
       options: {
-        projectGroupNames: ["Web2 2020", "Web2 2021"],
+        projectGroupNames: ["Web2 2020", "Web2 2021"], // [] if you don't want to deal with public project views
       },
     },
     "gatsby-plugin-react-helmet",
