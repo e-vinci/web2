@@ -16,7 +16,9 @@ Voici les sujets traités :
     - c.1) [Introduction](#c1)
     - c.2) [Déploiement d'un frontend sur GitHub Pages](#c2)
     - c.3) [Déploiement d'une API sur Heroku](#c3)
-    - c.4) [Déploiement d'une API sur des providers gratuits](#c4)
+    - c.4) [Déploiement d'une API sur Azure](#c4)
+    - c.5) [Déploiement d'une API sur d'autres providers gratuits](#c5)
+    - c.6) [Déploiement d'une base de données](#c6)
 - d) [Exercice 8.2 : Déploiement de myMovies sur le cloud](#d)
 - e) [🍬 Exercice 8.3 : l'essentiel du cours en action](#e)
 
@@ -754,14 +756,50 @@ git push heroku [branche_en_cours]:master [-f]
 
 Soit **Open app** via "Heroku dashboard", soit vous pouvez directement taper dans le browser : **[your_app_name.herokuapp.com**.
 
+### c.3.3) Système de fichiers
 
-## <a id="c4"></a> c.4) Déploiement d'une API sur des providers gratuits
-Voici une liste de providers qui pourraient être intéressants pour vos déploiements :
-- [Microsoft Azure](https://azure.microsoft.com/en-us/free/) : 
-  - Vous êtes étudiant ? Il semblerait que vous puissiez bénéficier de 100$ de crédit et vous n'avez pas besoin de carte de crédit ! Rendez-vous sur [free with Azure for Student](https://azure.microsoft.com/en-in/free/students/). **Azure App Service** semble être gratuit pour 10 apps à vie !
-  - Vous n'êtes plus étudiant ? services gratuits, certains toujours gratuits, d'autres pendant 12 mois, 200$ de crédit pendant 30 jours. Malheureusement il faut une carte de crédit pour vous faire autoriser... **Azure App Service** semble être gratuit pour 10 apps à vie ! [Documentation d'App Service](https://docs.microsoft.com/en-us/azure/app-service/) et [App Service pricing](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/).
+⚡ Sur Heroku, si vous utilisez des fichiers **.json** pour assurer une certaine "persistance" des ressources associées à vos API, ces fichiers seront probablement réinitialisés environ une fois par jour. 
+
+En effet, Heroku utilise un système de fichiers éphémère, à chaque fois qu'une dyno est redémarrée, elle utilise une copie du déploiement le plus récent, c'est-à-dire les fichiers qui ont été "push" sur heroku pour lancer le build.
+
+Si vous souhaitez faire persister de l'information sur Heroku pendant plus longtemps qu'une journée, il faudra donc passer soit par une base de données, soit par des API offrant des opérations sur des fichiers (comme Amazon S3 par exemple).
+
+
+## <a id="c4"></a> c.4) Déploiement d'une API sur Azure
+**Azure App Service** offre un PaaS. Il est aisé d'y déployer une application Node.js.
+
+Voici la documentation pour créer une app : [Create a Node.js web app in Azure](https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-vscode).
+
+Attention de choisir la formule gratuite lorsque vous suivrez la procédure, en indiquant le tarif **F1**. Vous aurez le droit à 60 minutes de processing gratuites par jour, après quoi votre app renvoie un status code 403. Votre app n'est pas toujours active, mais il est pas évident d'estimer si vous tiendrez toute une journée sans erreur 403.
+
+Actuellement, si vous êtes étudiant, vous pouvez bénéficier de 100$ de crédit et vous n'avez pas besoin de carte de crédit ! En suivant le tutoriel proposé par Microsoft, vous vous rendrez sur [free with Azure for Student](https://azure.microsoft.com/en-in/free/students/). **Azure App Service**. 
+
+Si vous n'êtes plus étudiant, vous pouvez bénéficier de services gratuits, certains toujours gratuits, d'autres pendant 12 mois, avec 200$ de crédit pendant 30 jours. Malheureusement il faut une carte de crédit pour vous faire autoriser... 
+
+N'hésitez pas à consulter la [documentation d'App Service](https://docs.microsoft.com/en-us/azure/app-service/) et de jeter un oeil aux formules tarifaires : [App Service pricing](https://azure.microsoft.com/en-us/pricing/details/app-service/linux/).
+
+
+## <a id="c5"></a> c.5) Déploiement d'une API sur d'autres providers gratuits
+Voici une liste d'autres providers qui pourraient être intéressants pour vos déploiements :
 - [platform.sh](https://platform.sh/pricing/) : service gratuit pendant 30 jours, pas besoin de carte de crédit.
 - [Google Cloud](https://cloud.google.com/pricing) : service offrant 300$ de crédit, pendant 90 jours, il faut une carte de crédit 😨, mais pas de charges sauf si upgrade manuel vers un compte payant.
+
+## <a id="c6"></a> c.6) Déploiement d'une base de données
+### c.6.1) Bases de données relationnelles
+Si vous souhaitez utiliser une base de données relationnelle, n'hésitez pas à utiliser un serveur Postgres.
+
+https://www.elephantsql.com/ offre un service OK pour une base de données gratuite sur le cloud.
+
+Heroku offrait un servir Postgres intéressant, mais celui-ci ne sera plus, ou n'est plus, gratuit à partir de novembre 2022 : https://www.heroku.com/postgres.
+
+### c.6.2) Bases de données NoSQL
+Si vous souhaitez faire du NoSQL, MongoDB Atlas fournit un service gratuit très intéressant sur le cloud : https://www.mongodb.com/, offrant 500 MB de stockage. 
+
+Il existe un site extrêmement bien fait, **Full Stack open**, qui vous explique comment utilser ce serveur : [Fullstack Part 3](https://fullstackopen.com/en/part3).
+
+⚡ Attention, si vous avez des données qui sont fort connectées, faire le lien entre des documents et moins évident qu'avec du SQL (voir la notion d'**Aggregate** sous Mongodb). 
+Si vous utilisez une base de données, vous devriez protéger vos secrets. Nous vous recommandons d'utiliser la librairie **dotenv** pour le faire.  
+Cela est expliqué sur le site de **Fulls Stack open** : [Saving data to MongoDB](https://fullstackopen.com/en/part3/saving_data_to_mongo_db).
 
 # <a id="d"></a> d) Exercice 8.2 : Déploiement de myMovies sur le cloud
 Tout est dit dans le titre 😉.
@@ -776,6 +814,8 @@ La racine de vos repositories doivent correspondre à la racine de vos projets. 
 
 ⚡ Attention, Git ne traque pas les repos dans les repos. Ainsi, vos deux projets ne peuvent pas se trouver dans le repos **web2** de votre cours !  
 N'oubliez pas d'inclure un fichier **.gitignore** pour éviter de mettre en configuration **node_modules** !
+
+Nous vous recommandons de suivre la documentation pour déployer une App à l'aide de VS Code, en installant l'extension **Azure App Service**  : [Create a Node.js web app in Azure](https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-vscode).
 
 # <a id="e"></a> e) 🍬 Exercice 8.3 : Déploiement de myMovies sur le cloud
 ## e.1) Introduction

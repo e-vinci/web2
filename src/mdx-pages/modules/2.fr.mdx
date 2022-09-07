@@ -1485,14 +1485,17 @@ Faites un refactor de votre application **myMovies** afin de générer dynamique
 Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémentation :
 -	Utilisez Webpack pour un frontend moderne, en utilisant le code l'exercice précédent (**/exercises/module2/2.1**).
 -	Veuillez créer un container statique, ou autrement dit un "wrapper", dans votre page **index.html** (par exemple une balise **main** ou une **div**).
--	Ajoutez dynamique les images et le texte associé à votre **Homepage** dans votre "wrapper".
+-	Ajoutez dynamiquement les images et le texte associé à votre **Homepage** dans votre "wrapper".
 
 Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : module 2 : dynamic homepage**"".
 
 NB : Le code de votre application web se trouve dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module2/2.2**.
 
+#### 🤝 Tips
+- Pensez à faire l'import de vos images au sein de **index.js**.
+
 # <a id="g"></a> g) Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire
-Vous allez réaliser une application web permettant de générer des tables sur base d'un formulaire.
+Vous allez réaliser une application web permettant de générer une table sur base d'un formulaire.
 
 Créez un formulaire permettant d'introduire un nombre de lignes, un nombre de colonne, et une chaine de base.  
 Utilisez Bootstrap pour formater votre application web.  
@@ -1509,19 +1512,20 @@ Voici un exemple de résultat :
 
 <ScrollableImage name="table.png" minWidth="219px" maxWidth="219px" />
 
+<br/>
 
 Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémentation :
--	Créez une 1ère fonction qui retourne un **Array** à deux dimensions avec :
-  - comme valeur pour chaque élément : une String au format `"chaine de base[numéro de ligne][ numéro de colonne]"`,
-  - sur base de 3 paramètres : le nombre de lignes, de colonnes, et la chaine de base à afficher dans chaque élément du tableau.
--	Créez une deuxième fonction qui renvoie, sous forme de string, une table HTML basée sur l'**Array** créé par la 1ère fonction.
+- Créez une 1ère fonction nommée **`createArray`** qui retourne un **Array** à deux dimensions avec :
+  - Comme valeur pour chaque élément : une String au format `"chaine de base[numéro de ligne][numéro de colonne]"`,
+  - Sur base de 3 paramètres : le nombre de lignes, de colonnes, et la chaine de base à afficher dans chaque élément du tableau.
+-	Créez une deuxième fonction nommée **`createHtmlTableAsString`** qui renvoie, sous forme de string, une table HTML basée sur l'**Array** créé par la 1ère fonction.
 -	Appelez ces deux fonctions afin d'afficher la table de manière dynamique au sein d'un "wrapper" (une **div** est conseillée).
 
 
 #### 🤝 Tips 
 - Vous pouvez utiliser la propriété **.innerHtml** de votre wrapper pour afficher dynamiquement la table.
-- Pour gérer le submit d'un formulaire, il existe plusieurs façon de le faire. La façon recommandée est d'écouter les événements de type "submit" sur le formulaire. Il est ainsi possible de faire un submit d'un formulaire à l'aide de la touche **Enter**.
-- N'oubliez pas que lors d'un clic sur un élément qui amène à un « submit », le comportement par défaut du formulaire est de recharger la page. Vous devez donc stopper ce comportement par défaut pour assurer que le tableau que vous générez ne soit pas "effacé".
+- Pour gérer le submit d'un formulaire, il existe plusieurs façons de le faire. La façon recommandée est d'écouter les événements de type "submit" sur le formulaire. Il est ainsi possible de faire un submit d'un formulaire à l'aide de la touche **Enter**.
+- N'oubliez pas que lors d'un clic sur un élément qui amène à un "submit", le comportement par défaut du formulaire est de recharger la page. Vous devez donc stopper ce comportement par défaut pour assurer que le tableau que vous générez ne soit pas "effacé".
 
 
 Le code de votre application web doit se retrouver dans votre repository local et votre web repository (normalement appelé **web2**) dans un répertoire nommé **/exercises/module2/2.3**.
