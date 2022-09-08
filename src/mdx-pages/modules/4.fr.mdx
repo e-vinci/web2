@@ -1257,11 +1257,13 @@ Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 
 #### 🤝 Tips
 - N'hésitez pas à utiliser le générateur d'applications d'Express pour initier votre projet.
+- Développez les opérations de votre API de manière incrémentale : testez une opération via REST Client avant de passer à une nouvelle opération.
 - Pour le filtre sur les films, vous allez récupérer un paramètre de requête.  
 ⚡ Attention, le signe **-** est un opérateur en JS, vous ne pouvez pas récupérer le paramètre de requête via `req.query.minimum-duration`...  
 💭 Mais alors comment faire ?  
 On accède aussi au propriété d'un objet à l'aide d'un array, ici ça serait via `req.query['minimum-duration']`.
 - N'hésitez pas à vous inspirer du code du tutoriel [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
+- Pour vérifier le type d'une variable, n'hésitez pas à utiliser l'opérateur `typeof`.
 
 Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module4/4.1**.
 

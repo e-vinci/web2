@@ -904,6 +904,8 @@ votre web repository (normalement appelé **web2**), le répertoire nommé
 #### 🤝 Tips
 Cet exercice de consommation d'une API consiste simplement en la mise-à-jour du frontend **myMovies** réalisé au module 3 (Exercice 3.1) : vous devriez créer de nouvelles pages et ajouter des opérations de type **fetch** vers votre RESTful API développée au module 5 (Exercice 5.2). Il n'y a normalement rien à faire au niveau de la RESTFul API, si ce n'est de l'exécuter.
 
+⚡ Lors de l'ajout d'un film, n'oubliez pas que le budget et la durée doivent être des nombres, pas des strings !
+
 Comment gérer l'UC de suppression d'un film ?
 - Vous pourriez avoir un bouton **Delete** pour chaque ligne du tableau affichant les films. Lors du clic sur un bouton **Delete**, vous feriez une requête de type **DELETE** vers la RESTful API. Attention, pour une requête de type **DELETE**, l'identifiant de l'objet à supprimer doit être donnée dans l'URL associée au **fetch**.
 - Comment retrouver l'identifiant du film affiché dans le tableau ? 
@@ -913,6 +915,7 @@ Comment gérer la mise à jour des données d'un film ?
   - Option 1 (la plus cool à découvrir 😉) : Vous pourriez faire en sorte que l'HTML du tableau affichant les films, lors d'un clic, devienne éditable. Pour cette option :
     - Voici, à quoi pourrait ressembler votre application à la fin de l'exercice. Vous avez bien sûr la liberté de faire qqch de totalement différent visuellement !
     <ScrollableImage name="movies.png" minWidth="700px" maxWidth="1268px" />
+    - Veuillez noter que contrairement au frontend précédent réalisée à l'Exercice 3.1, l'info **title** et **link** ne sont plus intégrées dans une même colonne, via des hyperlinks ; avec l'option 1, nous devrions considérer deux colonnes, une pour le titre et l'autre pour le lien.
     - Vous pouvez utiliser la propriété HTML **contenteditable="true"** pour rendre les cellules du tableau éditables. Voici un exemple pour rendre une cellule associée au titre éditable :
     ```js {1}
     <td class="fw-bold text-info" contenteditable="true">${

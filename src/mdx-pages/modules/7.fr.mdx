@@ -1302,14 +1302,14 @@ Nous allons réaliser un exercice avant de traiter des problèmes de sécurité.
 
 # <a id="c"></a> c) Exercice 7.1 : Authentification & autorisation au sein de myMovies
 
-Lors de l'exercice précédent (Exercice 6.1), vous aviez une application qui permet normalement de gérer des films, mais qui n'était pas sécurisée.
+Lors de l'exercice précédent (Exercice 6.1), vous aviez une application qui permettait normalement de gérer des films, mais qui n'était pas sécurisée.
 
 A cet exercice, veuillez introduire l'authentification d'utilisateur via ces deux nouveaux cas d'utilisation :
 - UC5 : un utilisateur doit pouvoir créer un compte (register).
 - UC6 : un utilisateur doit pouvoir se loguer (login).
 - UC7 : un utilisateur doit pouvoir se déconnecter (logout).
 
-Vous allez intégrer le frontend de **myMovies** réalisé au module 3 (Exercice 3.1) avec la RESTful API développée au module 5 (Exercice 5.2).
+Vous allez continuer le développement du frontend de **myMovies** réalisé au module 3 (Exercice 3.1) et de la RESTful API développée au module 5 (Exercice 5.2).
 
 L'application **myMovies** doit maintenant autoriser les opérations suivantes aux utilisateurs authentifiés uniquement :
 -	UC2 : l'ajout d'une ressource de type films via un formulaire d'ajout d'un film.
@@ -1337,7 +1337,7 @@ Voici les opérations qui doivent être mises à disposition par votre API :
 | **films/{id}** | GET | Non | READ ONE : Lire la ressource identifiée |
 | **films** | POST | JWT | CREATE ONE : Créer une ressource basée sur les données de la requête |
 | **films/{id}** | DELETE | JWT | DELETE ONE : Effacer la ressource identifiée |
-| **films/{id}** | PUT | JWT | UPDATE ONE : Replacer l'entièreté de la ressource par les données de la requête |
+| **films/{id}** | PATCH | JWT | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
 
 
 Afin de réaliser cet exercice, voici les contraintes d'implémentation :
@@ -1349,15 +1349,19 @@ votre web repository (normalement appelé **web2**), le répertoire nommé
 -	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
 - Veuillez développer de manière incrémentale votre IHM, use case par use case, en vérifiant le bon fonctionnement de chaque cas d'utilisation avant de passer au développement de l'UC suivant.  
 Nous vous recommandons de commencer par le mécanisme d'authentification en ajoutant l'UC5 et l'UC6. Notez qu'il est facile de démarrer avec l'UC6 pour le login d'admin qui existe déjà au niveau de l'API par défaut. Pensez à bien mettre à jour votre **Navbar** pour afficher les bons menus :
-  - si l'utilisateur est anonyme : liens uniquement vers UC1 (view movies), UC5 (login) & UC6 (register) ;
-  - si l'utilisateur est authentifié : liens uniquement vers UC1 (view movies) / UC2 (create) / UC3 (delete) / UC4 (update), UC7 (logout).
+  - si l'utilisateur est anonyme : liens uniquement vers la HomePage, vers l'UC1 (view movies), UC5 (login) & UC6 (register) ;
+  - si l'utilisateur est authentifié : liens uniquement vers la HomePage, vers l'UC1 (view movies) / UC2 (create) / UC3 (delete) / UC4 (update), UC7 (logout).
 - Faites attention, il n'est pas autorisé, pour des raisons d'ergonomie, que le frontend offre les fonctionnalités d'écriture de ressources si l'utilisateur n'est pas authentifié : UC2 (create), UC3 (delete) et UC4 (update) sont des opérations invisibles pour un utilisateur anonyme.
 
 #### 🤝 Tips
-Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API : [a) Authentification sécurisée et autorisation d'accès aux opérations d'une RESTful API via JWT](#a).
-
-Occupez-vous ensuite du frontend : [b) Utilisation de JWT au sein d'une IHM](#b).
-Attention à ne pas oublier de mettre à jour votre Router, d'ajouter les token dans le header de vos requêtes via fetch...
+- Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API et à copier / coller les fichiers utiles (**authorize.js**, **users.js**, **auths.js**...) : [a) Authentification sécurisée et autorisation d'accès aux opérations d'une RESTful API via JWT](#a).
+- N'oubliez pas de tester chaque opération. Par exemple, il faut bien vérifier que l'on ne peut pas créer une pizza sans token via REST Client.
+- Occupez-vous ensuite du frontend en copiant collant les fichiers utiles trouvés dans le tutoriel associé à cette partie (**RegisterPage**, **LoginPage**, **Logout**, **auths**, **Navbar**...) : [b) Utilisation de JWT au sein d'une IHM](#b).  
+Attention à ne pas oublier de mettre à jour votre Router (nouvelles pages pour le register, le login et le logout), la Navbar (différent affichage pour un utilisateur anonyme que pour un utilisateur connecté), d'ajouter les token dans le header de vos requêtes via fetch... 
+- Concernant le Router, il faut mettre à jour `onNavBarClick` pour que les gestionnaires d'evénéments restent attachés même quand la Navbar est réaffichée.
+- 💭 Comment rendre invisible les opérations d'écriture de films ?  
+Par exemple, vous pourriez afficher les boutons **Delete** et **Save** que si l'utilisateur est authentifié.  
+De même, si l'utilisateur est anonyme, les cellules associées aux films ne devraient pas être éditables.
 
 Veuillez faire un **commit** de votre code avec le message suivant : 
 "**myMovies : module 7 : auths**"".
@@ -1698,7 +1702,7 @@ En cas de souci, vous pouvez utiliser le code du tutoriel :
 
 A l'exercice précédent (Exercice 7.1), vous avez développé le mécanisme d'authentification et d'autorisation d'accès à des opération de votre RESTful API gérant des films.
 
-Néanmoins, cette API n'est pas encore sécurisée. Les passwords sont disponibles en clair dans un fichier JSON et il est probable de faire des attaques XSS.
+Néanmoins, cette API n'est pas encore sécurisée. Les passwords sont disponibles en clair dans un fichier JSON et il est possible de faire des attaques XSS.
 
 Commencez par hacker votre site en faisant une injection de Javascript. Ce script "malicieux" affichera un pop-up à chaque utilisateur affichant la liste des films ; ce pop-up sera suffisamment explicite pour que vos utilisateurs sachent qu'ils ont été piratés.
 
@@ -1711,7 +1715,9 @@ votre web repository (normalement appelé **web2**), le répertoire nommé
 **/exercises/module7/7.2/api**.
 
 #### 🤝 Tips
-Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API : [d) Sécurisation de RESTful API](#d)
+Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API : [d) Sécurisation de RESTful API](#d).
+
+⚡ N'oubliez pas que vos méthodes de login et de register deviennent asynchrones, cela impose de bien chaîner les traitements dans le router, sinon vous risquez de renvoyer des objets vides en réponses aux requêtes.
 
 Veuillez faire un **commit** de votre code avec le message suivant : 
 "**myMovies : module 7 : safe api**"".

@@ -713,6 +713,19 @@ Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 - Faites un refactor de votre API gérant les films afin que les ressources persistent au sein du fichier **/data/films.json** ou **/data/movies.json**.
 - Veuillez tester toutes les fonctions de la RESTful API pour la collection de films à l'aide du REST Client en copiant les requêtes développées pour l'Exercice 4.1 (fichier **films.http** du répertoire **REST Client**). Normalement, il n'y a pas de nouvelles requêtes à écrire, il suffit juste de les exécuter.
 
+#### 🤝 Tips 
+- ⚡ Si vous avez fait un clone du boilerplate, attention au Git dans le Git, n'oubliez pas de supprimer le dossier **.git** présent dans votre nouveau projet.
+- Vous pourriez simplement commencer en faisant un refactor de votre code sans gérer la persistance, simplement en utilisant le **linter** et **formater**.  
+Tant que nous n'installez pas les packages, le linter n'est pas activé dans VS Code. Il faut aussi fermer et réouvrir les fichiers une fois les packages installés pour que les erreurs de style apparaissent dans VS Code.  
+Il est intéressant de corriger toutes les erreurs de style avant de s'attaquer à la persistance.
+- Vous avez un problème du type "no such file or directory" ? N'hésitez pas à créer un chemin correct vers votre fichier JSON à l'aide de la méthode `join` de l'objet **path** :
+``` js
+const path = require('node:path');
+
+const jsonDbPath = path.join(__dirname, '/../data/films.json');
+```
+- Vous pourriez avoir besoin de convertir une string vers un entier, par exemple : `const id = parseInt(req.params.id, 10);`.
+
 Le code de votre application web doit donc se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module5/5.1**.
 
 Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : module 5 : persistent API**".
