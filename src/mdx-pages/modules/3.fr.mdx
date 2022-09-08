@@ -1273,17 +1273,18 @@ Voici ce qu'il ne faut faire pour bien router ses écrans :
 - **`/src/Components/Pages`** : c'est le répertoire où il est recommandé d'ajouter vos futures pages ou pour mettre à jour la HomePage.
 
 # <a id="c"></a> c) Exercice 3.1 : Gestion locale d'une collection de films
-Veuillez continuer le développement de **myMovies** afin de permettre la navigation et de proposer une nouvelle page permettant d'enregistrer temporairement et localement des films et d'afficher les films enregistrés en dessous du formulaire.
+Veuillez continuer le développement de **myMovies** afin de permettre la navigation et de proposer deux nouvelles pages permettant d'enregistrer temporairement et localement des films sur une page et d'afficher les films enregistrés sur une autre page.
+
+A ce stade-ci de nos connaissances, nous acceptons qu'à chaque refresh du site, on redémarre avec une liste vide de films.
 
 Votre formulaire doit contenir les champs :
--	**title** : titre du film
--	**duration** : durée du film en minutes
--	**budget** : pour informer du prix qu'a couté la production du film, en millions
--	**link** : pour donner un lien vers la description du film 
-(lien vers imdb, rottentomatoes ou autre)
+-	**title** : titre du film ;
+-	**duration** : durée du film en minutes ;
+-	**budget** : pour informer du prix qu'a couté la production du film, en millions ;
+-	**link** : pour donner un lien vers la description du film (lien vers imdb, rottentomatoes ou autre).
 
-A chaque submit du formulaire, vous allez afficher la liste des films "enregistrés".  
-Voici un exemple d'affichage :
+A chaque submit du formulaire, vous allez naviguer vers la page affichant la liste des films "enregistrés".  
+Voici un exemple d'affichage de la page affichant la liste des films :
 
 | Title |	Duration (min) |	Budget (million) |
 |---|---|---|
@@ -1297,8 +1298,8 @@ Veuillez valider les champs de votre formulaire.
 
 #### 🤝 Tips 
 - Utilisez le [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git) pour ajouter à votre projet **exercises/myMovies** tous les répertoires et fichiers utiles.
-- Faites d'abord une version statique de votre IHM ; mettez en place la navigation, la HomePage qui reprendra l'UI que vous avez fait au module 2 ainsi qu'une version sans interactivité de la MooviePage (contenant le formulaire demandé).
-- Une fois que la version statique réagit correctement, passez à l'ajout de l'interactivité au sein de la MooviePage.
+- Faites d'abord une version statique de votre IHM ; mettez en place la navigation, la HomePage qui reprendra l'UI que vous avez fait au module 2 ainsi qu'une version sans interactivité de la ViewMoviePage (affichant les films) et de la AddMoviePage (contenant le formulaire demandé).
+- Une fois que la version statique réagit correctement, passez à l'ajout de l'interactivité au sein de chacune des pages.
 - Créez une structure en mémoire pour accueillir les données d'un film, un array. Lorsqu'un formulaire est soumis et est valide, vous pouvez ajouter un objet (object literal) à votre array. Voici un exemple d'ajout d'un film :
 ```js
 const films = [];
@@ -1309,7 +1310,9 @@ films.push({
   link: 'https://amazing-javascript.world',
 });
 ```
-- N'hésitez pas à réutiliser une méthode que vous auriez développé à l'Exercice 2.3.
+- 💭 Okay, j'ai un array de films... Mais comment partager cet array avec ma ViewMoviePage et avec AddMoviePage ?  
+Pensez à la notion de module JS. Une bonne solution serait de créer un nouveau script, par exemple **movies.js**. Ce script déclarerait un array, et plutôt que de le partager (c'est interdit de modifier un objet importé en ECMAScript), de partager des méthodes qui pourraient s'appeler, par exemple, **readAllMovies** et **addOneMovie**.
+- N'hésitez pas à réutiliser une méthode que vous auriez développée à l'Exercice 2.3.
 
 Veuillez faire un **commit** de votre code avec le message suivant : 
 "**myMovies : module 3 : refactoring & MooviePage**"".
@@ -1529,7 +1532,7 @@ Veuillez retravailler l'animation pour que :
 -	N'hésitez pas à découvrir la documentation de **requestAnimationFrame()** pour voir comment stopper une animation.  
 Toujours pas d'idée ? N'hésitez pas à utiliser la fonction **cancelAnimationFrame()**.
 -	Vous pouvez utiliser le type d'événement "**contextmenu**" pour gérer les clics droits. Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event)
--	Vous pouvez utiliser le type d'événement "**keydown**" pour gérer l'appui sur les touches **+** ou **-**.  
+-	Vous pouvez écouter le type d'événement "**keydown**" sur l'objet **document** pour gérer l'appui sur les touches **+** ou **-**.  
 Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event).
 -	Si vous avez besoin de générer un nombre aléatoire de 0 à 255 : 
 ```js
