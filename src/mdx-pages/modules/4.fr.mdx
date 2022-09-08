@@ -922,8 +922,8 @@ router.post('/', (req, res) => {
   if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
 
   const lastItemIndex = MENU?.length !== 0 ? MENU.length - 1 : undefined;
-  const lastId = lastItemIndex ? MENU[lastItemIndex]?.id : undefined;
-  const nextId = lastItemIndex !== 0 ? lastId + 1 : 1;
+  const lastId = lastItemIndex !== undefined ? MENU[lastItemIndex]?.id : 0;
+  const nextId = lastId + 1;
 
   const newPizza = {
     id: nextId,
@@ -1075,8 +1075,8 @@ router.post('/', (req, res) => {
   if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
 
   const lastItemIndex = MENU?.length !== 0 ? MENU.length - 1 : undefined;
-  const lastId = lastItemIndex ? MENU[lastItemIndex]?.id : undefined;
-  const nextId = lastItemIndex !== 0 ? lastId + 1 : 1;
+  const lastId = lastItemIndex !== undefined ? MENU[lastItemIndex]?.id : 0;
+  const nextId = lastId + 1;
 
   const newPizza = {
     id: nextId,
@@ -1246,13 +1246,22 @@ Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 | **films/{id}** | PATCH | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
 
 - Une ressource de type **films** doit contenir les propriétés suivantes :
-  - **id** : un entier
+  - **id** : un entier 
   - **title** : titre du film (String)
-  - **duration** : durée du film en minutes
-  - **budget** : pour informer du coût qu'a couté la production du film, en millions
+  - **duration** : durée du film en minutes ; elle doit être un nombre positif (pas une string !).
+  - **budget** : pour informer du coût qu'a couté la production du film, en millions ; le budget doit être un nombre positif (pas une string !).
   - **link** : pour donner une URL vers la description du film (lien vers imdb, rottentomatoes ou autre)
 -	Les ressources ne doivent pas persister : dès lors, ajoutez les données associées aux films dans un array.
+- Veuillez bien valider les paramètres reçu par les opérations de vos API (vérifier par exemple que **budget** et **duration** sont des **number** positifs) et veuillez renvoyer les bons status codes en cas d'erreur.
 -	Veuillez tester toutes les fonctions de la RESTful API pour la collection de films à l'aide du REST Client dans VS Code (extension à installer au sein de VS Code). Veuillez ajouter vos requêtes au sein du fichier **films.http** dans le répertoire **REST Client** du dossier associé à cet exercice.
+
+#### 🤝 Tips
+- N'hésitez pas à utiliser le générateur d'applications d'Express pour initier votre projet.
+- Pour le filtre sur les films, vous allez récupérer un paramètre de requête.  
+⚡ Attention, le signe **-** est un opérateur en JS, vous ne pouvez pas récupérer le paramètre de requête via `req.query.minimum-duration`...  
+💭 Mais alors comment faire ?  
+On accède aussi au propriété d'un objet à l'aide d'un array, ici ça serait via `req.query['minimum-duration']`.
+- N'hésitez pas à vous inspirer du code du tutoriel [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
 
 Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module4/4.1**.
 
