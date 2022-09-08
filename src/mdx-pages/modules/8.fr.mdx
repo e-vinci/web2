@@ -648,7 +648,16 @@ votre web repository (normalement appelé **web2**), le répertoire nommé
 #### 🤝 Tips
 Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API : [a.2) Persistance de données de sessions via le web storage](#a2).
 
-Vous allez aussi pouvoir refaire un petit peu de gestion d'événements pour détecter les clics sur une checkbox.
+Nous vous recommandons, dans un premier temps, de gérer les sessions dans le localStorage, sans ajouter la fonctionnalité **Remember me**.  
+Une fois que c'est fonctionnel, il sera temps de gérer le **Remember me**.
+
+Vous allez pouvoir refaire un peu de gestion d'événements pour détecter les clics sur une checkbox. N'hésitez pas à voir ce que propose Bootstrap 5 pour les checkboxes.
+
+💭 Prenez un moment pour voir comment gérer la persistance de l'info 'Remember me'...  
+Est-ce que ça n'est pas une donnée de session qui doit persister lorsque l'utilisateur ferme son browser ?  
+En effet, point de vue ergonomie, il est intéressant que le dernier choix de l'utilisateur soit toujours présenté. La checkbox devrait donc rester **checked** ou pas, tant que l'utilisateur ne change pas son état, via un clic, ou via un Logout ; et cet état doit subsister aux travers des connexions (ouvertures / fermetures du browser).
+
+Si vous gérez bien l'info 'Remember me' au travers des sessions, vous devriez facilement décider si les données de **authenticatedUser** sont à sauvegarder dans le localStorage ou le sessionStorage.
 
 Veuillez faire un **commit** de votre code avec le message suivant : 
 "**myMovies : module 8 : web storage**"".
