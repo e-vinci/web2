@@ -6,8 +6,8 @@ exports.sourceNodes = async ({ actions }, pluginOptions) => {
   console.log('PLUGINOPTIONS : ', pluginOptions);
 
   if (
-    pluginOptions?.projectGroupName === undefined ||
-    pluginOptions.projectGroupName?.length === 0
+    pluginOptions?.projectGroupNames === undefined ||
+    pluginOptions.projectGroupNames?.length === 0
   ) {
     createEmptyProject(createNode);
     return;
