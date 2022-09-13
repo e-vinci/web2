@@ -52,7 +52,7 @@ Pour chaque librairie externe que nous souhaitons ajouter, nous aurons à inclur
 Nous allons donc facilement, lors du développement d'une application web, utiliser une ou plusieurs dizaine(s) de librairies externes, que l'on appelle aussi dépendances.
 
 La gestion de ces dépendances est difficile à gérer et à maintenir :
-- si vous souhaitez avoir des versions locales de ces dépendances, vous devez vous même manuellement télécharger les fichiers **.js** et **.css** associés à vos librairies, inclure ensuite le bon chemin pour la propriété **src** des balises **scripts**.
+- si vous souhaitez avoir des versions locales de ces dépendances, vous devez vous même manuellement télécharger les fichiers **.js** et **.css** associés à vos librairies, inclure ensuite le bon chemin pour la propriété **src** des balises **scripts** associées.
 - en cas de nouvelle version d'une librairie, vous êtes difficilement informé ;
 - la mise à jour d'une dépendance impose pas mal de manipulations : si vous utilisez des versions locales des dépendances, re-téléchargement de celles-ci, changement des propriétés **src** des balises **scripts** impactées...
 - lorsque vous travaillez à plusieurs développeurs sur un même projet, pour que tout le monde obtienne les dépendances si vous utiliser des versions locales au serveur web, vous risquez de devoir mettre celles-ci en configuration (via Gitlab ou Github) ; c'est vraiment dommage de mettre en configuration les dépendances, le code de quelqu'un d'autre.
@@ -877,7 +877,7 @@ En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : 
 ## <a id="c1"></a>c.1) Introduction
 Nous souhaitons parfois générer des parties d'IHM dynamiquement, à l'aide de JS.
 
-Nous pourrions souhaiter générer de l'HMTL dynamiquement pour plusieurs raisons. Par exemple, si nous souhaiterions afficher différentes pages sans faire appel au serveur.
+Nous pourrions souhaiter générer de l'HMTL dynamiquement pour plusieurs raisons. Par exemple, si nous souhaitions afficher différentes pages sans faire appel au serveur.
 Lors d'un clic sur un élément d'une Navbar, nous pourrions générer dynamiquement l'HTML de la page associée à cet élément.
 
 Un autre exemple serait l'affichage d'un tableau HTML suite à la réception de données envoyées par un web service.
@@ -894,7 +894,7 @@ Nous souhaitons ajouter un menu à notre site de la pizzeria à générer à par
 Voici le nouveau code à ajouter pour générer ce menu au sein de **/src/index.js** : 
 
 
-```js numbered {5-31,37,46-81}
+```js numbered {5-31,37,46-86}
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './stylesheets/main.css';
 import 'animate.css';
@@ -994,7 +994,7 @@ Au passage sur le menu, nous souhaitons changer la couleur du background afin qu
 
 Voici le code mis à jour de **index.js** :
 
-```js numbered {39,85-94}
+```js numbered {39,90-99}
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './stylesheets/main.css';
 import 'animate.css';
@@ -1141,7 +1141,8 @@ const mainWrapper = document.querySelector('main');
 mainWrapper.innerHTML += '<figcaption class="text-light text-decoration-underline">Our pizzas</figcaption>';
 ```
 
-⚡ L'update du DOM d'un élément fait un reset de tous les écouteurs d'événements précédemment attachés ! Pensez-y en cas de souci avec vos écouteurs d'événements 😉.
+⚡ L'update du DOM d'un élément fait un reset de tous les écouteurs d'événements précédemment attachés ! Pensez-y en cas de souci avec vos écouteurs d'événements 😉.  
+Dans notre exemple, la gestion des passages de la souris sur le menu des pizzas ne serait plus fonctionnelle.
 
 ## <a id="c4"></a>c.4) Génération d'HTML à partir de Nodes
 Il est possible de directement créer un Node (ou HTML element) à l'aide de la méthode **`document.createElement()`**.
@@ -1419,7 +1420,7 @@ function renderPizzaImage(pizzaUrl) {
 }
 ```
 
-Le type du Asset Module configuré dans **webpack.config.js** est **'asset/resource'**.  
+Le type du Asset Module configuré dans le fichier **webpack.config.js** est **'asset/resource'**.  
 Cela signifie que pour chaque fichier importé dans le JS, il sera émis dans le "output directory", (ou "build directory"), généralement dans **/dist**, avec comme non de fichier qqch qui ressemble à un hash (par exemple 151cfcfa1bd74779aadb.png) et leur chemins (paths) seront injecté dans le bundle.
 
 Dans l'exemple, le chemin de l'image **pizza2.png** lors de l'exécution de l'application sera donné dans la variable **pizzaImage**.
@@ -1436,7 +1437,7 @@ Si vous souhaitez plus d'informations sur la gestion des assets via Webpack, vou
 # <a id="d"></a> d) Debbuging d'un frontend tournant sous Webpack
 💭 Qui est votre meilleur ami ?
 
-Il est possible qu'à ce stade-ci, vous ignorez une des bonnes réponses, car pour les développeurs, le debugger est son meilleur ami !
+Il est possible qu'à ce stade-ci, vous ignorez une des bonnes réponses, car pour les développeurs, le debugger est leur meilleur ami !
 
 Le debugger est toujours là pour vous, prêt à vous faire voyager pas à pas dans votre code, à vous donner des pistes dans les moments difficiles, sans imposer de solutions, il vous offre une liberté totale !  Et il acceptera toujours votre code tel qu'il est, sous réserve bien sûr que celui-ci compile.  
 C'est exactement ce que l'on attend d'un ami 😁.
@@ -1518,13 +1519,15 @@ Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémenta
 - Créez une 1ère fonction nommée **`createArray`** qui retourne un **Array** à deux dimensions avec :
   - Comme valeur pour chaque élément : une String au format `"chaine de base[numéro de ligne][numéro de colonne]"`,
   - Sur base de 3 paramètres : le nombre de lignes, de colonnes, et la chaine de base à afficher dans chaque élément du tableau.
--	Créez une deuxième fonction nommée **`createHtmlTableAsString`** qui renvoie, sous forme de string, une table HTML basée sur l'**Array** créé par la 1ère fonction.
+-	Créez une deuxième fonction nommée **`createHtmlTableAsString`** qui renvoie, sous forme de string, une table HTML basée sur un **Array** ; vous lui passerez l'array créé par la 1ère fonction.
 -	Appelez ces deux fonctions afin d'afficher la table de manière dynamique au sein d'un "wrapper" (une **div** est conseillée).
 
 
 #### 🤝 Tips 
 - Vous pouvez utiliser la propriété **.innerHtml** de votre wrapper pour afficher dynamiquement la table.
 - Pour gérer le submit d'un formulaire, il existe plusieurs façons de le faire. La façon recommandée est d'écouter les événements de type "submit" sur le formulaire. Il est ainsi possible de faire un submit d'un formulaire à l'aide de la touche **Enter**.
+- Comment accéder aux champs de votre formulaire lors du "submit" ?  
+La valeur d'un champs est accessible via la propriété **value** d'une **input**.
 - N'oubliez pas que lors d'un clic sur un élément qui amène à un "submit", le comportement par défaut du formulaire est de recharger la page. Vous devez donc stopper ce comportement par défaut pour assurer que le tableau que vous générez ne soit pas "effacé".
 
 
