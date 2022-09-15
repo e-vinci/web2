@@ -446,7 +446,7 @@ La fonction middleware **authorize** renvoie directement un code d'erreur **401 
 Vous pourriez aussi imaginer le workflow où le client envoie un token valide, mais l'utilisateur associé n'est pas admin. Dans ce cas-ci, **authorize** ferait appel à **isAdmin**, mais **isAdmin** renverrait directement un code d'erreur **403 Forbidden** au client.  
 En effet, l'API indiquerait ainsi qu'elle aurait vérifié que l'utilisateur est bien authentifié, mais que celui ne possède pas les privilèges suffisant pour accéder à l'opération demandée.
 
-😨 Wow, le workflow d'autorisation pour la création d'une pizza est assez long.  Nous allons maintenant l'implémenter. Nous vous inquiétez pas, ce qui importe dans le code qui va suivre, ça n'est pas de savoir écrire tout le code, mais de bien comprendre le mécanisme. En effet, en règle générale, vous allez utiliser des librairies vous permettant d'autoriser les accès aux opérations de vos API. Vous écrirez donc rarement le mécanisme d'autorisation, par contre, vous devrez pouvoir utiliser ces mécanismes.
+😨 Wow, le workflow d'autorisation pour la création d'une pizza est assez long.  Nous allons maintenant l'implémenter. Nous vous inquiétez pas, ce qui importe dans le code qui va suivre, ce n'est pas de savoir écrire tout le code, mais de bien comprendre le mécanisme. En effet, en règle générale, vous allez utiliser des librairies vous permettant d'autoriser les accès aux opérations de vos API. Vous écrirez donc rarement le mécanisme d'autorisation, par contre, vous devrez pouvoir utiliser ces mécanismes.
 
 Veuillez créer les nouvelles fonctions middleware **authorize** et **isAdmin** au sein d'un nouveau fichier **/utils/auths.js** :
 ```js numbered {1,4,7,11,}
@@ -1281,7 +1281,7 @@ La raison est simple, l'API est développée indépendamment des applications cl
 💭 OK, tout est "safe" si l'API fait toutes les vérifications nécessaires. Néanmoins, n'y a-t-il pas des règles de bonnes pratiques au niveau des IHM, pour ne pas permettre de faire n'importe quelles requêtes vers des API ?  
 Et bien oui, au niveau des IHM, pour des questions d'**ergonomie**, d'expérience utilisateur, on va faire en sorte :
 - de ne pas offrir des opérations qui ne seront pas autorisées. Par exemple, dans le cadre de ce tutoriel sur un site permettant de gérer une pizzeria, si l'utilisateur n'est pas **admin**, alors il ne faut pas frustrer les utilisateurs en leur faisant croire qu'ils ont accès à l'opération de créer une pizza ! Imaginez-vous, vous créer une nouvelle pizza de 32 ingrédients, et lors de la soumission, vous recevez un message comme quoi vous n'êtes pas l'admin du site et que vous n'avez donc pas le droit de créer une pizza 😲!
-- de ne pas demander du travail à une API quand l'IHM peut détecter que ça n'est pas utile. 
+- de ne pas demander du travail à une API quand l'IHM peut détecter que ce n'est pas utile. 
 Ainsi, quand une IHM offre des formulaires, qui amèneront à des requêtes vers des API, on évitera d'autoriser la soumission des données tant que les champs n'ont pas été validés. Tout ce que l'IHM peut valider côté client, elle doit le faire. Le feedback sera plus rapide pour l'utilisateur, et les ressources de l'API seront économisées (pas d'appel inutile).
 
 N'hésitez donc pas à mettre à jour ce tutoriel pour faire en sorte de n'afficher "Add a pizza" que si l'utilisateur est **admin**.

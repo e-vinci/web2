@@ -96,7 +96,7 @@ Il existe plusieurs façons d'associer du JS à une page HTML.
 
 Pour écrire du code JS, de l'HTML ou du CSS, vous aurez besoin d'un éditeur de code. Il existe beaucoup d'éditeurs.
 
-👍 Pour écrire du code, dans ce cours, nous vous recommandons d'installer, dès maintenant si ça n'est pas déjà fait, **Visual Studio Code** : https://code.visualstudio.com/download [[R.18]](/references/#r18).
+👍 Pour écrire du code, dans ce cours, nous vous recommandons d'installer, dès maintenant si ce n'est pas déjà fait, **Visual Studio Code** : https://code.visualstudio.com/download [[R.18]](/references/#r18).
 
 Lors de l'installation, nous vous recommandons de sélectionner l'option "Open with code". Cela vous permettra d'ouvrir un projet directement en faisant un clic droit sur un dossier.
 
@@ -179,7 +179,7 @@ Une fois installé, vous pouvez lancer votre page web en faisant :
 
 🎉 Votre browser par défaut s'ouvrira, affichant votre toute première page web contenant du JS côté client !
 
-Si ça n'est pas Chrome qui s'ouvre, nous vous recommandons de changer les préférences de votre OS. Sous Windows, dans la barre de recherche, vous trouverez facilement l'utilitaire pour le faire. Par exemple, pour un OS Windows en anglais : **Default apps**, **Web browser**.
+Si  n'est pas Chrome qui s'ouvre, nous vous recommandons de changer les préférences de votre OS. Sous Windows, dans la barre de recherche, vous trouverez facilement l'utilitaire pour le faire. Par exemple, pour un OS Windows en anglais : **Default apps**, **Web browser**.
 
 👍 Il est recommandé de créer des fichiers séparés pour chaque catégorie de code : **.html**, **.js**, **.css**.
 
@@ -520,8 +520,8 @@ Voici un exemple :
   <body>
     <button id="myBtn1">Click please</button>
     <button id="myBtn2">Click please</button>
-    <button id="myBtn3">Click please</button>
-    <button id="myBtn4">Remove extra actions</button>
+    <button id="myBtn3">Remove extra actions on button 2</button>
+    <button id="myBtn4">Click please</button>
     <script src="index.js"></script>
   </body>
 </html>
@@ -530,33 +530,38 @@ Voici un exemple :
 Voici comment on pourrait gérer des clics sur ces boutons :
 
 ```js
-const btn1 = document.querySelector("#myBtn1");
-const btn2 = document.querySelector("#myBtn2");
-const buttons = document.querySelectorAll("button");
+const btn1 = document.querySelector('#myBtn1');
+const btn2 = document.querySelector('#myBtn2');
+const buttons = document.querySelectorAll('button');
 const btn3 = buttons[2]; // fancy way to get a reference...
-const btn4 = document.querySelector("#myBtn4");
+const btn4 = document.querySelector('#myBtn4');
 
-btn1.addEventListener("click", () => {
-  btn1.innerText = "I have been clicked !";
-  console.log("onClickHandlerForBtn1::click");
+btn1.addEventListener('click', () => {
+  btn1.innerText = 'I have been clicked !';
+  console.log('onClickHandlerForBtn1::click');
 });
-btn2.addEventListener("click", onClickHandlerForBtn2);
-btn2.addEventListener("click", onClickHandlerForBtnExtra);
-btn3.addEventListener("click", onClickHandlerForBtn3);
+btn2.addEventListener('click', onClickHandlerForBtn2);
+btn2.addEventListener('click', onClickHandlerForBtnExtra);
+btn3.addEventListener('click', onClickHandlerForBtn3);
 
 function onClickHandlerForBtn2() {
-  btn2.innerText = "I have also been clicked";
-  console.log("onClickHandlerForBtn2::click");
+  btn2.innerText = 'I have also been clicked';
+  console.log('onClickHandlerForBtn2::click');
 }
 
 function onClickHandlerForBtn3() {
-  console.log("onClickHandlerForBtn3::click");
-  btn2.removeEventListener("click", onClickHandlerForBtnExtra);
+  btn2.removeEventListener('click', onClickHandlerForBtnExtra);
+  console.log('onClickHandlerForBtn3::click');
 }
 
 function onClickHandlerForBtnExtra() {
-  console.log("onClickHandlerForBtnExtra::click");
+  console.log('onClickHandlerForBtnExtra::click');
 }
+
+btn4.onclick = function() {
+  btn4.innerText = 'You clicked on me : )';
+  console.log('onClickHandlerForBtn4::click');
+};
 ```
 
 N'hésitez pas à exécuter ce code.
@@ -759,7 +764,7 @@ const btn2 = document.querySelector("#myBtn2");
 btn1.addEventListener("click", delayedAlert);
 btn2.addEventListener("click", clearAlert);
 
-var timeoutId;
+let timeoutID;
 const delayInSeconds = 2;
 const delayInMiliSeconds = delayInSeconds * 1000;
 
@@ -938,7 +943,7 @@ Voici ce que devrait donner à ce stade-ci votre **index.html** :
 </html>
 ```
 
-Exécutez cette page web, même si ça n'est pas très esthétique, tous les éléments sont présents.
+Exécutez cette page web, même si ce n'est pas très esthétique, tous les éléments sont présents.
 
 ## <a id="b4.4"></a> b.4.4) Mise en forme
 
@@ -1173,7 +1178,7 @@ dist/*
 #!frontend-essentials/step-1/dist
 ```
 
-Si ça n'est pas déjà fait, veuillez [installer Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) [[R.34]](/references/#r34).
+Si ce n'est pas déjà fait, veuillez [installer Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) [[R.34]](/references/#r34).
 
 Veuillez créer un web repo portant le nom **web2**.
 
@@ -1196,7 +1201,7 @@ Néanmoins, si vous préférez utiliser Gitlab, veuillez utiliser la plateforme 
   - e-Baron (Raphael Baroni)
   - NB : pour ce faire, dans l'interface web de GitLab : **Settings**, **Members**, **Invite member**, **Choose a role permission : Developer**.
 
-⚡⚡⚡ Veuillez soumettre le lien vers votre web repository (qqch du genre https://github.com/votre_username/web2.git ou https://gitlab.vinci.be/votre_username/web2.git) via le devoir associé sous Moodle.  
+⚡⚡⚡ Veuillez soumettre le lien vers votre web repository (qqch du genre https://github.com/votre_username/web2.git ou https://gitlab.vinci.be/votre_username/web2.git) via ce [formulaire](https://forms.office.com/r/1e5hNWxUJg).  
 Pour trouver le lien vers votre repo :
 - dans GitHub : cliquez sur le bouton **Code** dans votre web repo, et copiez l'info associée à l'onglet **HTTPS**.
 - dans Gitlab : il vous suffit de cliquer sur **Clone** dans votre projet, et de prendre l'info associée à **Clone with HTTPS**.
