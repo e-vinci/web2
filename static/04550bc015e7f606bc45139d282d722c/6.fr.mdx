@@ -221,7 +221,7 @@ function attachOnMouseEventsToGoGreen() {
 
 On essaie d'accéder à la table HTML qui doit être créée par la méthode **`renderMenuFromString()`** qui n'a pas encore été appelée...  
 💭 Mais pourquoi la table n'a pas été créée alors que le morceau de code **`attachOnMouseEventsToGoGreen(pizzas);`** se trouve plus haut ?  
-Hé bien c'est ça la programmation asynchrone, ça n'est qu'une fois le programme principal exécuté que les tâches asynchrones, de priorité plus basses, pourront s'exécuter.
+Hé bien c'est ça la programmation asynchrone, ce n'est qu'une fois le programme principal exécuté que les tâches asynchrones, de priorité plus basses, pourront s'exécuter.
 
 Comment réecrire ce code pour chaîner l'appel de **`attachOnMouseEventsToGoGreen(pizzas);`**
 au succès de l'opération **fetch** ?
