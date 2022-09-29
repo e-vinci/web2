@@ -104,7 +104,7 @@ Lorsqu'un objet a été exporté via un "default export", on l'importe en lui do
 Si l'on souhaite importer la fonction **Header** exportée précédemment :
 
 ```js
-import Header from ''./Components/Header/Header';
+import Header from './Components/Header/Header';
 ```
 
 👍 Il est recommandé, lorsqu'on indique le chemin du module que l'on importe, de ne pas indiquer l'extension du nom de fichier (**.js**). Cela rend le code plus lisible. D'ailleurs, votre Linter va vous forcer à ne pas indiquer les extensions de vos modules.
@@ -141,7 +141,7 @@ Par exemple, pour importer les fonctions **setPageTitle** et **setHeaderTitle** 
 import { setPageTitle, setHeaderTitle } from './utils/render';;
 ```
 
-Si l'on souhaitait changer le nom, on pourrait le faire via **as** :
+Si l'on souhaitait changer le nom, on pourrait le faire via le mot-clé **as** :
 
 ```js
 import { setPageTitle as renderPageTitle, setHeaderTitle as renderHeaderTitle} from './utils/render';;
@@ -171,7 +171,7 @@ Généralement, si une partie d'un script pourrait être réutilisable dans une 
 Pour le visuel d'une IHM, il est intéressant de découper l'UI en composants fonctionnels.  
 Par exemple, le layout d'un écran peut souvent être découpé en :
 - Un header : c'est un composant fonctionnel qui sera réutilisé pour la majorité des écrans.
-- Une page : c'est un composant fonctionnel qui sera souvent différent pour chaque écran. On pourrait imaginer une découpe ou ce qui définit un écran, c'est sa page associée.
+- Une page : c'est un composant fonctionnel qui sera souvent différent pour chaque écran. On pourrait imaginer une découpe où ce qui définit un écran, c'est sa page associée.
 - Un footer : c'est un composant fonctionnel qui sera réutilisé pour la majorité des écrans.
 
 Chacun peut donner des noms différents à ses éléments d'UI ainsi que prévoir des découpes en éléments à des niveaux différents. Ce qui compte, c'est d'éviter la duplication de code et de créer du code lisible.
@@ -1014,7 +1014,7 @@ L'**History API** du browser offre cette fonction **`window.history.pushState(st
 
 Mettez à jour le code de **Router.js** pour créer une entrée dans l'historique du browser et ajouter l'URL au browser :
 
-```js numbered {20,25}
+```js numbered {20,26}
 import HomePage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
 import RegisterPage from '../Pages/RegisterPage';
@@ -1284,7 +1284,7 @@ Votre formulaire doit contenir les champs :
 -	**link** : pour donner un lien vers la description du film (lien vers imdb, rottentomatoes ou autre).
 
 A chaque submit du formulaire, vous allez naviguer vers la page affichant la liste des films "enregistrés".  
-Voici un exemple d'affichage de la page affichant la liste des films :
+Voici un exemple de ce que pourrait être la page affichant la liste des films :
 
 | Title |	Duration (min) |	Budget (million) |
 |---|---|---|
@@ -1313,7 +1313,6 @@ films.push({
 ```
 - 💭 Okay, j'ai un array de films... Mais comment partager cet array avec ma ViewMoviePage et avec AddMoviePage ?  
 Pensez à la notion de module JS. Une bonne solution serait de créer un nouveau script, par exemple **movies.js**. Ce script déclarerait un array, et plutôt que de le partager (c'est interdit de modifier un objet importé en ECMAScript), de partager des méthodes qui pourraient s'appeler, par exemple, **readAllMovies** et **addOneMovie**.
-- N'hésitez pas à réutiliser une méthode que vous auriez développée à l'Exercice 2.3.
 
 Veuillez faire un **commit** de votre code avec le message suivant : 
 "**myMovies : module 3 : refactoring & MooviePage**"".
@@ -1390,7 +1389,7 @@ Il existe d'autres API fournies par le browser pour dessiner dans un browser qui
 
 Voici les étapes pour créer une animation à l'aide de l'API Canvas :
 
-1. Ajout d'un élément **`<canvas>`** dans votre HTML et accès à cet objet via du JS ;
+1. Ajout d'un élément **`<canvas>`** dans votre HTML et accès à cet objet via du JS ;  
 *Voici un exemple où l'on crée un élément **canvas** dans le main d'**index.html** à l'aide de JS* :
 ```js
 const main = document.querySelector('main');  
@@ -1398,7 +1397,7 @@ main.innerHTML = '<canvas />';
 const canvas = document.querySelector('canvas');
 ```
 
-2. Si nécessaire, définition du style du **canvas** et éventuellement du **body** à l'aide de CSS, Bootstrap ou autres, ou directement du JS.
+2. Si nécessaire, définition du style du **canvas** et éventuellement du **body** à l'aide de CSS, Bootstrap ou autres, ou directement du JS.  
 *Voici un exemple où l'on gère la taille du canvas via du JS* :
 ```js
 const main = document.querySelector('main');
@@ -1455,7 +1454,7 @@ Si vous souhaitez utiliser les librairies recommandées pour créer des animatio
 
 Le truc concernant les animations, c'est d'avancer pas à pas, et de réfléchir à ce que vous souhaitez faire en terme d'objectifs fonctionnels.  
 
-Imaginez que je souhaite faire une animation qui mette à disposition un mot tournant comme une hélice : 
+Imaginez que nous souhaitons faire une animation qui mette à disposition un mot tournant comme une hélice : 
 - Ce mot doit tourner comme une hélice au passage de la souris sur le mot. 
 - En cliquant sur la flèche haut ou bas du clavier, l'hélice doit monter ou descendre.
 - En cliquant sur le mot, celui-ci doit :
@@ -1472,7 +1471,7 @@ Maintenant, à l'aide d'éléments HTML, de propriétés CSS, et de JS, comment 
 *Dans le code associé, nous pourrions identifier cette balise par l'id `lift`*.
 - Ensuite, il reste à gérer des écouteurs d'événements sur le clavier, et sur ces divs. Il serait pratique d'utiliser une librairie d'animation 2D pour faciliter les mouvements de l'hélice.
 
-La suite montre comment cela a été implémenté à l'aide de la librairie **anime**.
+La suite montre comment cela a été implémenté à l'aide de la librairie **anime.js**.
 
 ### e.2.2) Exemple d'animation à l'aide d'anime.js
 
@@ -1512,7 +1511,7 @@ Rudi Giot, un incroyable enseignant à l'ISIB (HE2B), met généreusement à not
 La dernière version du Syllabus au format pdf est disponible ici : <LinkFile name="Phaser.pdf" target="_blank" download>Phaser - Jeux vidéo 2D en Javascript</LinkFile>.
 
 ### e.3.3) Boilerplate pour réaliser un jeu Phaser à l'aide de Webpack
-Il n'est pas simple d'intégrer Phaser au sein de Webpack et des outils de développement offerts dans ce cours de JS. Cela peut prendre plusieurs jours avant d'obtenir une bonne configuration, ce qui est peut vite devenir frustrant.
+Il n'est pas simple d'intégrer Phaser au sein de Webpack et des outils de développement offerts dans ce cours de JS. Cela peut prendre plusieurs jours avant d'obtenir une bonne configuration, ce qui peut vite devenir frustrant.
 
 Nous vous offrons donc un boilerplate si vous souhaitez créer un jeu vidéo Phaser en utilisant les outils modernes mis en place dans ce cours :  [js-phaser-boilerplate](https://github.com/e-vinci/js-phaser-boilerplate).
 
