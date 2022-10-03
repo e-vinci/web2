@@ -166,7 +166,7 @@ Si vous souhaitez plus de détails sur l'import, vous pouvez consulter [la docum
 ### a.5.1) Pourquoi découper une IHM en modules ?
 Lorsque l'on développe une application, il est intéressant de découper celle-ci en module afin de rendre notre code plus lisible et maintenable.
 
-Généralement, si une partie d'un script pourrait être réutilisable dans une autre application, c'est probablement un signe qu'il serait utile de créer une fonction, et d'offrir cette fonction via un module.
+Généralement, si une partie d'un script pouvait être réutilisable dans une autre application, c'est probablement un signe qu'il serait utile de créer une fonction, et d'offrir cette fonction via un module.
 
 Pour le visuel d'une IHM, il est intéressant de découper l'UI en composants fonctionnels.  
 Par exemple, le layout d'un écran peut souvent être découpé en :
@@ -828,7 +828,7 @@ function renderNavbar() {
 
 Pour accéder en JS à ce data attribute, on y accède via l'attribut **dataset** d'un élément HTML, par exemple : **`e.target.dataset.uri`** pour accéder au "data attribute" nommé **uri**.
 
-Veuillez mettre à jour le code de la fonction **renderNavbar** de **Navbar.js** :
+Veuillez mettre à jour le code de la fonction **onNavBarClick** de **Navbar.js** :
 
 ```js {7,9,11}
 function onNavBarClick() {
