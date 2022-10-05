@@ -41,7 +41,7 @@ Voici les sujets traités :
 # <a id="a"></a>a) Introduction au backend
 ## a.1) Frontend, backend, c'est quoi ?
 Un **frontend**, c'est une application :
-- qui s'exécute côté client, une IHM, qu'on pourrait aussi appeler UI ;
+- qui s'exécute côté client, une IHM (Interface Homme-Machine), qu'on pourrait aussi appeler UI (User Interface) ;
 - qui est en direct interaction avec l'utilisateur ;
 - implémenté, dans ce cours-ci, en HTML / CSS / JS.
 
@@ -73,7 +73,7 @@ Il existe différents types de technologies et architectures web permettant d'im
 ### a.2.3) Autres rôles du backend ?
 Un backend peut offrir d'autres services, comme :
 - **proxy** : intermédiaire entre les clients demandant une ressource et le serveur fournissant cette ressource. On verra ce type de service, notamment pour masquer l'origine d'une requête à une API.
-- **reverse proxy** : c'est un serveur qui fait l'intermédiaire avec d'autres serveurs, cachant au client qui est le véritable serveur ayant traité de sa requête. Par exemple, un proxy serveur peut mettre à disposition des accès à des serveurs interne à une entreprise (non visibles sur le web) alors que le client interroge un serveur qui est visible sur le web.
+- **reverse proxy** : c'est un serveur qui fait l'intermédiaire avec d'autres serveurs, cachant au client qui est le véritable serveur ayant traité sa requête. Par exemple, un proxy serveur peut mettre à disposition des accès à des serveurs interne à une entreprise (non visibles sur le web) alors que le client interroge un serveur qui est visible sur le web.
 - **serveur d'emails** ;
 - ...
 
@@ -105,12 +105,12 @@ Pour le développement d'IHM de façon modernes, vous avez déjà installé l'en
 Vous ne devez pas apprendre un nouveau langage pour développer des applications backend, Node.js, c'est du JS.  
 Si vous avez besoin d'un rappel du langage, vous pouvez le faire ici : [Introduction au langage JS](/intro/#e).
 
-Très souvent, Node.js est codé en JS conforme au standard CommonJS.  
-La gestion des modules est différente du JS conforme au standard ECMAScript, telle que nous avons appris pour du JS côté browser.
+Très souvent, Node.js est codé en JS conforme au standard **CommonJS**.  
+La gestion des modules est différente du JS conforme au standard **ECMAScript**, telle que nous avons appris pour du JS côté browser.
 
-Même s'il est possible d'écrire du Node.js conforme au standard ECMAScript, la majorité du code que vous trouverez sur le web sera conforme à CommonJS.
+Même s'il est possible d'écrire du Node.js conforme au standard **ECMAScript**, la majorité du code que vous trouverez sur le web sera conforme à **CommonJS**.
 
-Dès lors, nous allons vous expliquer plus tard comment gérer des modules en Node.js conforme au standard CommonJS.
+Dès lors, nous allons vous expliquer plus tard comment gérer des modules en Node.js conforme au standard **CommonJS**.
 
 ## <a id="b2"></a> b.2) Ou mettre du code Node.js ?
 ### b.2.1) Directement dans un terminal
@@ -270,7 +270,7 @@ Si un seul objet est exporté par un package, voici un exemple de comment le ré
 ```js
 // module integrated to the runtime environment
 const http = require('http');
-// module following package installation
+// module used after package installation
 const shortid = require('shortid');
 ```
 
@@ -356,12 +356,12 @@ Pour installer un package (ou une dépendance), il suffit de faire : **`npm i no
 ### b.4.5) Dépendances installées
 On a vu que **`npm i`** permet d'installer toutes les dépendances se trouvant dans **package.json**, ainsi que toutes les dépendances de ces dépendances...
 
-L'arbre exact des dépendances installées, numéro de version..., se trouve dans **package-lock.json**. Ce fichier est généré automatiquement pour chaque opération modifiant **node_modules** ou **package.json**.
+L'arbre exact des dépendances installées, numéros de version..., se trouve dans **package-lock.json**. Ce fichier est généré automatiquement pour chaque opération modifiant **node_modules** ou **package.json**.
 
 ⚡ Si un fichier **package-lock.json** est compris dans un repo, lorsque vous introduirez **`npm i`** pour installer toutes les dépendances, npm installera les mêmes versions que celles se trouvant dans **package-lock.json**. Cela peut poser des problèmes si votre environnement Node.js est en version différente. En cas de souci, pensez à effacer le répertoire **node_modules** et le fichier **package-lock.json** avant de relancer l'installation de toutes les dépendances.
 
 ### b.4.6) Localisation d'un module ou package par Node
-Node va chercher dans tous les chemins spécifiés dans **module.paths** : **node_modules**, **.**... lorsque **`required()`** est appelé.
+Node va chercher dans tous les chemins spécifiés dans la variable **module.paths** lorsque **`required()`** est appelé. Les chemins cherchés sont par exemple : **node_modules**, **./**, ...
 
 ### b.4.7) Mise à jour des packages vers leur dernière version
 La mise à jour de toutes les dépendances peut parfois amener à des gros soucis.
@@ -369,13 +369,13 @@ La mise à jour de toutes les dépendances peut parfois amener à des gros souci
 Vous pouvez tenter de mettre à jour tous vos package en suivant la documentation de Node.js :
 [Update all the Node.js dependencies to their latest version](https://nodejs.dev/learn/update-all-the-nodejs-dependencies-to-their-latest-version) [[R.49]](/references/#r49)
 
-Mais attention, certains packages parfois subissent des "breaking changes", ce qui impose que vous deviez faire migrer votre code avant que celui-ci soit fonctionnel.
+Mais attention, certains packages subissent parfois des "breaking changes", ce qui impose que vous deviez faire migrer votre code avant que celui-ci soit fonctionnel.
 
 Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à jour de tous vos packages d'un coup, de revenir à la situation initiale, et de faire l'upgrade de chaque package listé dans **package.json** individuellement.
 
 # <a id="c"></a> c) Introduction à Express
 ## <a id="c1"></a>  c.1) Introduction
-Voici le moto du framework Express: "Fast, unopinionated, minimalist web framework for Node.js" [Express](https://expressjs.com/) [[R.50]](/references/#r50).
+Voici le moto du framework Express: "**Fast, unopinionated, minimalist web framework for Node.js**" [Express](https://expressjs.com/) [[R.50]](/references/#r50).
 
 Express est un framework qui permet de rapidement créer des applications en Node.js. 
 
@@ -421,7 +421,7 @@ A ce stade-ci, voilà à quoi devrait ressembler votre **package.json** :
 }
 ```
 
-Veuillez installer Express, son package : 
+Veuillez installer le package **express** : 
 
 ```bash
 npm i express
@@ -509,7 +509,7 @@ Actuellement, on remarquera :
 - que **./bin/www** démarre un serveur web sur le port **3000** en lui demandant de s'occuper de démarrer tous les middlewares en lui passant tout ce qui est exporté de **app.js**.
 - **app.js** met aussi à disposition un serveur de fichier statiques servant le contenu du répertoire **public**.
 
-Avant d'aller dans les détails d'Express que nous souhaitons utiliser pour développer des services web de type RESTful, nous allons voir ce que nous entendons par RESTful.
+Avant d'aller dans les détails d'Express que nous souhaitons utiliser pour développer des services web de type RESTful, nous allons voir ce que nous entendons par **RESTful**.
 
 # <a id="d"></a> d) Introduction aux RESTful API
 ## <a id="d1"></a> d.1) Introduction
@@ -522,7 +522,7 @@ Ainsi, les requêtes clientes ne dépendent pas d'un historique de requêtes, el
 
 Une RESTful API met à disposition des **opérations** sur des **ressources** via :
 - des **URI** ; il y a donc une adresse unique pur chaque ressource ;
-- des **méthodes HTTP** (GET, POST, DELETE, PATCH, PUT) représentant les opérations possibles (CRUD, opérations de type Create, Read, Update ou Delete) ;
+- des **méthodes HTTP** (GET, POST, DELETE, PATCH, PUT) représentant les opérations possibles (on parle souvent d'opérations **CRUD**, des opérations de type Create, Read, Update ou Delete) ;
 - des **représentations** des ressources compréhensibles tant par les clients que les serveurs ; les ressources sont représentées par leur "Media type" : **JSON**, **XML**, **HTML**, **TXT**, **JPEG**... ; dans le cadre de ce cours, les ressources seront quasi toujours représentées via du **JSON**.
 
 ## <a id="d2"></a> d.2) Conventions REST
@@ -533,7 +533,7 @@ Une RESTful API met à disposition des **opérations** sur des **ressources** vi
   - POST = Create
   - DELETE = Delete 😉
   - PATCH / PUT = Update
-    - PATCH = Update d'une ou plusieurs propriétés de la ressources
+    - PATCH = Update d'une ou plusieurs propriété(s) de la ressources
     - PUT = Update de toutes les propriétés de la ressources, ou création si la ressource n'existe pas
     
 Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTful API permettant de gérer des films :
@@ -546,6 +546,8 @@ Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTf
 | **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
 | **films/{id}** | DELETE | DELETE ONE : Effacer la ressource identifiée |
 | **films/{id}** | PUT | UPDATE ONE : Remplacer l'entièreté de la ressource par les données de la requête |
+
+<br/>
 
 Si cette API est hébergée à l'URL racine **http://ilovemoovies.org**, alors nous pourrions identifier une ressource de type **films** de cette façons : **http://ilovemoovies.org/films/10**.
 
@@ -590,9 +592,9 @@ Les fonctions middleware s'occupent du traitement des requêtes des clients et d
 
 <figcaption>Les fonctions Middleware et Express [R.52]</figcaption>
 
-Une fonction du middleware a accès aux objets de la requête et de la réponse et peut modifier la requête et la réponse pour ajouter, par exemple, un log, pour autoriser un utilisateur, pour parser des données Json vers des objets JS, pour servir des fichiers statiques, pour faire un traitement pour une route bien spécifique...
+Une fonction middleware a accès aux objets de la requête et de la réponse et peut utiliser la requête et la réponse pour ajouter, par exemple, un log, pour autoriser un utilisateur, pour parser des données Json vers des objets JS, pour servir des fichiers statiques, pour faire un traitement pour une route bien spécifique...
 
-Si une fonction du middleware ne termine pas le cycle de requête-réponse, elle doit appeler **`next()`** pour permettre à d'autres fonctions qui sont dans la queue de pouvoir être exécutées.
+Si une fonction middleware ne termine pas le cycle de requête-réponse, elle doit appeler **`next()`** pour permettre à d'autres fonctions qui sont dans la queue de pouvoir être exécutées.
 
 Voici les éléments associés à l'appel d'une fonction middleware :
 
@@ -601,18 +603,18 @@ Voici les éléments associés à l'appel d'une fonction middleware :
 <figcaption>Une fonction middleware [R.53]</figcaption>
 
 Il existe différent types de fonctions middleware ayant différents cas d'utilisation :
-- Application-level middleware : la fonction middleware est liée à l'objet **app** ;
-- Router-level middleware : la fonction middleware est liée à un objet de type **express.router()**, elle est très similaire au "application-level middleware" ;
-- Error-handling middleware : fonction de gestion des erreurs qui se définit comme les fonctions app ou router level middleware, mais qui contient un quatrième paramètre nommé **error**.
-- Built-in middleware : fonctions middleware mises à disposition par Express directement :
+- **Application-level middleware** : la fonction middleware est liée à l'objet **app** ;
+- **Router-level middleware** : la fonction middleware est liée à un objet de type **express.router()**, elle est très similaire au "application-level middleware" ;
+- **Error-handling middleware** : fonction de gestion des erreurs qui se définit comme les fonctions app ou router level middleware, mais qui contient un quatrième paramètre nommé **error**.
+- **Built-in middleware** : fonctions middleware mises à disposition par Express directement :
   - **express.static** : pour servir des assets statiques ;
   - **express.json** : pour parser le body de requêtes en JSON vers des objets JS ;
   - **express.urlencoded** : pour parser des requêtes dont le body est de type "urlencoded" (type par défaut des formulaires) vers des objets JS. 
-- Third-party middleware : fonctions mises à disposition par la communauté et installables via npm, comme par exemple la fonction middleware **cookieParser**.
+- **Third-party middleware** : fonctions mises à disposition par la communauté et installables via npm, comme par exemple la fonction middleware **cookieParser**.
 
 Si vous souhaitez approfondir, nous vous conseillons [la documentation d'Express](https://expressjs.com/en/guide/using-middleware.html#middleware.third-party) [[R.54]](/references/#r54).
 
-La suite fournit quelques exemples de fonctions middleware qui seront plus tard rencontrées dans notre code ou extraits de [[R.54]](/references/#r54).
+La suite fournit quelques exemples de fonctions middleware qui seront soit plus tard rencontrées dans notre code, soit sont extraites de [Using middleware [R.54]](/references/#r54).
 
 ### e.4.2) Application-level middleware : exemple
 Voici une fonction middleware qui sera exécutée à chaque fois qu'il y a une requête, quelque soit le chemin (ou path) associé à la requête :
@@ -627,6 +629,7 @@ app.use((req, res, next) => {
 ```
 
 ### e.4.3) Router-level middleware : exemple
+Voici une partie du code qui se trouverait au sein d'un router de pizzas, dans le fichier **/routes/pizzas.js** :
 
 ```js
 var router = express.Router();
@@ -641,16 +644,17 @@ router.get('/',(req, res, next) => {
 });
 ```
 
-La première fonction middleware ne contient pas de méthode HTTP, ni de chemin, elle s'applique donc à toutes les routes associées au router.
+La première fonction middleware ne contient pas de méthode HTTP, ni de chemin, elle s'applique donc à toutes les routes associées au router de pizzas.  
+Voici le code qui permettrait, dans **/app.js**, d'appeler le router de pizzas :
 
 ```js
 var pizzaRouter = require('./routes/pizzas');
 app.use('/pizzas', pizzaRouter);
 ```
 
-Si le router est utilisé de cette façon, la première fonction s'applique donc à toutes les routes qui commencent par '/pizzas'.
-
-La deuxième fonction middleware s'appliquent seulement aux requêtes de type GET sur la route (ou le chemin) '/pizzas' (équivalent de la route '/pizzas/').
+Si le router est utilisé de cette façon, en relisant l'avant-dernier snippet, on voit que : 
+- la première fonction (où il y a un `console.log`) s'applique donc à toutes les routes qui commencent par '/pizzas' ;
+- la deuxième fonction middleware s'appliquent seulement aux requêtes de type GET sur la route (ou le chemin) '/pizzas' (équivalent de la route '/pizzas/').
 
 ### e.4.4) Error-handling middleware : exemple
 Ce type de middleware est à définir après tous les middlewares pouvant générer une erreur et est appelé via **`next(err)`** dans une fonction middleware où un souci est détecté.
@@ -667,6 +671,7 @@ app.use((err, req, res, next) => {
 Attention, il y a bien 4 paramètres au lieu des 3 habituels pour les autres types de fonctions middleware.
 
 ### e.4.5) Built-in middleware & third-party middleware : exemple
+Dans **app.js**, on trouve pas mal d'exemples de ces types de middleware. Ils sont commentés ci-dessous dans le code :
 
 ```js
 var express = require('express');
@@ -720,7 +725,7 @@ Pour la suite du tutoriel, nous considérons que tous les chemins absolus démar
 
 Nous allons développer des RESTful API qui ne possèdent pas de serveur de fichiers statiques.  
 On n'a donc pas besoin d'avoir un répertoire **/public** ni d'un serveur statique.  
-On peut donc effacer le répertoire **/public** et supprimer le middleware de serveur de fichiers statiques au sein de **/app.js** : 
+On peut donc effacer le répertoire **/public** et supprimer le middleware de serveur de fichiers statiques au sein de **/app.js** (en supprimant cette ligne) : 
 
 ```js
 app.use(express.static(path.join(__dirname, 'public'))); 
@@ -1011,7 +1016,7 @@ GET {{baseUrl}}/pizzas/?order=-title
 
 Veuillez exécuter ces deux requêtes.
 
-Il semble que nous sommes prêt pour créer une requête appelant l'opération de création d'une pizza.
+Il semble que nous sommes prêts pour créer une requête appelant l'opération de création d'une pizza.
 
 Au sein de **pizzas.http**, veuillez ajouter cette requête pour la création d'une pizza :
 ```http
@@ -1027,7 +1032,7 @@ Content-Type: application/json
 
 On remarque qu'il est important de mettre une ligne vide avant les accolades représentant le body de la requête.  N'hésitez pas à tester cette requête avec ou sans la ligne vide pour y croire.
 
-💭 Comment tester que l'opération de création a fonctionnée ?
+💭 Comment tester que le bon fonctionnement de l'opération de création ?
 
 Et bien il suffit d'exécuter l'opération de lecture de toutes les pizzas 😎 !
 Si la nouvelle ressource apparaît, c'est qu'elle a bien été créée !
@@ -1259,11 +1264,11 @@ Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 - N'hésitez pas à utiliser le générateur d'applications d'Express pour initier votre projet.
 - Développez les opérations de votre API de manière incrémentale : testez une opération via REST Client avant de passer à une nouvelle opération.
 - Pour le filtre sur les films, vous allez récupérer un paramètre de requête.  
-⚡ Attention, le signe **-** est un opérateur en JS, vous ne pouvez pas récupérer le paramètre de requête via `req.query.minimum-duration`...  
+⚡ Attention, le signe **-** est un opérateur en JS, vous ne pouvez pas récupérer le paramètre de requête via **`req.query.minimum-duration`**...  
 💭 Mais alors comment faire ?  
-On accède aussi au propriété d'un objet à l'aide d'un array, ici ça serait via `req.query['minimum-duration']`.
+On accède aussi au propriété d'un objet à l'aide d'un array, ici ça serait via **`req.query['minimum-duration']`**.
 - N'hésitez pas à vous inspirer du code du tutoriel [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
-- Pour vérifier le type d'une variable, n'hésitez pas à utiliser l'opérateur `typeof`.
+- Pour vérifier le type d'une variable, n'hésitez pas à utiliser l'opérateur **`typeof`**.
 
 Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module4/4.1**.
 
