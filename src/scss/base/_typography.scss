@@ -84,3 +84,16 @@ h3 {
     font-size: large;
   }
 }
+
+a {
+  color: $tertiary-color;
+  cursor: pointer;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  hyphens: auto;
+
+  &:hover,
+  &:focus {
+    color: lighten($tertiary-color, 20%);
+  }
+}
