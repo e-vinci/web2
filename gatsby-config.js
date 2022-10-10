@@ -7,6 +7,7 @@ const facebookUrl = "";
 const instagramUrl = "";
 const defaultLanguage = "fr";
 const defaultAssociatedProjectGroupName = "Web2 2022";
+const projectDocument = "WEB2-2022-PROJET-GROUP-XY.docx";
 
 module.exports = {
   pathPrefix: `/web2`,
@@ -22,6 +23,7 @@ module.exports = {
     languages: { langs: ["fr"], defaultLangKey: defaultLanguage },
     defaultAssociatedProjectGroupName: defaultAssociatedProjectGroupName,
     isAuthentication: true, // currently there is only Vinci MSAL
+    projectDocument,
     //twitterUsername: "@whoever; )",
     menuLinks: [
       {

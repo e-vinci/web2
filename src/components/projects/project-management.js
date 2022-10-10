@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import ProjectsView from "./projects-view";
-import Spinner from "../spinner/spinner";
+import React, { useState, useEffect } from 'react';
+import ProjectsView from './projects-view';
+import Spinner from '../spinner/spinner';
 
-import { useProjectData } from "../context/projects/project-data-context";
+import { useProjectData } from '../context/projects/project-data-context';
+import LinkFile from '../file/link-file';
 
-const ProjectManagement = ({associatedProjectGroupName}) => {
+const ProjectManagement = ({ associatedProjectGroupName, projectDocument }) => {
   // Get state from the provider
   const {
     projectGroupData,
@@ -18,7 +19,9 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
   } = useProjectData();
 
   const [filteredContents, setFilteredContents] = useState(undefined);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
+
+  console.log("projectDocument : ", projectDocument);
 
   const handleInputChange = (e) => {
     // Get project data from Context
@@ -27,7 +30,7 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
     const inputText = e.target.value;
     setQuery(e.target.value);
 
-    console.log("handleInputChange::ProjectData", projectData);
+    console.log('handleInputChange::ProjectData', projectData);
     const filteredData = projectData.filter((content) => {
       // destructure data from post frontmatter
       const { shortId, name, description } = content;
@@ -47,7 +50,7 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
   };
 
   const onProjectAdd = async () => {
-    console.log("add and", projectGroupData._id);
+    console.log('add and', projectGroupData._id);
     await addOneProject(projectGroupData._id);
     const newListOfProjects = await updateProjectData(projectGroupData._id);
     setFilteredContents(undefined);
@@ -67,7 +70,7 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
       // Deal with project data
       const temp = await updateProjectData(group._id);
     } catch (error) {
-      console.error("getData:error", error);
+      console.error('getData:error', error);
     }
   };
 
@@ -75,11 +78,17 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
     <>
       {!isLoaded && <Spinner />}
       {projectGroupData === undefined ? (
-        ""
+        ''
       ) : (
         // deal with project view
         <div className="pl-3 pt-3 pb-3 pr-3">
           <h3 className="">Projets des groupes de {projectGroupData?._id}</h3>
+          {/* Deal with potential project document to print*/}
+          {projectDocument && (
+            <LinkFile name={projectDocument}>
+              Consignes & template du projet
+            </LinkFile>
+          )}
           <div className="index">
             <input
               type="text"
@@ -103,7 +112,7 @@ const ProjectManagement = ({associatedProjectGroupName}) => {
 
           {/* // deal with add a project button */}
           {userData === undefined || !userData.isAdmin ? (
-            ""
+            ''
           ) : (
             <button className="index__button" onClick={onProjectAdd}>
               Ajouter projet
