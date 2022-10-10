@@ -366,12 +366,19 @@ Node va chercher dans tous les chemins spécifiés dans la variable **module.pat
 ### b.4.7) Mise à jour des packages vers leur dernière version
 La mise à jour de toutes les dépendances peut parfois amener à des gros soucis.
 
-Vous pouvez tenter de mettre à jour tous vos package en suivant la documentation de Node.js :
-[Update all the Node.js dependencies to their latest version](https://nodejs.dev/learn/update-all-the-nodejs-dependencies-to-their-latest-version) [[R.49]](/references/#r49)
+Sans prendre trop de risques, vous pouvez tenter de mettre à jour tous vos packages en suivant la documentation de npm :
+[Updating packages downloaded from the registry](https://docs.npmjs.com/updating-packages-downloaded-from-the-registry) [[R.49]](/references/#r49).
 
+Cela vous permettra de mettre à jour vos packages, sans devoir changer la liste de vos dépendances qui est donnée dans **package.json**. S'il y a des dépendances qui ont des "breaking changes", ces versions ne seront pas installées.
+
+Si vous souhaitez tous mettre à jour d'un coup, vers la toute dernière version de chaque package, vous pouvez tentez le coup en utilisant la commande **ncu** du package [npm-check-updates](https://www.npmjs.com/package/npm-check-updates).  
 Mais attention, certains packages subissent parfois des "breaking changes", ce qui impose que vous deviez faire migrer votre code avant que celui-ci soit fonctionnel.
 
-Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à jour de tous vos packages d'un coup, de revenir à la situation initiale, et de faire l'upgrade de chaque package listé dans **package.json** individuellement.
+Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à jour de tous vos packages d'un coup à l'aide de **ncu**, de revenir à la situation initiale, et de faire l'upgrade de chaque package listé dans **package.json** individuellement. Pour installer la dernière version d'un package, utilisez **`@latest`** :
+
+``` bash
+npm i nomPackage@latest
+```
 
 # <a id="c"></a> c) Introduction à Express
 ## <a id="c1"></a>  c.1) Introduction
@@ -553,7 +560,7 @@ Si cette API est hébergée à l'URL racine **http://ilovemoovies.org**, alors n
 
 Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : **http://ilovemoovies.org/films/10**.
 
-# <a id="e"></a> d) Introduction aux RESTful API via Express
+# <a id="e"></a> e) Introduction aux RESTful API via Express
 ## <a id="e1"></a> e.1) Introduction
 Nous avons précédemment généré une application Express à l'aide du générateur d'applications.
 
