@@ -49,26 +49,26 @@ export default function PageTemplate({ data: { mdx, allImages } }) {
 
   return (
     <MainLayout
-      {...(mdx.frontmatter ? { frontmatter: mdx.frontmatter } : {})}
-      {...(mdx.frontmatter.navbarExtraStyles
+      {...(mdx?.frontmatter ? { frontmatter: mdx.frontmatter } : {})}
+      {...(mdx?.frontmatter?.navbarExtraStyles
         ? { navbarExtraStyles: mdx.frontmatter.navbarExtraStyles }
         : {})}
-      {...(mdx.frontmatter.headerImage
+      {...(mdx?.frontmatter?.headerImage
         ? { headerImage: mdx.frontmatter.headerImage }
         : {})}
-      {...(mdx.frontmatter.featuredImage
+      {...(mdx?.frontmatter?.featuredImage
         ? { featuredImage: mdx.frontmatter.featuredImage }
         : {})}
-      {...(mdx.frontmatter.title ? { pageTitle: mdx.frontmatter.title } : {})}
+      {...(mdx?.frontmatter?.title ? { pageTitle: mdx.frontmatter.title } : {})}
       {...(allImages && allImages.length > 0 ? { allImages: allImages } : {})}
     >
       <MDXProvider components={shortcodes}>
         <div
           className={
-            mdx.frontmatter.autoMargin ? "page page--auto-margin" : "page"
+            mdx?.frontmatter?.autoMargin ? "page page--auto-margin" : "page"
           }
         >
-          <MDXRenderer>{mdx.body}</MDXRenderer>
+          <MDXRenderer>{mdx?.body ?? " "}</MDXRenderer>
         </div>
       </MDXProvider>
     </MainLayout>

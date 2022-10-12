@@ -5,12 +5,12 @@ description: "Persistance des ressources via fichiers JSON & refactor du code d'
 
 # Module 5 : Service web persistant via JSON et architecturé
 
-Ce module vous offre principalement la persistance des ressources via des fichiers JSON et le refactoring de web services afin de faciliter la maintenabilité et lisibilité du code.
+Ce module vous offre principalement la persistance des ressources via des fichiers JSON et le refactoring de web services afin de faciliter la maintenabilité et la lisibilité du code.
 
 Voici les sujets traités :
 
 - a) [Introduction au JSON et persistance des données](#a)
-  - a.1) [Introduction](#a1)
+  - a.1) [Introduction générale](#a1)
   - a.2) [Introduction au JSON](#a2)
   - a.3) [Communication de données en JSON](#a3)
   - a.4) [Sauvegarde de données JSON](#a4)
@@ -44,16 +44,16 @@ Du JSON, c'est du texte en notation JS.
 
 Voici les types de données qui sont valides en JSON :
 
-- string
-- number
-- object
-- array
-- boolean
-- null
+- **string**
+- **number**
+- **object**
+- **array**
+- **boolean**
+- **null**
 
 ⚡ Il n'y a donc pas de **function**, **date** et **undefined**.
 
-Voici un exemple de représentations de données en JSON qui correspond à ce que très souvent une API renvoie, un array d'objets :
+Voici un exemple de représentation de données en JSON qui correspond à ce que très souvent une API renvoie, un array d'objets :
 
 ```json
 [
@@ -82,7 +82,7 @@ Via Express, nous pouvons très facilement convertir un objet JS en JSON afin de
 
 C'est ce que nous appelons de la sérialisation de données, nous passons du monde "objets en mémoire" vers du texte (ou des octets) qui vont voyager sur un réseau.
 
-Le code actuel de notre RESTful API renvoyant un array de pizzas au format JSON est géré automatiquement via :
+Le code actuel de notre RESTful API, renvoyant un array de pizzas au format JSON, est géré automatiquement via :
 
 ```js
 res.json(orderedMenu ?? MENU);
@@ -151,7 +151,7 @@ Par exemple, il faut faire un traitement différent pour récupérer des donnée
 Si l'on considère une IHM, il sera utile plus tard d'avoir un formulaire permettant d'ajouter des pizzas.  
 Le JS associé à l'IHM permettra d'envoyer les données du formulaire au format JSON, via la méthode **`fetch`**, vers notre RESTful API gérant les ressources de type pizzas.
 
-Voici un exemple de code que vous ne devez pas encore comprendre :
+Voici un exemple de code que vous ne devez pas encore comprendre, qui permet à une IHM de créer une ressource de type "pizzas" :
 
 ```js
 const options = {
@@ -257,7 +257,7 @@ Cela signifie que dans le projet contenant notre API, nous allons sauvegarder le
 Ce fichier est en fait une base de données simplifiée !  
 Nous allons prochainement voir comment récupérer ces données au sein d'un array.
 
-Nous allons maintenant réaliser un tutoriel pour rendre persistant les ressources de type "pizzas".  
+Nous allons maintenant réaliser un tutoriel pour rendre les ressources de type "pizzas" persistantes.  
 Nous allons repartir de l'API créée au module 4.
 
 Dans votre repo **web2**, veuillez copier / coller le répertoire **/tutorials/pizzeria/api/basic** et le renommer en **/tutorials/pizzeria/api/persistence**.
@@ -319,11 +319,12 @@ function createPotentialLastDirectory(filePath) {
 module.exports = { parse, serialize };
 ```
 
-L'opération de sérialisation des données est faite via la fonction **serialize** de **/utils/json.js**. Pour se simplifier la vie et ne pas obliger les développeurs à devoir créer manuellement un répertoire qui contiendra la mini DB de pizzas (le fichier **pizzas.json** dans la suite de l'exemple), une fonction a été créée qui s'appelle **createPotentialLastDirectory**.La fonction **serialize** fait appel à cette fonction qui va, si nécessaire, créer le dernier répertoire donné dans le chemin vers le fichier JSON (le répertoire **/data** dans la suite de l'exemple).
+L'opération de sérialisation des données est faite via la fonction **serialize** de **/utils/json.js**. Pour se simplifier la vie et ne pas obliger les développeurs à devoir créer manuellement un répertoire qui contiendra la mini DB de pizzas (le fichier **pizzas.json** dans la suite de l'exemple), une fonction a été créée qui s'appelle **createPotentialLastDirectory**.  
+La fonction **serialize** fait appel à cette fonction qui va, si nécessaire, créer le dernier répertoire donné dans le chemin vers le fichier JSON (le répertoire **/data** dans la suite de l'exemple).
 
 Il n'est pas intéressant de retenir par coeur le code donné dans **/utils/json.js**. Par contre, il est important que vous compreniez celui-ci, ce qu'il fait.
 
-A présent, nous allons convertir le code du router de "pizzas" pour rendre persistant les données.    
+A présent, nous allons convertir le code du router de "pizzas" pour rendre les données peristantes.    
 Voici ce que nous devons faire pour les opérations de :
 - **lecture de ressources** : il suffit de faire appel à la fonction **`parse`** qui tentera de charger les ressources qui devraient se trouver dans le répertoire **/data/pizzas.json**. Notons que le chemin vers ce fichier JSON est un simple choix, il doit être configurable.
 - **écriture de ressources** : lors d'une opération d'écriture pour créer une nouvelle ressource, ou pour mettre à jour une ressource existante, voici les étapes :
@@ -331,7 +332,7 @@ Voici ce que nous devons faire pour les opérations de :
   - mise à jour de l'array soit en ajoutant un nouvel objet (une pizza), soit en modifiant un objet existant, soit en supprimant un objet.
   - réécriture complète du fichier JSON contenant la liste de pizzas sur base de l'array de pizzas qui a précédemment été mis à jour via la méthode **`serialize`**.
 
-  Voici le code du router mis à jour afin de gérer la persistance selon la stratégie définie ci-dessus, les modifications étant surlignées :
+Voici le code du router mis à jour afin de gérer la persistance selon la stratégie définie ci-dessus, les modifications étant surlignées :
 
 ```js numbered {2,5,45,47,51,58,60,64,76-78,87,89,98,100,104,107,123,125,129,131,133}
 var express = require('express');
@@ -480,7 +481,7 @@ Veuillez mettre à jour votre fichier **/router/pizzas.js** sur base du code don
 
 Au niveau d'une IHM, il doit aussi être possible de sauvegarder des informations.  
 Or, pour des raisons de sécurité, le browser ne peut pas créer des fichiers JSON de manière transparente à l'utilisateur.  
-Afin de sauvegarder des données, le browser met néanmoins à disposition un web storage dans lequel on peut sauvegarder des données sous forme de clé / valeur, au format texte.  
+Afin de sauvegarder des données, le browser met néanmoins à disposition un web storage dans lequel on peut sauvegarder des données sous forme de paires "clé / valeur", au format texte.  
 Nous verrons cela plus tard en détails.
 
 Voici déjà malgré tout un exemple de code, une fonction, permettant de sauvegarder les données de session d'un utilisateur dans le web storage d'un browser :
@@ -614,10 +615,10 @@ Sans aucune configuration, il est possible de débugger une application **Node.j
 
 Il suffit d'ouvrir le script d'entrée de votre application dans VS Code. Pour une application Express, le script d'entrée est **/bin/www**. Cliquez dans l'Explorer de VS Code sur **/bin/www** de votre tutoriel **api-persistence**. Une fois le script **/bin/www** ouvert, il ne reste plus qu'à exécuter le **Debug**.  
 Pour ce faire :
-- soit vous cliquez sur l'icône "Run and Debug" à gauche de l'Explorer, puis sur le bouton "Run and Debug";
-- soit vous cliquez sur "Run" puis sur "Start Debugging";
-- soit vous cliquez sur "F5",
-- Il est probable que la première fois que vous lancez le **Debug**, vous devrez sélectionner **Node.js**   (il sera indiqué : "Select debugger") comme debugger dans une liste.
+- soit vous cliquez sur l'icône "**Run and Debug**" à gauche de l'Explorer, puis sur le bouton "**Run and Debug**";
+- soit vous cliquez sur "**Run**" puis sur "**Start Debugging**";
+- soit vous cliquez sur "**F5**",
+- Il est probable que la première fois que vous lancez le **Debug**, vous devrez sélectionner **Node.js**   (il sera indiqué : "**Select debugger**") comme debugger dans une liste.
 
 En résumé, une fois le debugger lancé, il suffit d'ajouter des breakpoints dans le code source et d'exécuter le code pas à pas.
 
@@ -640,10 +641,10 @@ Pour ce faire, veuillez mettre à jour le fichier **packages.json** pour rajoute
 
 Nous allons maintenant créer une configuration de debugging associée à notre repo **web2** :
 
-- Cliquez sur l'icône "Run and Debug" à gauche de l'Explorer, puis sur le lien "create launch.json file" (.vscode/launch.json).
-- Quand il sera indiqué "Select debugger", sélectionnez **Node.js**.  
+- Cliquez sur l'icône "**Run and Debug**" à gauche de l'Explorer, puis sur le lien "**create launch.json file**" (**.vscode/launch.json**).
+- Quand il sera indiqué "**Select debugger**", sélectionnez **Node.js**.  
   NB : Peu importe le debugger que vous sélectionnez, car vous aller par la suite copier / coller la configuration proposée.
-- Une fois le debugger **Node.js** choisi, VS Code crée un répertoire **.vscode** à la racine du folder ouvert au sein de VS Code (normalement vous devriez avoir ouvert votre repo local **web2**) contenant un fichier **launch.json** et une configuration initiale. Veuillez remplacer le contenu de ce fichier par celui-ci :
+- Une fois le debugger **Node.js** choisi, VS Code crée un répertoire **.vscode** à la racine du folder ouvert au sein de VS Code (normalement vous devriez avoir ouvert votre repo local **web2**) contenant un fichier **launch.json** et une configuration initiale. Veuillez remplacer le contenu de ce fichier (**.vscode/launch.json**) par celui-ci :
 
 ```json {10-14,19}
 {
@@ -699,7 +700,7 @@ Néanmoins, pour les personnes très curieuses, la création du boilerplate est 
 
 Pour la suite du cours, nous n'utiliserons plus le générateur d'application Express, mais ce boilerplate.
 
-Il est important d'avoir installé **ESLint** et **prettier** au sein de VS Code pour bien utiliser le boilerplate d'une API.  
+Il est important d'avoir installé les extensions **ESLint** et **prettier** au sein de VS Code pour bien utiliser le boilerplate d'une API.  
 Vous l'avez normalement déjà fait au module 2. Si non, veuillez suivre la procédure donnée ici : [Module 2 : a.6) Installation des extensions pour le linter et le formater](/modules/2/#a6)
 
 # <a id="c"></a> c) Exercice 5.1 : Persistance de la RESTfull API pour myMovies
@@ -749,9 +750,10 @@ On peut donc se demander comment séparer le code traitant de sujets différents
 - ...
 
 Finalement, parmi les architectures classiques, il n'y a pas réellement une architecture qui colle parfaitement à ce qui est offert par le framework Express, sans devoir écrire du code sans valeur ajoutée.  
+
 Ainsi, nous allons simplement créer notre propre architecture "maison", sur base de ces points :
 - On souhaite pouvoir facilement remplacer la couche d'accès aux données sans changer la représentation des ressources ; en effet, dans un premier temps, nous sauvegarderons des données dans des fichiers JSON. Plus tard, si l'on venait à sauvegarder les données dans un système de gestion de base de données, on ne veut pas devoir mettre à jour le code prenant en compte les requêtes des clients et présentant la réponse à ces requêtes ; en gros, on souhaite que le code de nos routers, au sein d'Express, soit indépendant de l'implémentation des accès aux données.
-- Nous n'avons pas vraiment de contraintes pour l'aspect "business" de nos APIs : la logique de l'application peut soit s'associer à la couche de données, soit à la couche présentation. Néanmoins, nous allons préférez associer un maximum de la logique de notre application à ce que nous allons appeler un **fat model**. Le **fat model** contiendra toutes les opérations possibles sur les ressources, ainsi que les accès aux données.
+- Nous n'avons pas vraiment de contraintes pour l'aspect "business" de nos APIs : la logique de l'application peut soit s'associer à la couche de données, soit à la couche présentation. Néanmoins, nous allons préférer associer un maximum de la logique de notre application à ce que nous allons appeler un **fat model**. Le **fat model** contiendra toutes les opérations possibles sur les ressources, ainsi que les accès aux données.
 - Le **fat model** peut être soit écrit en orienté objet, soit simplement être un module fournissant des fonctions. Dans le cadre de ce cours, nous choisissons de présenter un maximum de programmation fonctionnelle plutôt que de l'orienté objet.  
   Néanmoins, n'hésitez pas à écrire des classes si cela vous tient à coeur 😉.
 
@@ -767,14 +769,14 @@ Voici quelques explications sur ce diagramme que nous allons appliquer dans le p
 1. Un client fait la requête à l'API demandant de lire toutes les pizzas.
 2. Le router de "pizzas" prend le rôle de "Controller". Il s'occupe de traiter de la requête et d'appeler une opération du **fat model** pour accéder aux ressources.
 3. Le **fat model** s'occupe d'accéder aux données, qui se trouvent au sein d'un fichier JSON, et de les lire.
-4. Le **fat model** retourne un objet JS des données au router de "pizzas".
+4. Le **fat model** retourne des données sous forme d'un objet JS au router de "pizzas".
 5. Le router de "pizzas" renvoient une représentation JSON de l'objet JS, un array de pizzas, au client.
 
 Nous allons maintenant faire un refactor de notre API de gestion des pizzas en créant et utilisant un "fat model".
 
 Au sein de votre repo **web2**, à l'aide du boilerplate du cours [basic-api-boilerplate](https://github.com/e-vinci/basic-api-boilerplate), veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/fat-model**.
 
-Si vous ne voyez pas comment utiliser le boilerplate, tout est expliqué dans le **README** associé au repository.  
+Si vous ne voyez pas comment utiliser le boilerplate, tout est expliqué dans le **README** associé au repository du boilerplate.  
 N'hésitez pas à le lire ; )
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
