@@ -92,7 +92,7 @@ Voici en résumé les caractéristiques des deux architectures présentées ci-d
   - 2 serveurs : 1 serveur pour le frontend, 1 serveur pour le backend
   - Ports différents pour le Frontend & le Backend
 - SPA monolithique :
-  - RESTful API avec Serveur de fichiers statiques pour déployer l'IHM
+  - RESTful API avec serveur de fichiers statiques pour déployer l'IHM
   - Même serveur pour déployer le backend & le frontend
   - Même port pour le frontend & le backend
 
@@ -102,12 +102,12 @@ Pour information, les ports permettent à un même appareil de communiquer sur u
 
 ## <a id="b1"></a> b.1) Introduction aux protocoles de communications d'une SPA
 
-Quelles protocoles & techniques principales allons-nous utiliser pour communiquer au sein d'une SPA ?   
+Quelles protocoles & technique principale allons-nous utiliser pour communiquer au sein d'une SPA ?   
 Il en existe plusieurs. Dans le cadre de ce cours, nous allons simplement voir la technique principale, **AJAX** (ou **A**synchronous **Ja**vaScript and **X**ML).
 
 **AJAX** est une combinaison de technologies (HTML/CSS, DOM, JSON ou XML, XMLHttpRequest, JS) pour réaliser une application web asynchrone.  
 C'est-à-dire que le frontend reste disponible aux actions des utilisateurs même lorsqu'il fait des requêtes HTTP asynchrone à des API.
-Le transport de données entre le frontend et l'API se faisait autrefois via **XML**, or actuellement, il se fait via **JSON**.
+Le transport de données entre le frontend et l'API se faisait autrefois via **XML**. Actuellement, il se fait via **JSON**.
 
 Notons que dans le cadre d'architectures MPA "old school" (non vues dans le cadre de ce cours), généralement, l'appel aux API se fait pas par le frontend, mais par le backend. Pendant toute la durée de l'appel du frontend au backend,
 celui-ci reste en attente car la demande faite au backend est synchrone : par exemple, lorsqu'un formulaire est envoyé au serveur, l'action du formulaire est de faire l'appel à une nouvelle page au serveur (via la propriété "action" du formulaire HTML) ; jusqu'à la réponse du backend, aucune action d'un utilisateur ne sera possible au niveau de l'IHM.
@@ -139,7 +139,7 @@ Cette méthode est asynchrone, c'est-à-dire quelle n'est pas bloquante, elle re
 Si un jour vous avez besoin de plus de documentation sur la méthode **fetch**, n'hésitez pas à consulter la [documentation MDN](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) [[R.61]](/references/#r61).
 
 Pour la pizzeria, l'IHM que nous avons développé au module 3 s'est terminée avec ce code :
-[routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi)).
+[routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi).
 
 Cette IHM était entièrement frontend, le **MENU** étant hardcodé dans la **HomePage**.  
 Nous souhaitons maintenant changer cela, l'IHM doit faire une requête **fetch** à notre RESTful API développée au module 5 :
@@ -191,11 +191,11 @@ Ca ne fonctionne pas, nous obtenons ces erreurs dans la console du browser :
 
 <ScrollableImage name="errors.png" minWidth="589px" maxWidth="589px" />
 
-La première erreur, est très intéressante pour comprendre la nature asynchrone de la fonction
+La première erreur est très intéressante pour comprendre la nature asynchrone de la fonction
 **fetch**.
 
 Par défaut, la fonction **fetch** fait une requête de type **GET**.  
-Ici on a donc demandé à la RESTful API, qui tourne sur le port **8080** de votre machine locale, la lecture (requête GET) de toutes les ressources de type "pizzas" :
+Ici on a donc demandé à la RESTful API, qui tourne sur le port **8080** de notre machine locale, la lecture (requête GET) de toutes les ressources de type "pizzas" :
 
 ```js
   fetch('http://localhost:3000/pizzas')
@@ -223,7 +223,7 @@ On essaie d'accéder à la table HTML qui doit être créée par la méthode **`
 💭 Mais pourquoi la table n'a pas été créée alors que le morceau de code **`attachOnMouseEventsToGoGreen(pizzas);`** se trouve plus haut ?  
 Hé bien c'est ça la programmation asynchrone, ce n'est qu'une fois le programme principal exécuté que les tâches asynchrones, de priorité plus basses, pourront s'exécuter.
 
-Comment réecrire ce code pour chaîner l'appel de **`attachOnMouseEventsToGoGreen(pizzas);`**
+Comment réecrire ce code pour chaîner l'appel de **`attachOnMouseEventsToGoGreen(pizzas)`**
 au succès de l'opération **fetch** ?
 
 La méthode **fetch** renvoie une **Promise**, qui est un objet représentant un état intermédiaire d'une opération. Le code des callbacks s'exécute quand la tâche asynchrone est finie avec succès ou si la tâche échoue.
@@ -232,7 +232,7 @@ Les états d'une promesse sont les suivants :
 
 - **pending** : état initial,
 - **fulfilled** : l'opération asynchrone a été terminée avec succès ; par exemple la requête
-  fetch() a obtenu un flux de données avec la RESTful API,
+  **fetch()** a obtenu un flux de données avec la RESTful API,
 - **rejected** : l'opération asynchrone a échouée ; par exemple la requête **fetch** est mal construite.
 
 Pour récupérer le résultat d'une méthode asynchrone, on va faire appel :
@@ -330,7 +330,7 @@ Pour info, autrefois, pour la programmation asynchrone en JS, nous utilisions si
 
 💭 OK, nous avons appris les fondements de la programmation asynchrone moderne en JS...  
 Mais ça ne fonctionne pas, nous n'avons toujours l'erreur associée aux "CORS policy".  
-Cette erreur, c'est un mur classique contre lequel tous les programmeurs web doivent se cogner au moins une fois dans leur carrière.
+Cette erreur, c'est un mur classique contre lequel tous les programmeurs web se cognent au moins une fois dans leur carrière 😵.
 
 # <a id="c"></a> c) Gestion de la sécurité des communications du browser
 
@@ -338,7 +338,7 @@ Cette erreur, c'est un mur classique contre lequel tous les programmeurs web doi
 
 La **Single Origin Policy** (**SOP**) sont des règles appliquées par le browser afin :
 
-- de restraindre les interactions entre un document ou script chargé par une origine avec une ressource d'une autre origine
+- de restraindre les interactions entre un document ou script chargé par une origine avec une ressource d'une autre origine ;
 - d'isoler des documents ou scripts malicieux, afin de réduire le risque des attaques.
 
 Deux URL ont une même **origine** si ces caractéristiques sont les mêmes :
@@ -350,7 +350,7 @@ Deux URL ont une même **origine** si ces caractéristiques sont les mêmes :
 Il est possible de relaxer la sécurité via des **Cross Origin Resource Sharing** (**CORS**).  
 **CORS** est un mécanisme qui utilise des headers HTTP pour indiquer aux browsers qu'ils peuvent autoriser les accès à des ressources d'origines différentes.
 
-Cela signifie qu'une application web qui utilise une API ne peut le faire que si les ressources demandées à l'API proviennent d'une même origine, à moins que la réponse de l'API inclue les bonnes **CORS** (via des header HTTP).
+Cela signifie qu'une application web qui utilise une API ne peut le faire que si les ressources demandées à l'API proviennent d'une même origine, à moins que la réponse de l'API inclut les bonnes **CORS** (via des header HTTP).
 
 Si l'on autorise trop d'origine, voici un exemple classique d'attaque :
 
@@ -465,7 +465,7 @@ Ici, nous sommes dans la situation où nous ne souhaitons pas, ou nous n'avons p
 
 Pour le tutoriel, veuillez donc stopper l'exécution de l'API nommée **api-cors**.
 
-Veuillez démarrer l'API précédente développée au module 5 : **/web2/tutorials/pizzeria/api/fat-model** ou via le code de ce web repo si vous avez un souci [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+Veuillez démarrer l'API précédente développée au module 5 : **/web2/tutorials/pizzeria/api/fat-model** ou via le code de ce web repo si vous avez un souci : [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
 
 Il vous reste aussi à vous assurer que votre frontend (**/web2/tutorials/pizzeria/hmi/basic-fetch**) est lui aussi bien démarré. Il devrait toujours y avoir l'erreur associées aux **CORS** donnée au sein de la console.
 
@@ -580,14 +580,14 @@ const HomePage = async () => {
 };
 ```
 
-Pour tester ce code, il ne faut pas oublier de démarrer la RESTful API auparavant : **/web2/tutorials/pizzeria/api/fat-model** ou via le code de ce web repo si vous avez un souci [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+Pour tester ce code, il ne faut pas oublier de démarrer la RESTful API auparavant : **/web2/tutorials/pizzeria/api/fat-model** ou via le code de ce web repo si vous avez un souci : [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
 
 Voici quelques caractéristiques importantes de **async** / **await** :
 
 - **await** est utilisé pour chaîner une tâche asynchrone (sur une fonction renvoyant une promesse) et ne peut se faire qu'au sein d'une fonction taguée par **async** ; c'est donc le remplaçant du **.then(callback)**.  
-  ⚡ Attention, il est donc important qu'au niveau de la fonction arrow, à la ligne 1 du code donné ci-dessus, on indique le **async** !
+  ⚡ Attention, il est donc important qu'au niveau de la fonction arrow, à la ligne 1 du code donné ci-dessus, on indique le **async** !  
   ⚡ Dans le code donné ci-dessus, il est aussi très important de ne pas oublier les **await**. N'hésitez pas à faire le test en enlevant le **await** de **`const pizzas = await response.json();`**. Que se passe-t-il dans ce cas ? **`response.json()`** étant une fonction asynchrone, on passera directement à la fonction **`renderMenuFromString(pizzas);`** avant même d'avoir récupéré les pizzas de notre RESTful API !
-- Toute fonction "taguée" par **async** renvoie automatiquement une promesse ; cela signifie dans le code ci-dessus que la fonction **HomePage** est elle même asynchrone.
+- Toute fonction "taguée" par **async** renvoie automatiquement une promesse ; cela signifie dans le code ci-dessus que la fonction **HomePage** est elle même asynchrone.  
   💭 Il est à parier, et n'hésitez pas à trouver un moyen de vous en rendre compte visuellement, que le footer s'affiche avant le menu !
 - On utilise des blocs **try** / **catch** pour gérer les erreur ; c'est donc le remplaçant du **.catch(callback)**.
 
@@ -823,7 +823,7 @@ const content = document.querySelector('#content').value;
 
 - Il est très important de spécifier le type de la représentation de l'objet qui devrait être utilisé par l'API et qui se trouve dans le body de la requête. Cela est fait via un **header** et la propriété **Content-Type** (**`'Content-Type': 'application/json',`**).  
 ⚡ Si vous oubliez cela, l'API ne pourra pas parser les données au format JSON vers des objets JS et donc les opérations d'écriture de ressources échoueront !
-- Finalement, si l'opération de création de la pizza réussi, nous redirigeons l'utilisateur vers la **HomePage** à l'aide de la fonction **`Navigate`** offert par le dossier **Router** du boilerplate du frontend.
+- Finalement, si l'opération de création de la pizza réussi, nous redirigeons l'utilisateur vers la **HomePage** à l'aide du composant fonctionnel **`Navigate.js`** offert au sein du fichier **Navigate** dans le dossier **Router** du boilerplate du frontend.
 
 Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
 "**async-await**".
@@ -833,7 +833,7 @@ En cas de souci, vous pouvez accéder au code du tutoriel ici :
 
 # <a id="d2"></a> d.2) Création de fonctions asynchrones renvoyant une promesse
 
-Il est si simple, à l'aide d'**async** / **await**, de créer des fonctions asynchrones qui renvoient une promesse, qu'il serait dommage de ne pas le voir.
+Il est si simple, à l'aide d'**async** / **await**, de créer des fonctions asynchrones qui renvoient une promesse, qu'il serait dommage de ne pas l'expérimenter.
 
 Imaginons que nous souhaitons créer une fonction asynchrone qui renvoie toutes les pizzas qui sont offertes par l'opération de lecture des pizzas de la RESTful API.
 
@@ -913,7 +913,7 @@ Comment gérer l'UC de suppression d'un film ?
 
 Comment gérer la mise à jour des données d'un film ?
   - Option 1 (la plus cool à découvrir 😉) : Vous pourriez faire en sorte que l'HTML du tableau affichant les films, lors d'un clic, devienne éditable. Pour cette option :
-    - Voici, à quoi pourrait ressembler votre application à la fin de l'exercice. Vous avez bien sûr la liberté de faire qqch de totalement différent visuellement !
+    - Voici, à quoi pourrait ressembler votre application à la fin de l'exercice. Vous avez bien sûr la liberté de faire quelque chose de totalement différent visuellement !
     <ScrollableImage name="movies.png" minWidth="700px" maxWidth="1268px" />
     - Veuillez noter que contrairement au frontend précédent réalisée à l'Exercice 3.1, l'info **title** et **link** ne sont plus intégrées dans une même colonne, via des hyperlinks ; avec l'option 1, nous devrions considérer deux colonnes, une pour le titre et l'autre pour le lien.
     - Vous pouvez utiliser la propriété HTML **contenteditable="true"** pour rendre les cellules du tableau éditables. Voici un exemple pour rendre une cellule associée au titre éditable :
