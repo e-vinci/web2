@@ -27,8 +27,9 @@ Voici les sujets traités :
 - d) [Programmation asynchrone à l'aide de promesses & async / await](#d)
   - d.1) [Utilisation de promesses](#d1)
   - d.2) [Création de fonctions asynchrones renvoyant une promesse](#d2)
-- e) [Exercice 6.1 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy](#e)
-- f) [🍬 Exercice 6.2 : Autoriser des nouvelles origines via la RESTful API](#f)
+- e) [Exercice 6.1 : Consommation d'une API tierce](#e)
+- f) [Exercice 6.2 : Consommation d'une API tierce Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy](#f)
+- g) [🍬 Exercice 6.3 : Autoriser des nouvelles origines via la RESTful API](#g)
 
 # <a id="a"></a> a) Introduction aux Single Page Applications
 
@@ -881,7 +882,26 @@ const HomePage = async () => {
 };
 ```
 
-# <a id="e"></a> e) Exercice 6.1 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy
+# <a id="e"></a> e) Exercice 6.1 : Consommation d'une API tierce
+
+Nous souhaitons consommer une API qui nous permette d'afficher des paroles célèbres d'Anime.  
+Nous avons trouvé une restful API qui permet très facilement de générer de manière aléatoire des **quotes** : [Animechan](https://animechan.vercel.app/).
+
+Cette API est très simple d'utilisation. D'ailleurs, la page du site [Animechan](https://animechan.vercel.app/) vous donne un exemple fonctionnel de comment récupérer une **quote**.
+
+Dans la **HomePage** d'une nouvelle application frontend, veuillez afficher une **quote** après l'avoir récupérée de l'API Animechan, en donnant ces 3 informations :
+- le nom de l'Anime associé à la **quote** ;
+- le personnage associé à la **quote** ;
+- le texte de la **quote**.
+
+Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module6/6.1**.
+
+#### 🤝 Tips 
+- Utilisez le [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git) pour ajouter à votre projet **exercises/module6/6.1** tous les répertoires et fichiers utiles.
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**module 6 : exercise 6.1 read from animeChan**".
+
+# <a id="f"></a> f) Exercice 6.2 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy
 
 Vous allez intégrer le frontend de **myMovies** réalisé au module 3 (Exercice 3.1) avec la RESTful API développée au module 5 (Exercice 5.2).
 
@@ -897,7 +917,7 @@ Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 -	Exécutez votre API se trouvant dans **/exercises/module5/5.2**.
 -	Utilisez le contenu de votre répertoire d'exercices **/exercises/module3/myMovies** comme point de départ pour créer,dans votre repository local et
 votre web repository (normalement appelé **web2**), le répertoire nommé
-**/exercises/module6/6.1**.
+**/exercises/module6/6.2**.
 -	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
 - Veuillez développer de manière incrémentale votre IHM, use case par use case, en vérifiant le bon fonctionnement de chaque cas d'utilisation avant de passer au développement de l'UC suivant (=> développer UC1, puis UC2, puis UC3, puis UC4).
 
@@ -934,13 +954,13 @@ Comment gérer la mise à jour des données d'un film ?
   - Option 2 : il est aussi possible de créer un nouveau composant Javascript (une page, une modal ou autre) qui reprendrait un formulaire dont les inputs contiendraient déjà les valeurs existantes des propriétés d'un film. 
 
 Veuillez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 6 : integration with RESTful API**"".
+"**myMovies : module 6 : full integration with RESTful API**"".
 
 NB : Le code de votre application web se trouve dans votre repository local et
-votre web repository (normalement appelé **web2**) toujours le répertoire nommé
-**/exercises/module6/6.1**.
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module6/6.2**.
 
-# <a id="f"></a> f) 🍬 Exercice 6.2 : Autoriser des nouvelles origines via la RESTful API
+# <a id="g"></a> g) 🍬 Exercice 6.3 : Autoriser des nouvelles origines via la RESTful API
 S'il vous reste du temps, n'hésitez pas à mettre à jour l'API se trouvant dans **/exercises/module5/5.2** afin d'autoriser toutes les origines locales : faites en sorte que tous les ports soient autorisés !
 
 Veuillez ensuite créer une copie de votre frontend développé à l'exercice précédent (Exercice 6.1) et le mettre à jour pour ne plus utiliser le proxy du frontend. Vous consommez directement l'API en indiquant son URL complète, y compris le port. Par exemple, pour lire les pizzas du menu, vous faites un fetch à l'URL : `http://localhost:300/pizzas`.
@@ -950,11 +970,11 @@ Une fois l'API mise à jour, veuillez faire un **commit** de votre code avec le 
 
 Le code de votre API se trouve dans votre repository local et
 votre web repository (normalement appelé **web2**) dans le répertoire nommé
-**/exercises/module6/6.2/api-cors**.
+**/exercises/module6/6.3/api-cors**.
 
 Une fois le frontend mis à jour, veuillez faire un **commit** de votre code avec le message suivant : 
 "**myMovies : module 6 : integration with RESTful API without proxy**"".
 
 Le code de votre application web se trouve dans votre repository local et
-votre web repository (normalement appelé **web2**) toujours le répertoire nommé
-**/exercises/module6/6.2/hmi-no-proxy**.
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module6/6.3/hmi-no-proxy**.
