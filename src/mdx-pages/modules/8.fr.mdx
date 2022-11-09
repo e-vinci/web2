@@ -9,7 +9,7 @@ Ce module vous offre principalement la gestion de session utilisateurs pour faci
 Voici les sujets traités :
 - a) [Gestion de sessions côté client](#a)
     - a.1) [Introduction](#a1)
-    - a.2) [Persistance de données de sessions via le web storage](#a2)
+    - a.2) [Persistance de données de session via le web storage](#a2)
     - a.3) [Persistance de données de session via des cookies](#a3)
 - b) [Exercice 8.1 : Persistance de la session de myMovies dans le web storage](#b)
 - c) [Déploiement d'applications sur le cloud](#d)
@@ -25,40 +25,40 @@ Voici les sujets traités :
 # <a id="a"></a> a) Gestion de sessions côté client
 
 ## <a id="a1"></a> a.1) Introduction
-Nous avons vu qu'une des exigences associées à la création d'une application selon l'architecture REST, c'est qu'elle soit **stateless**, c'est à dire que l'API ne doit pas garder l'état du client, sa session, côté serveur.
+Nous avons vu qu'une des exigences associées à la création d'une application selon l'architecture REST, c'est qu'elle soit **stateless**, c'est à dire que l'API ne peut pas garder l'état du client, sa session, côté serveur.
 
 C'est donc au client de sauvegarder ses données de session.
 
 Pour rappel, nous avons déjà vu les avantages et les inconvénients d'avoir un serveur **stateless** par rapport à un serveur **stateful** lorsque nous avons traité de l'authentification : [Module 7 : a.1.4) Stateful VS stateless authentication](/modules/7/#a1.4).
 
-Mais où pouvons nous sauvegarder des données de manière persistantes côté client ?
+Mais où pouvons nous sauvegarder des données de manière persistante côté client ?
 
-Il existe deux principales façon de sauvegarder de l'info dans un browser :
+Il existe deux  façons principales de sauvegarder de l'info dans un browser :
 - le **web storage** ; 
 - les **cookies**.
 
 Dans le cadre de ce cours, nous allons voir comment sauvegarder de l'info à l'aide de ces deux façons.
 
-NB : le browser met à disposition d'autres API un peu moins connues pour sauvegarder des infos. Nous ne les verrons pas dans le cadre de ce cours, mais il reste néanmoins intéressant de voir de quoi il s'agit :
-- **IndexedDB API** : permet de sauvegarder côté client de grandes quantité d'infos structurées, incluant des fichiers ; c'est une base de données orientée objets en JS qui permet les transactions.
+NB : le browser met à disposition d'autres API un peu moins connues pour sauvegarder des infos. Nous ne les verrons pas dans le cadre de ce cours, mais il reste néanmoins intéressant de lire rapidement de quoi il s'agit :
+- **IndexedDB API** : permet de sauvegarder côté client de grandes quantités d'infos structurées, incluant des fichiers ; c'est une base de données orientée objets en JS qui permet les transactions.
 - **Cache API** : permet d'enregistrer et retrouver des requêtes et leur réponses. Bien qu'à la base créé pour pouvoir fournir des réponses plus rapides à certaines requêtes, cette API peut aussi être utilisée comme mécanisme général de stockage.
 
-## <a id="a2"></a> a.2) Persistance de données de sessions via le web storage
-### a.2.1 Introduction
+## <a id="a2"></a> a.2) Persistance de données de session via le web storage
+### a.2.1) Introduction
 Le **Web Storage API** fournit un mécanisme permettant aux browser d'enregistrer des paires **clé / valeur** d'une manière plus intuitive que l'utilisation de cookies.
 
 Il existe deux mécanismes au sein du web storage :
 - **sessionStorage** :
-    - offre un espace de stockage séparé pour chaque origine pour la durée de la session d'une page, tant que le browser est ouvert.
-    - les clés / valeurs sont enregistrée sous forme de string uniquement ;
-    - espace de stockage plus grand qu'un cookie, ~5MB maximum ;
+    - il offre un espace de stockage séparé pour chaque origine pour la durée de la session d'une page, tant que le browser est ouvert.
+    - les clés / valeurs y sont enregistrées sous forme de string uniquement ;
+    - il met à disposition un espace de stockage plus grand qu'un cookie, ~5MB maximum par origine ;
 - **localStorage** : 
     - offre aussi un espace de stockage séparé pour chaque origine, mais les données persistent quand le browser est fermé et réouvert ;
     - espace de stockage plus grand qu'un cookie, limité à ~10MB en cas de crash/restart du browser.
 
 Les principales méthodes offertes par **sessionStorage** et **localStorage** sont les mêmes. Voici quelques exemples de codes par méthode.
 
-### a.2.2 setItem()
+### a.2.2) setItem()
 Cette méthode permet d'enregistrer, pour une clé donnée, la valeur associée :
 
 ```js numbered {5}
@@ -70,12 +70,12 @@ const setUserSessionData = (user) => {
 };
 ```
 
-Comme le web storage est un système de clé / valeur qui enregistre les données sous forme de string, cela vous rappelle p-e qu'il est possible d'enregistrer des objets. 
+Comme le web storage est un système de paires de clé-valeur qui enregistre les données sous forme de string, cela vous rappelle p-e qu'il est possible d'enregistrer des objets. 
 
 💭 Comment enregistrer un objet JS sous forme de string ?  
 Hé bien il suffit de le sérialiser, comme cela est fait dans l'exemple à l'aide de la méthode **`JSON.stringify()`**.
 
-### a.2.3 getItem()
+### a.2.3) getItem()
 Cette méthode permet d'obtenir la valeur associée à la clé donnée en argument :
 
 ```js numbered {4}
@@ -90,7 +90,7 @@ const getUserSessionData = () => {
 
 Pour cet exemple, comme la valeur a été sérialisée, nous pouvons récupérer l'objet grâce à la méthode **`JSON.parse()`**.
 
-### a.2.4 removeITem()
+### a.2.4) removeITem()
 Cette méthode permet d'effacer une clé / valeur :
 
 ```js numbered {4}
@@ -101,12 +101,12 @@ const removeSessionData = () => {
 };
 ```
 
-### a.2.5 clear()
+### a.2.5) clear()
 Cette méthode permet d'effacer tout l'espace de stockage pour une origine donnée.
 
 Cette méthode est très utile lorsque l'on souhaite effacer toute la session d'un utilisateur, notamment lors du logout d'un utilisateur.
 
-### Mise en place du localStorage pour sauvegarder les données de session
+### a.2.6) Mise en place du localStorage pour sauvegarder les données de session
 
 Dans le cadre du site nous permettant de gérer une pizzeria, nous allons faire en sorte de sauvegarder les données de session au sein du **localStorage**, et plus juste en mémoire vive.
 
@@ -115,7 +115,7 @@ Veuillez démarrer la dernière version de la RESTful API de la pizzeria. En cas
 
 Nous allons maintenant finaliser le développement de l'IHM [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
 
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/web-storage** sur base d'un copié collé de **/web2/tutorials/pizzeria/hmi/jwt-fetch** (ou [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)).
+Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/web-storage** sur base d'un copier-coller de **/web2/tutorials/pizzeria/hmi/jwt-fetch** (ou [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
 **/web2/tutorials/pizzeria/hmi/web-storage**.
@@ -184,12 +184,12 @@ En cas de souci, vous pouvez utiliser le code du tutoriel :
 - pour l'API : [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
 ## <a id="a3"></a> a.3) Persistance de données de session via des cookies
-### Introduction 
+### a.3.1) Introduction 
 
 Un cookie représente des données qu'un serveur envoie à un browser.  
 Le browser peut sauver ce cookie. Pour chaque requête faite au serveur sur la même origine (que l'origine où le cookie a été reçu), le cookie sera automatiquement envoyé au serveur.
 
-Il fut un temps où les cookies étaient utilisé comme un mécanisme général de stockage de données côté client. 
+Il fut un temps où les cookies étaient utilisés comme un mécanisme général de stockage de données côté client. 
 
 👍 Actuellement, si les cookies sont utilisés pour sauvegarder les données de session, il faut se protéger contre les attaques XSS et rendre les cookies inaccessibles au JavaScript. On utilise donc les cookies **HttpOnly** qui sont inaccessibles à la **Document.cookie API**. 
 
@@ -197,39 +197,40 @@ Du coup, si des données de session doivent être utilisée pour l'IHM, on ne pe
 
 Pour la suite, on va donc voir :
 - comment utiliser Express pour créer des cookies au niveau d'une API ;
-- pour rendre ces cookies inaccessibles aux attaques XSS en configurant **HttpOnly** ;
-- comme les cookies sont envoyés automatiquement au serveur, il faudra mettre à jour notre IHM pour ne plus envoyer le token via un authorization header. L'API va charger le token dans le cookie, et comme le cookie sera automatiquement envoyé au serveur via le browser, l'IHM et les fetch seront plus simples. 
-- l'embêtant dans ce que nous allons faire, c'est que comme nous allons sécuriser le cookie, nous n'aurons pas accès au username via le cookie... Nous pourrions :
-    - soit toujours utiliser le web storage pour sauvegarder le username, 
-    - soit accepter de ne plus afficher le nom du username et avoir aucun nouveau code à ajouter au niveau du frontend (juste enlever les authorization header inutiles) ;
-    - soit mettre à jour l'API pour offrir une route de type **GET /users/me** qui renvoie les données d'un utilisateur à la demande d'une requête cliente. Dans ce cas-là, à chaque fois que l'utilisateur ouvre le browser, la première chose à faire serait d'appeler cette opération.
+- comment rendre ces cookies inaccessibles aux attaques XSS en configurant **HttpOnly** ;
+- que, comme les cookies sont envoyés automatiquement au serveur, il faudra mettre à jour notre IHM pour ne plus envoyer le token via un authorization header. L'API va charger le token dans le cookie, et comme le cookie sera automatiquement envoyé au serveur via le browser, le code de l'IHM et les fetch seront plus simples. 
+- l'embêtant dans ce que nous allons faire, c'est que comme nous allons sécuriser le cookie, nous n'aurons pas accès au **username** via le cookie... Nous pourrions :
+    - soit toujours utiliser le web storage pour sauvegarder le **username**, 
+    - soit accepter de ne plus afficher le **username** et avoir aucun nouveau code à ajouter au niveau du frontend (juste enlever les authorization header inutiles) ;
+    - soit mettre à jour l'API pour offrir une route de type **GET /users/me** qui renvoie les données d'un utilisateur à la demande d'une requête cliente. Dans ce cas-là, à chaque fois que l'utilisateur ouvre le browser, la première chose à faire serait d'appeler cette opération de l'API.
 
 Pour le tutoriel, nous avons choisi la première option. Dans vos exercices optionnels, n'hésitez pas à explorer une autre option.
 
 💭 Mais pourquoi sécuriser le cookie et le rendre inaccessible au JS ?  
-Hé bien, imaginez qu'un attaquant arrive à faire une attaque XSS, via un JS malicieux, renvoyant le cookie de chaque utilisateur qui affiche le menu des pizzas...  
+Hé bien, imaginez qu'un attaquant arrive à faire une attaque XSS, via un JS malicieux, renvoyant le cookie de chaque utilisateur qui affiche le menu des pizzas vers un serveur malicieux...  
 Via ce cookie, qui contient le token de l'utilisateur, le pirate peut se faire passer pour l'utilisateur piraté !  
 Bon, pour la pizzeria, c'est p-e pas si grave, mais imaginez si c'est le token associé à votre compte banquaire !  
 Si le cookie est inaccessible au JS, il est donc impossible pour un hackeur, via du JS malicieux, d'accéder au token, et donc, de l'envoyer 😌.
 
-### Gestion de session côté client via Express pour une API
+### a.3.2) Gestion de sessions côté client via Express pour une API
+#### a.3.2.1) Intro
 Nous allons donc créer une nouvelle version de l'API sauvegardant le token d'un utilisateur au sein d'un cookie, ainsi que son username, sans que ces infos soient accessible au JS côté client.
 
 Pour ce faire nous allons utiliser la librairie [cookie-session](https://github.com/expressjs/cookie-session) qui permet d'enregistrer des données de session dans des cookies.
 
 Nous allons maintenant continuer le développement de l'API [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/cookies** sur base d'un copié collé de **/web2/tutorials/pizzeria/api/safe** (ou [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
+Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/cookies** sur base d'un copié collé de **/web2/tutorials/pizzeria/api/safe** (ou [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
 **/web2/tutorials/pizzeria/api/cookies**.
 
-Veuillez installer la librairie **jsonwebtoken** au sein de votre nouveau projet **auths** :
+Veuillez installer la librairie **cookie-session** au sein de votre nouveau projet **auths** :
 ```bash
 npm i cookie-session
 ```
 
-#### Utilisation de la fonction middleware `cookieSession`
+#### a.3.2.2) Utilisation de la fonction middleware `cookieSession`
 
 Veuillez mettre à jour **/app.json** pour mettre en place la gestion de cookies :
 
@@ -270,22 +271,22 @@ app.use('/auths', authsRouter);
 module.exports = app;
 ```
 
-Nous avons donc bien indiqué que le cookie est inaccessible au JS via : `httpOnly: true,`.
+Nous avons donc bien indiqué que le cookie est inaccessible au JS via : `httpOnly: true`.
 
 Nous avons fait en sorte que le cookie soit signé via la clé `cookieSecreteKey`.  
 Le mécanisme de signature correspond à ce qui a été vu dans le cadre des tokens JWT.  
 Ainsi, si un cookie venait être modifié par un utilisateur, lors de la vérification du cookie, cela sera automatiquement détecté par la fonction middleware `cookieSession` et la session ne sera pas créée.
 
-Pour info, la fonction middleware `cookieSession` va créé deux cookies :
+Pour info, la fonction middleware `cookieSession` va créer deux cookies :
 - un cookie portant comme nom la valeur de `name` ; il est encodé en base64. N'hésitez pas à vous amuser à décoder un cookie généré par `cookieSession` sur [base64decode](https://www.base64decode.org/).
 - un cookie portant comme nom la valeur de `name` + `.sig` : c'est la signature qui prévient contre le "tempering" (acte intentionnel mais non autorisé qui amène à la modification d'un système ou de données).
 
-#### Lecture et ajout de données de session via `req.session`
+#### a.3.2.3) Lecture et ajout de données de session via `req.session`
 Pour créer des données de session, il suffit de simplement les ajouter à l'objet **`req.session`**.
 
 Dans le cadre de la RESTful API gérant les pizzas, cela est fait lors d'une opération de type **register** ou **login**.
 
-Veuillez mettre à jour le router **/routes/auths.js**
+Veuillez mettre à jour le router **/routes/auths.js** :
 
 ```js numbered {17,19,33,35,38-42,44-47}
 const express = require('express');
@@ -384,74 +385,14 @@ const isAdmin = (req, res, next) => {
 module.exports = { authorize, isAdmin };
 ```
 
-#### Test de la RESTful API via REST Client
+#### a.3.2.4) Test de la RESTful API via REST Client
 Il nous reste à tester nos requêtes via REST Client.
 
-Il n'y a pas de nouvelles notions à apprendre pour utiliser REST Client avec des cookies : le comportement par défaut de REST Client est, lorsqu'un cookie est renvoyé dans une réponse, c'est d'inclure ce cookie dans chaque requête vers la même origine.
+Il n'y a pas de nouvelles notions à apprendre pour utiliser REST Client avec des cookies : le comportement par défaut de REST Client, lorsqu'un cookie est renvoyé dans une réponse, est d'inclure ce cookie dans chaque requête vers la même origine.
 
 Dès lors, pour tester l'API, il suffit d'enlever tous les authorization headers et de rajouter une requête pour tester l'effacement d'une session.
 
 Veuillez tester les requêtes à l'aide de **/REST Client/pizzas.http** :
-```js numbered {17,19,33,35,38-42,44-47}
-const express = require('express');
-const { register, login } = require('../models/users');
-
-const router = express.Router();
-
-/* Register a user */
-router.post('/register', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
-
-  if (!username || !password) return res.sendStatus(400); // 400 Bad Request
-
-  const authenticatedUser = await register(username, password);
-
-  if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
-
-  createCookieSessionData(req, authenticatedUser);
-
-  return res.json({ username: authenticatedUser.username });
-});
-
-/* Login a user */
-router.post('/login', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
-
-  if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
-
-  const authenticatedUser = await login(username, password);
-
-  if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
-
-  createCookieSessionData(req, authenticatedUser);
-
-  return res.json({ username: authenticatedUser.username });
-});
-
-/* Logout a user */
-router.get('/logout', (req, res) => {
-  req.session = null;
-  return res.sendStatus();
-});
-
-function createCookieSessionData(req, authenticatedUser) {
-  req.session.username = authenticatedUser.username;
-  req.session.token = authenticatedUser.token;
-}
-
-module.exports = router;
-```
-
-Dans le code ci-dessus, nous préparons les données de session qui seront écrites dans le cookie à l'aide de l'objet `req.session`.  
-Lorsque nous renvoyons du JSON aux clients, nous ne renvoyons plus le token, mais juste le username de l'utilisateur. L'application cliente, le browser, pourra utiliser cette info pour afficher le nom de l'utilisateur. Pour rappel, le browser n'a pas accès, via le JS, à l'info se trouvant dans le cookie.
-
-Quand nous gérons une session via des cookies, il n'est pas évident de bien clôre une session. Nous avons créé une nouvelle opération de type **GET /auths/logout** qui permet d'effacer les données de session d'un utilisateur.
-
-Il nous reste à changer le mécanisme d'autorisation.
-Les tokens ne seront plus reçu via un authorization header, mais via un cookie.  
-Nous allons donc mettre à jour le middleware **/utils/authorize** (1 seule ligne) :
 ```http
 ######### NORMAL OPERATION  ###########
 
@@ -582,15 +523,15 @@ Pour ajouter une pizza, il suffit juste :
 2. De créer une nouvelle pizza ; le cookie est automatiquement envoyé.
 
 Admettons que vous souhaitez tester l'ajout d'une pizza sans envoyer de token :
-1. Lancer l'opération de logout (GET /auths/logout) ; le cookie renvoyé ne contient pas de données de session ;
-2. Tentez la création d'une pizza qui renverra un code 401 Unauthorized.
+1. Lancez l'opération de logout (GET /auths/logout) ; le cookie renvoyé ne contient pas de données de session ;
+2. Tentez la création d'une pizza qui renverra un code **401 Unauthorized**.
 
 Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
 "**cookies api**".
 
 En cas de souci, vous pouvez utiliser le code du tutoriel [cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
 
-### Gestion de session côté client via une IHM et des cookies
+### a.3.3) Gestion de session côté client via une IHM et des cookies
 
 A présent que notre API **cookies** renvoie les données de session dans un cookie non accessible par du JS, nous souhaitons mettre à jour notre IHM pour utiliser cette API.
 
@@ -612,7 +553,7 @@ Veuillez tester votre dernière version du frontend.
 Loguez-vous avec l'utilisateur **admin** (et le password **admin**).  
 Ajoutez une pizza et vérifiez qu'elle s'affiche bien.  
 
-💭 Comment vérifier le cookie ?
+💭 Comment vérifier le cookie ?  
 Tout en ayant la fenêtre de votre application ouverte, via Chrome, allez dans vos outils de développeurs : **F12**.  
 Puis, dans l'onglet **Application**, cliquez sur **Cookies**, vous verrez apparaître `http://localhost:8080`. Cliquez sur cette URL, et vous verrez vos 2 cookies de session, **user.sig** et **user**.  
 N'hésitez pas à aller décoder la valeur du cookie **user** sur [base64decode](https://www.base64decode.org/) en faisant un copier / coller de **Value**. Vous devriez voir quelque chose apparaître du style `{"username":"manager","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbmFnZXIiLCJpYXQiOjE2NjE3NzUxMDgsImV4cCI6MTc0ODE3NTEwOH0.sAZqq6vbrjCCZZoLH-n8hJKBoXJJJ8jEoupk8xKu5WI"}`  !
@@ -631,7 +572,7 @@ En cas de souci, vous pouvez utiliser le code du tutoriel :
 Comment feriez vous ? Vous pourriez par exemple appeler la méthode **GET /auths/logout** 😉.
 
 # <a id="b"></a> b) Exercice 8.1 : Persistance de la session de myMovies dans le web storage
-Lors de l'exercice précédent (Exercice 7.2), vous aviez une application qui permet de bien gérer des films, à l'exception du fait que quand vous fermez votre browser, vous devez à chaque fois vous reconnecter.
+Lors de l'exercice précédent (Exercice 7.2), vous avez développé une application qui permet de bien gérer des films, à l'exception du fait que quand vous fermez votre browser, vous devez à chaque fois vous reconnecter.
 
 Veuillez faire en sorte que vos données de session soient sauvegardées :
 - dans le **localStorage** si l'on clique sur une checkbox "Remember me" du login ou du register.
@@ -651,7 +592,7 @@ Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas 
 Nous vous recommandons, dans un premier temps, de gérer les sessions dans le localStorage, sans ajouter la fonctionnalité **Remember me**.  
 Une fois que c'est fonctionnel, il sera temps de gérer le **Remember me**.
 
-Vous allez pouvoir refaire un peu de gestion d'événements pour détecter les clics sur une checkbox. N'hésitez pas à voir ce que propose Bootstrap 5 pour les checkboxes.
+Vous allez pouvoir refaire un peu de gestion d'événements pour détecter les clics sur une checkbox. N'hésitez pas à voir ce que propose **Bootstrap 5** pour les **checkboxes**.
 
 💭 Prenez un moment pour voir comment gérer la persistance de l'info 'Remember me'...  
 Est-ce que ce n'est pas une donnée de session qui doit persister lorsque l'utilisateur ferme son browser ?  
@@ -669,7 +610,7 @@ votre web repository (normalement appelé **web2**) dans le répertoire nommé
 # <a id="c"></a> c) Déploiement d'applications sur le cloud
 ## <a id="c1"></a> c.1) Introduction
 Il existe énormément de possibilités pour déployer une application web, pour la rendre disponible sur le web.  
-Pour certains, il s'agit d'un métier à part entière, à des administrateurs réseaux ou des responsables de l'architecture.  
+Pour certains, comme des administrateurs réseaux ou des responsables de l'infrastructure informatique, il s'agit d'un métier à part entière.  
 Mais de plus en plus, avec l'avancée des services sur le cloud, les développeurs prennent un rôle important dans le déploiement des applications.
 
 Voici un diagramme qui exprime bien les différentes façons de déployer une applications :
@@ -680,14 +621,14 @@ Voici un diagramme qui exprime bien les différentes façons de déployer une ap
 Sur ce diagramme, tout à gauche, nous sommes entièrement responsable de la mise à disposition de l'infrastructure. Il faut donc d'énormes connaissances réseaux, au niveau OS, afin de mettre à disposition des serveurs, les sécuriser,...
 
 Lorsqu'on va vers la droite du diagramme, on passe vers la dématérialisation des services, vers le cloud, qui offre principalement trois types de services :
-- **IaaS** ou Infrastructure as a Service : nous recevons toute l'infrastructure, nous devons encore nous occuper du reste, la gestion d'un OS (Linux, Windows...), les bases de données, les applications et leurs données ; Amazon Web Services, Microsoft Azure, Google Cloud, OVHcloud offrent ce genre de services...
-- **PaaS** ou Platform as a Service : nous recevons tout ce qu'il faut pour simplement développer des applications ; heroku, Amazon Web Services, Microsoft Azure, Google Cloud, OVHcloud offrent ce genre de services...
-- **SaaS** ou Software as a Service : nous recevons des applications prêtes à être utilisées ; office 365 est un exemple, Github en est un autre.
+- **IaaS** ou **Infrastructure as a Service** : nous recevons toute l'infrastructure, nous devons encore nous occuper du reste, la gestion d'un OS (Linux, Windows...), les bases de données, les applications et leurs données ; Amazon Web Services, Microsoft Azure, Google Cloud, OVHcloud offrent ce genre de services...
+- **PaaS** ou **Platform as a Service** : nous recevons tout ce qu'il faut pour simplement développer des applications ; heroku, Amazon Web Services, Microsoft Azure, Google Cloud, OVHcloud offrent ce genre de services...
+- **SaaS** ou **Software as a Service** : nous recevons des applications prêtes à être utilisées ; office 365 est un exemple, Github en est un autre.
 
 Lorsque nous allons déployer nos RESTful API, nous allons donc très souvent utiliser un **PaaS**. En effet, voici les étapes principales pour le déploiement :
 - créer et configurer le type d'application que nous allons déployer avec les outils offerts par le provider : indiquer que nous souhaitons développer une application **Node.js** ;
 - créer un git repository pour chaque projet et faire un push des sources de notre application via les outils offerts par le provider ;
-- build et déploiement automatique de l'application faits par les outils du provider, sur une URL de développement offerte par le provider.
+- build et déploiement automatique de l'application seront faits en utilisant les outils du provider, via un service accessible par une URL de développement offerte par le provider.
 
 Chaque provider va fournir une recette de cuisine pour pouvoir déployer une application. Il est donc important de trouver la bonne documentation décrivant toutes les étapes.
 
@@ -696,10 +637,10 @@ Du coup, on peut utiliser des CDN (Content Delivery Network), des groupes de ser
 Comme Github offre ce service via **Github Pages**, que c'est gratuit si vous acceptez que votre code source soit publique, c'est un service idéal pour notre frontend.  
 Il faut juste faire attention que votre frontend n'utilise pas de proxy pour contacter votre RESTful API, il doit le faire directement. L'API devra donc gérer les CORS pour autoriser l'URL associée à votre frontend !
 
-Pour déployer nos RESTful API, le facteur principal que nous souhaitons mettre en avant dans ce cours, c'est de bénéficier d'un service gratuit. Comme nous étudions le JS, nous considérons que nous n'avons pas encore besoin d'un hébergement offrant de grandes performances. Nous souhaitons juste quelque chose qui nous permette de tester, sur le web, nos applications web, et les partager avec quelques dizaines de personnes. Pour le frontend, via **Github Pages**, nous avons trouvé un service de qualité, partageable avec des milliers de personnes. Par contre, pour héberger une API, les services gratuits tendent à disparaître.  
+Pour déployer nos RESTful API, le facteur principal que nous souhaitons mettre en avant dans ce cours, c'est de bénéficier d'un service gratuit. Comme nous étudions le JS, nous considérons que nous n'avons pas encore besoin d'un hébergement offrant de grandes performances. Nous souhaitons juste quelque chose qui nous permette de tester sur le web nos applications et de les partager avec quelques dizaines de personnes. Pour le frontend, via **Github Pages**, nous avons trouvé un service de qualité, partageable avec des milliers de personnes. Par contre, pour héberger une API, les services gratuits tendent à disparaître.  
 Avant l'automne 2022, **Heroku** fournissait un service gratuit qui était parfait pour nos API. Mais ce service va disparaître. Il y a un petit espoir qu'Heroku mette un "Student Program" en place, mais rien de sûr.
 
-Du coup, pour construire une API, il semblerait qu'il ne reste plus que des services qui soient que temporairement gratuits. Le souci avec ce genre de services, c'est que même si c'est gratuit, on vous demande votre carte de crédit, afin de "vérifier que vous n'êtes pas un robot" 🤖 !
+Du coup, pour construire une API, il semblerait qu'il ne reste plus que des services qui soient que temporairement gratuits. Le souci avec ce genre de services, c'est que même si c'est gratuit, on vous demande souvent votre carte de crédit, afin de "vérifier que vous n'êtes pas un robot" 🤖 !
 
 Nous avons donc tenté de sélectionner un service gratuit, temporaire, qui ne demande pas de carte de crédit.
 
@@ -769,19 +710,19 @@ Soit **Open app** via "Heroku dashboard", soit vous pouvez directement taper dan
 
 ⚡ Sur Heroku, si vous utilisez des fichiers **.json** pour assurer une certaine "persistance" des ressources associées à vos API, ces fichiers seront probablement réinitialisés environ une fois par jour. 
 
-En effet, Heroku utilise un système de fichiers éphémère, à chaque fois qu'une dyno est redémarrée, elle utilise une copie du déploiement le plus récent, c'est-à-dire les fichiers qui ont été "push" sur heroku pour lancer le build.
+En effet, Heroku utilise un système de fichiers éphémères, à chaque fois qu'une dyno est redémarrée, elle utilise une copie du déploiement le plus récent, c'est-à-dire les fichiers qui ont été "push" sur heroku pour lancer le build.
 
 Si vous souhaitez faire persister de l'information sur Heroku pendant plus longtemps qu'une journée, il faudra donc passer soit par une base de données, soit par des API offrant des opérations sur des fichiers (comme Amazon S3 par exemple).
 
 
 ## <a id="c4"></a> c.4) Déploiement d'une API sur Azure
-**Azure App Service** offre un PaaS. Il est aisé d'y déployer une application Node.js.
+**Azure App Service** offre un **PaaS**. Il est aisé d'y déployer une application Node.js.
 
 Voici la documentation pour créer une app : [Create a Node.js web app in Azure](https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-vscode).
 
 Attention de choisir la formule gratuite lorsque vous suivrez la procédure, en indiquant le tarif **F1**. Vous aurez le droit à 60 minutes de processing gratuites par jour, après quoi votre app renvoie un status code 403. Votre app n'est pas toujours active, mais il est pas évident d'estimer si vous tiendrez toute une journée sans erreur 403.
 
-Actuellement, si vous êtes étudiant, vous pouvez bénéficier de 100$ de crédit et vous n'avez pas besoin de carte de crédit ! En suivant le tutoriel proposé par Microsoft, vous vous rendrez sur [free with Azure for Student](https://azure.microsoft.com/en-in/free/students/). **Azure App Service**. 
+Actuellement, si vous êtes étudiant, vous pouvez bénéficier de 100$ de crédit et vous n'avez pas besoin de carte de crédit ! En suivant le tutoriel proposé par Microsoft, vous vous rendrez sur [free with Azure for Student](https://azure.microsoft.com/en-in/free/students/) et utiliserez par la suite **Azure App Service**. 
 
 Si vous n'êtes plus étudiant, vous pouvez bénéficier de services gratuits, certains toujours gratuits, d'autres pendant 12 mois, avec 200$ de crédit pendant 30 jours. Malheureusement il faut une carte de crédit pour vous faire autoriser... 
 
@@ -818,15 +759,14 @@ Pour le frontend, veuillez utiliser GitHub Pages.
 Pour le backend, si vous êtres étudiant, nous vous recommandons de vous inscrire sur Azure en tant que **student** pour obtenir vos 100$ de crédit, sans carte de crédit.
 
 #### 🤝 Tips
-Pensez à créer un repository pour votre frontend et un repository pour votre backend.  
-La racine de vos repositories doivent correspondre à la racine de vos projets. Pour vous en assurer, à la racine de chaque repo, doit se trouver un fichier `/packages.json`.
+Il est possible que votre déploiement soit facilité si vous créez un repository pour votre frontend et un repository pour votre backend : la racine de vos repositories correspondront à la racine de vos projets ; pour vous en assurer, à la racine de chaque repo, se trouvera un fichier `/packages.json`.
 
 ⚡ Attention, Git ne traque pas les repos dans les repos. Ainsi, vos deux projets ne peuvent pas se trouver dans le repos **web2** de votre cours !  
 N'oubliez pas d'inclure un fichier **.gitignore** pour éviter de mettre en configuration **node_modules** !
 
 Nous vous recommandons de suivre la documentation pour déployer une App à l'aide de VS Code, en installant l'extension **Azure App Service**  : [Create a Node.js web app in Azure](https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-vscode).
 
-# <a id="e"></a> e) 🍬 Exercice 8.3 : Déploiement de myMovies sur le cloud
+# <a id="e"></a> e) 🍬 Exercice 8.3 : l'essentiel du cours en action
 ## e.1) Introduction
 Voici un exercice qui fait revoir les compétences essentiels de ce cours de JS. Il a été utilisé comme examen pour les étudiants de Vinci en deuxième année de bachelier en Informatique de Gestion en août 2022. 
 
@@ -837,7 +777,7 @@ Veuillez télécharger ce fichier
 Cette archive contient un boilerplate pour chaque question et les ressources à utiliser pour cet examen.
 
 Dans un premier temps, veuillez désarchiver **examen_js.zip** localement sur votre machine.  
-⚡ Veuillez éviter de le faire sur un répertoire qui est partagé sur le cloud. En effet, il y a des milliers de fichiers associés aux **node_modules** lorsque vous lancerez l'installation des packages ! Une vraie horreur à synchroniser 😨 !
+⚡ Veuillez éviter de le faire sur un répertoire qui est partagé sur le cloud. En effet, il y a des milliers de fichiers associés aux **node_modules** lorsque vous lancerez l'installation des packages ! Ca serait une vraie horreur à synchroniser 😨 !
 
 ## e.2) Objectif
 Nous allons développer deux frontends et une API pour une agence de voyages.
