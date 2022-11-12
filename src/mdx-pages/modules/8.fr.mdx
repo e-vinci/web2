@@ -715,6 +715,11 @@ npm run deploy
 - Via **Settings**, puis **Pages**, vous avez l'URL de votre frontend qui vous est donnée et vous pouvez cliquer sur **Visit site** (pour accéder à votre site).
 - à la racine de votre web repo, vous pouvez visualiser tous les builds qui ont été tentés sur GitHub Pages ; à droite de la page, il y à une section **Environments** et un lien **github-pages** : cliquez sur ce lien et vous verrez l'historique des déploiements de votre frontend sur GitHub Pages.
 
+#### Que se passe-t-il en cas de refresh d'une page offerte par GitHub Pages ?
+- Imaginez que l'utilisateur fasse un refresh à l'URL **https://[username].github.io/my-super-frontend/login**. GitHub Pages est juste un CDN, un serveur de fichiers statiques. Il n'y a pas de fichier qui correspond à cette URL ! Dès lors, sans ce boilerplate, vous recevriez une **erreur 404** 😨 !
+- Lors du build, le boilerplate du cours ([js-frontend-boilerplate](https://github.com/e-vinci/js-frontend-boilerplate) ou [js-phaser-boilerplate](https://github.com/e-vinci/js-frontend-boilerplate)) crée un fichier **404.html** qui est identique à **index.html**. Ainsi, lorsqu'une ressource n'existe pas au niveau du CDN, GitHub Page renverra le contenu de **404.html**, et notre SPA sera entièrement fonctionnelle, même en cas de refresh forçant au serveur de nous renvoyer une page 😅 !  
+Car dans le cadre d'une SPA, c'est le JS, via le router, qui permet d'afficher la page associée à **/login**, une fois que tout le frontend a été chargé suite à l'appel d'**index.html**. Il n'y a pas de page **Login.html** qui existe au niveau du serveur !
+
 
 ## <a id="c3"></a> c.3) Déploiement d'une API sur Heroku
 ### c.3.1) Introduction
