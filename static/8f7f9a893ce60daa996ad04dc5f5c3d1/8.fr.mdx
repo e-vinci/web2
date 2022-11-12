@@ -914,7 +914,7 @@ Contraintes d'implémentation :
 Grâce à l'API que nous avez développé dans la question 2, l'agence de voyages a pu améliorer son API pour proposer un système de recommandations. Cependant, cette API utilise un système d'Intelligence Artificielle complexe et les opérations qui récupèrent les recommandations peuvent prendre un certain temps. 
 
 Le boilerplate pour cette question se trouve dans **/question3**.
-Vous devez consommer l'API décrite ci-dessous et disponible à l'adresse https://binv2150-aout2022.herokuapp.com pour afficher des recommandations de lieux de vacances. Cette API accepte les requêtes venant de toutes les origines et n'a pas de problème de CORS. Vous ne devez donc pas utiliser de proxy pour consommer cette API.
+Vous devez consommer l'API décrite ci-dessous et disponible à l'adresse **https://places-exam-api.azurewebsites.net** pour afficher des recommandations de lieux de vacances. Cette API accepte les requêtes venant de toutes les origines et n'a pas de problème de CORS. Vous ne devez donc pas utiliser de proxy pour consommer cette API.
 
 | Méthode HTTP | URI | Opération | Format |
 |---|---|---|---|
@@ -923,6 +923,6 @@ Vous devez consommer l'API décrite ci-dessous et disponible à l'adresse https:
 
 Sur la page d'accueil du site web, veuillez afficher le nom de tous les lieux de vacances, renvoyés par l'API avec l'URI "/places" (il n'est pas nécessaire d'afficher leur ID). 
 
-Toujours sur la page d'accueil, veuillez également afficher le nom du lieu de vacances le plus apprécié, renvoyé par l'API avec l'URI "/recommended". Comme cette opération peut prendre un certain temps, elle ne peut pas ralentir le chargement de la page. Le reste de la page doit être affiché avant de consommer cette API, et son résultat doit être rajouté sur la page quand l'opération est terminée.
+Toujours sur la page d'accueil, veuillez également afficher le nom du lieu de vacances le plus apprécié, renvoyé par l'API avec l'URI "**/recommended**". Comme cette opération peut prendre un certain temps, elle ne peut pas ralentir le chargement de la page. Le reste de la page doit être affiché avant de consommer cette API, et son résultat doit être rajouté sur la page quand l'opération est terminée.
 
 Aucune autre page ne doit être disponible sur le site web. Pensez donc à effacer le code du boilerplate qui est inutile.
