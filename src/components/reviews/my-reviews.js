@@ -6,7 +6,7 @@ const MyReviews = ({ projects, setFilteredContents, allReviews }) => {
 
   console.log("ALL REVIEWS", allReviews);
   // Merge interesting data from allReviews within projects
-  const newProjects = projects.map((project) => {
+  const newProjects = projects?.map((project) => {
     const sameProjectWithOtherData = allReviews.find(
       (element) => project.convertedProjectId === element._id
     );
@@ -25,7 +25,7 @@ const MyReviews = ({ projects, setFilteredContents, allReviews }) => {
 
   return (
     <>
-      {newProjects.map((project, index) => (
+      {newProjects?.map((project, index) => (
         <ReviewCard key={index} {...{ project, setFilteredContents }} />
       ))}
     </>

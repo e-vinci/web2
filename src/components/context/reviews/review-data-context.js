@@ -85,6 +85,7 @@ const useReviewData = () => {
       if (updateOperationCount === 0) setIsLoaded(true);
       return myReviews;
     } catch (err) {
+      setIsLoaded(true);
       console.error("useReviewData:updateMyReviewsData:error:", err);
     }
   };
