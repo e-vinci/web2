@@ -63,8 +63,7 @@ module.exports = {
         name: "Vitrines de projets",
         link: "",
         subMenu: [
-          { name: "Projets web 2021", link: "/public-projects/showcase2021" },
-          { name: "Projets web 2020", link: "/public-projects/showcase2020" },
+          { name: "Projets web 2022", link: "/public-projects/showcase2022" },
         ],
       },
       {
@@ -96,7 +95,7 @@ module.exports = {
     {
       resolve: `web-projects-source-plugin`,
       options: {
-        projectGroupNames: ["Web2 2020", "Web2 2021"], // [] if you don't want to deal with public project views
+        projectGroupNames: ["Web2 2020", "Web2 2021", "Web2 2022"], // [] if you don't want to deal with public project views
       },
     },
     "gatsby-plugin-react-helmet",
