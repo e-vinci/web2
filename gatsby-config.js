@@ -1,5 +1,5 @@
 const emoji = require(`remark-emoji`);
-const siteURL = "https://e-vinci.github.io/web2"; // No trailing slash allowed!
+const siteURL = "https://e-vinci.github.io/js2"; // No trailing slash allowed!
 const siteTitle = "web2course";
 const youtubeUrl = ""; //"https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
 const authorEmail = "raphael.baroni@vinci.be";
@@ -10,7 +10,7 @@ const defaultAssociatedProjectGroupName = "Web2 2022";
 const projectDocument = "WEB2-2022-PROJET-GROUP-XY.docx";
 
 module.exports = {
-  pathPrefix: `/web2`,
+  pathPrefix: `/js2`,
   siteMetadata: {
     title: siteTitle,
     description: "web2course : Apprendre JavaScript et Node.js",
@@ -182,7 +182,11 @@ module.exports = {
           },
         ],
         extensions: [".mdx", ".md"],
-        remarkPlugins: [emoji],
+        /* mdxOptions: {
+          mdExtensions: [".mdx", ".md"],
+        },*/
+        
+        // remarkPlugins: [emoji],
       },
     },
     `gatsby-plugin-postcss`,

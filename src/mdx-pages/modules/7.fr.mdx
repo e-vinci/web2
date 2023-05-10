@@ -1343,10 +1343,10 @@ Voici les opérations qui doivent être mises à disposition par votre API :
 |---|---|---|---|
 | **films** | GET | Non | READ ALL : Lire toutes les ressources de la collection |
 | **films?minimum-duration=value** | GET | Non | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
-| **films/{id}** | GET | Non | READ ONE : Lire la ressource identifiée |
+| **`films/{id}`** | GET | Non | READ ONE : Lire la ressource identifiée |
 | **films** | POST | JWT | CREATE ONE : Créer une ressource basée sur les données de la requête |
-| **films/{id}** | DELETE | JWT | DELETE ONE : Effacer la ressource identifiée |
-| **films/{id}** | PATCH | JWT | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
+| **`films/{id}`** | DELETE | JWT | DELETE ONE : Effacer la ressource identifiée |
+| **`films/{id}`** | PATCH | JWT | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
 
 <br/>
 
@@ -1447,7 +1447,7 @@ Oui, mais si nous allions vers cette solution, cela serait problématique si nou
 
 Dès lors, nous allons préférer la solution où nous sécurisons l'API. Ainsi, peu importe l'application cliente développée, il devrait y avoir moins d'angles d'attaques.
 
-Au niveau de l'API, nous allons échapper les caractères dangereux, principalement **"**, **'**, **&**, **<**, **>**.
+Au niveau de l'API, nous allons échapper les caractères dangereux, principalement **`"`**, **`'`**, **`&`**, **`<`**, **`>`**.
 
 Nous allons utiliser la librairie **[escape-html](https://www.npmjs.com/package/escape-html)** sous Node.js échappant les string pour une utilisation des string transformées en HTML.
 

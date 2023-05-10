@@ -1,58 +1,70 @@
-const path = require("path");
-const crypto = require("crypto");
-const fetch = require("node-fetch");
-const { getSlugAndLang } = require("ptz-i18n");
-const { getFilePath } = require("./src/utils/files/files");
+const path = require('path');
+const crypto = require('crypto');
+const fetch = require('node-fetch');
+const { getSlugAndLang } = require('ptz-i18n');
+const { getFilePath } = require('./src/utils/files/files');
+const slugify = require(`@sindresorhus/slugify`);
+const { createFilePath } = require('gatsby-source-filesystem');
+
 /*/
 const {
   onCreateNode: gatsbyPluginI18nOptions,
 } = require("gatsby-plugin-i18n/onCreateNode");*/
 
-const { plugins } = require("./gatsby-config");
+const { plugins } = require('./gatsby-config');
+const { log } = require('console');
 const { options: i18nPluginOptions } = plugins.find(
   (plugin) => plugin.resolve === `gatsby-plugin-i18n`
 );
 
 // load variables from the .env.* files
-require("dotenv").config({
+require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
 // add a slug field to all MDX files
 exports.onCreateNode = ({ node, actions, getNode }) => {
-  //gatsbyPluginI18nOptions({ node, actions }, pluginOptions);
-
   const { createNodeField } = actions;
 
-  if (node.internal.type === "MarkdownRemark" || node.internal.type === "Mdx") {
-    const filePath = getFilePath(node);
+  if (node.internal.type === 'Mdx') {
+    console.log('NODE : ', node.internal.contentFilePath);
+    const filePath = getFilePath(node.internal.contentFilePath);
     const slugAndLang = getSlugAndLang(i18nPluginOptions, filePath);
+    console.log(
+      'prior : ',
+      slugAndLang.slug,
+      'slugigy : ',
+      slugify(slugAndLang.slug)
+    );
+    console.log('from source-filesystem : ', createFilePath({ node, getNode }));
+
     createNodeField({
       node,
-      name: "langKey",
+      name: 'langKey',
       value: slugAndLang.langKey,
     });
     createNodeField({
       node,
-      name: "slug",
-      value: slugAndLang.slug,
+      name: 'slug',
+      value: slugAndLang.slug, // slugify(slugAndLang.slug),
     });
   }
 };
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   // Destructure the createPage function from the actions object
-  console.log("CreatePages is called.");
+  console.log('CreatePages is called.');
   const { createPage } = actions;
   const result = await graphql(`
     query {
       allMdx {
-        edges {
-          node {
-            id
-            fields {
-              slug
-            }
+        nodes {
+          id
+          fields {
+            slug
+          }
+          internal {
+            contentFilePath
           }
         }
       }
@@ -60,23 +72,24 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   `);
 
   if (result.errors) {
-    console.error("page creation error");
+    console.error('page creation error');
     reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query');
   }
   // Create pages from /pages.
-  const pages = result.data.allMdx.edges;
-  console.log("Pages to create : ", pages.length);
-  const templatePath = path.resolve(`src/templates/mdx-pages.js`);
-  console.log("path to template: ", templatePath);
+  // console.log('RRRRRRRRRR: ', result.data.allMdx.nodes);
+  const pages = result.data.allMdx.nodes;
+  console.log('Pages to create : ', pages.length);
+  const templatePath = path.resolve(`./src/templates/mdx-pages.js`);
+  console.log('path to template: ', templatePath);
   // you'll call `createPage` for each result
-  pages.forEach(({ node }, index) => {
-    console.log("CREATE PAGE FOR : ", node.fields.slug);
+  pages.forEach((node, index) => {
+    console.log('CREATE PAGE FOR : ', node.fields.slug);
     createPage({
       // This is the slug you created before
       // (or `node.frontmatter.slug`)
       path: node.fields.slug,
       // This component will wrap our MDX content
-      component: templatePath,
+      component: `${templatePath}?__contentFilePath=${node.internal.contentFilePath}`, // templatePath, // 
       // Data passed to context is available
       // in page queries as GraphQL variables.
       //context: { id: node.id },
@@ -95,7 +108,7 @@ exports.createSchemaCustomization = ({ actions }) => {
   const { createFieldExtension, createTypes } = actions;
 
   createFieldExtension({
-    name: "defaultTrue",
+    name: 'defaultTrue',
     extend() {
       return {
         resolve(source, args, context, info) {
@@ -109,7 +122,7 @@ exports.createSchemaCustomization = ({ actions }) => {
   });
 
   createFieldExtension({
-    name: "defaultFalse",
+    name: 'defaultFalse',
     extend() {
       return {
         resolve(source, args, context, info) {
@@ -123,12 +136,12 @@ exports.createSchemaCustomization = ({ actions }) => {
   });
 
   createFieldExtension({
-    name: "defaultString",
+    name: 'defaultString',
     extend() {
       return {
         resolve(source, args, context, info) {
           if (source[info.fieldName] == null) {
-            return "";
+            return '';
           }
           return source[info.fieldName];
         },
@@ -137,14 +150,14 @@ exports.createSchemaCustomization = ({ actions }) => {
   });
 
   createFieldExtension({
-    name: "defaultTitle",
+    name: 'defaultTitle',
     extend() {
       return {
         resolve(source, args, context, info) {
-          console.log("source : ", source);
-          console.log("info : ", info);
+          console.log('source : ', source);
+          console.log('info : ', info);
           if (source[info.fieldName] == null) {
-            return "";
+            return '';
           }
           return source[info.fieldName];
         },
@@ -199,4 +212,3 @@ exports.createSchemaCustomization = ({ actions }) => {
   `;
   createTypes(typeDefs);
 };
-

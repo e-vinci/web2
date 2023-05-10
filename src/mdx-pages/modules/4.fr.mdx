@@ -549,10 +549,10 @@ Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTf
 |---|---|---|
 | **films** | GET | READ ALL : Lire toutes les ressources de la collection |
 | **films?minimum-duration=value** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
-| **films/{id}** | GET | READ ONE : Lire la ressource identifiée |
+| **`films/{id}`** | GET | READ ONE : Lire la ressource identifiée |
 | **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
-| **films/{id}** | DELETE | DELETE ONE : Effacer la ressource identifiée |
-| **films/{id}** | PUT | UPDATE ONE : Remplacer l'entièreté de la ressource par les données de la requête |
+| **`films/{id}`** | DELETE | DELETE ONE : Effacer la ressource identifiée |
+| **`films/{id}`** | PUT | UPDATE ONE : Remplacer l'entièreté de la ressource par les données de la requête |
 
 <br/>
 
@@ -642,7 +642,7 @@ Voici une partie du code qui se trouverait au sein d'un router de pizzas, dans l
 var router = express.Router();
 
 router.use((req, res, next) => {
-  console.log('Time:'', Date.now());
+  console.log('Time:', Date.now());
   next();
 });
 
@@ -1123,7 +1123,7 @@ Voici les "status codes" que nous allons généralement utiliser :
 
 ## <a id="e12"></a> e.12) Opération de suppression
 Nous souhaitons développer une opération permettant de supprimer une ressource de type "pizzas" à l'aide de son identifiant.  
-Selon les conventions REST, il faut faire une requête de type **DELETE /pizzas/{id}** contenant l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter".
+Selon les conventions REST, il faut faire une requête de type **`DELETE /pizzas/{id}`** contenant l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter".
 
 Une opération de suppression ne contient donc pas de body et est de type DELETE. 
 
@@ -1154,7 +1154,7 @@ Veuillez exécuter cette requête et vérifier que la pizza a bien été supprim
 
 ## <a id="e13"></a> e.13) Opération de modification
 Nous souhaitons développer une opération permettant de modifier une ressource de type "pizzas" à l'aide de son identifiant et de nouvelles valeurs pour ses propriétés.  
-Selon les conventions REST, comme on accepte de modifier que certaines des propriétés d'une pizza, qu'il ne faut pas fournir toutes les propriétés d'une pizza, il faut faire une requête de type **PATCH /pizzas/{id}** contenant 
+Selon les conventions REST, comme on accepte de modifier que certaines des propriétés d'une pizza, qu'il ne faut pas fournir toutes les propriétés d'une pizza, il faut faire une requête de type **`PATCH /pizzas/{id}`** contenant 
 l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter" ainsi que les nouvelles données au sein du body de la requête.
 
 Si nous souhaitons modifier une ressource identifiée par 6 en fournissant un nouveau titre "Magic Green 2", la représentation des données de la ressource à modifier sera la suivante :
@@ -1252,10 +1252,10 @@ Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 |---|---|---|
 | **films** | GET | READ ALL : Lire toutes les ressources de la collection |
 | **films?minimum-duration=value** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
-| **films/{id}** | GET | READ ONE : Lire la ressource identifiée |
+| **`films/{id}`** | GET | READ ONE : Lire la ressource identifiée |
 | **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
-| **films/{id}** | DELETE | DELETE ONE : Effacer la ressource identifiée |
-| **films/{id}** | PATCH | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
+| **`films/{id}`** | DELETE | DELETE ONE : Effacer la ressource identifiée |
+| **`films/{id}`** | PATCH | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
 
 - Une ressource de type **films** doit contenir les propriétés suivantes :
   - **id** : un entier 

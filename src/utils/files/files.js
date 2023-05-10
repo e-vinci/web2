@@ -1,19 +1,11 @@
-const { isNil } = require("ramda");
-const Result = require("folktale/result");
+const { isNil } = require('ramda');
+const Result = require('folktale/result');
 
 const getValidFile = (filePath) =>
-  isNil(filePath) ? Result.Error("No file name") : Result.Ok(filePath);
+  isNil(filePath) ? Result.Error('No file name') : Result.Ok(filePath);
 
-const getFilePath = (node) => {
-  switch (node.internal.type) {
-    case "File":
-      return getValidFile(node.absolutePath);
-    case "MarkdownRemark":
-    case "Mdx":
-      return getValidFile(node.fileAbsolutePath);
-    default:
-      return Result.Error("Skiping file type: " + node.internal.type);
-  }
+const getFilePath = (filePath) => {
+  return getValidFile(filePath);
 };
 
 module.exports = { getFilePath };

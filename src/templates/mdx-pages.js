@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql } from "gatsby";
 import { MDXProvider } from "@mdx-js/react";
-import { MDXRenderer } from "gatsby-plugin-mdx";
+// import { MDXRenderer } from "gatsby-plugin-mdx";
 import { Link } from "gatsby";
 import MainLayout from "../components/main-layout.js";
 import Image from "../components/image.js";
@@ -44,8 +44,9 @@ const shortcodes = {
   YoutubeImage,
 };
 
-export default function PageTemplate({ data: { mdx, allImages } }) {
+export default function PageTemplate({ data: { mdx, allImages},  children }) {
   shortcodes.PageHeader = withFrontmatter(PageHeader, mdx?.frontmatter);
+  console.log("CHILDREN : ", children);
 
   return (
     <MainLayout
@@ -68,7 +69,10 @@ export default function PageTemplate({ data: { mdx, allImages } }) {
             mdx?.frontmatter?.autoMargin ? "page page--auto-margin" : "page"
           }
         >
-          <MDXRenderer>{mdx?.body ?? " "}</MDXRenderer>
+          <h1>{mdx?.frontmatter.title}</h1>
+          <div>{children.length}</div>
+          {/* <MDXRenderer>{mdx?.body ?? " "}</MDXRenderer>  */}
+          {children}
         </div>
       </MDXProvider>
     </MainLayout>
@@ -80,7 +84,10 @@ export const pageQuery = graphql`
     mdx(fields: { slug: { eq: $slug } }) {
       id
       body
-      slug
+      fields{
+        slug
+      }
+      
       frontmatter {
         title
         date
