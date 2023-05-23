@@ -1,0 +1,137 @@
+---
+title: "IHM"
+description: "Création d'IHM pour SPA"
+---
+
+Ce module vous offre principalement une découverte du JS côté browser & du DOM pour interagir avec l'HTML d'une page web.
+
+Voici les sujets traités :
+
+- a) [Introduction au JS côté client dans un browser](#a)
+  - a.1) [Introduction](#a1)
+  - a.2) [Où mettre du code JS ?](#a2)
+  - a.3) [Comment fonctionne un browser pour afficher une page ?](#a3)
+  - a.4) [Comment interagir avec son browser ?](#a4)
+  - a.5) [JS standard & la norme ECMAScript](#a5)
+- b) [Interagir avec le DOM](#b)
+  - b.1) [Introduction](#b1)
+  - b.2) [Accéder à un élément HTML](#b2)
+  - b.3) [Gestion d'événements](#b3)
+    - b.3.1) [Introduction](#b3.1)
+    - b.3.2) [Flux des événements du DOM](#b3.2)
+    - b.3.3) [Gestion des écouteurs d'événements](#b3.3)
+    - b.3.4) [Les callbacks](#b3.4)
+    - b.3.5) [L'objet event](#b3.5)
+    - b.3.6) [Gestion de timers](#b3.6)
+    - b.3.7) [Gestion d'intervalles de temps](#b3.7)
+    - b.3.8) [Documentation MDN](#b3.8)
+  - b.4) [Création d'une IHM classique & interactive: tutoriel](#b4)
+- c) [Exercice 1.1 : Créer un repository local et distant pour gérer vos exercices](#c)
+- d) [Exercice 1.2 : 1er script externe](#d)
+- e) [Exercice 1.3 : compteur d'événements](#e)
+- f) [Exercice 1.4 : événements différés dans le temps](#f)
+- g) [🍬 Exercice 1.5 : autres événements](#f)
+
+Dans ce module, nous allons développer des applications web classiques, façon "old school".
+
+Nous n'allons pas utiliser d'outils pour gérer les dépendances de nos applications, nous allons intégrer ces dépendances directement à l'aide de balises **`<script>`**.
+
+
+Ce module vous offre principalement une découverte de l'utilisation d'outils de développeurs pour créer une IHM moderne ainsi que la génération d'HTML dynamique et de pages web esthétiques.
+
+Voici les sujets traités :
+- a) [Développement d'IHM modernes](#a)
+  - a.1) [Introduction](#a1)
+  - a.2) [Les modules bundlers](#a2)
+  - a.3) [Comment créer une IHM moderne ?](#a3)
+  - a.4) [Création du squelette d'une IHM à partir d'un boilerplate](#a4)
+  - a.5) [Installation de toutes les dépendances d'une application](#a5)
+  - a.6) [Installation des extensions pour le linter et le formater](#a6)
+  - a.7) [Exécution de l'application à l'aide d'un serveur de développement de Webpack](#a7)
+  - a.8) [Fonctionnement de Webpack pour gérer des assets](#a8)
+  - a.9) [Installation d'un package](#a9)
+- b) [Développement d'IHM esthétiques](#b)
+  - b.1) [Introduction](#b1)
+  - b.2) [Introduction à Bootstrap](#b2)
+  - b.3) [Le Layout en Bootstrap](#b3)
+  - b.4) [Les breakpoints en Bootstrap](#b4)
+  - b.5) [Les composants Bootstrap](#b5)
+  - b.6) [Utilisation de Bootstrap dans un frontend moderne](#b6)
+- c) [Développement d'IHM dynamiques](#c)
+  - c.1) [Introduction](#c1)
+  - c.2) [Génération d'HTML à partir d'une string](#c2)
+  - c.3) [Ajout dynamique d'écouteurs d'événements une fois le DOM rendu](#c3)
+  - c.4) [Génération d'HTML à partir de Nodes](#c4)
+  - c.5) [Ajout dynamique d'écouteurs d'événements avant de rendre le DOM](#c5)
+  - c.6) [Utilisation de Bootstrap dans un frontend moderne](#c6)
+- d) [Debbuging d'un frontend tournant sous Webpack](#d)
+- e) [Exercice 2.1 : Homepage statique de myMovies & Webpack](#e)
+- f) [Exercice 2.2 : Génération dynamique de la Homepage de myMovies](#f)
+- g) [Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire](#g)
+- h) [🍬 Exercice 2.4 : design responsive](#g)
+
+Ce module vous offre principalement le refactoring des IHM en modules, le routage des pages ainsi que les bases pour réaliser des animations.
+
+Voici les sujets traités :
+- a) [Les modules ECMAScript](#a)
+  - a.1) [Introduction](#a1)
+  - a.2) [Création de modules](#a2)
+  - a.3) [Exporter des objets](#a3)
+  - a.4) [Importer des objets](#a4)
+  - a.5) [Découpe d'une IHM en modules](#a5)
+  - a.6) [Exécution de l'application à l'aide d'un serveur de développement de Webpack](#a6)
+- b) [Le routage des écrans](#b)
+  - b.1) [Introduction](#b1)
+  - b.2) [Ajout d'une Navbar](#b2)
+  - b.3) [Mise en place de quel routeur ?](#b3)
+  - b.4) [Cacher de l'information dans l'HTML : data-attributes](#b4)
+  - b.5) [Création du routeur](#b5)
+  - b.6) [Utilisation du routeur & boilerplate](#b6)
+- c) [Exercice 3.1 : Gestion locale d'une collection de films](#c)
+- d) [🍬 L'orienté objet en JS](#d)
+- e) [🍬 Les animations et jeux vidéo](#e)
+  - e.1) [🍬 Animations via l'API Canvas](#e1)
+  - e.2) [🍬 Animations via une librairie externe](#e2)
+  - e.3) [🍬 Jeux vidéo en 2D via Phaser](#e3)
+- f) [Exercice 3.2 : Gérer des événements associés à une animation](#f)
+
+Dans cette partie, nous allons voir certaines techniques afin d'améliorer la structure du code d'une IHM.
+
+
+Ce module vous offre principalement la création de SPA et la gestion des communications asynchrones entre une RESTful API et une IHM.
+
+A cette étape-ci, nous allons simplement intégrer des RESTful API au sein d'IHM.  
+C'est donc principalement du développement frontend que nous allons faire, à l'inverse des deux derniers modules où nous avons fait que du développement backend.
+
+Voici les sujets traités :
+
+- a) [Introduction aux Single Page Applications](#a)
+ 
+parler des architectures classiques d'applications Web ! confr intro !
+- d) [Architectures classiques d'applications web](#d) 
+
+  - a.1) [Caractéristiques et workflow associés à une SPA](#a1)
+  - a.2) [Architectures associées à une SPA](#a2)
+  - a.3) [Gestion des communications d'une SPA](#a3)
+- b) [Gestion des communications d'une SPA](#b)
+  - b.1) [Introduction aux protocoles de communications d'une SPA](#b1)
+  - b.2) [Introduction aux librairies liées aux requêtes HTTP](#b2)
+  - b.3) [Requêtes asynchrones & introduction aux promesses](#b3)
+- c) [Gestion de la sécurité des communications du browser](#c)
+  - c.1) [Single Origin Policy & CORS](#c1)
+  - c.2) [Relaxer la sécurité via des CORS](#c2)
+  - c.3) [Contourner le SOP via un proxy](#c3)
+- d) [Programmation asynchrone à l'aide de promesses & async / await](#d)
+  - d.1) [Utilisation de promesses](#d1)
+  - d.2) [Création de fonctions asynchrones renvoyant une promesse](#d2)
+- e) [Exercice 6.1 : Consommation d'une API tierce](#e)
+- f) [Exercice 6.2 : Consommation d'une API tierce Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy](#f)
+- g) [🍬 Exercice 6.3 : Autoriser des nouvelles origines via la RESTful API](#g)
+
+Ce module vous offre principalement la gestion de session utilisateurs pour faciliter les opérations sur des ressources ainsi que le déploiement de SPA sur le cloud.
+
+Voici les sujets traités :
+- a) [Gestion de sessions côté client](#a)
+    - a.1) [Introduction](#a1)
+    - a.2) [Persistance de données de session via le web storage](#a2)
+    - a.3) [Persistance de données de session via des cookies](#a3)

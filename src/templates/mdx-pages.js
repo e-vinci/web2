@@ -1,29 +1,29 @@
-import React from "react";
-import { graphql } from "gatsby";
-import { MDXProvider } from "@mdx-js/react";
+import React from 'react';
+import { graphql } from 'gatsby';
+import { MDXProvider } from '@mdx-js/react';
 // import { MDXRenderer } from "gatsby-plugin-mdx";
-import { Link } from "gatsby";
-import MainLayout from "../components/main-layout.js";
-import Image from "../components/image.js";
-import Section from "../components/section.js";
-import Content from "../components/content.js";
-import Background from "../components/background.js";
-import SectionHeader from "../components/section-header.js";
-import SectionFooter from "../components/section-footer.js";
-import PageHeader from "../components/page-header.js";
-import { withFrontmatter } from "../components/hoc/hoc.js";
-import CodeBlock from "../components/codeblock/codeblock.js";
-import LinkFile from "../components/file/link-file.js";
-import ScrollableImage from "../components/image/scrollable-image";
-import PublicProjectsView from "../components/public-projects/public-projects-view";
+import { Link } from 'gatsby';
+import MainLayout from '../components/main-layout.js';
+import Image from '../components/image.js';
+import Section from '../components/section.js';
+import Content from '../components/content.js';
+import Background from '../components/background.js';
+import SectionHeader from '../components/section-header.js';
+import SectionFooter from '../components/section-footer.js';
+import PageHeader from '../components/page-header.js';
+import { withFrontmatter } from '../components/hoc/hoc.js';
+import CodeBlock from '../components/codeblock/codeblock.js';
+import LinkFile from '../components/file/link-file.js';
+import ScrollableImage from '../components/image/scrollable-image';
+import PublicProjectsView from '../components/public-projects/public-projects-view';
 import {
   AuthenticatedTemplate,
   UnauthenticatedTemplate,
-} from "@azure/msal-react";
-import AuthenticatedBlock from "../components/auth/authenticated-block.js";
-import UnAuthenticatedBlock from "../components/auth/unauthenticated-block.js";
-import NestedMdxBlock from "../components/mdx/nested-mdx-block.js";
-import YoutubeImage from "../components/image/youtube-image.js";
+} from '@azure/msal-react';
+import AuthenticatedBlock from '../components/auth/authenticated-block.js';
+import UnAuthenticatedBlock from '../components/auth/unauthenticated-block.js';
+import NestedMdxBlock from '../components/mdx/nested-mdx-block.js';
+import YoutubeImage from '../components/image/youtube-image.js';
 
 const shortcodes = {
   Link,
@@ -39,15 +39,13 @@ const shortcodes = {
   ScrollableImage,
   PublicProjectsView,
   AuthenticatedBlock,
-  UnAuthenticatedBlock,  
+  UnAuthenticatedBlock,
   NestedMdxBlock,
   YoutubeImage,
 };
 
-export default function PageTemplate({ data: { mdx, allImages},  children }) {
+export default function PageTemplate({ data: { mdx, allImages }, children }) {
   shortcodes.PageHeader = withFrontmatter(PageHeader, mdx?.frontmatter);
-  console.log("CHILDREN : ", children);
-
   return (
     <MainLayout
       {...(mdx?.frontmatter ? { frontmatter: mdx.frontmatter } : {})}
@@ -66,12 +64,10 @@ export default function PageTemplate({ data: { mdx, allImages},  children }) {
       <MDXProvider components={shortcodes}>
         <div
           className={
-            mdx?.frontmatter?.autoMargin ? "page page--auto-margin" : "page"
+            mdx?.frontmatter?.autoMargin ? 'page page--auto-margin' : 'page'
           }
         >
-          <h1>{mdx?.frontmatter.title}</h1>
           <div>{children.length}</div>
-          {/* <MDXRenderer>{mdx?.body ?? " "}</MDXRenderer>  */}
           {children}
         </div>
       </MDXProvider>
@@ -84,10 +80,10 @@ export const pageQuery = graphql`
     mdx(fields: { slug: { eq: $slug } }) {
       id
       body
-      fields{
+      fields {
         slug
       }
-      
+
       frontmatter {
         title
         date

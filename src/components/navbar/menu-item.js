@@ -9,13 +9,12 @@ const MenuItem = ({
   i18nPluginOptions,
   locale,
   isAuthenticated,
-  key,
 }) => {
   const itemIsUnavailable = itemData?.protected && !isAuthenticated;
   if (itemIsUnavailable) return null;
 
   return (
-    <li key={key} className={className}>
+    <li className={className}>
       <InternationalLink
         className={className + "__link"}
         i18nPluginOptions={i18nPluginOptions}

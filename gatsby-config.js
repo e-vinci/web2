@@ -25,37 +25,22 @@ module.exports = {
     isAuthentication: true, // currently there is only Vinci MSAL
     projectDocument,
     //twitterUsername: "@whoever; )",
-    menuLinks: [
-      {
-        name: `Home`,
-        link: `/`,
-      },
+    menuLinks: [      
       {
         name: "Contenu du cours",
         link: "",
         subMenu: [
-          { name: "Introduction", link: "/intro" },
+          { name: "Partie 0 : Info & intro", link: "/part0" },
           {
-            name: "Module 1 : IHM classique & interactions",
-            link: "/modules/1",
+            name: "Partie 1 : Services web",
+            link: "/part1",
           },
-          { name: "Module 2 : IHM moderne & dynamique", link: "/modules/2" },
+          { name: "Partie 2 : IHM", link: "/part2" },
           {
-            name: "Module 3 : IHM structurée, routage & animations",
-            link: "/modules/3",
+            name: "Partie 3 : Déploiement",
+            link: "/part3",
           },
-          { name: "Module 4 : Service web & clients", link: "/modules/4" },
-          { name: "Module 5 : Service web architecturé", link: "/modules/5" },
-          { name: "Module 6 : SPA & comms", link: "/modules/6" },
-          { name: "Module 7 : SPA & sécurisation", link: "/modules/7" },
-          {
-            name: "Module 8 : SPA & sessions & déploiement",
-            link: "/modules/8",
-          },
-          {
-            name: "🍬 Introduction à Git",
-            link: "/git",
-          },
+          { name: "Partie 4 : Sécurisation", link: "/part4" },          
           { name: "Bibliographie", link: "/references" },
         ],
       },
@@ -69,6 +54,10 @@ module.exports = {
       {
         name: `About`,
         link: `/about`,
+      },
+      {
+        name: `Repositories`,
+        link: `/repo`,
       },
       {
         name: `L'essentiel`,
