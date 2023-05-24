@@ -5,24 +5,25 @@ description: "Introduction aux RESTful API via Node.js & Express"
 
 # b) Introduction aux RESTful API Node.js & Express
 
-
 Voici les sujets traités :
-- [Introduction aux RESTful API & conventions](#1)
-- [Configuration & démarrage d'une RESTful API en Express](#2)
-- [Les fonctions middleware en Express](#3)
-- [Définition d'une route en Express](#4)
-- [Opération de lecture](#5)
-- [Chemin et paramètres de route](#6)
-- [Chemin et paramètres de requête](#7)
-- [Opération de création & parsing du body](#8)
-- [Client REST](#9) 
-- [Répondre avec un code de statut HTTP](#10) 
-- [Opération de suppression & de modification](#11)
-- [Exercice 1.1 : Création d'une RESTfull API non protégée pour myMovies](#12)
-- [🍬 Exercice 1.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films](#13)
+<InternalPageMenu>
+  <InternalPageMenuItem> Introduction aux RESTful API & conventions </InternalPageMenuItem>
+  <InternalPageMenuItem> Configuration & démarrage d'une RESTful API en Express </InternalPageMenuItem>
+  <InternalPageMenuItem> Les fonctions middleware en Express </InternalPageMenuItem>
+  <InternalPageMenuItem> Définition d'une route en Express </InternalPageMenuItem>
+  <InternalPageMenuItem> Opération de lecture </InternalPageMenuItem>
+  <InternalPageMenuItem> Chemin et paramètres de route </InternalPageMenuItem>
+  <InternalPageMenuItem> Chemin et paramètres de requête </InternalPageMenuItem>
+  <InternalPageMenuItem> Opération de création & parsing du body </InternalPageMenuItem>
+  <InternalPageMenuItem> Client REST </InternalPageMenuItem>
+  <InternalPageMenuItem> Répondre avec un code de statut HTTP </InternalPageMenuItem>
+  <InternalPageMenuItem> Opération de suppression & de modification </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 1.1 : Création d'une RESTfull API non protégée pour myMovies </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Exercice 1.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films </InternalPageMenuItem>
+</InternalPageMenu>
 
-## <a id="1"></a> Introduction aux RESTful API & conventions
-### C'est quoi une application REST ?
+# <InternalPageTitle> Introduction aux RESTful API & conventions </InternalPageTitle>
+## C'est quoi une application REST ?
 **REST** vient de **RE**presentational **S**tate **T**ransfer : c'est un style architectural pour construire des applications web extensibles, où les client et serveurs sont séparés.
 
 Dans une application REST, une **interface uniforme** (ou API) est définie afin de permettre à des applications de coopérer.
@@ -35,7 +36,7 @@ Une RESTful API met à disposition des **opérations** sur des **ressources** vi
 - des **méthodes HTTP** (GET, POST, DELETE, PATCH, PUT) représentant les opérations possibles (on parle souvent d'opérations **CRUD**, des opérations de type Create, Read, Update ou Delete) ;
 - des **représentations** des ressources compréhensibles tant par les clients que les serveurs ; les ressources sont représentées par leur "Media type" : **JSON**, **XML**, **HTML**, **TXT**, **JPEG**... ; dans le cadre de ce cours, les ressources seront quasi toujours représentées via du **JSON**.
 
-### Conventions REST
+## Conventions REST
 
  Le type d'opération CRUD (Create, Read, Update ou Delete) sur une ressource est défini via la méthode http de la requête.  
  Les opérations possibles sont :
@@ -63,7 +64,7 @@ Si cette API est hébergée à l'URL racine **http://ilovemoovies.org**, alors n
 
 Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : **http://ilovemoovies.org/films/10**.
 
-## <a id="2"></a> Configuration & démarrage d'une RESTful API en Express
+# <InternalPageTitle> Configuration & démarrage d'une RESTful API en Express </InternalPageTitle>
 
 Nous avons précédemment généré une application Express à l'aide du générateur d'applications.
 
@@ -91,8 +92,8 @@ C'est ce fichier que vous devez mettre à jour si par exemple vous souhaitez que
 
 Un serveur intégré est différent d'une application web offerte par un serveur standalone comme Apache, Tomcat... C'est un serveur très léger dédié à votre application.
 
-## <a id="3"></a> Les fonctions middleware en Express
-### C'est quoi une fonction middleware ?
+# <InternalPageTitle> Les fonctions middleware en Express </InternalPageTitle>
+## C'est quoi une fonction middleware ?
 
 Les fonctions middleware s'occupent du traitement des requêtes des clients et de la préparation des réponses :
 
@@ -124,7 +125,7 @@ Si vous souhaitez approfondir, nous vous conseillons [la documentation d'Express
 
 La suite fournit quelques exemples de fonctions middleware qui seront soit plus tard rencontrées dans notre code, soit sont extraites de [Using middleware [R.54]](/references/#r54).
 
-### Application-level middleware : exemple
+## Application-level middleware : exemple
 Voici une fonction middleware qui sera exécutée à chaque fois qu'il y a une requête, quelque soit le chemin (ou path) associé à la requête :
 
 ```js
@@ -136,7 +137,7 @@ app.use((req, res, next) => {
 });
 ```
 
-### Router-level middleware : exemple
+## Router-level middleware : exemple
 Voici une partie du code qui se trouverait au sein d'un router de pizzas, dans le fichier **/routes/pizzas.js** :
 
 ```js
@@ -164,7 +165,7 @@ Si le router est utilisé de cette façon, en relisant l'avant-dernier snippet, 
 - la première fonction (où il y a un `console.log`) s'applique donc à toutes les routes qui commencent par '/pizzas' ;
 - la deuxième fonction middleware s'appliquent seulement aux requêtes de type GET sur la route (ou le chemin) '/pizzas' (équivalent de la route '/pizzas/').
 
-### Error-handling middleware : exemple
+## Error-handling middleware : exemple
 Ce type de middleware est à définir après tous les middlewares pouvant générer une erreur et est appelé via **`next(err)`** dans une fonction middleware où un souci est détecté.
 
 Voici la définition d'un "error handler" :
@@ -178,7 +179,7 @@ app.use((err, req, res, next) => {
 
 Attention, il y a bien 4 paramètres au lieu des 3 habituels pour les autres types de fonctions middleware.
 
-### Built-in middleware & third-party middleware : exemple
+## Built-in middleware & third-party middleware : exemple
 Dans **app.js**, on trouve pas mal d'exemples de ces types de middleware. Ils sont commentés ci-dessous dans le code :
 
 ```js
@@ -197,8 +198,8 @@ app.use(cookieParser()); // Parse cookie header (req.cookies)
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static assets
 ```
 
-## <a id="4"></a> Définition d'une route en Express
-### Définition d'une route
+# <InternalPageTitle> Définition d'une route en Express </InternalPageTitle>
+## Définition d'une route
 Le "Routing", ou routage, contrôle la réponse à une requête client pour un **endpoint** / **URI** / **PATH** et une méthode HTTP.
 
 On va définir une route soit sur l'objet **app**, soit sur un **router**.  
@@ -208,7 +209,7 @@ On définit une route de cette façon : **app.** ou **router.**  **METHOD(PATH, 
 
 👍 Dans notre cours, nous vous recommandons d'organiser vos routes par type de ressources et donc de mettre en place un router.
 
-### Création d'un projet
+## Création d'un projet
 Nous allons maintenant réaliser un tutoriel pour créer notre toute première RESTful API.  
 Nous allons créer une API pour permettre à notre site web de la pizzeria de bénéficier d'opérations sur des ressources de type "pizzas".
 
@@ -239,8 +240,8 @@ On peut donc effacer le répertoire **/public** et supprimer le middleware de se
 app.use(express.static(path.join(__dirname, 'public'))); 
 ```
 
+# <InternalPageTitle> Opération de lecture </InternalPageTitle>
 
-## <a id="5"></a> Opération de lecture
 Nous souhaitons par commencer à développer une opération permettant de lire toutes les ressources de type "pizzas". En effet, nous aimerions plus tard que notre IHM reçoive de notre API le menu des pizzas.
 
 Veuillez créer un router pour traiter des ressources **/pizzas** au sein de **/routes/pizzas.js**.  
@@ -330,7 +331,8 @@ npm start
 Pour consommer l'opération de lecture via un browser, nous pouvons lire toutes les ressources de type "pizzas" ici :
 [http://localhost:3000/pizzas](http://localhost:3000/pizzas)
 
-## <a id="6"></a> Chemin et paramètres de route
+# <InternalPageTitle> Chemin et paramètres de route </InternalPageTitle>
+
 Les "route parameters" sont des segments d'une URL qui sont utilisés pour capturer une valeur spécifiée à leur position dans l'URL. On récupère ces paramètres via l'objet **req.params**.
 
 Pour notre pizzeria, nous souhaitons pouvoir lire une pizza identifiée par son **id**.
@@ -363,8 +365,8 @@ Le paramètre de la route "2" est récupéré dans l'URL de la route par Express
 
 N'hésitez pas à faire une requête pour un identifiant n'existant pas de le menu pour voir ce qui se passe : [http://localhost:3000/pizzas/666](http://localhost:3000/pizzas/666)
 
+# <InternalPageTitle> Chemin et paramètres de requête </InternalPageTitle>
 
-## <a id="7"></a> Chemin et paramètres de requête
 Les "query parameters" sont des paramètres qui peuvent être ajoutés à une URL.  
 On récupère ces paramètres via l'objet **req.query**.
 
@@ -406,7 +408,8 @@ N'hésitez pas à tester d'autres tris.
 💭 Est-ce qu'il y a un morceau de code que vous ne comprenez pas dans ce code-ci et cela vous gêne ? Si oui, vous trouverez plus d'info ici : [f.2) Spread operator au niveau d'un array](#f2).  
 Si non, c'est OK de ne pas comprendre tous les éléments du code à ce stade-ci.
 
-## <a id="8"></a> Opération de création & parsing du body
+# <InternalPageTitle> Opération de création & parsing du body </InternalPageTitle>
+
 Nous souhaitons développer une opération permettant de créer une ressource de type "pizzas".  
 Selon les conventions REST, il faut faire une requête de type **POST /pizzas** qui offre une représentation de la ressource à créer. La représentation utilisée est le JSON que nous verrons plus en détails plus tard.  
 Si nous souhaitons créer une ressource dont le titre est "Magic Green" et le contenu est "Epinards, Brocolis, Olives vertes, Basilic", la représentation de la ressource à créer sera la suivante :
@@ -463,8 +466,9 @@ OK, c'est bien, mais comment tester ce nouveau code ?
 Le browser permet de facilement créer des requêtes de type GET, mais pas des requêtes de type POST...   
 Nous avons donc besoin d'un client léger permettant de faire des requêtes HTTP.
 
-## <a id="9"></a> Client REST
-### Introduction
+# <InternalPageTitle> Client REST </InternalPageTitle>
+
+## Introduction
 Dans le cadre de ce cours, tout comme généralement dans un environnement professionnel, nous souhaitons pouvoir développer une API indépendamment du développement d'une IHM.
 
 En effet, cela prendrait trop de temps de devoir développer un frontend (HTML / JavaScript / CSS) pour tester nos API.
@@ -474,7 +478,7 @@ Il en existe de nombreux, comme REST Client [[R.55]](/references/#r55) ou Postma
 
 Pour ce cours, nous vous présentons et recommandons d'utiliser REST Client pour écrire et exécuter vos requêtes HTTP.
 
-### REST Client
+## REST Client
 Dans le cadre de ce cours, nous utilisons REST Client [[R.55]](/references/#r55) de Visual Studio Code pour tester nos API.
 
 Pour installer REST Client au sein de VS Code, veuillez cliquer sur l'onglet **Extensions**. 
@@ -546,7 +550,8 @@ Et bien il suffit d'exécuter l'opération de lecture de toutes les pizzas 😎 
 Si la nouvelle ressource apparaît, c'est qu'elle a bien été créée !
 Faites le test.
 
-## <a id="10"></a> Répondre avec un code de statut HTTP
+# <InternalPageTitle> Répondre avec un code de statut HTTP </InternalPageTitle>
+
 On ne peut pas toujours renvoyer du JSON suite à une requête client ainsi qu'un code HTTP correspondant au fait que tout est OK ("200 OK").
 
 Quand vous exécutez cette requête :
@@ -622,8 +627,9 @@ Voici les "status codes" que nous allons généralement utiliser :
 - **409 Conflict** : l'état du serveur entre en conflit avec la requête. Par exemple, la requête demande de créer un utilisateur qui existe déjà.
 - **500 Internal Server Error** : le serveur a rencontré une erreur qu'il ne peut pas régler. Par exemple, le serveur de base de données ne répond pas et ne permet donc pas d'accéder aux ressources.
 
-## <a id="11"></a> Opérations de suppression et de modification
-### Opération de suppression
+# <InternalPageTitle> Opérations de suppression et de modification </InternalPageTitle>
+
+## Opération de suppression
 Nous souhaitons développer une opération permettant de supprimer une ressource de type "pizzas" à l'aide de son identifiant.  
 Selon les conventions REST, il faut faire une requête de type **`DELETE /pizzas/{id}`** contenant l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter".
 
@@ -654,7 +660,7 @@ DELETE {{baseUrl}}/pizzas/2
 
 Veuillez exécuter cette requête et vérifier que la pizza a bien été supprimée.
 
-### Opération de modification
+## Opération de modification
 Nous souhaitons développer une opération permettant de modifier une ressource de type "pizzas" à l'aide de son identifiant et de nouvelles valeurs pour ses propriétés.  
 Selon les conventions REST, comme on accepte de modifier que certaines des propriétés d'une pizza, qu'il ne faut pas fournir toutes les propriétés d'une pizza, il faut faire une requête de type **`PATCH /pizzas/{id}`** contenant 
 l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter" ainsi que les nouvelles données au sein du body de la requête.
@@ -713,7 +719,8 @@ Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le m
 
 En cas de souci, vous pouvez accéder au code du tutoriel ici : [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
 
-## <a id="12"></a> Exercice 1.1 : Création d'une RESTfull API non protégée pour myMovies
+# <InternalPageTitle> Exercice 1.1 : Création d'une RESTfull API non protégée pour myMovies </InternalPageTitle>
+
 Veuillez continuer le développement de **myMovies**. Vous allez créer la première version de la RESTful API de **myMovies**, sous Express, afin de mettre à disposition toutes les opération de type CRUD sur des films.
 
 
@@ -754,7 +761,8 @@ Le code de votre application web doit se trouver dans votre repository local et 
 Veuillez faire un **commit** de votre code avec le message suivant : 
 "**myMovies : module 4 : basic API**".
 
-## <a id="h"></a> 🍬 Exercice 1.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films
+# <InternalPageTitle> 🍬 Exercice 1.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films </InternalPageTitle>
+
 N'hésitez pas, c'est optionnel, de gérer de nouvelles opérations au sein de votre RESTful API de **myMovies** :
 -	Filtrez tous les films qui commencent par une certaines chaînes de caractères.
 -	Gérez l'ordre de présentation des films.

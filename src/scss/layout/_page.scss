@@ -15,6 +15,14 @@
     }
   }
 
+  @media only screen and (min-width: $md) {
+    //flex-wrap: nowrap;
+    width: 70vw;
+    margin-left: 30vw;
+
+    
+  }
+
   a {
     color: $tertiary-color;
     cursor: pointer;

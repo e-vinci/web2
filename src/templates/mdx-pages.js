@@ -24,6 +24,9 @@ import AuthenticatedBlock from '../components/auth/authenticated-block.js';
 import UnAuthenticatedBlock from '../components/auth/unauthenticated-block.js';
 import NestedMdxBlock from '../components/mdx/nested-mdx-block.js';
 import YoutubeImage from '../components/image/youtube-image.js';
+import InternalPageMenu from '../components/internal-page-menu/internal-page-menu.js';
+import InternalPageMenuItem from '../components/internal-page-menu/internal-page-menu-item.js';
+import InternalPageTitle from '../components/internal-page-menu/menu-title.js';
 
 const shortcodes = {
   Link,
@@ -42,6 +45,9 @@ const shortcodes = {
   UnAuthenticatedBlock,
   NestedMdxBlock,
   YoutubeImage,
+  InternalPageMenu,
+  InternalPageMenuItem,
+  InternalPageTitle,
 };
 
 export default function PageTemplate({ data: { mdx, allImages }, children }) {
@@ -67,7 +73,6 @@ export default function PageTemplate({ data: { mdx, allImages }, children }) {
             mdx?.frontmatter?.autoMargin ? 'page page--auto-margin' : 'page'
           }
         >
-          <div>{children.length}</div>
           {children}
         </div>
       </MDXProvider>
