@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import InternalPageMenuItem from './internal-page-menu-item';
 
 /**
  * An internal page menu made up of InternalPageMenu item.
@@ -22,58 +21,8 @@ const InternalPageMenu = ({
   numbered = false,
   className = 'page-menu',
 }) => {
-  const [titles, setTitles] = useState('');
-  const [activeMenuItemId, setActiveMenuItemId] = useState('');
-  const [clickedMenuItemId, setClickedMenuItemId] = useState('');
 
-  let scrollTimer;
-
-  const onClick =(e)=> {
-    setActiveMenuItemId("");
-
-    console.log("click :", e.currentTarget.id);
-    setClickedMenuItemId(e.currentTarget.id);
-
-  }
-
-  const scrollHandler = () => {
-    // Below implements 50 ms debounce
-    if (scrollTimer) {
-      clearTimeout(scrollTimer);
-    }
-
-    scrollTimer = setTimeout(() => {
-      const scrollThreshold = window.scrollY;
-      // console.log("threshold y:", scrollThreshold )
-      let last = titles[0];
-      for (const title of titles) {
-        const elem = document.querySelector(`#${title}`);
-        if (elem && elem.offsetTop >= scrollThreshold) {
-          break;
-        }
-        last = title;
-      }
-      if (activeMenuItemId !== last) {
-        setActiveMenuItemId(last);
-      }
-    }, 50);
-  };
-
-  useEffect(() => {
-    const titleElements = Array.from(
-      document.querySelectorAll('.internal-page-title')
-    );
-    if (titleElements?.length === 0) return;
-    const titlesInPage = titleElements?.map((title) => {
-      return title.id;
-    });
-    setTitles(titlesInPage);
-    window.addEventListener('scroll', scrollHandler);
-
-    return () => {
-      window.removeEventListener('scroll', scrollHandler);
-    };
-  }, []);
+  
 
   return (
     <div className={className}>
@@ -83,10 +32,8 @@ const InternalPageMenu = ({
           startOfLeadingString,
           numbered,
           numbering: index + 1,
-          endOfLeadingString,
-          activeMenuItemId,
+          endOfLeadingString,      
           className: className + "__item",
-          onClick,
         })
       )}
     </div>

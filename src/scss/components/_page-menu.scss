@@ -1,5 +1,5 @@
 .page-menu {
-  @media only screen and (min-width: $md) {
+  @media only screen and (min-width: $lg) {
     //flex-wrap: nowrap;
     width: 30vw;
     left: 0;
@@ -17,53 +17,32 @@
   &__item {
     display: flex;
     justify-content: flex-start;
-    // align-items: center;
-    margin: auto auto auto 0;
-    cursor: none;
+    flex-wrap: wrap;
 
-    &:not(:first-child) {
-      margin-top: -2px;
+    background-color: rgb(255, 255, 255);
+
+    border: 2px solid #33332d;
+
+    &:not(:last-child) {
+      border-bottom: none;      
     }
 
-    &__left-text {
-      background-color: rgb(255, 255, 255);
-      cursor: pointer;
-      // color: rgb(51, 51, 45);
-      padding: 1.25rem;
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      // align-items: center;
-      border: 2px solid #33332d;
-      // border-right: none;
-      z-index: 10;
-      overflow: hidden;
-      border-radius: 0 50px 50px 0;
+    cursor: pointer;
+    padding: 0.5rem;
+    position: relative;
 
-      @media only screen and (min-width: $md) {
-        &:hover,
-        &:focus {
-          background-color: $tertiary-color;
-          a {
-            color: $secondary-color;
-          }
-        }
+    z-index: 10;
+    overflow: hidden;
+    border-radius: 0 50px 50px 0;
 
-        &--selected {
-          background-color: $tertiary-color;
-          a {
-            color: $secondary-color;
-          }
-        }
-      }
+    &:hover {
+      background-color: $tertiary-color;
+      color: $secondary-color !important; 
+    }
 
-      @media only screen and (max-width: $md) {
-        // border: none;
-        background-color: transparent !important;
-        padding: 0;
-        justify-content: start;
-      }
+    &--selected {
+      background-color: $tertiary-color;
+      color: $secondary-color !important;
     }
   }
 }

@@ -1,6 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'gatsby';
 import { snakeCase } from 'lodash';
+
+import { NavigationContext } from '../contexts/navigation-context';
 
 /**
  * Menu item for an internal page menu
@@ -20,19 +22,33 @@ const InternalPageMenuItem = ({
   numbered = false,
   numbering = '',
   endOfLeadingString = '',
-  activeMenuItemId,
-  onClick,
 }) => {
   const itemTextInSnakeCase = snakeCase(children);
-  const isMenuItemActive = activeMenuItemId === itemTextInSnakeCase;
-  // const targetRef = useRef({});
+
+  const { activePageMenuItem, setActivePageMenuItem } =
+    useContext(NavigationContext);
+
+  const isMenuItemActive = activePageMenuItem === itemTextInSnakeCase;
+
   return (
-   
-      <div id={`item_${itemTextInSnakeCase}`} 
+    <Link to={'#' + snakeCase(itemTextInSnakeCase)} className={`${className} ${
+      isMenuItemActive ? className + '--selected' : ''
+    }`}
+    id={`item_${itemTextInSnakeCase}`}>
+      {`${startOfLeadingString}${
+        numbered ? numbering : ''
+      }${endOfLeadingString}${children}`}
+    </Link>
+  );
+
+  /*
+  return (
+    
+      <div
+        id={`item_${itemTextInSnakeCase}`}
         className={`${className}__left-text ${
           isMenuItemActive ? className + '__left-text--selected' : ''
-        }`}
-        onClick={onClick}
+        }`}       
       >
         <Link to={'#' + snakeCase(itemTextInSnakeCase)}>
           {`${startOfLeadingString}${
@@ -40,7 +56,8 @@ const InternalPageMenuItem = ({
           }${endOfLeadingString}${children}`}
         </Link>
       </div>
-  );
+  
+  );*/
 };
 
 export default InternalPageMenuItem;
