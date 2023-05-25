@@ -5,12 +5,13 @@ description: "Introduction au JSON et persistance des données"
 
 # c) Introduction au JSON et persistance des données
 
-Voici les sujets traités :
-- [Introduction au JSON](#1)
-- [Communication de données en JSON](#2)
-- [Sauvegarde de données JSON](#3)
+<InternalPageMenu>
+  <InternalPageMenuItem> Introduction au JSON </InternalPageMenuItem>
+  <InternalPageMenuItem> Communication de données en JSON </InternalPageMenuItem>
+  <InternalPageMenuItem> Sauvegarde de données JSON </InternalPageMenuItem>
+</InternalPageMenu>
 
-## <a id="1"></a> Introduction au JSON
+# <InternalPageTitle> Introduction au JSON </InternalPageTitle>
 
 Précédemment, nous avons développé notre première RESTful API.  
 Nous avons implicitement découvert le JSON, notamment lorsque nous avons fait des requêtes vers nos API.
@@ -53,11 +54,11 @@ Voici un exemple de représentation de données en JSON qui correspond à ce que
 ]
 ```
 
-## <a id="2"></a> Communication de données en JSON
+# <InternalPageTitle> Communication de données en JSON </InternalPageTitle>
 
-### Sérialisation d'objets JS vers du JSON
+## Sérialisation d'objets JS vers du JSON
 
-#### Envoi d'une application serveur vers un client
+### Envoi d'une application serveur vers un client
 
 Via Express, nous pouvons très facilement convertir un objet JS en JSON afin de l'envoyer vers une application cliente grâce à la méthode **`res.json()`**.
 
@@ -107,7 +108,7 @@ L'API renvoie un array d'objets, des pizzas, au format JSON, qui correspond en f
 Il est donc possible à n'importe quelle application cliente d'utiliser ces données, quelque soit la technologie, le langage utilisé pour développer cette application cliente.   
 Ainsi, par exemple, une application Android, développée en Java, pourrait consommer cette API pour afficher un menu de pizzas !
 
-#### Envoi d'une application cliente vers un serveur
+### Envoi d'une application cliente vers un serveur
 
 Il est possible aussi, et nous le verrons plus tard en détails, de communiquer des données d'une IHM vers une API.
 
@@ -150,9 +151,9 @@ const response = await fetch('/api/pizzas', options);
 const pizza = await response.json();
 ```
 
-### Parsing de données JSON vers un objet JS
+## Parsing de données JSON vers un objet JS
 
-#### Réception par une application serveur
+### Réception par une application serveur
 
 Via Express, nous pouvons très facilement convertir du JSON vers un objet JS à l'aide du middleware **`express.json()`**.
 
@@ -178,7 +179,7 @@ Content-Type: application/json
 }
 ```
 
-#### Réception par une application cliente
+### Réception par une application cliente
 
 Plus tard, nous verrons comment une IHM peut utiliser les données envoyées par une API.
 
@@ -201,11 +202,11 @@ const response = await fetch('/api/pizzas', options);
 const pizza = await response.json();
 ```
 
-## <a id="3"></a> Sauvegarde de données JSON
+# <InternalPageTitle> Sauvegarde de données JSON </InternalPageTitle>
 
-### Sérialisation d'objets JS vers du JSON
+## Sérialisation d'objets JS vers du JSON
 
-#### Application côté serveur
+### Application côté serveur
 
 La fonction JS **`JSON.stringify(objectToSerialised)`** permet de créer une **string** contenant la représentation JSON de l'objet à sérialiser.
 
@@ -458,7 +459,7 @@ module.exports = router;
 
 Veuillez mettre à jour votre fichier **/router/pizzas.js** sur base du code donné et testez le bon fonctionnement de l'application. Faites quelques requêtes pour ajouter et modifier des données et vérifiez, une fois que vous redémarrer votre application, que les données persistent.
 
-#### Application côté client
+### Application côté client
 
 Au niveau d'une IHM, il doit aussi être possible de sauvegarder des informations.  
 Or, pour des raisons de sécurité, le browser ne peut pas créer des fichiers JSON de manière transparente à l'utilisateur.  
@@ -474,9 +475,9 @@ const setUserSessionData = (user) => {
 };
 ```
 
-### Parsing de données JSON vers un objet JS
+## Parsing de données JSON vers un objet JS
 
-#### Application côté serveur
+### Application côté serveur
 
 La fonction JS **`JSON.parse(objectSerialized) `** permet de créer un objet JS à partir d'une **string** contenant des données au format JSON.
 
@@ -516,7 +517,7 @@ router.get('/', function (req, res) {
 });
 ```
 
-#### Application côté client
+### Application côté client
 
 Au niveau d'une IHM, il doit aussi être possible de récupérer des données JSON qui auraient été sauvegardées au sein du web browser.
 

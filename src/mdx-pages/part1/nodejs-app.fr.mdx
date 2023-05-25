@@ -5,19 +5,19 @@ description: "Introduction aux applications backend Nodes.js & Express"
 
 # a) Introduction aux applications backend Nodes.js & Express
 
-Voici les sujets traités :
-- [Introduction aux applications backend](#1)
-- [Node.js c'est quoi ?](#2)
-- [Où mettre du code Node.js](#3)
-- [Les modules CommonJS](#b4)
-- [Introduction aux packages Node.js & npm](#5)
-- [Express c'est quoi ?](#6)
-- [Créer une application Express "from scratch"](#7)
-- [Créer une application Express via un générateur](#8)
+<InternalPageMenu>
+  <InternalPageMenuItem> C'est quoi une application backend ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Node.js c'est quoi ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Où mettre du code Node.js ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Les modules CommonJS </InternalPageMenuItem>
+  <InternalPageMenuItem> Introduction aux packages Node.js & npm </InternalPageMenuItem>
+  <InternalPageMenuItem> Express c'est quoi ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Créer une application Express "from scratch" </InternalPageMenuItem>
+  <InternalPageMenuItem> Créer une application Express via un générateur </InternalPageMenuItem>
+</InternalPageMenu>
 
-
-## <a id="1"></a> C'est quoi une application backend ?
-### Frontend, backend, c'est quoi ?
+# <InternalPageTitle> C'est quoi une application backend ? </InternalPageTitle>
+## Frontend, backend, c'est quoi ?
 Un **frontend**, c'est une application :
 - qui s'exécute côté client, une IHM (Interface Homme-Machine), qu'on pourrait aussi appeler UI (User Interface) ;
 - qui est en direct interaction avec l'utilisateur ;
@@ -29,8 +29,8 @@ Un **backend**, c'est une application :
 - qui parfois met à disposition le **frontend** ;
 - qui parfois offre des opérations sur des données.
 
-### Rôles principaux du backend
-#### Fourniture du frontend
+## Rôles principaux du backend
+### Fourniture du frontend
 Un des rôles du backend est de fournir le frontend :
 - **via un serveur de fichiers statiques** ; c'est la mise à disposition des assets : fichiers HTML, CSS, JS, images...
 - **via la génération dynamique de pages HTML** ; c'est ce qui se passe quand le backend fait du Server Side Rendering (SSR), généralement dans le cadre de Multi Page Applications.  
@@ -40,7 +40,7 @@ Par contre, nous avons déjà vu :
 - comment faire de la génération dynamique d'HTML côté client (ou Client Side Rendering = CSR).
 - mettre à disposition notre frontend, notre IHM, à l'aide d'un serveur de fichiers statiques : c'est ce que notamment fait le serveur de développement de Webpack, il met à disposition les assets permettant au browser d'exécuter l'application web.
 
-#### Fourniture d'opérations sur des ressources
+### Fourniture d'opérations sur des ressources
 Un autre rôle important du backend est de mettre à disposition des opérations sur des ressources, c'est ce qu'on appelle les services web ou web API.
 
 Il existe différents types de technologies et architectures web permettant d'implémenter des web services, notamment :
@@ -48,14 +48,14 @@ Il existe différents types de technologies et architectures web permettant d'im
 - **GraphQL API** ; c'est une technologie récente qui permet de très rapidement créer des requêtes sur des ressources et qui a été créée par Facebook ; nous ne verrons pas cette technologie dans le cadre de ce cours.
 - **SOAP API** ; c'est une façon ancienne de créer des opérations sur des ressources mettant en oeuvre de l'XML pour communiquer entre des applications clients / serveurs. Nous ne verrons pas cette technologie dans le cadre de ce cours.
 
-#### Autres rôles du backend ?
+### Autres rôles du backend ?
 Un backend peut offrir d'autres services, comme :
 - **proxy** : intermédiaire entre les clients demandant une ressource et le serveur fournissant cette ressource. On verra ce type de service, notamment pour masquer l'origine d'une requête à une API.
 - **reverse proxy** : c'est un serveur qui fait l'intermédiaire avec d'autres serveurs, cachant au client qui est le véritable serveur ayant traité sa requête. Par exemple, un proxy serveur peut mettre à disposition des accès à des serveurs interne à une entreprise (non visibles sur le web) alors que le client interroge un serveur qui est visible sur le web.
 - **serveur d'emails** ;
 - ...
 
-#### Technologies backend possibles
+### Technologies backend possibles
 
 Voici un exemple de technologies qui pourrait être mises en oeuvre pour développer une application backend :
 
@@ -63,7 +63,7 @@ Voici un exemple de technologies qui pourrait être mises en oeuvre pour dévelo
 
   <figcaption>Technologies backend possibles</figcaption>
 
-#### Technologies backend sélectionnées pour ce cours
+### Technologies backend sélectionnées pour ce cours
 
 Voici les technologies qui ont été choisies pour être mises en oeuvre pour développer une application backend en JS :
 
@@ -73,7 +73,8 @@ Voici les technologies qui ont été choisies pour être mises en oeuvre pour d�
 
 Nous allons utiliser Express comme framework pour rapidement développer des applications Node.js.
 
-## <a id="2"></a> Node.js c'est quoi ?
+# <InternalPageTitle> Node.js c'est quoi ? </InternalPageTitle>
+
 Node.js est un environnement serveur open source permettant la création d'outils et applications côté serveur en JS.  
 Node.js offre une utilisation optimale des ressources des serveurs sans dépendance à un serveur http externe, tout en étant multiplateforme (Windows, Linux, Mac…).
 
@@ -89,8 +90,8 @@ Même s'il est possible d'écrire du Node.js conforme au standard **ECMAScript**
 
 Dès lors, nous allons vous expliquer plus tard comment gérer des modules en Node.js conforme au standard **CommonJS**.
 
-## <a id="3"></a> Ou mettre du code Node.js ?
-### Directement dans un terminal
+# <InternalPageTitle> Où mettre du code Node.js ? </InternalPageTitle>
+## Directement dans un terminal
 Il est possible d'écrire du code Node.js directement dans un terminal.
 
 Pour rappel, nous vous conseillons d'utiliser Git Bash comme terminal au sein de VS Code. 
@@ -119,7 +120,7 @@ Quand vous souhaitez sortir de l'interpréteur de commandes de Nodes, il faut ta
 - soit deux fois **`CTRL c`**
 - soit **`CTRL d`**
 
-### Dans un script
+## Dans un script
 Nous écrivons généralement le code Node.js au sein d'un script externe.
 
 Dans votre repo **web2**, veuillez créer un répertoire **/tutorials/node-start** et y ajouter le fichier **start.js** contenant ce code-ci :
@@ -155,16 +156,16 @@ node start # or node start.js
 
 Voilà, c'est une simple application Node.js qui affiche un message dans le terminal.
 
-## <a id="4"></a> Les modules CommonJS
-### Introduction
+# <InternalPageTitle> Les modules CommonJS </InternalPageTitle>
+## Introduction
 Un module est une librairie JS fournissant des objets.  
 Comme en JS tout est objet, un module met donc à disposition des fonctions, des constantes, des variables...
 
-### Création d'un module
+## Création d'un module
 Pour créer un module, il suffit de créer un script JS **nomModule.js** et d'exporter des objets au sein de ce module via **module.exports** ou **exports**.
 
-### Exporter des objets
-#### Introduction
+## Exporter des objets
+### Introduction
 Il existe plusieurs façons d'exporter des objets, soit à la volée, soit à la fin d'un script.
 
 👍 Nous vous recommandons de faire vos exports à la fin du script, cela rend les scripts plus lisibles. 
@@ -173,7 +174,7 @@ Nous allons néanmoins voir toutes les façons d'exporter des objets en CommonJS
 
 On exporte toujours un seul objet principal dans un module. Cet objet peut bien sûr contenir une multitude d'objets via ses propriétés.
 
-#### Export à la fin d'un script
+### Export à la fin d'un script
 C'est la façon la plus propre d'exporter un seul objet :
 
 ```js
@@ -190,7 +191,7 @@ module.exports = {authorize, users };
 
 C'est l'équivalent d'un "Named export" tel que vu en ECMAScript.
 
-#### Export à la volée
+### Export à la volée
 
 Il est possible de faire des exports à la volée, c'est à dire d'exporter des objets au fur et à mesure qu'ils sont initialisés.
 
@@ -219,13 +220,13 @@ exports = { authorize, users }; /* exports has a new reference, 
                                    it is no longer linked to module.exports */
 ```
 
-### Importer des objets
-#### Introduction
+## Importer des objets
+### Introduction
 Pour utiliser des objets (fonctions, constantes, objets, classes...) au sein d'un script JS provenant de modules, on le fait à l'aide de la fonction **`required()`** et du chemin vers le module à utiliser.
 
 Il est possible d'importer tant des objets de modules que l'on a créé soi-même, que de packages mis à disposition via un gestionnaire de packages.
 
-#### Import d'un module
+### Import d'un module
 Lorsqu'un seul objet a été exporté, on l'importe en lui donnant le nom que l'on souhaite à l'import et en indiquant le chemin vers le module à utiliser.
 
 ```js
@@ -238,7 +239,7 @@ Lorsque plusieurs objets ont été exportés, on importe ce que l'on souhaite en
 const { users, authorize } = require('../utils/auths');
 ```
 
-#### Import d'un package
+### Import d'un package
 Il est aussi possible d'importer des objets de packages offerts par la communauté via votre gestionnaire de package.  
 Pour ce faire, il est juste nécessaire d'indiquer le nom du package lors de l'import.
 
@@ -251,16 +252,16 @@ const http = require('http');
 const shortid = require('shortid');
 ```
 
-## <a id="5"></a> Introduction aux packages Node.js & npm
-### Introduction
+# <InternalPageTitle> Introduction aux packages Node.js & npm </InternalPageTitle>
+## Introduction
 Dans le cadre du développement d'IHM modernes, au module 2, nous avons découvert le gestionnaire de packages de Node.js. Nous allons résumer les concepts importants ci-dessous.
 
-### Gestionnaire de packages
+## Gestionnaire de packages
 **npm** est le gestionnaire de packages de Node.js. 
 
 On peut faire des recherches de packages qui serait utiles à nos application web sur [npmjs.com](https://www.npmjs.com/) [[R.48]](/references/#r48).
 
-### Fichier de configuration d'un projet
+## Fichier de configuration d'un projet
 Tous les packages associés à une app, ses dépendances, sont données dans le fichier : **package.json**.
 
 C'est le fichier qui décrit la configuration d'un projet JS.
@@ -327,20 +328,20 @@ On pourrait aussi démarrer l'application à l'aide de **`npm run dev`**, ce qui
 
 NB : nous verrons plus tard cet outil **nodemon** pour simplifier le développement.
 
-### Installer un package
+## Installer un package
 Pour installer un package (ou une dépendance), il suffit de faire : **`npm i nomDuPackage`** ou **`npm install nomDuPackage`**.
 
-### Dépendances installées
+## Dépendances installées
 On a vu que **`npm i`** permet d'installer toutes les dépendances se trouvant dans **package.json**, ainsi que toutes les dépendances de ces dépendances...
 
 L'arbre exact des dépendances installées, numéros de version..., se trouve dans **package-lock.json**. Ce fichier est généré automatiquement pour chaque opération modifiant **node_modules** ou **package.json**.
 
 ⚡ Si un fichier **package-lock.json** est compris dans un repo, lorsque vous introduirez **`npm i`** pour installer toutes les dépendances, npm installera les mêmes versions que celles se trouvant dans **package-lock.json**. Cela peut poser des problèmes si votre environnement Node.js est en version différente. En cas de souci, pensez à effacer le répertoire **node_modules** et le fichier **package-lock.json** avant de relancer l'installation de toutes les dépendances.
 
-### Localisation d'un module ou package par Node
+## Localisation d'un module ou package par Node
 Node va chercher dans tous les chemins spécifiés dans la variable **module.paths** lorsque **`required()`** est appelé. Les chemins cherchés sont par exemple : **node_modules**, **./**, ...
 
-### Mise à jour des packages vers leur dernière version
+## Mise à jour des packages vers leur dernière version
 La mise à jour de toutes les dépendances peut parfois amener à des gros soucis.
 
 Sans prendre trop de risques, vous pouvez tenter de mettre à jour tous vos packages en suivant la documentation de npm :
@@ -356,8 +357,7 @@ Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à 
 ``` bash
 npm i nomPackage@latest
 ```
-
-## <a id="6"></a> c) Express c'est quoi ?
+# <InternalPageTitle> Express c'est quoi ? </InternalPageTitle>
 
 Voici le moto du framework Express: "**Fast, unopinionated, minimalist web framework for Node.js**" [Express](https://expressjs.com/) [[R.50]](/references/#r50).
 
@@ -367,7 +367,8 @@ Il est possible de créer une application Express soit "from scratch", soit à p
 
 Dans le cadre de ce cours, nous allons plutôt utiliser des boilerplates pour générer des applications. Néanmoins, il est intéressant de voir comment créer une application "from scratch".
 
-## <a id="7"></a> Créer une application Express "from scratch"
+# <InternalPageTitle> Créer une application Express "from scratch" </InternalPageTitle>
+
 Il faut d'abord créer un répertoire pour votre application.
 
 Au sein de votre repo **web2**, veuillez créer le répertoire **/tutorials/express-static-file-server**.
@@ -461,7 +462,9 @@ Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le m
 En cas de souci, vous pouvez accéder au code de cette démo ici :
 [express-static-file-server](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/express-static-file-server/).
 
-## <a id="8"></a> Créer une application Express via un générateur
+
+# <InternalPageTitle>  Créer une application Express via un générateur </InternalPageTitle>
+
 Le générateur d'applications **express-generator** permet de générer le boilerplate d'une application Express de base.
 
 A l'aide du générateur d'applications Express, vous allez créer une application Express sans "view engine" car nous n'allons pas faire du Server Side Rendering dans le cadre de ce cours.

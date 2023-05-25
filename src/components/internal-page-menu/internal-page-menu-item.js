@@ -12,6 +12,7 @@ import { NavigationContext } from '../contexts/navigation-context';
  * numbering : value to be added after the startOfLeadingString if numbered is true.
  * endOfLeadingString : by default an empty String, these are special chars that we want to add
  * prior to each menu title : ")" for example.
+ * page : is the relative URL to the page that the menu item shall forward to.
  * @returns
  */
 const InternalPageMenuItem = ({
@@ -22,6 +23,7 @@ const InternalPageMenuItem = ({
   numbered = false,
   numbering = '',
   endOfLeadingString = '',
+  to,
 }) => {
   const itemTextInSnakeCase = snakeCase(children);
 
@@ -31,7 +33,7 @@ const InternalPageMenuItem = ({
   const isMenuItemActive = activePageMenuItem === itemTextInSnakeCase;
 
   return (
-    <Link to={'#' + snakeCase(itemTextInSnakeCase)} className={`${className} ${
+    <Link to={to ? to : '#' + snakeCase(itemTextInSnakeCase)} className={`${className} ${
       isMenuItemActive ? className + '--selected' : ''
     }`}
     id={`item_${itemTextInSnakeCase}`}>

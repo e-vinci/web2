@@ -5,12 +5,13 @@ description: "Refactoring à l'aide d'un fat model"
 
 # e) Refactoring à l'aide d'un "fat model"
 
-Voici les sujets traités :
-- [Architectures possibles ?](#1)
-- [Architecture Express & "fat model"](#2)
-- [Exercice 1.4 : Refactor de la RESTfull API pour myMovies](#3)
+<InternalPageMenu>
+  <InternalPageMenuItem> Architectures possibles ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Architecture Express & "fat model" </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 1.4 : Refactor de la RESTfull API pour myMovies </InternalPageMenuItem>
+</InternalPageMenu>
 
-## <a id="1"></a> Architectures possibles ?
+# <InternalPageTitle> Architectures possibles ? </InternalPageTitle>
 
 Si nous reprenons le code actuel du tutoriel de l'API gérant des pizzas ([api-persistence](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/persistence)), nous pouvons détecter que celui-ci pourrait être plus propre.
 
@@ -34,7 +35,7 @@ Ainsi, nous allons simplement créer notre propre architecture "maison", sur bas
 - Le **fat model** peut être soit écrit en orienté objet, soit simplement être un module fournissant des fonctions. Dans le cadre de ce cours, nous choisissons de présenter un maximum de programmation fonctionnelle plutôt que de l'orienté objet.  
   Néanmoins, n'hésitez pas à écrire des classes si cela vous tient à coeur 😉.
 
-## <a id="2"></a> Architecture Express & "fat model"
+# <InternalPageTitle> Architecture Express & "fat model" </InternalPageTitle>
 
 Voici l'architecture que nous allons appliquer dans nos prochaines API :
 
@@ -261,7 +262,7 @@ Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le m
 En cas de souci, vous pouvez accéder au code du tutoriel ici :
 [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
 
-# <a id="3"></a> Exercice 1.4 : Refactoring de la RESTfull API pour myMovies
+# <InternalPageTitle> Exercice 1.4 : Refactoring de la RESTfull API pour myMovies </InternalPageTitle>
 
 Vous allez faire un nouveau refactor de la RESTful API de **myMovies**, afin de restructurer l'architecture de l'application selon l'architecture recommandée, en utilisant un "fat model" pour gérer les opérations sur les films.
 

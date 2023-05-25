@@ -5,6 +5,20 @@ description: 'Introduction au langage JavaScript, apprentissage de la syntaxe'
 
 # c) Introduction au langage JS
 
+<InternalPageMenu>
+  <InternalPageMenuItem> Les instructions </InternalPageMenuItem>
+  <InternalPageMenuItem> Les commentaires </InternalPageMenuItem>
+  <InternalPageMenuItem> Les variables et constantes </InternalPageMenuItem>
+  <InternalPageMenuItem> Les opérateurs </InternalPageMenuItem>
+  <InternalPageMenuItem> Les conditions </InternalPageMenuItem>
+  <InternalPageMenuItem> Les fonctions </InternalPageMenuItem>
+  <InternalPageMenuItem> Les boucles </InternalPageMenuItem>
+  <InternalPageMenuItem> Les tableaux </InternalPageMenuItem>
+  <InternalPageMenuItem> Les template literals </InternalPageMenuItem>
+  <InternalPageMenuItem> Les objets </InternalPageMenuItem>
+  <InternalPageMenuItem> Les exceptions </InternalPageMenuItem>
+</InternalPageMenu>
+
 Le JS s'écrit tant dans un browser que dans un environnement serveur.
 
 Quand on écrit du JS au niveau client, on écrira du JS conforme au standard **`ECMAScript`**.
@@ -13,21 +27,7 @@ Quand on écrit du JS au niveau serveur, on écrira du Node.js, du JS conforme a
 
 Il existe des différences lorsqu'on écrit du JS pour un browser ou lorsqu'on écrit du JS pour une application serveur. Néanmoins, il existe une syntaxe commune que nous allons voir dans ce chapitre.
 
-- [Les instructions](#1)
-- [Les commentaires](#2)
-- [Les variables et constantes](#3)
-- [Les opérateurs](#4)
-- [Les conditions](#5)
-- [Les fonctions](#6)
-- [Les boucles](#7)
-- [Les tableaux](#8)
-- [Les template literals](#9)
-- [Les objets](#10)
-- [Les exceptions](#11)
-
-
-
-## <a id="1"></a> Les instructions
+# <InternalPageTitle> Les instructions </InternalPageTitle>
 
 👍 Même si ce n'est pas obligatoire, on recommande de séparer chaque instruction par un " **;** ".
 
@@ -61,10 +61,9 @@ function raiseAlert(message) {
   console.log('An alert has been raised.');
 }
 ```
+# <InternalPageTitle> Les variables et constantes </InternalPageTitle>
 
-## <a id="3"></a> Les variables et constantes
-
-### Variable key sensitive
+## Variable key sensitive
 
 En JS, on ne déclare pas le type de variable, c'est un langage dynamiquement typé, c'est-à-dire que le type d'une variable est déterminé à l'exécution.
 
@@ -76,7 +75,7 @@ let monBrowser;
 let monbrowser;
 ```
 
-### Variables locales
+## Variables locales
 
 Pour définir une variable locale dont sa portée est associée à un bloc,
 on utilise : **let**.
@@ -95,7 +94,7 @@ Une variable **let** [[7.]](/references/#r7) :
 - est processée à l'exécution seulement ;
 - ne peut pas être redéclarée dans le même bloc.
 
-### constantes locales
+## constantes locales
 
 Pour définir une constante dont sa portée est associée à un bloc,
 on utilise : **const** [[8.]](/references/#r8).
@@ -111,7 +110,7 @@ if (true) {
 }
 ```
 
-### Variables globales
+## Variables globales
 
 Pour définir une variable globale si elle est déclarée en dehors d'une fonction, on utilise : **var**.
 
@@ -129,7 +128,7 @@ Une variable **var** est:
 - accessible au travers de tout le programme ;
 - redéclarable dans n’importe quel bloc.
 
-### Variables dont la portée est associée à une fonction
+## Variables dont la portée est associée à une fonction
 
 Pour définir une variable ou constante dont la portée est associée à une fonction, on peut utiliser : **let**, **const** ou **var**.
 
@@ -146,7 +145,7 @@ console.log(varInFunction); // Uncaught ReferenceError: varInFunction is no
 
 <br />
 
-### Assignation d'une valeur à une variable non déclarée
+## Assignation d'une valeur à une variable non déclarée
 
 L'assignation d'une valeur à une variable non déclarée crée implicitement une variable globale.
 
@@ -163,7 +162,7 @@ console.log(varInFunction); // Hello
 
 <br />
 
-### Les dangers des variables globales
+## Les dangers des variables globales
 
 ⚡ L'utilisation de variables globales peut s'avérer dangereux.
 
@@ -186,7 +185,7 @@ Dans cet exemple de code, on s'attendrait à ce que la deuxième boucle affiche 
 
 `Print 1 Print 2 Print 3 Print 4 Print 5`.
 
-### Recommandations concernant la portée de vos variables
+## Recommandations concernant la portée de vos variables
 
 ⚡ L'utilisation de variables globales peut s'avérer dangereux quand on souhaiterait que la durée de vie de celle-ci corresponde à un bloc de code bien précis.
 
@@ -195,7 +194,7 @@ Dans cet exemple de code, on s'attendrait à ce que la deuxième boucle affiche 
 - utilisez **let** ou **const** pour des variables ou constantes disponibles au sein d'un bloc de code uniquement;
 - utilisez **var** (ou **const**) que si une variable (ou constante) doit être disponible au sein de tous les blocs d'un script. Néanmoins, même dans ce cas-ci, on préférera utiliser une variable via **let**.
 
-### Types de variables
+## Types de variables
 
 Voici les types principaux de variables qui seront déterminés lors de l'initialisation d'une variable :
 
@@ -214,9 +213,8 @@ console.log(typeof true); // boolean
 console.log(typeof undeclaredVariable); // undefined
 ```
 
-## <a id="4"></a> Les opérateurs
-
-### Opérateurs d'égalité ou de non égalité
+# <InternalPageTitle> Les opérateurs </InternalPageTitle>
+## Opérateurs d'égalité ou de non égalité
 
 Pour une comparaison stricte, sans conversion de type, on utilise **===** ou **!==**.
 
@@ -236,7 +234,7 @@ object1 == object2; //false
 
 👍 Nous recommandons en général d'utiliser l'égalité stricte sauf si vous souhaitez convertir le type des variables comparées.
 
-### Optional chaining operator : ?.
+## Optional chaining operator : ?.
 
 L'opérateur **?.** permet de lire la valeur d'une propriété d'un objet sans devoir contrôler si la référence de l'objet est valide.
 
@@ -304,7 +302,7 @@ console.log(kids?.[0]?.name); // "John"
 console.log(kids2?.[0]?.name); // undefined
 ```
 
-### Nullish coalescing operator : ??
+## Nullish coalescing operator : ??
 
 Le "nullish coalescing operator" permet de renvoyer ce qui se trouve à droite de l'opérateur quand ce qui se trouve à gauche est "nullish" (**null** ou **undefined**).
 
@@ -323,8 +321,8 @@ const catName = adventurer?.cat?.name ?? 'No cat';
 console.log(catName); // "Dinah"
 ```
 
-### Spread operator : ...
-#### Spread operator au niveau d'un objet
+## Spread operator : ...
+### Spread operator au niveau d'un objet
 Voici un exemple d'utilisation de **spread operator** :
 
 ```js
@@ -364,7 +362,7 @@ Le **spread operator** permet de faire une "shallow copy", ou copie peu profonde
 Cela reprend toutes les propriétés de l'objet identifié par **`foundIndex`**.  
 Ensuite, nous remplaçons les propriétés existantes de cette objet par les propriétés données dans **`req.body`** à l'aide de **`...req.body`**. Bien sûr, si l'objet **`...req.body`** contient des nouvelles propriétés, celles-ci seront ajoutée à **`updatedPizza`**. 
 
-#### Spread operator au niveau d'un array
+### Spread operator au niveau d'un array
 Voici un exemple de **spread operator** (voir les 3 petits points).
 ```js
 orderedMenu = [...MENU].sort((a, b) => a.title.localeCompare(b.title));
@@ -375,13 +373,13 @@ Ici nous souhaitons faire un tri d'un `MENU` (qui est un array), nous souhaitons
 Et bien, si nous autorisons à trier l'array associé au `MENU`, lorsque nous tenterons d'ajouter un nouvel élément, le dernier élément de l'array ne contiendra plus le dernier id (ou l'id le plus haut) !  
 Comme la fonction **sort** modifie l'array sur lequel la méthode est appelée, nous voulons travailler sur une copie de cet array : **`[...MENU]`** crée un nouveau tableau contenant tous les éléments du **MENU**.
 
-#### Spread operator en résumé
+### Spread operator en résumé
 Le **spread operator** est incroyablement puissant, il permet d'écrire du code concis et lisible.  
 Il est utilisé dans les objets, les arrays, ainsi que comme paramètre de fonction.  
 
 N'hésitez pas à consulter la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) [[R.57]](/references/#r57) pour en savoir plus.
 
-### Les autres opérateurs
+## Les autres opérateurs
 
 Nous ne verrons pas tous les opérateurs logiques dans ce cours, ils sont sensés être connus.
 
@@ -389,7 +387,7 @@ Par exemple, les opérateurs logiques sont les habituels : **&&**, **||**, **!**
 
 Néanmoins, vous avez tous les opérateurs disponibles dans [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators) [[R.9]](/references/#r9).
 
-## <a id="5"></a> Les conditions
+# <InternalPageTitle> Les conditions </InternalPageTitle>
 
 Comme dans la majorité des langages, les instructions conditionnelles sont construites à l'aide de **if** ... **else**.
 
@@ -427,11 +425,11 @@ switch (foo) {
 }
 ```
 
-## <a id="6"></a> Les fonctions
+# <InternalPageTitle> Les fonctions </InternalPageTitle>
 
 En JS, il existe plusieurs façon de déclarer des fonctions.
 
-### Les fonctions personnalisées
+## Les fonctions personnalisées
 
 Ce sont des fonctions qui portent un nom, définies à l'aide du mot-clé **function**.
 
@@ -443,7 +441,7 @@ let message = welcomeMessage('Welcome to everyone!');
 console.log(message); // Message : Welcome to everyone!
 ```
 
-### Les fonctions comme valeurs de variables
+## Les fonctions comme valeurs de variables
 
 En JS, on peut assigner une fonction comme valeur de variable :
 
@@ -470,7 +468,7 @@ console.log(message); // Message : Hello world ; )
 
 Si une fonction n'est jamais réutilisée et est très courte, il est parfois pratique de ne pas lui donner de nom.
 
-### Les fonctions "arrow"
+## Les fonctions "arrow"
 
 Ce sont des fonctions qui ne portent pas de nom et qui s'écrivent sous une forme encore plus courte que les fonctions anonymes.
 
@@ -489,7 +487,7 @@ On peut ne pas mettre les parenthèses si et seulement si la fonction ne possèd
 
 On peut ne pas mettre les accolades si et seulement si le code est une expression, c'est-à-dire si la fonction renvoie quelque chose ; dans ce cas, on ne met pas de **return**.
 
-### Les paramètres de fonctions
+## Les paramètres de fonctions
 
 Les paramètres d'une fonction sont optionnels. Lors de l'appel d'une fonction, le valeur **undefined** est allouée aux paramètres manquants.
 
@@ -531,7 +529,7 @@ message = welcome3();
 console.log(message); // HI DEAR HUMAN
 ```
 
-### Autres caractéristiques des fonctions
+## Autres caractéristiques des fonctions
 
 Il existe encore d'autres caractéristiques pour les fonctions.
 
@@ -539,7 +537,7 @@ Par exemple, une fonction retourne une valeur à l'aide de **return**.
 
 Si vous souhaitez en savoir plus, vous pouvez lire [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions) [[R.11]](/references/#r11).
 
-### <a id="7"></a> Les boucles
+# <InternalPageTitle> Les boucles </InternalPageTitle>
 
 Les boucles permettent de répéter certaines tâches.
 
@@ -558,14 +556,13 @@ for (let index = 0; index < 5; index++) {
 }
 ```
 
-## <a id="8"></a> Les tableaux
-
-### Introduction
+# <InternalPageTitle> Les tableaux </InternalPageTitle>
+## Introduction
 
 Les tableaux sont des variables ou constantes de type **Array**.  
 Un array (ou tableau) est un ensemble ordonné de valeurs auxquelles ont fait référence avec un nom et un indice.
 
-### Création de tableaux
+## Création de tableaux
 
 ```js
 const LIBRARIES = ["Anime.js", "Three.js", "Phaser.io"];
@@ -582,7 +579,7 @@ C'est assez déroutant et donc déconseillé de créer un tableau à l'aide du c
 
 👍 Il est recommandé de créer un array à l'aide de **[]**.
 
-### Parcourir un tableau
+## Parcourir un tableau
 
 On peut parcourir un tableau soit à l'aide des boucles classiques (**for** & **.length**), soit à l'aide de la méthode **forEach()**.
 
@@ -599,7 +596,7 @@ LIBRARIES.forEach(function (item) {
 });
 ```
 
-### Les tableaux multidimensionnels
+## Les tableaux multidimensionnels
 
 Un tableau à deux dimensions, en JS, est un tableau dont tous ses éléments sont des tableaux.
 
@@ -617,13 +614,13 @@ for (let x = 0; x < numberOfRows; x++) {
 }
 ```
 
-### Autres méthodes associées aux tableaux
+## Autres méthodes associées aux tableaux
 
 Il existe de nombreuses méthodes intéressantes associées aux tableaux, comme : `pop()`, `map()`, `indexOf()`.
 
 Si vous souhaitez approfondir ce sujet, vous pouvez consulter [la MDN documentation ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) [[R.13]](/references/#r13).
 
-## <a id="9"></a>9) Les template literals
+# <InternalPageTitle> Les template literals </InternalPageTitle>
 
 On peut écrire des String sur plusieurs lignes à l'aide de **\` \`**.
 
@@ -637,21 +634,20 @@ for (let i = 0; i < LIBRARIES.length; i++) {
 }
 ```
 
-## <a id="10"></a> Les objets
-
-### Introduction
+# <InternalPageTitle> Les objets </InternalPageTitle>
+## Introduction
 
 En JS, tout est objet : les Strings, les tableaux, les API du browser, les objets personnalisés...
 
 Cette partie ne donne que les bases de la gestion d'objets. Une autre partie du cours, appelée l'orienté objet en JS, fournit plus de détails.
 
-### Création d'objets
+## Création d'objets
 
-#### Introduction
+### Introduction
 
 Il existe plusieurs façons de créer un objet en JS.
 
-#### Création d'un "object literal"
+### Création d'un "object literal"
 
 On peut créer un "object literal", qui est une liste de paires clé/valeur.
 
@@ -665,7 +661,7 @@ let raphael = {
 };
 ```
 
-#### Création d'objets vide
+### Création d'objets vide
 
 On crée un objet vide via **{}**.
 
@@ -677,13 +673,13 @@ sandra.firstname = 'Sandra';
 sandra.lastname = 'Parisi';
 ```
 
-### Accéder aux propriétés d’un objet
+## Accéder aux propriétés d’un objet
 
-#### Introduction
+### Introduction
 
 Il existe deux façons d'accéder aux propriétés d'un objet.
 
-#### Accès à une propriété via un .
+### Accès à une propriété via un .
 
 On accède régulièrement aux propriétés d'un objet via un **.** :
 
@@ -691,7 +687,7 @@ On accède régulièrement aux propriétés d'un objet via un **.** :
 console.log(raphael.firstname, ' :', raphael.sayHello()); // Raphael  : Hi everyone !
 ```
 
-#### Accès à une propriété via un ["object_key"]
+### Accès à une propriété via un ["object_key"]
 
 On utilisera la clé, c'est-à-dire le nom de la propriété recherchée, sous forme de String, principalement dans les cas où l'on souhaite, lors de l'exécution, accéder dynamiquement à une propriété :
 
@@ -700,9 +696,8 @@ console.log(sandra['firstname'], ',', sandra['lastname']);
 // Sandra , Parisi
 ```
 
-## <a id="11"></a> Les exceptions
-
-### Lancer une expression
+# <InternalPageTitle> Les exceptions </InternalPageTitle>
+## Lancer une expression
 
 Les exceptions permettent de gérer des cas d'erreur se produisant lors de l'exécution de vos scripts.
 
@@ -739,7 +734,7 @@ Il est possible de créer vos propres classes d'erreur (en héritant de la class
 
 Si vous souhaitez plus de détails sur les "JS built-in error objects", vous pouvez parcourir [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#error_types) [[R.14]](/references/#r14).
 
-### Intercepter une expression
+## Intercepter une expression
 
 On gère l'apparition d'une exception au sein d'un bloc de code à l'aide de **try** ... **catch** et éventuellement **finally** :
 

@@ -45,7 +45,7 @@ const InternalPageTitle = ({ children, className, level }) => {
     observer.observe(ref.current);
 
     return () => {
-      observer.unobserve(ref.current);
+      observer.disconnect();
     };
   }, []);
 
