@@ -27,6 +27,7 @@ import YoutubeImage from '../components/image/youtube-image.js';
 import InternalPageMenu from '../components/internal-page-menu/internal-page-menu.js';
 import InternalPageMenuItem from '../components/internal-page-menu/internal-page-menu-item.js';
 import InternalPageTitle from '../components/internal-page-menu/menu-title.js';
+import { PathViewer, PathViewerItem } from '../components/path-viewer/path-viewer.js';
 
 const shortcodes = {
   Link,
@@ -48,6 +49,8 @@ const shortcodes = {
   InternalPageMenu,
   InternalPageMenuItem,
   InternalPageTitle,
+  PathViewer,
+  PathViewerItem,
 };
 
 export default function PageTemplate({ data: { mdx, allImages }, children }) {

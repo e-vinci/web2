@@ -33,7 +33,7 @@ const InternalPageMenuItem = ({
   const isMenuItemActive = activePageMenuItem === itemTextInSnakeCase;
 
   return (
-    <Link to={to ? to : '#' + snakeCase(itemTextInSnakeCase)} className={`${className} ${
+    <Link to={to ? to : '#' + itemTextInSnakeCase} className={`${className} ${
       isMenuItemActive ? className + '--selected' : ''
     }`}
     id={`item_${itemTextInSnakeCase}`}>
@@ -41,25 +41,7 @@ const InternalPageMenuItem = ({
         numbered ? numbering : ''
       }${endOfLeadingString}${children}`}
     </Link>
-  );
-
-  /*
-  return (
-    
-      <div
-        id={`item_${itemTextInSnakeCase}`}
-        className={`${className}__left-text ${
-          isMenuItemActive ? className + '__left-text--selected' : ''
-        }`}       
-      >
-        <Link to={'#' + snakeCase(itemTextInSnakeCase)}>
-          {`${startOfLeadingString}${
-            numbered ? numbering : ''
-          }${endOfLeadingString}${children}`}
-        </Link>
-      </div>
-  
-  );*/
+  ); 
 };
 
 export default InternalPageMenuItem;

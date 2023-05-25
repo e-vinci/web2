@@ -1,0 +1,38 @@
+.path-viewer {
+  display: flex;
+  margin-bottom: 1.3rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+
+  &__item {
+
+    background-color: rgb(255, 255, 255);
+
+    border: 2px solid #33332d;
+
+    &:not(:first-child) {
+      // border-bottom: none;
+    }
+
+    cursor: pointer;
+    padding: 0.5rem;
+    position: relative;
+
+    z-index: 10;
+    overflow: hidden;
+    border-radius: 0 50px 50px 0;
+
+    &:hover {
+      background-color: $tertiary-color;
+      color: $secondary-color !important;
+    }
+
+    &--selected {
+      background-color: $tertiary-color;
+      color: $secondary-color !important;
+      cursor: text !important;
+    }
+  }
+}
