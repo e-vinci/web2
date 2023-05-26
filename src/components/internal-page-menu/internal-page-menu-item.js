@@ -12,7 +12,8 @@ import { NavigationContext } from '../contexts/navigation-context';
  * numbering : value to be added after the startOfLeadingString if numbered is true.
  * endOfLeadingString : by default an empty String, these are special chars that we want to add
  * prior to each menu title : ")" for example.
- * page : is the relative URL to the page that the menu item shall forward to.
+ * to : is the relative URL to the page that the menu item shall forward to. No support for 
+ * absolute URL !
  * @returns
  */
 const InternalPageMenuItem = ({

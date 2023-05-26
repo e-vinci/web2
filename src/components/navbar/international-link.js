@@ -7,6 +7,7 @@ const InternationalLink = ({
   absoluteLink = "/",
   i18nPluginOptions,
   locale,
+  ...rest
 }) => {
   let i18nLink;
   if (
@@ -20,7 +21,7 @@ const InternationalLink = ({
   }
 
   return (
-    <Link className={className} to={i18nLink}>
+    <Link className={className} to={i18nLink} {...rest}>
       {children}
     </Link>
   );

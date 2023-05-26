@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
-import { Link } from 'gatsby';
+// import { Link } from 'gatsby';
 import { snakeCase } from 'lodash';
+import { graphql } from 'gatsby';
+import { useStaticQuery } from 'gatsby';
+import { useIntl } from 'react-intl';
 
-import { NavigationContext } from '../contexts/navigation-context';
+import InternationalLink from '../navbar/international-link';
 
 const PathViewer = ({ className = 'path-viewer', children }) => {
   return <div className={className}>{children}</div>;
@@ -16,6 +19,23 @@ const PathViewerItem = ({
 }) => {
   const itemTextInSnakeCase = snakeCase(children);
 
+  const data = useStaticQuery(
+    graphql`
+      {
+        allSitePlugin(filter: { name: { eq: "gatsby-plugin-i18n" } }) {
+          nodes {
+            name
+            pluginOptions
+          }
+        }
+      }
+    `
+  );
+
+  const i18nPluginOptions = data?.allSitePlugin.nodes[0].pluginOptions;
+
+  const { locale } = useIntl();
+
   let path;
   if (selected) {
     path = '#';
@@ -26,13 +46,15 @@ const PathViewerItem = ({
   }
 
   return (
-    <Link
-      to={path}
+    <InternationalLink
       className={`${className} ${selected ? className + '--selected' : ''}`}
       id={`item_${itemTextInSnakeCase}`}
+      i18nPluginOptions={i18nPluginOptions}
+      absoluteLink={path}
+      locale={locale}
     >
       {children}
-    </Link>
+    </InternationalLink>
   );
 };
 

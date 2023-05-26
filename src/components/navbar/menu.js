@@ -29,7 +29,7 @@ const Menu = ({ siteMetadata, navbarExtraStyles }) => {
   const i18nPluginOptions = data?.allSitePlugin.nodes[0].pluginOptions;
 
   const { locale } = useIntl();
-  console.log('the current locale is : ', locale);
+  
   const { instance, accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
