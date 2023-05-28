@@ -11,6 +11,8 @@ import React, { useState, useEffect } from 'react';
  * after the startOfLeadingString
  * endOfLeadingString : by default an empty String, these are special chars that we want to add
  * prior to each menu title : ")" for example.
+ * sticky : false by default. If different than false (if the props is given as "sticky" without value e.g.)
+ * the menu will not move/change even if the screen is lg and the menu should go to the left side.
  * @param {*} param0
  * @returns
  */
@@ -20,20 +22,20 @@ const InternalPageMenu = ({
   endOfLeadingString = '',
   numbered = false,
   className = 'page-menu',
+  sticky = false,
 }) => {
-
-  
-
   return (
-    <div className={className}>
+    <div className={`${className} ${
+      sticky ? className + '--sticky' : ''
+    }`}>
       {React.Children.map(children, (child, index) =>
         React.cloneElement(child, {
           id: index,
           startOfLeadingString,
           numbered,
           numbering: index + 1,
-          endOfLeadingString,      
-          className: className + "__item",
+          endOfLeadingString,
+          className: `${className}__item`,
         })
       )}
     </div>

@@ -11,6 +11,13 @@ description: 'Introduction à Git'
 
 # d) 🍬 Introduction à Git
 
+<InternalPageMenu>
+  <InternalPageMenuItem> Git, Github & VS Code  </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 0.1 : Créer un repository local et distant pour gérer vos exercices </InternalPageMenuItem>
+</InternalPageMenu>
+
+# <InternalPageTitle> Git, Github & VS Code </InternalPageTitle>
+
 Une des prérequis de ce cours est de savoir utiliser Git.
 
 Si vous souhaitez obtenir les compétences de base de l'utilisation de Git, nous vous recommandons cette série de vidéos.
@@ -139,3 +146,76 @@ Si vous souhaitez obtenir les compétences de base de l'utilisation de Git, nous
           </div>
         </div>
 </div>
+
+<br/>
+
+# <InternalPageTitle> Exercice 0.1 : Créer un repository local et distant pour gérer vos exercices </InternalPageTitle>
+
+Veuillez créer un repo local portant le nom **web2**.
+
+Voici comment nous vous proposons d'organiser la structure de répertoires au sein de votre repo local **web2** :
+- **`/exercises`**
+  - **`/exercises/1.1`**
+  - **`/exercises/1.2`**
+  - **`/exercises/2.1`**
+  - **`/exercises/2.2`**
+  - **`/exercises/3.1`**
+  - **`/exercises/4.1`**
+
+N'oubliez pas d'ajouter un fichier **`.gitignore`** à votre repo :
+
+``` text
+# ignore all node_modules folders and nested folders & files
+node_modules
+# ignore the specific VS Code configuration parameters
+.vscode
+# ignore the specific packages versions installed by the developper
+package-lock.json
+# ignore the development environment variables (if any)
+.env
+# ignore all dist directories files (and subdirectories) from .gitignore
+dist/*
+# but (re)include specific dist directory files, e.g.
+#!frontend-essentials/step-1/dist
+```
+
+Si ce n'est pas déjà fait, veuillez [installer Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) [[R.34]](/references/#r34).
+
+Veuillez créer un web repo portant le nom **web2**.
+
+
+<AuthenticatedBlock>
+
+Comme vos cours de DevOps sont donnés sur GitHub, nous vous recommandons de créer un web repo sur GitHub. Pour ce faire, vous pouvez utiliser un compte existant ou en créer un nouveau sur https://github.com/. 
+N'oubliez-pas SVP d'ajouter des accès pour vos deux enseignants. Pour ce faire :
+- cliquez sur **Settings**, puis **Collaborators and teams** ;
+- dans l'onglet **Manage access**, cliquez sur **Add people**, vous trouverez **SebStreb** (Sébastien Strebelle) et **e-baron** (Raphaël Baroni) ;
+- ajoutez aux deux enseignants le rôle **Maintain**.
+
+Pour créer un web repo sous GitHub, vous pouvez visualiser la vidéo "Git & VS Code - Partie 03 : Création d'un web repo sur GitHub à partir d'un local repo" dans l'[Introduction à Git](/git).
+
+Néanmoins, si vous préférez utiliser Gitlab, veuillez utiliser la plateforme offerte par Vinci :
+- Pour vous logger sur la plateforme Gitlab de Vinci, accédez à https://gitlab.vinci.be/ , puis cliquez sur **Sign in with Azure AD**.
+- Créer un projet "private" sur GitLab portant le nom **web2**.
+- Ajouter comme membre les deux enseignants associés au cours (rôle de "Developer") :
+  - Sébastien Strebelle
+  - e-Baron (Raphael Baroni)
+  - NB : pour ce faire, dans l'interface web de GitLab : **Settings**, **Members**, **Invite member**, **Choose a role permission : Developer**.
+
+⚡⚡⚡ Veuillez soumettre le lien vers votre web repository (qqch du genre https://github.com/votre_username/web2.git ou https://gitlab.vinci.be/votre_username/web2.git) via ce [formulaire](https://forms.office.com/r/1e5hNWxUJg).  
+Pour trouver le lien vers votre repo :
+- dans GitHub : cliquez sur le bouton **Code** dans votre web repo, et copiez l'info associée à l'onglet **HTTPS**.
+- dans Gitlab : il vous suffit de cliquer sur **Clone** dans votre projet, et de prendre l'info associée à **Clone with HTTPS**.
+
+NB : Lorsque vous allez ajouter une remote pour vous synchroniser avec votre web repository, nous vous conseillons d'utiliser l'URL associée à **HTTPS**. Si vous souhaitez malgré tout vous connecter en SSH, vous pouvez consulter [cet article pour GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) ou [cet article pour GitLab](https://dev.to/sndrx/how-to-set-up-an-ssh-key-and-use-it-in-gitlab--42p1).
+
+</AuthenticatedBlock>
+
+<UnAuthenticatedBlock>
+
+N'hésitez pas à créer votre web repo sur le site qui vous convient (GitHub, Gitlab...). Si vous n'avez jamais créé de web repo, nous vous recommandons d'en créer un sur GitHub. Pour ce faire, vous pouvez utiliser un compte existant ou en créer un nouveau sur https://github.com/.  
+
+NB : Lorsque vous allez ajouter une remote pour vous synchroniser avec votre web repository, nous vous conseillons d'utiliser l'URL associée à **HTTPS**. Si vous souhaitez malgré tout vous connecter en SSH, vous pouvez consulter [cet article pour GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+
+</UnAuthenticatedBlock>
+

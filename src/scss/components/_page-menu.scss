@@ -1,4 +1,6 @@
 .page-menu {
+  width: max-content;
+
   @media only screen and (min-width: $lg) {
     //flex-wrap: nowrap;
     width: 30vw;
@@ -10,9 +12,18 @@
     overflow-y: auto;
     height: calc(100% - 120px);
     top: 120px;
+
+    &--sticky {
+      position: relative;
+      top:0;
+      width: max-content;
+      // width: auto;
+    }
   }
 
   padding-bottom: 1.3rem;
+
+  
 
   &__item {
     display: flex;

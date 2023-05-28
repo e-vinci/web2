@@ -1,0 +1,490 @@
+---
+title: "Outils frontend"
+description: "Les outils modernes pour développer des UI"
+---
+
+<PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
+    <PathViewerItem selected> c) Outils de développement </PathViewerItem>
+</PathViewer>
+
+# c) Les outils modernes pour développer des UI
+
+<InternalPageMenu>
+  <InternalPageMenuItem> Quels outils modernes seraient intéressants ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Les modules bundlers </InternalPageMenuItem>
+  <InternalPageMenuItem> Comment démarrer la création d'une IHM moderne ?  </InternalPageMenuItem>
+  <InternalPageMenuItem> Création du squelette d'une IHM à partir d'un boilerplate </InternalPageMenuItem>
+  <InternalPageMenuItem> Installation de toutes les dépendances d'une application </InternalPageMenuItem>
+  <InternalPageMenuItem> Exécution de l'application à l'aide d'un serveur de développement de Webpack </InternalPageMenuItem>
+  <InternalPageMenuItem> Fonctionnement de Webpack pour gérer des assets </InternalPageMenuItem>
+  <InternalPageMenuItem> Installation d'un package </InternalPageMenuItem>
+  <InternalPageMenuItem> Debbuging d'un frontend tournant sous Webpack </InternalPageMenuItem>
+</InternalPageMenu>
+
+# <InternalPageTitle> Quels outils modernes seraient intéressants ? </InternalPageTitle>
+
+Précédemment, nous avons développé des applications web façon "old school".
+
+Au tutoriel précédent (Tutoriel 2.1), nous avons créé la HomePage du site d'une pizzeria, en y ajoutant facilement deux animations grâce à une librairie externe ([Animate.css](https://animate.style/)).
+
+Imaginez maintenant que le site web de la pizzeria continue à grandir.  
+Au fur et à mesure que nous allons lui ajouter des fonctionnalités, nous allons souhaiter utiliser de nouvelles librairies externes.
+
+Pour chaque librairie externe que nous souhaitons ajouter, nous aurons à inclure une balise **`<script>`** a sein d'**index.html**.
+
+Nous allons donc facilement, lors du développement d'une application web, utiliser une ou plusieurs dizaine(s) de librairies externes, que l'on appelle aussi dépendances.
+
+La gestion de ces dépendances est difficile à gérer et à maintenir :
+- si vous souhaitez avoir des versions locales de ces dépendances, vous devez vous même manuellement télécharger les fichiers **.js** et **.css** associés à vos librairies, inclure ensuite le bon chemin pour la propriété **src** des balises **scripts** associées.
+- en cas de nouvelle version d'une librairie, vous êtes difficilement informé ;
+- la mise à jour d'une dépendance impose pas mal de manipulations : si vous utilisez des versions locales des dépendances, re-téléchargement de celles-ci, changement des propriétés **src** des balises **scripts** impactées...
+- lorsque vous travaillez à plusieurs développeurs sur un même projet, pour que tout le monde obtienne les dépendances si vous utiliser des versions locales au serveur web, vous risquez de devoir mettre celles-ci en configuration (via Gitlab ou Github) ; c'est vraiment dommage de mettre en configuration les dépendances, le code de quelqu'un d'autre.
+
+Ainsi, pour créer des IHM de manière moderne, nous souhaiterions bénéficier d'outils facilitant le développement.
+
+Nous souhaiterions :
+- une gestion moderne des dépendances (et de leur dépendances), via un gestionnaire de packages ;
+- écrire du JS moderne et utiliser, si nécessaire, un outil pour générer du JS pour d'anciens browsers ; 
+- du hot reload : lorsque l'on modifie un script, l'application web se rafraichisse dans le browser ;
+- que notre éditeur de code nous informe quand nous écrivons du JS qui ne répond pas à des conventions de programmation ;
+- transformer les assets à la compilation (optimisation d'images, SASS vers CSS...)
+- ...
+
+Ainsi, nous allons abandonner la programmation "old school" dans ce module et découvrir des outils de programmation modernes, principalement les **module bundlers**.
+
+# <InternalPageTitle> Les modules bundlers </InternalPageTitle>
+
+Un module bundler est un outil mis à la disposition des développeurs.
+
+Il permet la gestion aisée des modules, packages et de leurs dépendances.
+
+Probablement sa plus grande utilité et de permettre d'utiliser des packages faits pour Node.js (un environnement serveur) au sein d'un browser (un environnement client).
+
+Certains modules bundler permettent d'autres fonctionnalités comme la gestion aisée des assets, la transpilation de code moderne vers du code ancien…
+
+Voici quelques modules bundlers parmi les plus connus : Webpack [[R.33]](/references/#r33), browserify, parcel.
+
+Dans le cadre de ce cours, nous avons choisi Webpack.
+
+Pour pouvoir installer cet outil, tout comme n'importe quel package, nous utiliserons le gestionnaire de packages de Node.js **npm**.
+
+A ce stade-ci, si ce n'est pas déjà fait, il est important que vous installiez l'environnement [Node.js en version LTS](https://nodejs.org/en/) [[R.34]](/references/#r34): 
+
+⚡ Attention à ne pas installer la dernière version de Node.js, mais bien la version LTS, sinon vous risquez beaucoup d'incompatibilités lors de l'exécution des boilerplates, tutoriels & démos du cours.
+
+# <InternalPageTitle> Comment démarrer la création d'une IHM moderne ? </InternalPageTitle>
+
+Nous avons vu que pour créer une application web moderne, il est important d'utiliser un module bundler.
+
+Il reste néanmoins encore à décider comment nous allons initier la création de nos projets pour bénéficier d'outils de développement modernes.
+
+Voici les options possibles :
+- **Utiliser un boilerplate contenant le squelette d'une IHM (incluant une bonne configuration des outils de développement) et ses dépendances** ; nous allons utiliser cette option dans le cadre de ce cours ;
+- **Utiliser un framework ou une librairie comme React, Vue ou Angular** ; comme expliqué dans l'introduction, nous n'allons pas utiliser de Framework pour créer nos IHM. Nous trouvons ces frameworks très utiles, néanmoins nous estimons 
+qu'il est primordial de bien pratiquer le Vanilla JS avant de se lancer dans un framework pour votre frontend.
+- **Créer et configurer son projet "from scratch"** ; c'est une partie qui sera faite par les initiés ; en règle générale, les développeurs préfèrent utiliser des outils de développement déjà configurés plutôt que de devoir mettre en place tout l'environnement de développement. C'est ce qui fait notamment le succès de l'utilisation de frameworks, car ils offrent des outils de développement généralement bien configurés "out of the box" (dans les boilerplates de base). 
+
+Comme expliqué ci-dessus, vous ne devez pas connaître comment configurer un module bundler pour bénéficier d'outils de développement modernes.
+
+Nous estimons qu'il est important que vous compreniez comment pouvoir utiliser, et éventuellement modifier, une configuration de base offerte au sein d'un boilerplate. 
+
+🍬 Si néanmoins vous souhaitez approfondir la configuration d'un environnement de développement pour un frontend, à l'aide de Webpack, vous pouvez suivre ces deux tutoriels :
+- [webpack-part1-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/webpack-part1-hmi).
+- [webpack-part2-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/webpack-part2-hmi).
+
+Ces deux tutoriels, totalement optionnels, expliquent comment le [boilerplate de base du cours](https://github.com/e-vinci/js-basic-boilerplate.git) a été créé.
+
+# <InternalPageTitle> Création du squelette d'une IHM à partir d'un boilerplate </InternalPageTitle>
+
+Nous allons faire un refactor du site de la pizzeria développé façon "Old School" au module 1 en utilisant des outils de développement modernes.
+
+Pour ce faire, nous allons utiliser le [boilerplate de base du cours](https://github.com/e-vinci/js-basic-boilerplate.git) qui met à disposition un projet bien configuré.
+
+Au fur et à mesure du tutoriel qui suit, nous allons comprendre ce qu'offre Webpack en tant que module bundler.
+
+Dans votre repo **web2**, nous allons créer le répertoire **/tutorials/pizzeria/hmi/modern** en clonant le boilerplate.
+
+Pour ce faire, veuillez ouvrir un terminal dans le répertoire **/tutorials/pizzeria/hmi**.
+
+Il est possible de faire un clic droit dans l'Explorer de VS Code sur le répertoire **hmi**, **Open in Integrated Terminal** pour ouvrir un terminal au bon endroit :
+
+<ScrollableImage name="terminal-1.png" minWidth="481px" maxWidth="500px" />
+
+<figcaption>Accès rapide à un terminal au chemin désiré</figcaption>
+
+Nous vous conseillons, au sein de VS Code, de configurer pour avoir comme Terminal par défaut Git Bash.
+
+Pour ce faire, vous devez avoir installé Git sur votre machine.
+
+Cliquez à droite du **+** au sein d'un terminal ouvert dans VS Code, clic sur **Select Default Profile**, puis sélectionnez "Git Bash".  
+Tous les prochains terminaux que vous ouvrirez le seront sous Git Bash, nettement plus coloré et intéressant que les autres terminaux 😎.
+
+<ScrollableImage name="terminal-2.png" minWidth="933px" maxWidth="933px" />
+
+<figcaption>Choix du terminal par défaut</figcaption>
+
+Pour cloner le boilerplate dans **/tutorials/pizzeria/hmi** en portant le nom de projet **modern**, veuillez tapez au sein du terminal :
+
+```bash
+git clone https://github.com/e-vinci/js-basic-boilerplate.git modern
+```
+
+A ce stade-ci, tous les fichiers nécessaires sont disponibles dans votre répertoire **modern**.
+
+⚡ Comme vous avez cloné votre projet au sein d'un repo existant (**web2**), Git ne trackera pas ce nouveau projet ; en effet, Git ne tracque pas des projets Git dans des projets Git. 
+
+Pour vous assurer que Git traque votre nouveau projet **modern**, vous devez effacer le répertoire **`.git`** se trouvant dans votre nouveau projet.  
+N'hésitez pas aussi à effacer **`.gitignore`** se trouvant dans votre nouveau projet.
+
+**package.json** est le fichier de configuration de votre projet.
+
+Veuillez le mettre à jour afin de :
+- donner un nom à votre projet & une description ;
+- vous identifier comme auteur.
+
+# <InternalPageTitle> Installation de toutes les dépendances d'une application </InternalPageTitle>
+
+Veuillez entrer dans le répertoire **modern** à l'aide d'une commande bash, au sein du Terminal de VS Code :
+
+```bash
+cd modern # (or the name given to your project)
+npm i # (equivalent to `npm install` to install all dependencies )
+npm start # run the project
+```
+
+Veuillez ensuite installer toutes les dépendances, c'est-à-dire tous les packages qui sont indiqués dans **package.json**
+
+```bash
+npm i # (equivalent to `npm install` to install all dependencies )
+```
+
+Notons que dans ce cas-ci, ce sont tous ces packages qui sont installés (voir **package.json**):
+
+```json
+"devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "eslint": "^8.18.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.1",
+    "prettier-airbnb-config": "^1.0.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "bootstrap": "^5.0.1"
+  },
+```
+
+💭 Mais où sont installé tous ces packages ?
+C'est dans le répertoire **node_modules**. Il peut vite s'y trouver plusieurs centaines de MB de dépendances. C'est donc très important de ne jamais mettre ce dossier sur vos web repository, via Git. Pour ce faire, n'oubliez pas d'inclure un fichier **.gitignore** dans vos projets pour ignore **node_modules**.
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/pizzeria/hmi/modern** (ou **/web2/tutorials/pizzeria/hmi/modern** si l'on considère le nom du répertoire du repo).
+
+# <InternalPageTitle> Installation des extensions pour le linter et le formater </InternalPageTitle>
+## Le linter
+Nous souhaitons ajouter un outil qui permette de détecter des erreurs de programmation lors de l'écriture de nos scripts, un linter.   
+Nous voulons que le linter impose le style d'Airbnb décrit dans le **Airbnb JS style guide**.   
+Pour ce faire, grâce au boilerplate, lorsque nous lançons la commande **`npm start`**, nous utilisons **ESLint** (cet outil est aussi utilisé par Facebook au sein d'applications React) qui impose un style de programmation conforme aux règles d'Airbnb.   
+Lors du build de l'application, nous bénéficions de feedback sur notre code.
+
+Pour bénéficier de plus de feedback sur le code, veuillez installer l'extension **ESLint** au sein de VS Code.    
+Vous ne devez plus attendre le build pour avoir du feedback sur votre code, cela se fait dès l'écriture ! Vous avez même des propositions de "Quick fix" !
+
+Pour votre info, la configuration des règles de **ESLint** se fait dans le fichier **.eslintrc.js** devant se trouver à la racine d'un projet et offert au sein du boilerplate.
+
+## Le formater
+Pour formater facilement votre code, le boilerplate fournit une configuration de **prettier** conforme à ce qui est attendu pour coller au style imposé par le linter, c'est à dire au style d'Airbnb.
+
+💭 Vous souhaitez reformater votre code en accord avec le linter, lors de l'appui sur plusieurs touches ?
+
+Vous devriez répondre "oui" à cette question, car c'est un gain de temps d'avoir un outil permettant d'améliorer la qualité de son code, sans efforts.
+
+Pour que la configuration du formater offerte dans le boilerplate soit utile, veuillez installer l'extension **prettier** au sein de VS Code.
+
+Une fois **prettier** installé dans VS Code, vous pouvez facilement formatter votre code conformément au style d'Airbnb :
+- soit en tapant **Shift Alt F** ;
+- soit en faisant un clic droit sur votre script, **Format Document** ; la première fois, il se peut que vous deviez sélectionner **prettier** comme formater.
+
+Pour votre info, la configuration des règles de **prettier** se fait dans le fichier **.prettierrc.js** devant se trouver à la racine d'un projet et offert au sein du boilerplate.
+
+# <InternalPageTitle> Exécution de l'application à l'aide d'un serveur de développement de Webpack </InternalPageTitle>
+
+Veuillez exécuter l'application de base offerte par le boilerplate :
+
+```bash
+npm start # run the project, equivalent of : npm run start
+```
+
+**package.json** indique les scripts de démarrage, en fonction de la façon dont nous souhaitons démarrer l'application :
+
+```json
+"scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development"
+  },
+```
+
+Lorsque nous tapons **npm start** à la racine du projet (**modern** ici), c'est en fait le serveur de développement de Webpack qui va démarrer notre application, 
+et une page s'ouvre dans notre browser par défaut, affichant le texte "Replace with your page content".
+
+Webpack offre de nombreux outils de développement qui sont configurés dans le fichier **webpack.config.js**. 
+
+Veuillez jeter un oeil à ce fichier. Vous verrez notamment qu'un serveur web de développement doit démarrer sur le port 8080.
+
+Il n'est désormais plus nécessaire d'utiliser le Live Server de VS Code pour visualiser nos applications. Cela est directement géré par Webpack.
+
+Pour stopper l'application, et donc le serveur de développement de Webpack, il suffit de taper sur **`CTRL + c`** au sein du terminal.
+
+Et pour la redémarrer ? 
+
+**`npm start`**.
+
+# <InternalPageTitle> Fonctionnement de Webpack pour gérer des assets </InternalPageTitle>
+
+Webpack a été configuré afin de générer une fichier **index.html** sur base d'un template donné dans **/src/index.html**.
+
+Ce template HTML ne contient pas de balises **`<script>`**.
+
+C'est Webpack qui va s'occuper d'aller chercher toutes les dépendances qui doivent être indiquées via des imports dans le fichier **/src/index.js**. Webpack va générer un bundle, une sorte de paquet cadeau, reprenant toutes les dépendances ainsi que vos scripts JS et vos autres assets (fichiers CSS, images...).
+
+Dans le boilerplate du cours, **src/index.js** fait l'import de tout ce qui est nécessaire pour pouvoir utiliser **Bootstrap** pour pouvoir styler ses pages web à l'aide de classes prédéfinies ; de plus, **/stylesheets/main.css** et importé afin de pouvoir créer votre propre style : 
+
+```js
+// Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+// Custom styles
+import './stylesheets/main.css';
+```
+
+Nous verrons plus tard comment utiliser Bootstrap.
+
+Nous comprenons donc que pour importer une librairie, un asset (image, CSS...), il suffit de le faire à l'aide du mot-clé **import**.
+
+Pour comprendre l'utilisation de Webpack, nous allons maintenant faire un refactor de notre site de la pizzeria réalisé au module 1 en l'intégrant à notre nouveau projet.
+
+Veuillez copier / coller le CSS qui était contenu dans **/stylesheets/style.css** au sein de **/stylesheets/main.css** :
+
+```css
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body { 
+    /*to easily deal with sticky footer*/
+    display: flex;
+    flex-direction: column;
+    background-image : url(../img/pizza.jpg);
+    background-size : cover;
+}
+
+
+header{
+    text-align: center;
+}
+
+main{
+    text-align: center;
+     /*to easily deal with sticky footer:
+     grow the main to fill the space*/
+    flex: 1 0 auto;
+}
+
+footer{
+    text-align: center;    
+}
+
+footer img {
+    height: 50px;
+}
+
+footer h1{
+    color: white;
+}
+```
+
+Nous allons maintenant créer le layout HTML de base de notre application sur base de l'ancien **index.html**. 
+
+Les changements à opérer sont : 
+- Enlever l'import de la feuille de style directement dans l'HTML : `<link rel="stylesheet" href="./stylesheets/style.css" />`
+- Enlever l'import de la librairie externe directement dans l'HTML : ` <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />`
+- Enlever l'import du script externe **index.js** directement dans l'HTML : <script src="./index.js"></script>
+
+Le contenu de **/src/index.html** doit devenir :
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizzeria</title>
+    <link rel="icon" href="./img/pizza-svgrepo-com.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header>
+      <h1 class="animate__animated animate__bounce">We love Pizza</h1>
+    </header>
+    <main>
+      <audio id="audioPlayer" controls autoplay>
+        <source src="./sound/Infecticide-11-Pizza-Spinoza.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </main>
+    <footer>
+      <h1 class="animate__animated animate__bounce animate__delay-2s">
+        But we also love JS
+      </h1>
+      <img src="./img/js-logo.png" alt="" />
+    </footer>
+  </body>
+</html>
+```
+
+Veuillez ajouter les images et le son du tutoriel précédent dans les répertoires **/src/img** et **src/sound**.
+
+Veuillez ajouter le contenu de l'ancien **index.js** au sein de **/src/index.js** afin de gérer les clics sur toute la page :
+
+```js
+// Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+// Custom styles
+import './stylesheets/main.css';
+
+const body = document.querySelector('body');
+
+body.addEventListener('click', startOrStopSound);
+
+function startOrStopSound() {
+  const myAudioPlayer = document.querySelector('#audioPlayer');
+
+  if (myAudioPlayer.paused) myAudioPlayer.play();
+  else myAudioPlayer.pause();
+}
+```
+
+Veuillez exécuter l'application. 
+
+On voit que quasi tout est fonctionnelle. Nous allons nous occuper des animations des titres un peu plus tard.
+
+Il est important de comprendre que le chargement d'un fichier (image ou son) à l'aide de Webpack suit un processus lors du build de votre application.
+
+Lorsque vous tapez **npm start**, vous lancez le build de votre application.
+Grâce à l'installation et à la configuration du module **`html-loader`**, Webpack émet le fichier dans le "output directory", généralement **`/dist`**, et remplace la valeur de **`src`** avec le chemin final vers le fichier.
+
+Pour vous en rendre compte, au sein de votre browser, allez dans vos outils de développeur de Chrome (**F12** par exemple), au sein de l'onglet **Sources**. Vous allez pouvoir observer :
+- **bundle.js** : c'est le fichier contenant notamment toutes les dépendances ainsi que votre code JS.
+- **`index.html`** ou **`(index)`** dans Chrome : c'est votre page web, il est intéressant de voir son contenu. On voit que le bundle y est intégré dans le **`<head>`**, l'attribut **defer** assurant que l'exécution du script ne se fasse qu'une fois que le parsing de la page, la création du DOM, soit terminée ! 
+- des fichiers avec des noms du style **`c731ea9152350c35fb1d.jpg`** : ce sont vos assets, vos images, dont le nom et chemin ont été modifiés lors du build de votre application. Notez que Webpack pourrait transformer ces fichiers (par exemple en créant une représentation mémoire en base64 des images) lors du build.
+- tout les assets sont gérés par le serveur de développement, il n'y a rien de mis dans le répertoire **`/dist`**. Nous allons voir juste après comment gérer un build de production et observer la création du répertoire **`/dist`**.
+
+Pour le chargement d'une photo via le CSS, du moment que la photo est dans `/src`, le **Asset Module** de Webpack reconnaît la photo localement et va remplacer le chemin final de la photo lors du build.
+
+Nous allons maintenant stopper l'exécution de notre serveur (au sein du terminal, tapez **`CTRL C`**).
+
+Nous pouvons lancer la création d'un build de production. 
+
+Un build de production est une version optimisée de votre application web, les espaces blancs sont retirés, les commentaires...
+
+Pour lancer le build, veuillez taper cette commande dans un terminal : 
+
+```bash
+npm run build
+```
+
+Veuillez observer ce qui est offert dans le répertoire **/dist** du projet.
+
+On voit notamment que **bundle.js** et **index.html** ont été optimisé pour la production.
+
+Pour mettre à disposition un build de production par un serveur web, nous pouvons utiliser le package **serve** qui offre un serveur de fichiers statiques. Nous allons utiliser une version temporaire de cette application, à l'aide de la commande **npx**, qui permet d'installer une copie locale et temporaire d'une application, et de directement exécuter cette application.
+
+Veuillez vous rendre dans le répertoire **/dist** et exécuter le serveur **serve**. Pour ce faire, tapez dans votre terminal :
+
+```bash
+cd dist
+npx serve
+```
+
+🎉 Le serveur web tombe sur le fichier **index.html** et met à disposition votre build de production !
+
+Pour terminer le refactoring du site de la pizzeria, il reste à installer la dépendance permettant de créer des animations.
+
+Veuillez stopper l'exécution du serveur web (au sein du terminal, tapez **`CTRL C`**) et revenir à la racine du projet.
+
+```bash
+cd ..
+```
+
+
+# <InternalPageTitle> Installation d'un package </InternalPageTitle>
+
+Afin de gérer des animations, il faut réinstaller la dépendance via **npm**, le gestionnaire de packages.
+
+Pour installer un package (ou une dépendance), il suffit de faire : **npm i nomDuPackage** ou **npm install nomDuPackage**.
+
+Pour installer la librairie [Animate.css](https://animate.style/) [[R.32]](/references/#r32), il suffit de taper dans un terminal, lorsqu'on se trouve à la racine du projet (**modern** ici) :
+
+```bash
+npm install animate.css
+```
+
+Veuillez aller jeter un oeil à votre fichier **package.json**.  
+Lors de l'installation d'un package, celui-ci s'ajoute à la liste des dépendances.  
+Ainsi, si des développeurs trouvent votre projet sur Git, ils n'auront qu'à exécuter **`npm i`** afin d'installer toutes les dépendances.
+
+En lisant la documentation, nous voyons que pour utiliser la librairie au sein de notre application, il suffit de faire l'import de celle-ci.
+
+Veuillez faire l'import de **Animate.css** au sein de **index.js** en ajoutant cette ligne :
+
+```js
+import 'animate.css';
+```
+
+Une fois la librairie importée, le refactoring du site de la pizzeria est terminé.
+
+Vérifiez bien que tout est fonctionnel !
+
+Si tout fonctionne bien, faites un commit de votre repo (**web2**) avec le message "**modern-hmi**".
+
+En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : [modern-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-hmi).
+
+# <InternalPageTitle> Debbuging d'un frontend tournant sous Webpack </InternalPageTitle>
+
+💭 Qui est votre meilleur ami ?
+
+Il est possible qu'à ce stade-ci, vous ignorez une des bonnes réponses, car pour les développeurs, le debugger est leur meilleur ami !
+
+Le debugger est toujours là pour vous, prêt à vous faire voyager pas à pas dans votre code, à vous donner des pistes dans les moments difficiles, sans imposer de solutions, il vous offre une liberté totale !  Et il acceptera toujours votre code tel qu'il est, sous réserve bien sûr que celui-ci compile.  
+C'est exactement ce que l'on attend d'un ami 😁.
+
+Le tutoriel qui suit apprend à débugger un frontend qui est développé en JS et qui utilise Webpack comme module bundler.
+
+<ul className="card mt-3">
+    <div className="card__header">Debugging d'un frontend tournant sous Webpack</div>
+    <li className="card__content">
+      <span className="card__content__title">Tutoriel vidéo</span>
+      <div className="card__content_description">
+        <div width="100px" style={{display:"inline-block"}}>
+          <YoutubeImage src="https://youtu.be/Fdo7zwhxaf4" />
+        </div>
+      </div>
+    </li>          
+    <li className="card__content">
+      <span className="card__content__title">Description</span>
+      <div className="card__content_description">
+        Débuggez une application en ajoutant des breakpoints, en voyageant pas à pas dans le code à l'aide de Chrome et de ses outils de développeurs.
+      </div>
+    </li>
+</ul>
