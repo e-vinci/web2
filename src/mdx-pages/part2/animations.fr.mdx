@@ -1,137 +1,183 @@
 ---
-title: "IHM"
-description: "Création d'IHM pour SPA"
+title: "Animations"
+description: "Les animations et jeux vidéo"
 ---
 
-Ce module vous offre principalement une découverte du JS côté browser & du DOM pour interagir avec l'HTML d'une page web.
+<PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
+    <PathViewerItem selected> i) 🍬 Les animations et jeux vidéo </PathViewerItem>
+</PathViewer>
 
-Voici les sujets traités :
+# i) 🍬 Les animations et jeux vidéo
 
-- a) [Introduction au JS côté client dans un browser](#a)
-  - a.1) [Introduction](#a1)
-  - a.2) [Où mettre du code JS ?](#a2)
-  - a.3) [Comment fonctionne un browser pour afficher une page ?](#a3)
-  - a.4) [Comment interagir avec son browser ?](#a4)
-  - a.5) [JS standard & la norme ECMAScript](#a5)
-- b) [Interagir avec le DOM](#b)
-  - b.1) [Introduction](#b1)
-  - b.2) [Accéder à un élément HTML](#b2)
-  - b.3) [Gestion d'événements](#b3)
-    - b.3.1) [Introduction](#b3.1)
-    - b.3.2) [Flux des événements du DOM](#b3.2)
-    - b.3.3) [Gestion des écouteurs d'événements](#b3.3)
-    - b.3.4) [Les callbacks](#b3.4)
-    - b.3.5) [L'objet event](#b3.5)
-    - b.3.6) [Gestion de timers](#b3.6)
-    - b.3.7) [Gestion d'intervalles de temps](#b3.7)
-    - b.3.8) [Documentation MDN](#b3.8)
-  - b.4) [Création d'une IHM classique & interactive: tutoriel](#b4)
-- c) [Exercice 1.1 : Créer un repository local et distant pour gérer vos exercices](#c)
-- d) [Exercice 1.2 : 1er script externe](#d)
-- e) [Exercice 1.3 : compteur d'événements](#e)
-- f) [Exercice 1.4 : événements différés dans le temps](#f)
-- g) [🍬 Exercice 1.5 : autres événements](#f)
+<InternalPageMenu>
+  <InternalPageMenuItem> 🍬 Animations via l'API Canvas </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Animations via une librairie externe </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Jeux vidéo en 2D via Phaser </InternalPageMenuItem> 
+  <InternalPageMenuItem> Exercice 2.10 : Gérer des événements associés à une animation </InternalPageMenuItem>
 
-Dans ce module, nous allons développer des applications web classiques, façon "old school".
+</InternalPageMenu>
 
-Nous n'allons pas utiliser d'outils pour gérer les dépendances de nos applications, nous allons intégrer ces dépendances directement à l'aide de balises **`<script>`**.
+# <InternalPageTitle> 🍬 Animations via l'API Canvas </InternalPageTitle>
 
+L'API Canvas offerte par le browser permet de créer des animations (2D ou 3D) à l'aide de JS et de l'élément HTML **`<canvas>`**.
 
-Ce module vous offre principalement une découverte de l'utilisation d'outils de développeurs pour créer une IHM moderne ainsi que la génération d'HTML dynamique et de pages web esthétiques.
+Il existe d'autres API fournies par le browser pour dessiner dans un browser qui ne seront pas vues dans ce cours : WebGL, SVG DOM Interface...
 
-Voici les sujets traités :
-- a) [Développement d'IHM modernes](#a)
-  - a.1) [Introduction](#a1)
-  - a.2) [Les modules bundlers](#a2)
-  - a.3) [Comment créer une IHM moderne ?](#a3)
-  - a.4) [Création du squelette d'une IHM à partir d'un boilerplate](#a4)
-  - a.5) [Installation de toutes les dépendances d'une application](#a5)
-  - a.6) [Installation des extensions pour le linter et le formater](#a6)
-  - a.7) [Exécution de l'application à l'aide d'un serveur de développement de Webpack](#a7)
-  - a.8) [Fonctionnement de Webpack pour gérer des assets](#a8)
-  - a.9) [Installation d'un package](#a9)
-- b) [Développement d'IHM esthétiques](#b)
-  - b.1) [Introduction](#b1)
-  - b.2) [Introduction à Bootstrap](#b2)
-  - b.3) [Le Layout en Bootstrap](#b3)
-  - b.4) [Les breakpoints en Bootstrap](#b4)
-  - b.5) [Les composants Bootstrap](#b5)
-  - b.6) [Utilisation de Bootstrap dans un frontend moderne](#b6)
-- c) [Développement d'IHM dynamiques](#c)
-  - c.1) [Introduction](#c1)
-  - c.2) [Génération d'HTML à partir d'une string](#c2)
-  - c.3) [Ajout dynamique d'écouteurs d'événements une fois le DOM rendu](#c3)
-  - c.4) [Génération d'HTML à partir de Nodes](#c4)
-  - c.5) [Ajout dynamique d'écouteurs d'événements avant de rendre le DOM](#c5)
-  - c.6) [Utilisation de Bootstrap dans un frontend moderne](#c6)
-- d) [Debbuging d'un frontend tournant sous Webpack](#d)
-- e) [Exercice 2.1 : Homepage statique de myMovies & Webpack](#e)
-- f) [Exercice 2.2 : Génération dynamique de la Homepage de myMovies](#f)
-- g) [Exercice 2.3 : Génération dynamique d'une table sur base d'un formulaire](#g)
-- h) [🍬 Exercice 2.4 : design responsive](#g)
+Voici les étapes pour créer une animation à l'aide de l'API Canvas :
 
-Ce module vous offre principalement le refactoring des IHM en modules, le routage des pages ainsi que les bases pour réaliser des animations.
+1. Ajout d'un élément **`<canvas>`** dans votre HTML et accès à cet objet via du JS ;  
+*Voici un exemple où l'on crée un élément **canvas** dans le main d'**index.html** à l'aide de JS* :
+```js
+const main = document.querySelector('main');  
+main.innerHTML = '<canvas />';
+const canvas = document.querySelector('canvas');
+```
 
-Voici les sujets traités :
-- a) [Les modules ECMAScript](#a)
-  - a.1) [Introduction](#a1)
-  - a.2) [Création de modules](#a2)
-  - a.3) [Exporter des objets](#a3)
-  - a.4) [Importer des objets](#a4)
-  - a.5) [Découpe d'une IHM en modules](#a5)
-  - a.6) [Exécution de l'application à l'aide d'un serveur de développement de Webpack](#a6)
-- b) [Le routage des écrans](#b)
-  - b.1) [Introduction](#b1)
-  - b.2) [Ajout d'une Navbar](#b2)
-  - b.3) [Mise en place de quel routeur ?](#b3)
-  - b.4) [Cacher de l'information dans l'HTML : data-attributes](#b4)
-  - b.5) [Création du routeur](#b5)
-  - b.6) [Utilisation du routeur & boilerplate](#b6)
-- c) [Exercice 3.1 : Gestion locale d'une collection de films](#c)
-- d) [🍬 L'orienté objet en JS](#d)
-- e) [🍬 Les animations et jeux vidéo](#e)
-  - e.1) [🍬 Animations via l'API Canvas](#e1)
-  - e.2) [🍬 Animations via une librairie externe](#e2)
-  - e.3) [🍬 Jeux vidéo en 2D via Phaser](#e3)
-- f) [Exercice 3.2 : Gérer des événements associés à une animation](#f)
+2. Si nécessaire, définition du style du **canvas** et éventuellement du **body** à l'aide de CSS, Bootstrap ou autres, ou directement du JS.  
+*Voici un exemple où l'on gère la taille du canvas via du JS* :
+```js
+const main = document.querySelector('main');
+const mainWidth = main.clientWidth;
+const mainHeight = main.clientHeight;
+const canvas = document.querySelector('canvas');
+canvas.width = mainWidth;
+canvas.height = mainHeight;
+```
 
-Dans cette partie, nous allons voir certaines techniques afin d'améliorer la structure du code d'une IHM.
+3. Accès au contexte de rendu du canvas pour pouvoir dessiner dessus en 2D en utilisant les **Canvas API**.  
+*Voici un exemple où l'on dessine un carré de couleur bleu à une position aléatoire dans le main :*
+```js
+const DEFAULT_COLOR = 'blue';
+const main = document.querySelector('main');
+const mainWidth = main.clientWidth;
+const mainHeight = main.clientHeight;
+const canvas = document.querySelector('canvas');
+canvasContext = canvas.getContext('2d');
+canvasContext.fillStyle = DEFAULT_COLOR;
+canvasContext.fillRect(Math.random() * mainWidth, Math.random() * mainHeight, 20, 20);
+```
 
+4. Création d'une animation en affichant successivement des "frames".
+*On pourrait appeler la fonction `setInterval`, néanmoins cette fonction n'est pas optimisée pour s'assurer que le browser a les ressources pour effectuer les appels périodiques demandés.  On utilise donc la fonction `window.requestAnimationFrame(callback)` qui permet d'appeler une **callback** environ 60 fois / s, quand le browser est prêt. Voici la structure du code JS qui permet de créer une animation à l'aide des Canvas API : *
+```js
+requestAnimationFrame(drawOneFrame);
+function drawOneFrame() {
+  // 1. clear de canvas
+  // 2. draw the current frame   
+  // 3. refresh automatically the animation via a recursive call
+  requestAnimationFrame(drawOneFrame);
+}
+```
 
-Ce module vous offre principalement la création de SPA et la gestion des communications asynchrones entre une RESTful API et une IHM.
+## Exemple d'animation
+Nous vous offrons un exemple d'animation faite à l'aide des Canvas API : [canvas](https://github.com/e-vinci/js-demos/tree/main/frontend/canvas).  
 
-A cette étape-ci, nous allons simplement intégrer des RESTful API au sein d'IHM.  
-C'est donc principalement du développement frontend que nous allons faire, à l'inverse des deux derniers modules où nous avons fait que du développement backend.
+N'hésitez pas à exécuter cette application et à comprendre le code associé. Ce code va être utilisé à l'exercice un peu plus loin.
 
-Voici les sujets traités :
+# <InternalPageTitle> 🍬 Animations via une librairie externe </InternalPageTitle>
 
-- a) [Introduction aux Single Page Applications](#a)
- 
-parler des architectures classiques d'applications Web ! confr intro !
-- d) [Architectures classiques d'applications web](#d) 
+Il existe de nombreuses librairies JS animant différentes propriétés :  CSS, attributs DOM, objets JS, SVG...
 
-  - a.1) [Caractéristiques et workflow associés à une SPA](#a1)
-  - a.2) [Architectures associées à une SPA](#a2)
-  - a.3) [Gestion des communications d'une SPA](#a3)
-- b) [Gestion des communications d'une SPA](#b)
-  - b.1) [Introduction aux protocoles de communications d'une SPA](#b1)
-  - b.2) [Introduction aux librairies liées aux requêtes HTTP](#b2)
-  - b.3) [Requêtes asynchrones & introduction aux promesses](#b3)
-- c) [Gestion de la sécurité des communications du browser](#c)
-  - c.1) [Single Origin Policy & CORS](#c1)
-  - c.2) [Relaxer la sécurité via des CORS](#c2)
-  - c.3) [Contourner le SOP via un proxy](#c3)
-- d) [Programmation asynchrone à l'aide de promesses & async / await](#d)
-  - d.1) [Utilisation de promesses](#d1)
-  - d.2) [Création de fonctions asynchrones renvoyant une promesse](#d2)
-- e) [Exercice 6.1 : Consommation d'une API tierce](#e)
-- f) [Exercice 6.2 : Consommation d'une API tierce Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy](#f)
-- g) [🍬 Exercice 6.3 : Autoriser des nouvelles origines via la RESTful API](#g)
+Voici quelques librairies Open Source que nous recommandons :
+- Pour les animations 2D : [anime](https://animejs.com/)
+- Pour les jeux en 2D : [Phaser](https://phaser.io/)
+- Pour les animations 3D : [three.js](https://threejs.org/)
 
-Ce module vous offre principalement la gestion de session utilisateurs pour faciliter les opérations sur des ressources ainsi que le déploiement de SPA sur le cloud.
+Il existe aussi une librairie commerciale qui reste néanmoins intéressante : [GreenSock](https://greensock.com/).
 
-Voici les sujets traités :
-- a) [Gestion de sessions côté client](#a)
-    - a.1) [Introduction](#a1)
-    - a.2) [Persistance de données de session via le web storage](#a2)
-    - a.3) [Persistance de données de session via des cookies](#a3)
+Si vous souhaitez utiliser les librairies recommandées pour créer des animations, vous avez les connaissance en JS suffisante pour le faire par vous-même, à l'aide de la documentation proposée sur le site de la librairie que vous choisiriez.
+
+Le truc concernant les animations, c'est d'avancer pas à pas, et de réfléchir à ce que vous souhaitez faire en terme d'objectifs fonctionnels.  
+
+Imaginez que nous souhaitons faire une animation qui mette à disposition un mot tournant comme une hélice : 
+- Ce mot doit tourner comme une hélice au passage de la souris sur le mot. 
+- En cliquant sur la flèche haut ou bas du clavier, l'hélice doit monter ou descendre.
+- En cliquant sur le mot, celui-ci doit :
+  - arrêter de tourner
+  - se mettre à grandir puis rapetissir.
+
+Fonctionnellement, il semble clair ce que nous souhaitons faire.
+
+Maintenant, à l'aide d'éléments HTML, de propriétés CSS, et de JS, comment pourrions nous aborder ce problème ?
+
+- Nous avons besoin d'une hélice qui tourne. Nous allons probablement pouvoir utiliser une **div** pour cela qui prendra la largeur du mot. 
+*Dans le code associé, nous pourrions identifier cette balise par l'id `propeller`*.
+- Nous avons besoin de faire monter ou descendre notre hélice. Pourquoi ne pas utiliser une **div** qui fera office d'ascenseur, et qui contiendra notre hélice.  
+*Dans le code associé, nous pourrions identifier cette balise par l'id `lift`*.
+- Ensuite, il reste à gérer des écouteurs d'événements sur le clavier, et sur ces divs. Il serait pratique d'utiliser une librairie d'animation 2D pour faciliter les mouvements de l'hélice.
+
+La suite montre comment cela a été implémenté à l'aide de la librairie **anime.js**.
+
+## Exemple d'animation à l'aide d'anime.js
+
+Nous vous offrons un exemple d'animation faite à l'aide d'**anime** : [anime](https://github.com/e-vinci/js-demos/tree/main/frontend/anime) pour implémenter un mot qui tourne comme une hélice.  
+
+N'hésitez pas à exécuter cette application et à comprendre le code associé.
+
+Voici quelques explications :
+- Nous avons statiquement implémenté la structure de l'hélice et de l'ascenseur dans le fichier **index.html** ;  
+ ```html 
+<div id="lift">
+  <!-- d-inline-block allow to wrap the div to the width of its content -->
+  <div class="text-center bg-secondary d-inline-block" id="propeller">
+    XXX<a href="#" class="btn btn-primary" id="message">Welcome</a>XXX
+  </div>
+</div>
+ ```
+
+- Nous avons installé **anime.js** et appris à l'utiliser grâce à la documentation https://github.com/juliangarnier/anime/ :
+    - Installation :  
+    ```bash
+    npm i animejs
+    ```
+    - Utilisation de la librairie dans un module :  
+    ```js
+    import anime from 'animejs/lib/anime.es.js';
+    ```
+- On utilise la fonction `anime` pour réaliser les animations que l'on cible aux **div** via leur **id** dans la propriété **`targets`**.
+
+# <InternalPageTitle> 🍬 Jeux vidéo en 2D via Phaser </InternalPageTitle>
+
+## Introduction
+Si vous souhaitez créer un jeu vidéo en 2D pour des browsers, nous vous conseillons la librairie [Phaser](https://phaser.io/).
+
+## Cours de Phaser offert
+Rudi Giot, un incroyable enseignant à l'ISIB (HE2B), met généreusement à notre disposition son cours nommé "Phaser - Jeux vidéo 2D" : https://github.com/RudiGiot/Phaser.
+
+La dernière version du Syllabus au format pdf est disponible ici : <LinkFile name="Phaser.pdf" target="_blank" download>Phaser - Jeux vidéo 2D en Javascript</LinkFile>.
+
+## Boilerplate pour réaliser un jeu Phaser à l'aide de Webpack
+Il n'est pas simple d'intégrer Phaser au sein de Webpack et des outils de développement offerts dans ce cours de JS. Cela peut prendre plusieurs jours avant d'obtenir une bonne configuration, ce qui peut vite devenir frustrant.
+
+Nous vous offrons donc un boilerplate si vous souhaitez créer un jeu vidéo Phaser en utilisant les outils modernes mis en place dans ce cours :  [js-phaser-boilerplate](https://github.com/e-vinci/js-phaser-boilerplate).
+
+Pour information, la source de la configuration de Webpack provient principalement de [Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template).  
+Le jeu présenté dans le boilerplate est basé sur le tutoriel nommé [Modern JavaScript Phaser 3 Tutorial : Part 1 to Part 5](https://blog.ourcade.co/posts/2020/make-first-phaser-3-game-modern-javascript-part1/) et utilise Webpack au lieu de Parcel comme module bundler.
+
+# <InternalPageTitle> Exercice 2.10 : Gérer des événements associés à une animation </InternalPageTitle>
+
+Veuillez adapter une application web permettant l'affichage de différents scintillements de formes selon la demande de l'utilisateur.
+
+Le code a adapter se trouve dans ce dossier [/demo/canvas](https://github.com/e-vinci/js-demos/tree/main/frontend/canvas) du repo associé aux démos.
+
+Veuillez retravailler l'animation pour que :
+-	elle s'arrête ou démarre lors d'un clic gauche d'un utilisateur ;
+-	les carrés grandissent ou rapetississent au clic sur la touche **+** ou la touche **-** ; 
+-	lors d'un clic droit de la souris, la couleur des carrés change de manière aléatoire.
+
+#### 🤝 Tips
+-	N'hésitez pas à découvrir la documentation de **requestAnimationFrame()** pour voir comment stopper une animation.  
+Toujours pas d'idée ? N'hésitez pas à utiliser la fonction **cancelAnimationFrame()**.
+-	Vous pouvez utiliser le type d'événement "**contextmenu**" pour gérer les clics droits. Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event)
+-	Vous pouvez écouter le type d'événement "**keydown**" sur l'objet **document** pour gérer l'appui sur les touches **+** ou **-**.  
+Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event).
+-	Si vous avez besoin de générer un nombre aléatoire de 0 à 255 : 
+```js
+Math.floor(Math.random() * 256); // [0,255]
+```
+
+Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module3/3.2**.
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**module 3 : exercise 3.2 canvas event management**".
