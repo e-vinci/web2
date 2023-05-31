@@ -46,10 +46,8 @@ const Dropdown = ({
     };
   }, []);
 
-  console.log("ITEMDATA : ", itemData, "isAuthenticated :", isAuthenticated);
 
   const itemIsUnavailable = itemData?.protected && !isAuthenticated;
-  console.log("isUnavailable : ", itemIsUnavailable);
   if (itemIsUnavailable) return null;
 
   return (

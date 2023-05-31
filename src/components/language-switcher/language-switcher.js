@@ -6,7 +6,6 @@ const LanguageSwitcher = () => {
   const { messages } = useIntl();
   const { langsMenu } = messages;
 
-  console.log("langsMenu in Language Switcher : ", langsMenu);
   if (langsMenu?.length <= 1) return null;
 
   return (

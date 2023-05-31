@@ -6,16 +6,17 @@ const { getFilePath } = require('./src/utils/files/files');
 const slugify = require(`@sindresorhus/slugify`);
 const { createFilePath } = require('gatsby-source-filesystem');
 
-/*/
-const {
-  onCreateNode: gatsbyPluginI18nOptions,
-} = require("gatsby-plugin-i18n/onCreateNode");*/
+let i18nPluginOptions;
 
-const { plugins } = require('./gatsby-config');
-const { log } = require('console');
-const { options: i18nPluginOptions } = plugins.find(
-  (plugin) => plugin.resolve === `gatsby-plugin-i18n`
-);
+async function asyncPluginConfig() {
+  const {
+    default: { plugins },
+  } = await import('./gatsby-config.mjs');
+  const { options: i18nPluginOptionsTemp } = plugins.find(
+    (plugin) => plugin.resolve === `gatsby-plugin-i18n`
+  );
+  i18nPluginOptions = i18nPluginOptionsTemp;
+}
 
 // load variables from the .env.* files
 require('dotenv').config({
@@ -23,8 +24,9 @@ require('dotenv').config({
 });
 
 // add a slug field to all MDX files
-exports.onCreateNode = ({ node, actions, getNode }) => {
+exports.onCreateNode = async ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
+  await asyncPluginConfig();
 
   if (node.internal.type === 'Mdx') {
     console.log('NODE : ', node.internal.contentFilePath);
@@ -89,7 +91,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       // (or `node.frontmatter.slug`)
       path: node.fields.slug,
       // This component will wrap our MDX content
-      component: `${templatePath}?__contentFilePath=${node.internal.contentFilePath}`, // templatePath, // 
+      component: `${templatePath}?__contentFilePath=${node.internal.contentFilePath}`, // templatePath, //
       // Data passed to context is available
       // in page queries as GraphQL variables.
       //context: { id: node.id },

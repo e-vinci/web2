@@ -13,12 +13,34 @@ autoMargin: false
     
     <p className="pb-3">Tout au long de la série "essentials", un site pour une pizzeria est développé de manière incrémentale.</p> 
     
-    <p className="pb-3">Chaque tutoriel de la série "essentials" illustre une des 4 compétences essentielles du cours. Le fichier <b>README</b> décrit les étapes importantes dans la création du code associé au tutoriel. Il vous est conseillé de lire ce fichier <b>README</b> en parallèle du code.</p>
+    <p className="pb-3">Chaque tutoriel de la série "essentials" illustre une des 3 compétences essentielles du cours. Le fichier <b>README</b> décrit les étapes importantes dans la création du code associé au tutoriel. Il vous est conseillé de lire ce fichier <b>README</b> en parallèle du code.</p>
     
-    <p>Voici l'ordre de lecture recommandé pour cette série "Essentials" :</p>    
-    
+    <p>Voici l'ordre de lecture recommandé pour cette série "Essentials" :</p>       
+   
         <ul className="card mt-3">
-          <div className="card__header">1. Créer une IHM interactive & moderne</div>
+          <div className="card__header">1. Créer un service web</div>          
+          <li className="card__content">
+            <span className="card__content__title">basic-api</span>
+            <div className="card__content_description">
+              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic" target="_blank">API : Gestion de données non persistantes, code peu structuré</a>
+            </div>
+          </li>
+          <li className="card__content">
+            <span className="card__content__title">persistence-api</span>
+            <div className="card__content_description">
+              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/persistence" target="_blank">API : Gestion de la persistance des données dans un fichier .json</a>
+            </div>
+          </li>
+          <li className="card__content">
+            <span className="card__content__title">fat-model-api</span>
+            <div className="card__content_description">
+              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model" target="_blank">API : Refactoring du code et utilisation d'outils de développement</a>
+            </div>
+          </li>          
+        </ul>    
+
+         <ul className="card mt-3">
+          <div className="card__header">2. Créer une IHM interactive & moderne</div>
           <li className="card__content">
             <span className="card__content__title">classic-hmi</span>
             <div className="card__content_description">
@@ -67,31 +89,6 @@ autoMargin: false
               <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi" target="_blank">HMI : Mise en place d'un routeur</a>
             </div>
           </li>
-        </ul>
-   
-        <ul className="card mt-3">
-          <div className="card__header">2. Créer un service web</div>          
-          <li className="card__content">
-            <span className="card__content__title">basic-api</span>
-            <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic" target="_blank">API : Gestion de données non persistantes, code peu structuré</a>
-            </div>
-          </li>
-          <li className="card__content">
-            <span className="card__content__title">persistence-api</span>
-            <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/persistence" target="_blank">API : Gestion de la persistance des données dans un fichier .json</a>
-            </div>
-          </li>
-          <li className="card__content">
-            <span className="card__content__title">fat-model-api</span>
-            <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model" target="_blank">API : Refactoring du code et utilisation d'outils de développement</a>
-            </div>
-          </li>          
-        </ul>    
-        <ul className="card mt-3">
-          <div className="card__header">3. Créer une SPA intégrant une IHM et un web service</div>
           <li className="card__content">
             <span className="card__content__title">cors-api</span>
             <div className="card__content_description">
@@ -115,10 +112,11 @@ autoMargin: false
             <div className="card__content_description">
               <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await" target="_blank">HMI : Refactor du fetch en utilisant async / await</a>
             </div>
-          </li>         
-        </ul>
+          </li>        
+        </ul>           
+        
         <ul className="card mt-3">
-          <div className="card__header">4. Intégrer l'authentification, l'autorisation et les sessions d'utilisateurs au sein de SPA</div>
+          <div className="card__header">3. Intégrer l'authentification, l'autorisation et les sessions d'utilisateurs au sein de SPA</div>
           <li className="card__content">
             <span className="card__content__title">auths-api</span>
             <div className="card__content_description">
@@ -156,37 +154,32 @@ autoMargin: false
             </div>
           </li>        
         </ul>
-<p className="pb-3 pt-3">Voici quelques explications concernant les principales compétences associées au développement d'une Single Page Application (SPA) :</p>
+<p className="pb-3 pt-3">Voici quelques explications concernant les principales compétences associées au développement d'une Single Page Application (SPA) : </p>
 
-<h4 className="pb-1">1. Créer une IHM interactive & moderne</h4>
-<p className="pl-5">
-  Le frontend reprend tout la mise en page souhaitée (header,
-  footer, main, barre de navigation…) et permet de naviguer entre les différentes pages
-  de votre application web. A cette étape, la mise à jour dynamique du frontend via des opérations sur des Web API n'est pas encore envisagée. N'hésitez pas néanmoins à rendre votre frontend dynamique pour tout ce qui peut être fait côté client (affichages des bons composants lors de clics, animations…).
-</p>
-<h4 className="pt-3 pb-1">2. Créer un service web</h4>
+<h4 >1. Créer un service web</h4>
 <p className="pl-5">
   Une RESTful API va mettre à disposition des opérations sur des ressources (les
   données) nécessaires pour rendre votre site web dynamique.  
   A ce stade-ci, testez toutes vos opérations de manière indépendante du frontend, via REST Client par exemple. Ainsi, si tout est fonctionnel, vous êtes prêt à intégrer ces opérations au sein de votre IHM.
 </p>
-<h4 className="pt-3 pb-1">
-  3. Créer une SPA intégrant une IHM et un web service
-</h4>
+
+<h4 >2. Créer une IHM interactive & moderne</h4>
 <p className="pl-5">
-  Cette étape consiste à mettre à jour votre frontend afin que celui-ci s'intègre avec votre RESTful API. Votre site devient dynamique en utilisant des opérations sur des ressources offertes par votre RESTful API.
+  Dans un premier temps, veuillez simplement créer le layout de votre application : le frontend reprend tout la mise en page souhaitée (header, footer, main, barre de navigation…) et permet de naviguer entre les différentes pages de votre application web. A cette étape, la mise à jour dynamique du frontend via des opérations sur des Web API n'est pas encore envisagée. N'hésitez pas néanmoins à rendre votre frontend dynamique pour tout ce qui peut être fait côté client (affichages des bons composants lors de clics, animations…).
+</p>
+<p className="pl-5">
+ Une fois le layout de votre application disponible, veuillez mettre à jour votre frontend afin que celui-ci s'intègre avec votre RESTful API. Votre site devient dynamique en utilisant des opérations sur des ressources offertes par votre RESTful API.
 </p>
 
-<h4 className="pt-3 pb-1">
-  4. Intégrer l'authentification, l'autorisation et les sessions d'utilisateurs au sein de SPA
+<h4>
+  3. Intégrer l'authentification, l'autorisation et les sessions d'utilisateurs au sein de SPA
 </h4>
 <p className="pl-5">
   Cette étape consiste à sécuriser l'accès aux opérations de votre RESTful API et mettre à disposition l'authentification au sein tant de votre IHM que de votre API.
 </p>
 
 <p className="pt-3 pb-3">
-  Nous espérons que cette série vous facilitera le développement de votre propre
-  site.
+  Nous espérons que cette série vous facilitera le développement de votre propre site.
 </p>
 <p className="pb-3">Bon amusement ; )</p>
 

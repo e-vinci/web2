@@ -78,19 +78,11 @@ const MainLayout = ({
   const homeLink = `/${langKey}/`.replace(`/${defaultLangKey}/`, '/');
 
   const url = getUrlForLang(homeLink, pathname);
-  console.log('url : ', pathname);
-
-  console.log('prefix : ', prefix);
-  console.log('location : ', location);
 
   const langsMenu = getLangs(langs, langKey, url).map((item) => ({
     ...item,
     link: item.link.replace(`/${defaultLangKey}/`, '/'),
   }));
-
-  console.log('Homelink : ', homeLink);
-  console.log('langsMenu : ', langsMenu);
-  console.log('langsKey : ', langKey);
 
   return (
     <NavigationProvider>
