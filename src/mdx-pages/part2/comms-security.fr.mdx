@@ -15,6 +15,8 @@ description: "Sécurité des communications du browser"
   <InternalPageMenuItem> Single Origin Policy & CORS </InternalPageMenuItem>
   <InternalPageMenuItem> Autorisation d'origines & les CORS </InternalPageMenuItem>
   <InternalPageMenuItem> Simulation d'une même origine via un proxy </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.12 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.13 : Autorisation de nouvelles origines via la RESTful API </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> Single Origin Policy & CORS </InternalPageTitle>
@@ -220,3 +222,82 @@ En cas de souci, vous pouvez utiliser le code du tutoriel :
 Ca n'est pas des plus lisibles... imaginez que vous avez des tonnes de **.then()**, dans lesquels vous allez aussi faire appel à des fonctions asynchrones... Ca deviendra vite compliqué comme code.
 
 Nous allons donc voir comment rendre la programmation asynchrone plus légère, à l'aide de promesses et de **async** / **await**.
+
+# <InternalPageTitle> Exercice 2.12 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy </InternalPageTitle>
+
+Vous allez intégrer le frontend de **myMovies** réalisé au module 3 (Exercice 3.1) avec la RESTful API développée au module 5 (Exercice 5.2).
+
+L'application **myMovies** doit permettre ces nouveaux cas d'utilisation (ou use cases):
+-	UC1 : l'affichage, sous forme de tableau, de toutes les ressources de type films.
+-	UC2 : l'ajout d'une ressource de type films via un formulaire d'ajout d'un film.
+- UC3 : la suppression d'un film.
+- UC4 : la mise à jour des données d'un film (à l'exception de l'id associé à un film).
+
+Nous acceptons, à ce stade-ci, que des utilisateurs anonymes puissent réaliser des opérations qui normalement devraient être sécurisées. Nous verrons au module prochain comment authentifier et autoriser des utilisateurs afin de protéger l'accès aux opérations d'API.
+
+Afin de réaliser cet exercice, voici les contraintes d'implémentation :
+-	Exécutez votre API se trouvant dans **/exercises/module5/5.2**.
+-	Utilisez le contenu de votre répertoire d'exercices **/exercises/module3/myMovies** comme point de départ pour créer,dans votre repository local et
+votre web repository (normalement appelé **web2**), le répertoire nommé
+**/exercises/module6/6.2**.
+-	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
+- Veuillez développer de manière incrémentale votre IHM, use case par use case, en vérifiant le bon fonctionnement de chaque cas d'utilisation avant de passer au développement de l'UC suivant (=> développer UC1, puis UC2, puis UC3, puis UC4).
+
+#### 🤝 Tips
+Cet exercice de consommation d'une API consiste simplement en la mise-à-jour du frontend **myMovies** réalisé au module 3 (Exercice 3.1) : vous devriez créer de nouvelles pages et ajouter des opérations de type **fetch** vers votre RESTful API développée au module 5 (Exercice 5.2). Il n'y a normalement rien à faire au niveau de la RESTFul API, si ce n'est de l'exécuter.
+
+⚡ Lors de l'ajout d'un film, n'oubliez pas que le budget et la durée doivent être des nombres, pas des strings !
+
+Comment gérer l'UC de suppression d'un film ?
+- Vous pourriez avoir un bouton **Delete** pour chaque ligne du tableau affichant les films. Lors du clic sur un bouton **Delete**, vous feriez une requête de type **DELETE** vers la RESTful API. Attention, pour une requête de type **DELETE**, l'identifiant de l'objet à supprimer doit être donnée dans l'URL associée au **fetch**.
+- Comment retrouver l'identifiant du film affiché dans le tableau ? 
+  Pensez au **data-attribute**, vous pouvez cacher de l'information dans l'HTML. Par exemple, chaque bouton **Delete** pourrait contenir un **data-attribute** étant l'id du film. Il est aussi possible d'utiliser la propriété **id** du bouton.
+
+Comment gérer la mise à jour des données d'un film ?
+  - Option 1 (la plus cool à découvrir 😉) : Vous pourriez faire en sorte que l'HTML du tableau affichant les films, lors d'un clic, devienne éditable. Pour cette option :
+    - Voici, à quoi pourrait ressembler votre application à la fin de l'exercice. Vous avez bien sûr la liberté de faire quelque chose de totalement différent visuellement !
+    <ScrollableImage name="movies.png" minWidth="700px" maxWidth="1268px" />
+    - Veuillez noter que contrairement au frontend précédent réalisée à l'Exercice 3.1, l'info **title** et **link** ne sont plus intégrées dans une même colonne, via des hyperlinks ; avec l'option 1, nous devrions considérer deux colonnes, une pour le titre et l'autre pour le lien.
+    - Vous pouvez utiliser la propriété HTML **contenteditable="true"** pour rendre les cellules du tableau éditables. Voici un exemple pour rendre une cellule associée au titre éditable :
+    ```js {1}
+    <td class="fw-bold text-info" contenteditable="true">${
+                element.title
+    }</td>
+    ``` 
+    - Pour accéder aux cellules qui se trouvent dans une même ligne que vous mettez à jour, vous pouvez utiliser la DOM API de votre browser :
+      - on obtient le parent d'un élément HTML via l'attribut **parentElement** ; par exemple, si vous avez un écouteur d'événements de clics sur un bouton **Save**, ce bouton se trouvant au sein d'une **td** qui se trouve elle-même au sein d'une **tr** : **`e.target.parentElement.parentElement`**  donne accès à la **tr** associée au bouton **Save** sur lequel on a cliqué.
+      - on accède aux enfants d'un élément HTML via l'attribut **children** ; par exemple, **`tr.children[0]`** donne accès à la première **td** au sein de **tr**.
+    - Vous pourriez avoir un bouton **Save** pour chaque ligne du tableau affichant un film. Lors d'un clic sur un bouton **Save**, vous faites appel à l'API en faisant la requête de mettre à jour toutes les propriétés du film, même celle n'ayant pas de nouvelles valeurs.
+    - Attention, pour une requête de type **PUT** (mise à jour de toutes les propriétés d'une ressource) ou de type **PATCH** (mise à jour partielle d'une ressource), vous devez indiquer l'id dans l'URL du **fetch**, et la représentation de données à mettre à jour doit se trouver dans le body de la requête (ce sont les conventions REST que nous avons fixées dans le cadre de ce cours).
+    -	Si vous aviez besoin de réaliser une action en cas de changement du contenu d'une cellule dont **contenteditable** est activé, vous pouvez gérer le type d'événement **input**.
+  
+  <br/>
+
+  - Option 2 : il est aussi possible de créer un nouveau composant Javascript (une page, une modal ou autre) qui reprendrait un formulaire dont les inputs contiendraient déjà les valeurs existantes des propriétés d'un film. 
+
+Veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 6 : full integration with RESTful API**"".
+
+NB : Le code de votre application web se trouve dans votre repository local et
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module6/6.2**.
+
+# <InternalPageTitle> Exercice 2.13 : Autorisation de nouvelles origines via la RESTful API </InternalPageTitle>
+
+S'il vous reste du temps, n'hésitez pas à mettre à jour l'API se trouvant dans **/exercises/module5/5.2** afin d'autoriser toutes les origines locales : faites en sorte que tous les ports soient autorisés !
+
+Veuillez ensuite créer une copie de votre frontend développé à l'exercice précédent (Exercice 6.1) et le mettre à jour pour ne plus utiliser le proxy du frontend. Vous consommez directement l'API en indiquant son URL complète, y compris le port. Par exemple, pour lire les pizzas du menu, vous faites un fetch à l'URL : `http://localhost:300/pizzas`.
+
+Une fois l'API mise à jour, veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 6 : cors**"".
+
+Le code de votre API se trouve dans votre repository local et
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module6/6.3/api-cors**.
+
+Une fois le frontend mis à jour, veuillez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 6 : integration with RESTful API without proxy**"".
+
+Le code de votre application web se trouve dans votre repository local et
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module6/6.3/hmi-no-proxy**.

@@ -12,17 +12,346 @@ description: "Programmation asynchrone & les promesses"
 # l) Programmation asynchrone & les promesses
 
 <InternalPageMenu>
-  <InternalPageMenuItem> Single Origin Policy & CORS </InternalPageMenuItem>
-  <InternalPageMenuItem> Autorisation d'origines & les CORS </InternalPageMenuItem>
-  <InternalPageMenuItem> Simulation d'une même origine via un proxy </InternalPageMenuItem>
+  <InternalPageMenuItem> Utilisation de promesses & async / await </InternalPageMenuItem>
+  <InternalPageMenuItem> Création de fonctions asynchrones renvoyant une promesse </InternalPageMenuItem>
 </InternalPageMenu>
 
-# <InternalPageTitle> Single Origin Policy & CORS </InternalPageTitle>
+# <InternalPageTitle> Utilisation de promesses & async / await </InternalPageTitle>
 
+## Introduction
 
-- d) [Programmation asynchrone & les promesses](#d)
-  - d.1) [Utilisation de promesses](#d1)
-  - d.2) [Création de fonctions asynchrones renvoyant une promesse](#d2)
-- e) [Exercice 6.1 : Consommation d'une API tierce](#e)
-- f) [Exercice 6.2 : Consommation d'une API tierce Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy](#f)
-- g) [🍬 Exercice 6.3 : Autoriser des nouvelles origines via la RESTful API](#g)
+Plutôt que d'utiliser des **.then()** pour chaîner des traitements asynchrones, il est possible de simplifier la syntaxe des promesses à l'aide de **async** et **await**.
+
+On va donc écrire du code d'une manière équivalente à ce qui serait fait en programmation synchrone.
+
+## async / await & opération asynchrone de lecture de ressources
+
+Nous allons refactorer l'IHM [basic-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
+
+Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/async-await** sur base d'un copié collé de **/web2/tutorials/pizzeria/hmi/basic-fetch** (ou [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**/web2/tutorials/pizzeria/hmi/async-await**.
+
+Nous allons donc refactorer le code où est fait le **fetch**, c'est à dire **/src/Components/Pages/HomePage.js** (veuillez mettre à jour tout le code de la fonction arrow associée à la variable **HomePage**) :
+
+```js numbered {1,5,9}
+const HomePage = async () => {
+  try {
+    clearPage();
+
+    const response = await fetch('/api/pizzas');
+
+    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+
+    const pizzas = await response.json();
+
+    renderMenuFromString(pizzas);
+    attachOnMouseEventsToGoGreen();
+    renderDrinksFromNodes(DRINKS);
+  } catch (err) {
+    console.error('HomePage::error: ', err);
+  }
+};
+```
+
+Pour tester ce code, il ne faut pas oublier de démarrer la RESTful API auparavant : **/web2/tutorials/pizzeria/api/fat-model** ou via le code de ce web repo si vous avez un souci : [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+
+Voici quelques caractéristiques importantes de **async** / **await** :
+
+- **await** est utilisé pour chaîner une tâche asynchrone (sur une fonction renvoyant une promesse) et ne peut se faire qu'au sein d'une fonction taguée par **async** ; c'est donc le remplaçant du **.then(callback)**.  
+  ⚡ Attention, il est donc important qu'au niveau de la fonction arrow, à la ligne 1 du code donné ci-dessus, on indique le **async** !  
+  ⚡ Dans le code donné ci-dessus, il est aussi très important de ne pas oublier les **await**. N'hésitez pas à faire le test en enlevant le **await** de **`const pizzas = await response.json();`**. Que se passe-t-il dans ce cas ? **`response.json()`** étant une fonction asynchrone, on passera directement à la fonction **`renderMenuFromString(pizzas);`** avant même d'avoir récupéré les pizzas de notre RESTful API !
+- Toute fonction "taguée" par **async** renvoie automatiquement une promesse ; cela signifie dans le code ci-dessus que la fonction **HomePage** est elle même asynchrone.  
+  💭 Il est à parier, et n'hésitez pas à trouver un moyen de vous en rendre compte visuellement, que le footer s'affiche avant le menu !
+- On utilise des blocs **try** / **catch** pour gérer les erreur ; c'est donc le remplaçant du **.catch(callback)**.
+
+## Opération asynchrone d'écriture d'une ressource
+
+A présent, nous souhaiterions que notre IHM puisse créer une ressource au sein de la RESTful API. Dans un premier temps, nous allons mettre à jour le frontend en acceptant que n'importe quel utilisateur puisse créer une pizza et l'ajouter au menu de la pizzeria.  
+Bien entendu, cela est temporaire. Nous verrons plus tard comment sécuriser cette opération, en autorisant un admin seulement à réaliser l'ajout d'une pizza au menu.
+
+Nous allons créer une nouvelle page nommée **AddPizzaPage.js**.
+Dans un premier temps, nous allons juste réaliser une page statique car il est toujours plus aisé de d'abord avoir une version visuelle d'une application web, avec la navigation entre les pages, avant de peaufiner chaque page et leurs interactions avec les utilisateurs et les APIS.
+Veuillez ajouter ce code dans la nouvelle page **/src/Components/Pages/AddPizzaPage.js**:
+
+```js
+import { clearPage, renderPageTitle } from '../../utils/render';
+
+const AddPizzaPage = () => {
+  clearPage();
+  renderPageTitle('Add a pizza to the menu');
+  renderAddPizzaForm();
+};
+
+function renderAddPizzaForm() {
+  const main = document.querySelector('main');
+  const form = document.createElement('form');
+  form.className = 'p-5';
+  const title = document.createElement('input');
+  title.type = 'text';
+  title.id = 'title';
+  title.placeholder = 'title of your pizza';
+  title.required = true;
+  title.className = 'form-control mb-3';
+  const content = document.createElement('input');
+  content.type = 'text';
+  content.id = 'content';
+  content.required = true;
+  content.placeholder = 'Content of your pizza';
+  content.className = 'form-control mb-3';
+  const submit = document.createElement('input');
+  submit.value = 'Add pizza to the menu';
+  submit.type = 'submit';
+  submit.className = 'btn btn-danger';
+  form.appendChild(title);
+  form.appendChild(content);
+  form.appendChild(submit);
+  main.appendChild(form);
+}
+
+export default AddPizzaPage;
+```
+
+Nous devons aussi ajouter un élément dans la Navbar afin de pouvoir accéder à cette nouvelle page. Pour ce faire, veuillez mettre à jour **/src/Components/Navbar/Navbar.js** :
+
+```js numbered {36-38}
+// eslint-disable-next-line no-unused-vars
+import { Navbar as BootstrapNavbar } from 'bootstrap';
+
+const Navbar = () => {
+  renderNavbar();
+};
+
+function renderNavbar() {
+  const navbar = document.querySelector('#navbarWrapper');
+  navbar.innerHTML = `
+  <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">e-Pizzeria</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#" data-uri="/">Home</a>
+              </li>
+              <li id="loginItem" class="nav-item">
+                <a class="nav-link" href="#" data-uri="/login">Login</a>
+              </li>
+              <li id="registerItem" class="nav-item">
+                <a class="nav-link" href="#" data-uri="/register">Register</a>
+              </li>  
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-uri="/add-pizza">Add a pizza</a>
+              </li>           
+            </ul>
+          </div>
+        </div>
+      </nav>
+  `;
+}
+
+export default Navbar;
+```
+
+Et finalement, comme le frontend de ce tutoriel utilise le boilerplate du cours, il faut encore configurer le router de l'IHM afin d'indiquer la page à afficher lorsqu'on clique sur le lien dont **`data-uri`** vaut **add-pizza**. Pour ce faire, veuillez mettre à jour le fichier **/src/Components/Router/Router.js** pour ajouter ces deux lignes :
+
+```js {1,10}
+import AddPizzaPage from '../Pages/AddPizzaPage';
+import HomePage from '../Pages/HomePage';
+import LoginPage from '../Pages/LoginPage';
+import RegisterPage from '../Pages/RegisterPage';
+
+const routes = {
+  '/': HomePage,
+  '/login': LoginPage,
+  '/register': RegisterPage,
+  '/add-pizza': AddPizzaPage,
+};
+```
+
+A ce stade-ci, votre application **/web2/tutorials/pizzeria/hmi/async-await** devrait être fonctionnelle, vous devriez pouvoir naviguer vers la nouvelle page contenant un formulaire pour ajouter une pizza.
+
+Nous allons maintenant ajouter l'interaction avec l'API au sein de **AddPizzaPage**.
+Lorsque nous soumettons le formulaire, nous voulons faire une requête de création de pizza à la RESTful API, c'est donc une requête de type **POST /pizzas** qui doit être l'équivalent de ce que nous faisions avec REST Client. Pour rappel, nous faisions une requête de ce genre :
+
+```http
+### Create a pizza
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Ici, c'est le JS à rajouter dans **AddPizzaPage** qui doit, lors du clic, aller chercher les valeurs des deux champs du formulaire pour créer la représentation des données à créer (**title** et **content**) et faire un **fetch** de l'opération de création offerte par l'API.  
+Si l'ajout se fait avec succès, on souhaite faire en sorte que l'utilisateur soit redirigé vers la **HomePage**.
+
+Pour arriver à nos fins, veuillez ajouter ce code dans la page **/src/Components/Pages/AddPizzaPage.js** :
+
+```js numbered {34,37-63}
+import { clearPage, renderPageTitle } from '../../utils/render';
+import Navigate from '../Router/Navigate';
+
+const AddPizzaPage = () => {
+  clearPage();
+  renderPageTitle('Add a pizza to the menu');
+  renderAddPizzaForm();
+};
+
+function renderAddPizzaForm() {
+  const main = document.querySelector('main');
+  const form = document.createElement('form');
+  form.className = 'p-5';
+  const title = document.createElement('input');
+  title.type = 'text';
+  title.id = 'title';
+  title.placeholder = 'title of your pizza';
+  title.required = true;
+  title.className = 'form-control mb-3';
+  const content = document.createElement('input');
+  content.type = 'text';
+  content.id = 'content';
+  content.required = true;
+  content.placeholder = 'Content of your pizza';
+  content.className = 'form-control mb-3';
+  const submit = document.createElement('input');
+  submit.value = 'Add pizza to the menu';
+  submit.type = 'submit';
+  submit.className = 'btn btn-danger';
+  form.appendChild(title);
+  form.appendChild(content);
+  form.appendChild(submit);
+  main.appendChild(form);
+  form.addEventListener('submit', onAddPizza);
+}
+
+async function onAddPizza(e) {
+  e.preventDefault();
+
+  const title = document.querySelector('#title').value;
+  const content = document.querySelector('#content').value;
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      title,
+      content,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const response = await fetch('/api/pizzas', options); // fetch return a promise => we wait for the response
+
+  if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+
+  const newPizza = await response.json(); // json() returns a promise => we wait for the data
+
+  console.log('New pizza added : ', newPizza);
+
+  Navigate('/');
+}
+
+export default AddPizzaPage;
+```
+
+Quelques explications sur ce code, pour les parties déjà connues :
+
+- La gestion d'événements n'est pas nouvelle. Ici, on met un écouteur d'événements de type **submit** sur le formulaire. Cela permet d'écouter tant les clics sur le champs de type **submit** (le bouton) que si l'utilisateur appuie sur **Enter**.  
+  👍 On recommande, pour les formulaires, d'utiliser des événements de type "submit" plutôt que des événements de type "click" sur le bouton "submit" afin notamment de prendre en compte si l'utilisateur appuie sur **Enter** pour tenter de soumettre le formulaire.
+- L'action par défaut d'un formulaire, lors d'un submit, et de faire une requête synchrone vers l'URL du backend indiqué dans la propriété **action** du formulaire, ou sur la même URL que la page en cours si **action** n'est pas donné. Pour éviter un chargement de page non désiré dans le cadre d'une SPA, on stoppe cette action par défaut via **`e.preventDefault()`**.
+
+Pour la nouveauté et le **fetch** :
+
+- pour faire une requête de type **POST**, tout comme pour les requêtes de type **DELETE**, **PATCH**, **UPDATE**..., il faut l'indiquer à la méthode **fetch**.  
+  Cela est indiqué dans un objet que nous appelons généralement **options** qui doit contenir la propriété **method**.
+- lorsque l'on doit envoyer des données dans le **body** d'une requête, alors il faut le faire au sein de la propriété **body**. Ici, nous souhaitons envoyer un objet content les propriétés **title** et **content** au format JSON. Nous devons donc utiliser la méthode **`JSON.stringify`** qui permet de créer une représentation JSON d'un objet JS. Notez ici que nous avons écrit l'objet JS selon une notation simplifiée :
+
+```js {4-7,9-12}
+const title = document.querySelector('#title').value;
+const content = document.querySelector('#content').value;
+
+{
+  title,
+  content,
+}
+// Cet object literal est l'équivalent de :
+{
+  title: title,
+  content: content,
+}
+```
+
+- Il est très important de spécifier le type de la représentation de l'objet qui devrait être utilisé par l'API et qui se trouve dans le body de la requête. Cela est fait via un **header** et la propriété **Content-Type** (**`'Content-Type': 'application/json',`**).  
+⚡ Si vous oubliez cela, l'API ne pourra pas parser les données au format JSON vers des objets JS et donc les opérations d'écriture de ressources échoueront !
+- Finalement, si l'opération de création de la pizza réussi, nous redirigeons l'utilisateur vers la **HomePage** à l'aide du composant fonctionnel **`Navigate.js`** offert au sein du fichier **Navigate** dans le dossier **Router** du boilerplate du frontend.
+
+Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
+"**async-await**".
+
+En cas de souci, vous pouvez accéder au code du tutoriel ici :
+[async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await).
+
+# <InternalPageTitle> Création de fonctions asynchrones renvoyant une promesse </InternalPageTitle>
+
+Il est si simple, à l'aide d'**async** / **await**, de créer des fonctions asynchrones qui renvoient une promesse, qu'il serait dommage de ne pas l'expérimenter.
+
+Imaginons que nous souhaitons créer une fonction asynchrone qui renvoie toutes les pizzas qui sont offertes par l'opération de lecture des pizzas de la RESTful API.
+
+Voici comment nous écririons ce code :
+
+```js
+async function getAllPizzas() {
+  try {
+    const response = await fetch('/api/pizzas');
+
+    if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
+
+    const pizzas = await response.json();
+
+    return pizzas;
+  } catch (err) {
+    console.error('getAllPizzas::error: ', err);
+    throw err;
+  }
+}
+```
+
+Cette fonction **getAllPizzas** ne renvoie pas un array de pizzas, mais une **Promise** !  
+Si la promesse :
+- résout avec succès, alors c'est bien un array de pizzas qui sera renvoyé par cette fonction.
+- échoue, c'est une exception qui sera renvoyée.  
+Pour que cela fonctionne, vous devez donc faire en sorte, dans vos fonctions asynchrones, de faire un **throw** d'une erreur en cas d'échec du traitement asynchrone.
+
+Comment utiliser ce code au sein de la **HomePage** ?  
+Voici comment le code pourrait être mis à jour pour utiliser la fonction asynchrone **getAllPizzas** au sein de **HomePage.js** :
+
+```js {1,5}
+const HomePage = async () => {
+  try {
+    clearPage();
+
+    const pizzas = await getAllPizzas();
+
+    renderMenuFromString(pizzas);
+    attachOnMouseEventsToGoGreen();
+    renderDrinksFromNodes(DRINKS);
+  } catch (err) {
+    console.error('HomePage::error: ', err);
+  }
+};
+```

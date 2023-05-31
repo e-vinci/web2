@@ -17,7 +17,8 @@ description: "Les SPA, architectures & communications"
   <InternalPageMenuItem> Architectures associées à une SPA </InternalPageMenuItem>
   <InternalPageMenuItem> Communications au sein d'une SPA </InternalPageMenuItem>
   <InternalPageMenuItem> Librairies liées aux requêtes HTTP </InternalPageMenuItem>
-  <InternalPageMenuItem> Requêtes asynchrones & les promesses </InternalPageMenuItem>
+  <InternalPageMenuItem> Requêtes asynchrones & les promesses </InternalPageMenuItem> 
+  <InternalPageMenuItem> Exercice 2.11 : Affichage de blagues </InternalPageMenuItem> 
 </InternalPageMenu>
 
 # <InternalPageTitle> Architectures classiques d'applications web </InternalPageTitle>
@@ -387,3 +388,21 @@ Pour info, autrefois, pour la programmation asynchrone en JS, nous utilisions si
 💭 OK, nous avons appris les fondements de la programmation asynchrone moderne en JS...  
 Mais ça ne fonctionne pas, nous n'avons toujours l'erreur associée aux "CORS policy".  
 Cette erreur, c'est un mur classique contre lequel tous les programmeurs web se cognent au moins une fois dans leur carrière 😵.
+
+# <InternalPageTitle> Exercice 2.11 : Affichage de blagues </InternalPageTitle>
+
+Nous souhaitons consommer une API qui nous permette d'afficher des blagues.  
+Nous avons trouvé une restful API qui permet très facilement de générer de manière aléatoire des **jokes** : [JokeAPI](https://v2.jokeapi.dev/).
+
+Cette API est très simple d'utilisation. D'ailleurs, la page du site [JokeAPI](https://v2.jokeapi.dev/) vous donne un exemple fonctionnel de comment récupérer des blagues simples dans l'onglet **Try it out here**. Pour cela, désélectionnez **twopart** et vous obtenez l'URL pour faire vos requêtes en dessous du formulaire.
+
+Dans la **HomePage** d'une nouvelle application frontend, veuillez afficher une **joke** après l'avoir récupérée de **JokeAPI**, en donnant ces 2 informations :
+- la catégorie associée à la **joke** ;
+- le texte associé à la **joke**.
+
+Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module6/6.1**.
+
+#### 🤝 Tips 
+- Utilisez le [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git) pour ajouter à votre projet **exercises/module6/6.1** tous les répertoires et fichiers utiles.
+
+Veuillez faire un **commit** de votre code avec le message suivant : "**module 6 : exercise 6.1 read from JokeAPI**".
