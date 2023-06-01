@@ -1,4 +1,6 @@
 import remarkGfm from 'remark-gfm';
+import rehypeMdxCodeProps from 'rehype-mdx-code-props';
+
 const siteURL = 'https://e-vinci.github.io/js2'; // No trailing slash allowed!
 const siteTitle = 'web2course';
 const youtubeUrl = ''; //"https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
@@ -40,7 +42,7 @@ const config = {
             link: '/part3',
           },
           { name: 'Partie 4 : Sécurisation', link: '/part4' },
-          { name: 'L\'essentiel', link: '/essentials' },
+          { name: "L'essentiel", link: '/essentials' },
           { name: 'Bibliographie', link: '/references' },
         ],
       },
@@ -169,6 +171,7 @@ const config = {
         extensions: ['.mdx', '.md'],
         mdxOptions: {
           remarkPlugins: [remarkGfm],
+          rehypePlugins: [rehypeMdxCodeProps],
         },
       },
     },

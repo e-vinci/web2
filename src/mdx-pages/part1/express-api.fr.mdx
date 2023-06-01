@@ -34,16 +34,16 @@ description: "Introduction aux RESTful API en Node.js & Express"
 Dans une application REST, une **interface uniforme** (ou API) est définie afin de permettre à des applications de coopérer.
 
 Toute application REST se doit d'être **stateless** : il n'y a pas d'enregistrement du contexte d'une session sur le serveur pour comprendre une requête d'un client.  
-Ainsi, les requêtes clientes ne dépendent pas d'un historique de requêtes, elles sont autoportantes.
+Ainsi, les requêtes clientes ne dépendent pas d'un historique de requêtes, chaque requête contient tout l'information nécessaire au serveur.
 
 Une RESTful API met à disposition des **opérations** sur des **ressources** via :
 - des **URI** ; il y a donc une adresse unique pur chaque ressource ;
-- des **méthodes HTTP** (GET, POST, DELETE, PATCH, PUT) représentant les opérations possibles (on parle souvent d'opérations **CRUD**, des opérations de type Create, Read, Update ou Delete) ;
+- des **méthodes HTTP** (GET, POST, DELETE, PATCH, PUT) représentant les opérations possibles ; on parle souvent d'opérations **CRUD**, des opérations de type **C**reate, **R**ead, **U**pdate ou **D**elete) ;
 - des **représentations** des ressources compréhensibles tant par les clients que les serveurs ; les ressources sont représentées par leur "Media type" : **JSON**, **XML**, **HTML**, **TXT**, **JPEG**... ; dans le cadre de ce cours, les ressources seront quasi toujours représentées via du **JSON**.
 
 ## Conventions REST
 
- Le type d'opération CRUD (Create, Read, Update ou Delete) sur une ressource est défini via la méthode http de la requête.  
+ Le type d'opération CRUD sur une ressource est défini via la **méthode http** de la requête.  
  Les opérations possibles sont :
   - GET = Read
   - POST = Create
@@ -52,31 +52,58 @@ Une RESTful API met à disposition des **opérations** sur des **ressources** vi
     - PATCH = Update d'une ou plusieurs propriété(s) de la ressources
     - PUT = Update de toutes les propriétés de la ressources, ou création si la ressource n'existe pas
     
-Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTful API permettant de gérer des films :
+Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTful API permettant de gérer des **posts** :
 
 | URI | Méthode HTTP | Opération |
 |---|---|---|
-| **films** | GET | READ ALL : Lire toutes les ressources de la collection |
-| **films?minimum-duration=value** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
-| **`films/{id}`** | GET | READ ONE : Lire la ressource identifiée |
-| **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
-| **`films/{id}`** | DELETE | DELETE ONE : Effacer la ressource identifiée |
-| **`films/{id}`** | PUT | UPDATE ONE : Remplacer l'entièreté de la ressource par les données de la requête |
+| **`posts`** | GET | READ ALL : Lire toutes les ressources de la collection |
+| **`posts?userId=value`** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
+| **`posts/{id}`** | GET | READ ONE : Lire la ressource identifiée |
+| **`posts`** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
+| **`posts/{id}`** | DELETE | DELETE ONE : Effacer la ressource identifiée |
+| **`posts/{id}`** | PUT | UPDATE ONE : Remplacer l'entièreté de la ressource par les données de la requête |
 
 <br/>
 
-Si cette API est hébergée à l'URL racine **http://ilovemoovies.org**, alors nous pourrions identifier une ressource de type **films** de cette façons : **http://ilovemoovies.org/films/10**.
+Si cette API est hébergée à l'URL racine **https://jsonplaceholder.typicode.com/**, alors nous pourrions identifier une ressource de type **posts** de cette façon : **https://jsonplaceholder.typicode.com/posts/10**.
 
-Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : **http://ilovemoovies.org/films/10**.
+Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : **https://jsonplaceholder.typicode.com/posts/10**.
 
 # <InternalPageTitle> Configuration & démarrage d'une RESTful API en Express </InternalPageTitle>
 
-Nous avons précédemment généré une application Express à l'aide du générateur d'applications.
+## Création d'un projet
+Nous allons maintenant créer notre toute première RESTful API pour gérer les données associées à une pizzeria, afin de bénéficier d'opérations sur des ressources de type "pizzas".
 
-Veuillez avoir devant vous le code de cette application car nous allons découvrir le rôle des répertoires et fichiers importants générés par **express-generator**.
+Dans votre repo **web2**, veuillez créer le répertoire **`/tutorials/pizzeria/api`**.
 
-Nous allons maintenant nous attarder à comprendre les concepts associés à l'utilisation d'Express, mais en focalisant sur ceux utiles aux applications REST.
+Veuillez ouvrir un terminal au niveau de ce répertoire.
 
+Dans ce répertoire, veuillez générer une application express nommée **basic**.  
+Pour ce faire :
+
+```bash
+npx express-generator --no-view basic
+```
+
+Veuillez installer les dépendances :
+```bash
+cd basic
+npm i
+```
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **`/tutorials/pizzeria/api/basic`** (ou **`/web2/tutorials/pizzeria/api/basic`** si l'on considère le nom du répertoire du repo).
+
+Nous allons développer des RESTful API qui ne possèdent pas de serveur de fichiers statiques.  
+On n'a donc pas besoin d'avoir un répertoire **`/public`** ni d'un serveur statique.  
+On peut donc effacer le répertoire **`/public`** et supprimer le middleware de serveur de fichiers statiques au sein de **`/app.js`** (en supprimant cette ligne) : 
+
+```js
+app.use(express.static(path.join(__dirname, 'public'))); 
+```
+
+## Fonctionnement d'une application Express
+
+Nous allons maintenant nous attarder à comprendre les concepts associés à l'utilisation d'Express, mais en focalisant sur ceux utiles aux applications REST.  
 Voici comment une requête faite à une application Express est traitée :
 
 <ScrollableImage name="express-flow.png" minWidth="800px" maxWidth="800px" />
@@ -87,11 +114,11 @@ Dans ce flux de traitement d'une requête, la responsabilité des développeurs 
 
 La grande majorité du code écrit sera du "routing middleware" : notre code s'occupera de répondre à des requêtes clientes pour différentes URLs et méthodes HTTP (GET, POST...).
 
-On l'a déjà vu, la configuration d'une application Express, comme toutes applications Node.js, est faite au sein de **package.json**.
+On l'a déjà vu, la configuration d'une application Express, comme toutes applications Node.js, est faite au sein de **`package.json`**.
 
-En fonction de comment est configuré l'application, on la démarrera via **npm start**, **npm run dev**...
+En fonction de comment est configuré l'application, on la démarrera via **`npm start`**, **`npm run dev`**, **`npm run build`**...
 
-Un **serveur web intégré** à nos applications Express est démarré au sein du fichier **bin/www**.
+Un **serveur web intégré** à nos applications Express est démarré au sein du fichier **`bin/www`**.
 
 C'est ce fichier que vous devez mettre à jour si par exemple vous souhaitez que votre application fonctionne sur un port différent que le port par défaut **3000**.
 
@@ -116,19 +143,17 @@ Voici les éléments associés à l'appel d'une fonction middleware :
 
 <figcaption>Une fonction middleware [R.53]</figcaption>
 
-Il existe différent types de fonctions middleware ayant différents cas d'utilisation :
-- **Application-level middleware** : la fonction middleware est liée à l'objet **app** ;
-- **Router-level middleware** : la fonction middleware est liée à un objet de type **express.router()**, elle est très similaire au "application-level middleware" ;
-- **Error-handling middleware** : fonction de gestion des erreurs qui se définit comme les fonctions app ou router level middleware, mais qui contient un quatrième paramètre nommé **error**.
-- **Built-in middleware** : fonctions middleware mises à disposition par Express directement :
+Il existe différents types de fonctions middleware ayant différents cas d'utilisation :
+- **Application-level middleware** : la fonction middleware est liée à l'objet **app** et peut s'appliquer à toutes les requêtes.
+- **Router-level middleware** : la fonction middleware est liée à un objet de type **`express.router()`** et est très similaire au "application-level middleware", mais ne s'applique qu'à un groupe de requêtes.
+- **Error-handling middleware** : fonction de gestion des erreurs qui se définit comme les fonctions ci-dessus (au niveau **app** ou **router**), mais qui contient un quatrième paramètre nommé **error**.
+- **Built-in middleware** : fonctions middleware mises à disposition par Express directement. En voici quelques exemples :
   - **express.static** : pour servir des assets statiques ;
   - **express.json** : pour parser le body de requêtes en JSON vers des objets JS ;
-  - **express.urlencoded** : pour parser des requêtes dont le body est de type "urlencoded" (type par défaut des formulaires) vers des objets JS. 
+  - **express.urlencoded** : pour parser des requêtes dont le body est de type "urlencoded" (type par défaut des formulaires) vers des objets JS.
 - **Third-party middleware** : fonctions mises à disposition par la communauté et installables via npm, comme par exemple la fonction middleware **cookieParser**.
 
-Si vous souhaitez approfondir, nous vous conseillons [la documentation d'Express](https://expressjs.com/en/guide/using-middleware.html#middleware.third-party) [[R.54]](/references/#r54).
-
-La suite fournit quelques exemples de fonctions middleware qui seront soit plus tard rencontrées dans notre code, soit sont extraites de [Using middleware [R.54]](/references/#r54).
+La suite fournit quelques exemples de fonctions middleware qui seront soit plus tard rencontrées dans notre code, soit sont extraites de la documentation d'Express : [Using middleware](https://expressjs.com/en/guide/using-middleware.html) [[R.54]](/references/#r54).
 
 ## Application-level middleware : exemple
 Voici une fonction middleware qui sera exécutée à chaque fois qu'il y a une requête, quelque soit le chemin (ou path) associé à la requête :
@@ -167,13 +192,13 @@ app.use('/pizzas', pizzaRouter);
 ```
 
 Si le router est utilisé de cette façon, en relisant l'avant-dernier snippet, on voit que : 
-- la première fonction (où il y a un `console.log`) s'applique donc à toutes les routes qui commencent par '/pizzas' ;
-- la deuxième fonction middleware s'appliquent seulement aux requêtes de type GET sur la route (ou le chemin) '/pizzas' (équivalent de la route '/pizzas/').
+- la première fonction (où il y a un `console.log`) s'applique donc à toutes les routes qui commencent par **/pizzas** ;
+- la deuxième fonction middleware s'appliquent seulement aux requêtes de type **GET** sur la route (ou le chemin) **/pizzas** (équivalent de la route **/pizzas/**).
 
 ## Error-handling middleware : exemple
 Ce type de middleware est à définir après tous les middlewares pouvant générer une erreur et est appelé via **`next(err)`** dans une fonction middleware où un souci est détecté.
 
-Voici la définition d'un "error handler" :
+Voici la définition d'un gestionnaire d'erreurs :
 
 ```js
 app.use((err, req, res, next) => {
@@ -205,61 +230,29 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve static assets
 
 # <InternalPageTitle> Définition d'une route en Express </InternalPageTitle>
 ## Définition d'une route
-Le "Routing", ou routage, contrôle la réponse à une requête client pour un **endpoint** / **URI** / **PATH** et une méthode HTTP.
+Le routing, ou routage, contrôle la réponse à une requête client pour un chemin et une méthode HTTP. Le chemin est aussi appelé **endpoint** ou **URI** ou **PATH**.
 
 On va définir une route soit sur l'objet **app**, soit sur un **router**.  
 Un objet de type **router** permet de regrouper toutes les routes associées à un type de ressources.
 
-On définit une route de cette façon : **app.** ou **router.**  **METHOD(PATH, MIDDLEWARE_FUNCTION)**.
+On définit une route de cette façon : **`app.`** ou **`router.`**  **`METHOD(PATH, MIDDLEWARE_FUNCTION)`**.
 
-👍 Dans notre cours, nous vous recommandons d'organiser vos routes par type de ressources et donc de mettre en place un router.
-
-## Création d'un projet
-Nous allons maintenant réaliser un tutoriel pour créer notre toute première RESTful API.  
-Nous allons créer une API pour permettre à notre site web de la pizzeria de bénéficier d'opérations sur des ressources de type "pizzas".
-
-Dans votre repo **web2**, veuillez créer le répertoire **/tutorials/pizzeria/api**.
-
-Veuillez ouvrir un terminal au niveau de ce répertoire.
-
-Dans ce répertoire, veuillez générer une application express nommée **basic**.  
-Pour ce faire :
-
-```bash
-npx express-generator --no-view basic
-```
-
-Veuillez installer les dépendances :
-```bash
-cd basic
-npm i
-```
-
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/pizzeria/api/basic** (ou **/web2/tutorials/pizzeria/api/basic** si l'on considère le nom du répertoire du repo).
-
-Nous allons développer des RESTful API qui ne possèdent pas de serveur de fichiers statiques.  
-On n'a donc pas besoin d'avoir un répertoire **/public** ni d'un serveur statique.  
-On peut donc effacer le répertoire **/public** et supprimer le middleware de serveur de fichiers statiques au sein de **/app.js** (en supprimant cette ligne) : 
-
-```js
-app.use(express.static(path.join(__dirname, 'public'))); 
-```
+👍 Dans notre cours, nous vous recommandons d'organiser vos routes par type de ressources et donc de mettre en place des routers.
 
 # <InternalPageTitle> Opération de lecture </InternalPageTitle>
 
-Nous souhaitons par commencer à développer une opération permettant de lire toutes les ressources de type "pizzas". En effet, nous aimerions plus tard que notre IHM reçoive de notre API le menu des pizzas.
+Nous souhaitons par commencer à développer une opération permettant de lire toutes les ressources de type "pizzas".  
+Veuillez créer un router pour traiter des ressources **/pizzas** au sein de **`/routes/pizzas.js`**.  
+Le plus simple est d'adapter **`indexRouter`** dans **`app.js`** en **`pizzaRouter`** et **`/routers/index.js`** en **`/routes/pizzas.js`**.  
+NB : Il est aussi possible de partir de rien et de créer **`pizzaRouter`** dans **`app.js`** et **`/routes/pizzas.js`**.
 
-Veuillez créer un router pour traiter des ressources **/pizzas** au sein de **/routes/pizzas.js**.  
-Le plus simple est d'adapter **indexRouter** dans **app.js** en **pizzaRouter** et **/routers/index.js** en **/routes/pizzas.js**.  
-Il est aussi possible de partir de rien et de créer **pizzaRouter** dans **app.js** et **/routes/pizzas.js**.
+Pour l'opération de lecture de toutes les pizzas, selon les conventions REST, il faut faire une requête de type **`GET /pizzas`**. Le router de **`/routes/pizzas.js`** doit donc offrir une route renvoyant toutes les pizzas qui existent dans le menu.
 
-Pour l'opération de lecture de toutes les pizzas, selon les conventions REST, il faut faire une requête de type **GET /pizzas**.  
-**/routes/pizzas.js** doit donc offrir une route renvoyant toutes les pizzas qui existent dans le menu.   
-Pour démarrer, nous souhaitons une application basique qui ne gère pas la persistance des données. Le menu est donc un Array d'objets, dont chaque objet représente une pizza.
+Pour démarrer, nous souhaitons une application basique qui ne gère pas la persistance des données. Le menu sera donc un array d'objets, dont chaque objet représente une pizza.
 
-Notre opération de lecture de pizza va renvoyer du JSON au client, c'est à dire une représentation textuelle du menu. Nous verrons plus tard ce qu'est réellement le JSON. A ce stade-ci, il est suffisant de connaître la fonction d'Express qui permet à un objet JS de circuler sur le réseau : **res.json()**.
+Notre opération de lecture de pizza va renvoyer du JSON au client, c'est à dire une représentation textuelle d'un tableau d'objets. Nous verrons plus tard ce qu'est réellement le JSON. A ce stade-ci, il est suffisant de connaître la fonction d'Express qui permet à un objet JS de circuler sur le réseau : **`res.json()`**.
 
-Voici le code du router **/routes/pizzas.js** :
+Voici le code du router **`/routes/pizzas.js`** :
 ```js
 var express = require('express');
 var router = express.Router();
@@ -303,7 +296,7 @@ module.exports = router;
 
 Et voici le code de **app.js** (les parties modifiées sont surlignées) :
 
-```js numbered {6,16}
+```js numbered highlighting="6,16"
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -587,7 +580,7 @@ Veuillez exécuter cette requête. Que se passe-t-il ?
 On récupère un code d'erreur "400 Bad Request".
 
 En effet, lorsqu'on omet un paramètre dans la représentation de la ressource à créer, voici les lignes de code amenant au renvoi du code d'erreur 400 au sein de **pizzas.js** :
-```js numbered {3,4,8}
+```js numbered highlighting="3,4,8"
 // Create a pizza to be added to the menu.
 router.post('/', (req, res) => {
   const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;

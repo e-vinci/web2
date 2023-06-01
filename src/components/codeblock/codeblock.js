@@ -5,12 +5,12 @@
  * https://prince.dev/highlight-with-react
  */
 
-import React, { useState } from "react";
-import Highlight, { defaultProps } from "prism-react-renderer";
-import theme from "prism-react-renderer/themes/vsDark";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
-import rangeParser from "parse-numeric-range";
+import React, { useState } from 'react';
+import Highlight, { defaultProps } from 'prism-react-renderer';
+import theme from 'prism-react-renderer/themes/vsDark';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import rangeParser from 'parse-numeric-range';
 
 import Prism from 'prism-react-renderer/prism';
 (typeof global !== 'undefined' ? global : window).Prism = Prism;
@@ -18,10 +18,10 @@ require('prismjs/components/prism-java');
 
 // Create a closure that determines if we have
 // to highlight the given index
-const calculateLinesToHighlight = (meta) => {
-  const RE = /{([\d,-]+)}/;
-  if (RE.test(meta)) {
-    const strlineNumbers = RE.exec(meta)[1];
+const calculateLinesToHighlight = (range) => {
+  const RE = /([\d,-]+)/;
+  if (RE.test(range)) {
+    const strlineNumbers = RE.exec(range)[1];
     const lineNumbers = rangeParser(strlineNumbers);
     return (index) => lineNumbers.includes(index + 1);
   } else {
@@ -30,7 +30,7 @@ const calculateLinesToHighlight = (meta) => {
 };
 
 const CopyButton = (props) => {
-  const [text, setText] = useState("Copy");
+  const [text, setText] = useState('Copy');
   const [isBeingCopied, setIsBeingCopied] = useState(false);
 
   return (
@@ -38,9 +38,9 @@ const CopyButton = (props) => {
       className="codeblock__header__copy-button"
       onClick={() => {
         navigator.clipboard.writeText(props.content);
-        setText("Copied!");
+        setText('Copied!');
         setTimeout(() => {
-          setText("Copy");
+          setText('Copy');
         }, 1000);
         setIsBeingCopied(true);
         setTimeout(() => {
@@ -59,17 +59,14 @@ const CopyButton = (props) => {
 };
 
 const CodeBlock = (props) => {
-  let className = props.children.props.className || "";
+  let className = props.children.props.className || '';
   const matches = className.match(/language-(?<lang>.*)/);
   const language =
-    matches && matches.groups && matches.groups.lang ? matches.groups.lang : "";
+    matches && matches.groups && matches.groups.lang ? matches.groups.lang : '';
 
-  const { metastring } = props.children.props; 
-  const numbered = metastring
-    ? metastring.toLowerCase().includes("numbered")
-    : false;
+  const { numbered, highlighting } = props;
 
-  const shouldHighlightLine = calculateLinesToHighlight(metastring);
+  const shouldHighlightLine = calculateLinesToHighlight(highlighting);
 
   return (
     <div className="codeblock">
@@ -82,7 +79,7 @@ const CodeBlock = (props) => {
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre className={className} style={style}>
-            <div className="codeblock__header">              
+            <div className="codeblock__header">
               <CopyButton content={props.children.props.children} />
               <span className="codeblock__header__language-name">
                 {language}
@@ -97,11 +94,11 @@ const CodeBlock = (props) => {
               return (
                 <div key={index} {...lineProps}>
                   {numbered && (
-                    <span className={"codeblock__body__line__number"}>
+                    <span className={'codeblock__body__line__number'}>
                       {index + 1}
                     </span>
                   )}
-                  <div className={"codeblock__body__line__content"}>
+                  <div className={'codeblock__body__line__content'}>
                     {line.map((token, key) => (
                       <span key={key} {...getTokenProps({ token, key })} />
                     ))}

@@ -1,7 +1,6 @@
 .page {
   // deal with all text written directly within the .mdx files, without calling react components (or html)
   // it is considered that a text written with HTML shall start with a Section tag
-
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -17,7 +16,7 @@
   }
 
   @media only screen and (min-width: $lg) {
-    width: 70vw;
+    width: auto;
     margin-left: 30vw;
   }
 
@@ -45,7 +44,7 @@
   p {
     margin-bottom: 1rem;
     line-height: 1.5;
-    text-align: justify;
+    // text-align: justify;
   }
 
   p + ul {
