@@ -9,7 +9,7 @@ description: "Introduction aux applications backend Nodes.js & Express"
     <PathViewerItem selected> a) Node.js </PathViewerItem>
 </PathViewer>
 
-# a) Introduction aux applications backend Nodes.js & Express
+# a) 🍬 Introduction aux applications backend Nodes.js & Express
 
 <InternalPageMenu>
   <InternalPageMenuItem> C'est quoi une application backend ? </InternalPageMenuItem>
@@ -22,6 +22,8 @@ description: "Introduction aux applications backend Nodes.js & Express"
   <InternalPageMenuItem> Créer une application Express via un générateur </InternalPageMenuItem>
 </InternalPageMenu>
 
+Si vous n'avez jamais développé d'application via Express, ou que vous avez oublié comment faire, nous vous recommandons de suivre cette introduction. Sinon, vous pouvez passer à la suite : [b) Introduction aux RESTful API Node.js & Express](/part1/express-api).
+
 # <InternalPageTitle> C'est quoi une application backend ? </InternalPageTitle>
 ## Frontend, backend, c'est quoi ?
 Un **frontend**, c'est une application :
@@ -33,7 +35,8 @@ Un **backend**, c'est une application :
 - qui s'exécute côté serveur ; 
 - qui n'offre pas d'interaction directe avec l'utilisateur ;
 - qui parfois met à disposition le **frontend** ;
-- qui parfois offre des opérations sur des données.
+- qui parfois offre des opérations sur des données ;
+- implémenté dans ce cours-ci en Node.js.
 
 ## Rôles principaux du backend
 ### Fourniture du frontend
@@ -42,9 +45,6 @@ Un des rôles du backend est de fournir le frontend :
 - **via la génération dynamique de pages HTML** ; c'est ce qui se passe quand le backend fait du Server Side Rendering (SSR), généralement dans le cadre de Multi Page Applications.  
 
 Dans le cadre de ce cours, nous ne ferons pas de génération dynamique d'HTML côté serveur (ou SSR).  
-Par contre, nous avons déjà vu :
-- comment faire de la génération dynamique d'HTML côté client (ou Client Side Rendering = CSR).
-- mettre à disposition notre frontend, notre IHM, à l'aide d'un serveur de fichiers statiques : c'est ce que notamment fait le serveur de développement de Webpack, il met à disposition les assets permettant au browser d'exécuter l'application web.
 
 ### Fourniture d'opérations sur des ressources
 Un autre rôle important du backend est de mettre à disposition des opérations sur des ressources, c'est ce qu'on appelle les services web ou web API.
@@ -87,14 +87,7 @@ Node.js offre une utilisation optimale des ressources des serveurs sans dépenda
 Pour le développement d'IHM de façon modernes, vous avez déjà installé l'environnement Node.js. Mais si ce n'est pas installé, il est important que vous installiez l'environnement [Node.js en version LTS](https://nodejs.org/en/) [[R.34]](/references/#r34).
 
 Vous ne devez pas apprendre un nouveau langage pour développer des applications backend, Node.js, c'est du JS.  
-Si vous avez besoin d'un rappel du langage, vous pouvez le faire ici : [Introduction au langage JS](/intro/#e).
-
-Très souvent, Node.js est codé en JS conforme au standard **CommonJS**.  
-La gestion des modules est différente du JS conforme au standard **ECMAScript**, telle que nous avons appris pour du JS côté browser.
-
-Même s'il est possible d'écrire du Node.js conforme au standard **ECMAScript**, la majorité du code que vous trouverez sur le web sera conforme à **CommonJS**.
-
-Dès lors, nous allons vous expliquer plus tard comment gérer des modules en Node.js conforme au standard **CommonJS**.
+Si vous avez besoin d'un rappel du langage, vous pouvez le faire ici : [Introduction au langage JS](/part0/js-language).
 
 # <InternalPageTitle> Où mettre du code Node.js ? </InternalPageTitle>
 ## Directement dans un terminal
@@ -118,13 +111,11 @@ node
 ```
 
 Vous avez maintenant accès au terminal de Node.js.  
-Vous pouvez tenter une opération mathématique de votre choix, comme par exemple : **2 * Math.PI**
-
-Incroyable mais vrai, vous avez maintenant accès à une nouvelle calculatrice sur tous les appareils où vous avez Node.js installé. Et si Node.js n'est pas installé, pas de panique, la console de votre Browser pourra toujours vous aider 😉.
+Vous pouvez tenter une opération mathématique de votre choix, comme par exemple : **`2 * Math.PI`**
 
 Quand vous souhaitez sortir de l'interpréteur de commandes de Nodes, il faut taper :
-- soit deux fois **`CTRL c`**
-- soit **`CTRL d`**
+- soit deux fois **`CTRL c`** ;
+- soit **`CTRL d`**.
 
 ## Dans un script
 Nous écrivons généralement le code Node.js au sein d'un script externe.
@@ -167,6 +158,11 @@ Voilà, c'est une simple application Node.js qui affiche un message dans le term
 Un module est une librairie JS fournissant des objets.  
 Comme en JS tout est objet, un module met donc à disposition des fonctions, des constantes, des variables...
 
+Très souvent, Node.js est codé en JS conforme au standard **`CommonJS`**.  
+La gestion des modules en **`CommonJS`** est différente de celle du JS conforme au standard **`ECMAScript`**, le JS utilisé dans les browsers.
+
+Même s'il est possible d'écrire du Node.js conforme au standard **`ECMAScript`**, la majorité du code que vous trouverez sur le web sera conforme à **`CommonJS`**.
+
 ## Création d'un module
 Pour créer un module, il suffit de créer un script JS **nomModule.js** et d'exporter des objets au sein de ce module via **module.exports** ou **exports**.
 
@@ -178,7 +174,7 @@ Il existe plusieurs façons d'exporter des objets, soit à la volée, soit à la
 
 Nous allons néanmoins voir toutes les façons d'exporter des objets en CommonJS, car vous trouverez de tout sur le web.
 
-On exporte toujours un seul objet principal dans un module. Cet objet peut bien sûr contenir une multitude d'objets via ses propriétés.
+**On exporte toujours un seul objet principal dans un module**. Cet objet peut bien sûr contenir une multitude d'objets via ses propriétés.
 
 ### Export à la fin d'un script
 C'est la façon la plus propre d'exporter un seul objet :
@@ -187,7 +183,7 @@ C'est la façon la plus propre d'exporter un seul objet :
 module.exports = router;
 ```
 
-C'est l'équivalent d'un "default export" tel que vu en ECMAScript.
+C'est l'équivalent d'un "default export" tel qu'il sera vu en ECMAScript.
 
 S'il y a plusieurs objets à exporter, voici la façon recommandée de le faire : 
 
@@ -195,7 +191,7 @@ S'il y a plusieurs objets à exporter, voici la façon recommandée de le faire 
 module.exports = {authorize, users };
 ```
 
-C'est l'équivalent d'un "Named export" tel que vu en ECMAScript.
+C'est l'équivalent d'un "Named export" tel qu'il sera vu en ECMAScript.
 
 ### Export à la volée
 
@@ -246,7 +242,7 @@ const { users, authorize } = require('../utils/auths');
 ```
 
 ### Import d'un package
-Il est aussi possible d'importer des objets de packages offerts par la communauté via votre gestionnaire de package.  
+Il est aussi possible d'importer des objets de packages offerts par la communauté.
 Pour ce faire, il est juste nécessaire d'indiquer le nom du package lors de l'import.
 
 Si un seul objet est exporté par un package, voici un exemple de comment le récupérer :
@@ -260,21 +256,21 @@ const shortid = require('shortid');
 
 # <InternalPageTitle> Introduction aux packages Node.js & npm </InternalPageTitle>
 ## Introduction
-Dans le cadre du développement d'IHM modernes, au module 2, nous avons découvert le gestionnaire de packages de Node.js. Nous allons résumer les concepts importants ci-dessous.
+Les concepts importants du gestionnaire de packages de Node.js sont résumés ci-dessous.
 
 ## Gestionnaire de packages
 **npm** est le gestionnaire de packages de Node.js. 
 
-On peut faire des recherches de packages qui serait utiles à nos application web sur [npmjs.com](https://www.npmjs.com/) [[R.48]](/references/#r48).
+On peut faire des recherches de packages qui seraient utiles à nos application web sur [npmjs.com](https://www.npmjs.com/) [[R.48]](/references/#r48).
 
 ## Fichier de configuration d'un projet
-Tous les packages associés à une app, ses dépendances, sont données dans le fichier : **package.json**.
+Tous les packages associés à une app, ses dépendances, sont données dans le fichier : **`package.json`**.
 
 C'est le fichier qui décrit la configuration d'un projet JS.
 
 On peut manuellement créer ce fichier à l'aide de la commande **`npm init`** si l'on souhaite quelque chose de plus interactif ou **`npm init -y`** si l'on souhaite un fichier avec le minimum autogénéré.
 
-Voici un exemple de fichier **package.json** :
+Voici un exemple de fichier **`package.json`** :
 
 ```json
 {
@@ -313,11 +309,11 @@ Voici un exemple de fichier **package.json** :
 Lors de l'installation d'un package, celui-ci s'ajoute à la liste des dépendances.  
 Ainsi, si des développeurs trouvent votre projet sur Git, ils n'auront qu'à exécuter **`npm i`** afin d'installer toutes les dépendances.
 
-C'est dans le répertoire **node_modules** que toutes les dépendances seront installées.  
+C'est dans le répertoire **`node_modules`** que toutes les dépendances seront installées.  
 Ces dépendances peuvent être très volumineuses. C'est donc important de ne jamais mettre ce dossier sur vos web repository, via Git.  
-Pour ce faire, n'oubliez pas d'inclure un fichier **.gitignore** dans vos repos pour ignore **node_modules**.
+Pour ce faire, n'oubliez pas d'inclure un fichier **`.gitignore`** dans vos repos pour ignore **`node_modules`**.
 
-**package.json** indique les scripts de démarrage, en fonction de la façon dont nous souhaitons démarrer l'application.
+**`package.json`** indique les scripts de démarrage, en fonction de la façon dont nous souhaitons démarrer l'application.
 
 ```json
   "scripts": {
@@ -337,15 +333,19 @@ NB : nous verrons plus tard cet outil **nodemon** pour simplifier le développem
 ## Installer un package
 Pour installer un package (ou une dépendance), il suffit de faire : **`npm i nomDuPackage`** ou **`npm install nomDuPackage`**.
 
+Pour installer une dépendance de développement, qui ne sera pas installée lorsque nous déploierons une version de production de notre application, tapez : **`npm i nomDuPackage -D`**.
+
+Par exemple, **nodemon** est un package qui permet de rédémarrer le serveur à chaque modification de fichier par les développeurs. En production, l'application n'a pas besoin de ce package !
+
 ## Dépendances installées
-On a vu que **`npm i`** permet d'installer toutes les dépendances se trouvant dans **package.json**, ainsi que toutes les dépendances de ces dépendances...
+On a vu que **`npm i`** permet d'installer toutes les dépendances se trouvant dans **`package.json`**, ainsi que toutes les dépendances de ces dépendances...
 
-L'arbre exact des dépendances installées, numéros de version..., se trouve dans **package-lock.json**. Ce fichier est généré automatiquement pour chaque opération modifiant **node_modules** ou **package.json**.
+L'arbre exact des dépendances installées, numéros de version..., se trouve dans **`package-lock.json`**. Ce fichier est généré automatiquement pour chaque opération modifiant **`node_modules`** ou **`package.json`**.
 
-⚡ Si un fichier **package-lock.json** est compris dans un repo, lorsque vous introduirez **`npm i`** pour installer toutes les dépendances, npm installera les mêmes versions que celles se trouvant dans **package-lock.json**. Cela peut poser des problèmes si votre environnement Node.js est en version différente. En cas de souci, pensez à effacer le répertoire **node_modules** et le fichier **package-lock.json** avant de relancer l'installation de toutes les dépendances.
+⚡ Si un fichier **`package-lock.jso`n** est compris dans un repo, lorsque vous introduirez **`npm i`** pour installer toutes les dépendances, npm installera les mêmes versions que celles se trouvant dans **`package-lock.json`**. Cela peut poser des problèmes si votre environnement Node.js est en version différente. En cas de souci, pensez à effacer le répertoire **`node_modules`** et le fichier **`package-lock.json`** avant de relancer l'installation de toutes les dépendances.
 
 ## Localisation d'un module ou package par Node
-Node va chercher dans tous les chemins spécifiés dans la variable **module.paths** lorsque **`required()`** est appelé. Les chemins cherchés sont par exemple : **node_modules**, **./**, ...
+Node va chercher dans tous les chemins spécifiés dans la variable **`module.paths`** lorsque **`required()`** est appelé. Les chemins cherchés sont par exemple : **`node_modules`**, **./**, ...
 
 ## Mise à jour des packages vers leur dernière version
 La mise à jour de toutes les dépendances peut parfois amener à des gros soucis.
@@ -353,12 +353,12 @@ La mise à jour de toutes les dépendances peut parfois amener à des gros souci
 Sans prendre trop de risques, vous pouvez tenter de mettre à jour tous vos packages en suivant la documentation de npm :
 [Updating packages downloaded from the registry](https://docs.npmjs.com/updating-packages-downloaded-from-the-registry) [[R.49]](/references/#r49).
 
-Cela vous permettra de mettre à jour vos packages, sans devoir changer la liste de vos dépendances qui est donnée dans **package.json**. S'il y a des dépendances qui ont des "breaking changes", ces versions ne seront pas installées.
+Cela vous permettra de mettre à jour vos packages, sans devoir changer la liste de vos dépendances qui est donnée dans **`package.json`**. S'il y a des dépendances qui ont des "breaking changes", ces versions ne seront pas installées.
 
-Si vous souhaitez tous mettre à jour d'un coup, vers la toute dernière version de chaque package, vous pouvez tentez le coup en utilisant la commande **ncu** du package [npm-check-updates](https://www.npmjs.com/package/npm-check-updates).  
+Si vous souhaitez tous mettre à jour d'un coup, vers la toute dernière version de chaque package, vous pouvez tentez le coup en utilisant la commande **`ncu`** du package [npm-check-updates](https://www.npmjs.com/package/npm-check-updates).  
 Mais attention, certains packages subissent parfois des "breaking changes", ce qui impose que vous deviez faire migrer votre code avant que celui-ci soit fonctionnel.
 
-Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à jour de tous vos packages d'un coup à l'aide de **ncu**, de revenir à la situation initiale, et de faire l'upgrade de chaque package listé dans **package.json** individuellement. Pour installer la dernière version d'un package, utilisez **`@latest`** :
+Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à jour de tous vos packages d'un coup à l'aide de **`ncu`**, de revenir à la situation initiale, et de faire l'upgrade de chaque package listé dans **`package.json`** individuellement. Pour installer la dernière version d'un package, utilisez **`@latest`** :
 
 ``` bash
 npm i nomPackage@latest
@@ -377,16 +377,16 @@ Dans le cadre de ce cours, nous allons plutôt utiliser des boilerplates pour g�
 
 Il faut d'abord créer un répertoire pour votre application.
 
-Au sein de votre repo **web2**, veuillez créer le répertoire **/tutorials/express-static-file-server**.
+Au sein de votre repo **web2**, veuillez créer le répertoire **`/tutorials/express-static-file-server`**.
 
 Veuillez, via le terminal, entrer dans ce répertoire.
 
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/express-static-file-server**.
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **`/tutorials/express-static-file-server`**.
 
-Dans ce répertoire, veuillez générer le fichier de configuration du projet (**package.json**) : **`npm init`**.  
-Veuillez répondre aux questions pour configurer le point d'entrée de l'application comme étant le script **index.js**.
+Dans ce répertoire, veuillez générer le fichier de configuration du projet (**`package.json`**) : **`npm init`**.  
+Veuillez répondre aux questions pour configurer le point d'entrée de l'application comme étant le script **`index.js`**.
 
-Veuillez configurer le script de démarrage de votre application en ajoutant cette ligne au sein de **package.json** :
+Veuillez configurer le script de démarrage de votre application en ajoutant cette ligne au sein de **`package.json`** :
 
 ```json {2}
   "scripts": {
@@ -395,7 +395,7 @@ Veuillez configurer le script de démarrage de votre application en ajoutant cet
 
 Ainsi, notre application pourra démarrer à l'aide de la commande **`npm start`**.
 
-A ce stade-ci, voilà à quoi devrait ressembler votre **package.json** :
+A ce stade-ci, voilà à quoi devrait ressembler votre **`package.json`** :
 
 ```json
 {
@@ -422,10 +422,10 @@ Nous allons créer un simple serveur de fichiers statiques à l'aide du middlewa
 
 Tout d'abord, téléchargez ce zip : <LinkFile name="public.zip" target="_blank" download>fichiers statiques</LinkFile>.
 
-Veuillez désarchiver ce répertoire dans votre projet afin d'avoir les fichiers statiques qui seront partagés par votre serveur au sein de **/public**.   
-Vérifiez bien que vous n'avez qu'un seul répertoire **/public** et pas un **/public/public**.
+Veuillez désarchiver ce répertoire dans votre projet afin d'avoir les fichiers statiques qui seront partagés par votre serveur au sein de **`/public`**.   
+Vérifiez bien que vous n'avez qu'un seul répertoire **`/public`** et pas un **`/public/public`**.
 
-Il ne reste plus qu'à créer le serveur. Veuillez créer le fichier **/index.js** et y ajouter ce code :
+Il ne reste plus qu'à créer le serveur. Veuillez créer le fichier **`/index.js`** et y ajouter ce code :
 
 ```js
 const express = require('express');
@@ -461,11 +461,11 @@ npm start
 
 Pour accéder au serveur de fichiers, vous pouvez le faire via un browser : [http://localhost:7777](http://localhost:7777)
 
-Si tout se passe bien, vous devriez avoir accès au site de la pizzeria développé au module 1 de ce cours.
+Si tout se passe bien, vous devriez avoir accès au site de la pizzeria que nous découvrirons plus tard dans ce cours.
 
 Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**express-static-file-server**".
 
-En cas de souci, vous pouvez accéder au code de cette démo ici :
+En cas de souci, vous pouvez accéder au code de ce tutoriel ici :
 [express-static-file-server](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/express-static-file-server/).
 
 
@@ -483,7 +483,7 @@ Ensuite, créez une application nommée **basic-generated-app** en tapant :
 npx express-generator --no-view basic-generated-app
 ```
 
-**npx** permet de directement exécuter un package en mode de commandes en installant une copie locale et temporaire de ce package (et de ses dépendances).
+**`npx`** permet de directement exécuter un package en mode de commandes en installant une copie locale et temporaire de ce package (et de ses dépendances).
 
 Veuillez installer les dépendances de votre app et la démarrer :
 
@@ -493,13 +493,13 @@ npm i
 npm start
 ```
 
-Si vous copier / coller le contenu du répertoire **/public** du tutoriel précédent dans le répertoire **public** généré, l'application fournira le même résultat que la précédente, mais sur un port différent : [http://localhost:3000](http://localhost:3000).
+Si vous copier / coller le contenu du répertoire **`/public`** du tutoriel précédent dans le répertoire **public** généré, l'application fournira le même résultat que la précédente, mais sur un port différent : [http://localhost:3000](http://localhost:3000).
 
 Nous allons découvrir en détails ce qui a été généré par **express-generator** un peu plus tard.
 
 Actuellement, on remarquera : 
-- le point d'entrée de l'application est **./bin/www** au regard de **package.json**;
-- que **./bin/www** démarre un serveur web sur le port **3000** en lui demandant de s'occuper de démarrer tous les middlewares en lui passant tout ce qui est exporté de **app.js**.
-- **app.js** met aussi à disposition un serveur de fichier statiques servant le contenu du répertoire **public**.
+- le point d'entrée de l'application est **`./bin/www`** au regard de **`package.json`**;
+- que **`./bin/www`** démarre un serveur web sur le port **3000** en lui demandant de s'occuper de démarrer tous les middlewares en lui passant tout ce qui est exporté de **`app.js`**.
+- **`app.js`** met aussi à disposition un serveur de fichier statiques servant le contenu du répertoire **`/public`**.
 
 Avant d'aller dans les détails d'Express que nous souhaitons utiliser pour développer des services web de type RESTful, nous allons voir ce que nous entendons par **RESTful**.

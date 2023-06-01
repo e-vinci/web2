@@ -1,6 +1,6 @@
 // Fonts
 @font-face {
-  font-family: "Kavoon";
+  font-family: 'Kavoon';
   src: url(../fonts/Kavoon-Regular.ttf);
   //The easiest way to avoid showing invisible text while custom fonts load is to temporarily
   //show a system font. By including font-display: swap in your @font-face style,
@@ -9,27 +9,27 @@
 }
 
 @font-face {
-  font-family: "MeriendaOne";
+  font-family: 'MeriendaOne';
   font-size: 15vh;
   src: url(../fonts/MeriendaOne-Regular.ttf);
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Apercu Pro Regular";
-  src: url("../fonts/Apercu Pro Regular.otf");
+  font-family: 'Apercu Pro Regular';
+  src: url('../fonts/Apercu Pro Regular.otf');
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Roboto Regular";
-  src: url("../fonts/Roboto-Regular.ttf");
+  font-family: 'Roboto Regular';
+  src: url('../fonts/Roboto-Regular.ttf');
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Baloo Bhaina 2 Bold";
-  src: url("../fonts/BalooBhaina2-Bold.ttf");
+  font-family: 'Baloo Bhaina 2 Bold';
+  src: url('../fonts/BalooBhaina2-Bold.ttf');
   font-display: swap;
 }
 
@@ -37,7 +37,7 @@
 h1 {
   @include text(
     $family: $font-title,
-    $size: xx-large,
+    $size: 2rem,
     $weight: 300,
     $color: $tertiary-color,
     $lineHeight: 2rem
@@ -46,20 +46,21 @@ h1 {
 h2 {
   @include text(
     $family: $font-title,
-    $size: x-large,
+    $size: 1.5rem,
     $weight: 300,
     $color: $tertiary-color,
-    $lineHeight: 1.7rem
+    $lineHeight: 1.5rem
   );
 }
 h3 {
   //@include text($family: $font-navigation, $size: x-large, $weight: 300);
   @include text(
     $family: $font-title,
-    $size: x-large,
+    $size: 1.3rem,
     $weight: 300,
     $color: $tertiary-color,
-    $lineHeight: 1.7rem
+    $lineHeight: 1.3rem,
+    $fontStyle: italic
   );
 }
 
@@ -97,3 +98,26 @@ a {
     color: lighten($tertiary-color, 20%);
   }
 }
+
+code {
+  color: #d63384;
+}
+
+
+/*
+ main {
+  @include text(
+    $family: $font-regular,
+    $size: large,
+    $weight: 400,
+  );
+} 
+
+body{
+  @include text(
+    $family: $font-starter,
+    $size: 1rem,
+    $weight: 400,
+  );
+  
+} */

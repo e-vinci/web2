@@ -2,10 +2,8 @@
   width: max-content;
 
   @media only screen and (min-width: $lg) {
-    //flex-wrap: nowrap;
     width: 30vw;
     left: 0;
-    // top: 0;
     position: fixed;
     z-index: 10;
 
@@ -17,7 +15,6 @@
       position: relative;
       top:0;
       width: max-content;
-      // width: auto;
     }
   }
 

@@ -5,7 +5,6 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-
   &--auto-margin {
     padding: 1rem;
     ul,
@@ -13,15 +12,13 @@
       padding-left: 1.3rem;
       padding-right: 1.3rem;
       margin-bottom: 1rem;
+      line-height: 1.5;
     }
   }
 
   @media only screen and (min-width: $lg) {
-    //flex-wrap: nowrap;
     width: 70vw;
     margin-left: 30vw;
-
-    
   }
 
   a {
@@ -37,16 +34,23 @@
     }
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin-bottom: 0.5rem;    }
+
+ 
   p {
     margin-bottom: 1rem;
-   
+    line-height: 1.5;
+    text-align: justify;
   }
 
-  /* p + ul {
-    margin-top: 0;
-   
-  } */
-
+  p + ul {
+    margin-top: -1rem;
+  }
 
   table {
     border-collapse: collapse;
@@ -62,6 +66,10 @@
     }
   }
 
+  pre{
+    margin-bottom: 1rem;
+  }
+
   figcaption {
     font-style: italic;
     opacity: 0.7;
@@ -72,5 +80,4 @@
     font-style: italic;
     opacity: 0.7;
   }
-
 }

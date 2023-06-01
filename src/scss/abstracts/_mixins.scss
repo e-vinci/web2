@@ -4,7 +4,8 @@
   $color: null,
   $size: null,
   $weight: null,
-  $lineHeight: null
+  $lineHeight: null,
+  $fontStyle: null,
 ) {
   @if $family != null {
     font-family: $family;
@@ -24,6 +25,10 @@
 
   @if $weight != null {
     font-weight: $weight;
+  }
+
+  @if $fontStyle != null {
+    font-style: $fontStyle;
   }
 }
 
