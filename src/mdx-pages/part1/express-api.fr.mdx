@@ -248,9 +248,9 @@ NB : Il est aussi possible de partir de rien et de créer **`pizzaRouter`** dans
 
 Pour l'opération de lecture de toutes les pizzas, selon les conventions REST, il faut faire une requête de type **`GET /pizzas`**. Le router de **`/routes/pizzas.js`** doit donc offrir une route renvoyant toutes les pizzas qui existent dans le menu.
 
-Pour démarrer, nous souhaitons une application basique qui ne gère pas la persistance des données. Le menu sera donc un array d'objets, dont chaque objet représente une pizza.
+Pour démarrer, nous souhaitons une application basique qui ne gère pas la persistance des données. Le menu sera donc un array d'objets, chaque objet représentant une pizza.
 
-Notre opération de lecture de pizza va renvoyer du JSON au client, c'est à dire une représentation textuelle d'un tableau d'objets. Nous verrons plus tard ce qu'est réellement le JSON. A ce stade-ci, il est suffisant de connaître la fonction d'Express qui permet à un objet JS de circuler sur le réseau : **`res.json()`**.
+Notre opération de lecture de pizza va renvoyer du JSON au client, c'est à dire une représentation textuelle d'un array d'objets. Nous verrons plus tard ce qu'est réellement le JSON. A ce stade-ci, il est suffisant de connaître la fonction d'Express qui permet à un objet JS de circuler sur le réseau : **`res.json()`**.
 
 Voici le code du router **`/routes/pizzas.js`** :
 ```js
@@ -318,9 +318,7 @@ app.use('/users', usersRouter);
 module.exports = app;
 ```
 
-Notons que nous pourrions effacer le router s'occupant des ressources de type "users", mais nous préférons le garder car plus tard nous souhaiterons gérer l'authentification d'utilisateurs.
-
-Veuillez démarrer l'API (par défaut elle est configurée sur le port 3000 au sein de **bin/www**) :
+Veuillez démarrer l'API (par défaut elle est configurée sur le port 3000 au sein de **`bin/www`**) :
 
 ```bash
 npm start
@@ -331,14 +329,14 @@ Pour consommer l'opération de lecture via un browser, nous pouvons lire toutes 
 
 # <InternalPageTitle> Chemin et paramètres de route </InternalPageTitle>
 
-Les "route parameters" sont des segments d'une URL qui sont utilisés pour capturer une valeur spécifiée à leur position dans l'URL. On récupère ces paramètres via l'objet **req.params**.
+Les **route parameters** sont des segments d'une URL qui sont utilisés pour capturer une valeur spécifiée à leur position dans l'URL. On récupère ces paramètres via l'objet **`req.params`**.
 
 Pour notre pizzeria, nous souhaitons pouvoir lire une pizza identifiée par son **id**.
 
 Nous allons donc ajouter le paramètre de route **id**.  
-En respect des conventions REST, un client, pour faire appel à cette opération, devra faire une requête du genre : **GET /pizzas/2**.
+En respect des conventions REST, un client, pour faire appel à cette opération, devra faire une requête du genre : **`GET /pizzas/2`**.
 
-Voici la nouvelle route permettant de traiter de cette opération, à ajouter dans le router **/routes/pizza.js** :
+Voici la nouvelle route permettant de traiter de cette opération, à ajouter dans le router **`/routes/pizza.js`** :
 ```js
 // Read the pizza identified by an id in the menu
 router.get('/:id', (req, res) => {
@@ -357,22 +355,23 @@ Veuillez redémarrer l'API (**`CTRL c`** puis **`npm start`**).
 Pour consommer cette nouvelle opération via un browser, nous pouvons lire la ressource de type "pizzas" identifiée par **2** dans le menu ainsi :
 [http://localhost:3000/pizzas/2](http://localhost:3000/pizzas/2)
 
-Le browser fait bien une requête du genre : **GET /pizzas/2**.
-
+Le browser fait bien une requête du genre : **`GET /pizzas/2`**.  
 Le paramètre de la route "2" est récupéré dans l'URL de la route par Express et est offert via **`req.params.id`**. 
 
-N'hésitez pas à faire une requête pour un identifiant n'existant pas de le menu pour voir ce qui se passe : [http://localhost:3000/pizzas/666](http://localhost:3000/pizzas/666)
+N'hésitez pas à faire une requête pour un identifiant n'existant pas de le menu pour voir ce qui se passe : [http://localhost:3000/pizzas/666](http://localhost:3000/pizzas/666).
 
 # <InternalPageTitle> Chemin et paramètres de requête </InternalPageTitle>
 
-Les "query parameters" sont des paramètres qui peuvent être ajoutés à une URL.  
-On récupère ces paramètres via l'objet **req.query**.
+Les **query parameters** sont des paramètres qui peuvent être ajoutés à une URL.  
+On récupère ces paramètres via l'objet **`req.query`**.
 
 Pour notre pizzeria, nous souhaitons pouvoir lire toutes les ressources de type "pizzas" triées par ordre ascendant ou descendant du titre.
 
-En respect des conventions REST, un client, pour faire appel à cette opération, devra faire une requête du genre : **GET /pizzas?order=title** pour le tri ascendant ou **GET /pizzas?order=-title** pour le tri descendant .
+En respect des conventions REST, un client, pour faire appel à cette opération, devra faire une requête du genre : 
+- pour le tri ascendant : **`GET /pizzas?order=title`** ;
+- pour le tri descendant : **`GET /pizzas?order=-title`**.
 
-Il n'y a donc pas de nouvelle route à ajouter ici. En effet, ça reste une requête de type GET sur la route "/pizzas". 
+Il n'y a donc pas de nouvelle route à ajouter ici. En effet, ça reste une requête de type GET sur la route **`/pizzas`**. 
 
 Veuillez donc mettre à jour **/routes/pizza.js** pour la lecture de toutes les pizzas :
 ```js
@@ -398,18 +397,15 @@ router.get('/', (req, res, next) => {
 
 Veuillez redémarrer l'API (**`CTRL c`** puis **`npm start`**).
 
-Pour consommer cette nouvelle opération via un browser, nous pouvons lire toutes les ressources de type "pizzas" triée par leur titre de manière descendante ainsi :
+Pour consommer cette nouvelle opération via un browser, nous pouvons lire toutes les ressources de type "pizzas" triées par leur titre de manière descendante :
 [http://localhost:3000/pizzas?order=-title](http://localhost:3000/pizzas?order=-title).
 
 N'hésitez pas à tester d'autres tris.
 
-💭 Est-ce qu'il y a un morceau de code que vous ne comprenez pas dans ce code-ci et cela vous gêne ? Si oui, vous trouverez plus d'info ici : [f.2) Spread operator au niveau d'un array](#f2).  
-Si non, c'est OK de ne pas comprendre tous les éléments du code à ce stade-ci.
-
 # <InternalPageTitle> Opération de création & parsing du body </InternalPageTitle>
 
 Nous souhaitons développer une opération permettant de créer une ressource de type "pizzas".  
-Selon les conventions REST, il faut faire une requête de type **POST /pizzas** qui offre une représentation de la ressource à créer. La représentation utilisée est le JSON que nous verrons plus en détails plus tard.  
+Selon les conventions REST, il faut faire une requête de type **`POST /pizzas`** qui offre une représentation de la ressource à créer. La représentation utilisée est le JSON que nous verrons plus en détails plus tard.  
 Si nous souhaitons créer une ressource dont le titre est "Magic Green" et le contenu est "Epinards, Brocolis, Olives vertes, Basilic", la représentation de la ressource à créer sera la suivante :
 ```json
 {
@@ -418,13 +414,13 @@ Si nous souhaitons créer une ressource dont le titre est "Magic Green" et le co
 }
 ```
 
-Selon les conventions REST, une requête de création est de type POST et contient ses paramètres 
-au sein du body de la requête.
+Selon les conventions REST, une requête de création est de type **POST** et contient ses **paramètres 
+au sein du body** de la requête.
 
-**/routes/pizzas.js** doit offrir une nouvelle route permettant d'ajouter une nouvelle pizza au menu, qui est un array d'objets. Une nouvelle pizza doit donc être ajoutée à une variable, un array, qui est contenu dans la mémoire vive de votre machine.  
-Lorsque l'ajout d'une pizza au menu a réussi, nous souhaitons renvoyer la représentation de la nouvelle ressource au client. Ainsi, le client aura notamment accès à l'id de la pizza créé par l'API.
+**`/routes/pizzas.js`** doit offrir une nouvelle route permettant d'ajouter une nouvelle pizza au menu, qui est un array d'objets. Une nouvelle pizza doit donc être ajoutée à une variable, un array, qui est contenu dans la mémoire vive de votre machine.  
+Lorsque l'ajout d'une pizza au menu a réussi, nous souhaitons renvoyer la représentation de la nouvelle ressource au client. Ainsi, le client aura notamment accès à l'**id** de la pizza créé par l'API.
 
-Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez le rajouter dans votre application :
+Voici le code du router **`/routes/pizzas.js`** pour la nouvelle opération, veuillez le rajouter dans votre application :
 ```js
 // Create a pizza to be added to the menu.
 router.post('/', (req, res) => {
@@ -451,17 +447,16 @@ router.post('/', (req, res) => {
 });
 ```
 
-La représentation de la ressource à créer est parsée dans l'objet **req.body** grâce à la fonction middleware **express.json()** appelée dans **/app.js** :
+La représentation de la ressource à créer est parsée dans l'objet **`req.body`** grâce à la fonction middleware **`express.json()`** appelée dans **`/app.js`** :
 ```js
 app.use(express.json());
 ```
 
 Il est donc important de ne pas retirer cette ligne lorsque l'on crée une RESTful API.
 
-
 OK, c'est bien, mais comment tester ce nouveau code ?
 
-Le browser permet de facilement créer des requêtes de type GET, mais pas des requêtes de type POST...   
+Le browser permet de facilement créer des requêtes de type **GET**, mais pas des requêtes de type **POST**...   
 Nous avons donc besoin d'un client léger permettant de faire des requêtes HTTP.
 
 # <InternalPageTitle> Client REST </InternalPageTitle>

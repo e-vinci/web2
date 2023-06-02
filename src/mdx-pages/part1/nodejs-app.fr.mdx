@@ -360,7 +360,7 @@ Mais attention, certains packages subissent parfois des "breaking changes", ce q
 
 Nous vous recommandons donc, si vous rencontrer un problème lors de la mise à jour de tous vos packages d'un coup à l'aide de **`ncu`**, de revenir à la situation initiale, et de faire l'upgrade de chaque package listé dans **`package.json`** individuellement. Pour installer la dernière version d'un package, utilisez **`@latest`** :
 
-``` bash
+```bash
 npm i nomPackage@latest
 ```
 # <InternalPageTitle> Express c'est quoi ? </InternalPageTitle>
@@ -388,9 +388,11 @@ Veuillez répondre aux questions pour configurer le point d'entrée de l'applica
 
 Veuillez configurer le script de démarrage de votre application en ajoutant cette ligne au sein de **`package.json`** :
 
-```json {2}
+```json highlighting="2"
   "scripts": {
     "start": "node index.js",
+    //...
+  }
 ```
 
 Ainsi, notre application pourra démarrer à l'aide de la commande **`npm start`**.

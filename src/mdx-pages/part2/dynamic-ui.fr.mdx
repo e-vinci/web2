@@ -45,7 +45,7 @@ Nous souhaitons ajouter un menu à notre site de la pizzeria à générer à par
 Voici le nouveau code à ajouter pour générer ce menu au sein de **/src/index.js** : 
 
 
-```js numbered {5-31,37,46-86}
+```js numbered highlighting="5-31,37,46-86"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './stylesheets/main.css';
 import 'animate.css';
@@ -145,7 +145,7 @@ Au passage sur le menu, nous souhaitons changer la couleur du background afin qu
 
 Voici le code mis à jour de **index.js** :
 
-```js numbered {39,90-99}
+```js numbered highlighting="39,90-99"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './stylesheets/main.css';
 import 'animate.css';
@@ -261,7 +261,7 @@ Il est à noter ces dangers quand on utilise des Strings pour générer de l'HTM
 Il arrive très souvent aux jeunes développeurs web de faire une erreur de ce genre.  
 Regarder le code d'**index.js** et imaginez que vous attachiez les écouteurs d'événements dans **renderMenuFromString()** et plus après l'appel de cette fonction :
 
-```js {6}
+```js highlighting="6"
 function renderMenuFromString(menu) {
   const menuTableAsString = getMenuTableAsString(menu);
 
@@ -283,7 +283,7 @@ Tout cela semble logique, mais pensez-y en cas de souci avec vos écouteurs d'é
 Il arrive aussi régulièrement aux jeunes développeurs web de faire une erreur de ce style.  
 Regardez le code d'**index.js** et imaginez que vous souhaitiez ajouter une légende au menu :
 
-```js {5-6}
+```js highlighting="5-6"
 renderMenuFromString(MENU);
 
 attachOnMouseEventsToGoGreen();
@@ -318,7 +318,7 @@ Nous souhaitons ajouter un nouveau menu pour les boissons à notre site de la pi
 Voici le nouveau code à ajouter pour générer la liste des boissons au sein de **/src/index.js** : 
 
 
-```js numbered {33-49,59,121-159}
+```js numbered highlighting="33-49,59,121-159"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './stylesheets/main.css';
 import 'animate.css';
@@ -489,7 +489,7 @@ Au passage sur la liste, nous souhaitons changer la couleur du background afin q
 
 Voici le code que vous devez ajouter à la méthode **getDrinksTableAsNode()** au sein de **index.js** :
 
-```js numbered {30-36}
+```js numbered highlighting="30-36"
 function getDrinksTableAsNode(drinks) {
   const tableWrapper = document.createElement('div');
   tableWrapper.className = 'table-responsive pt-5';
@@ -536,7 +536,7 @@ Notons que ces écouteurs peuvent être ajoutés avant ou après avoir fait l'aj
 
 Regardez le code d'**index.js** et imaginez que vous souhaitiez ajouter une légende à la liste de boissons, en utilisant des Nodes :
 
-```js {3-7}
+```js highlighting="3-7"
 renderDrinksFromNodes(DRINKS);
 
 const mainWrapper = document.querySelector('main');

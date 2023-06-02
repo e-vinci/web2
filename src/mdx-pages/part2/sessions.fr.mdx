@@ -59,7 +59,7 @@ Les principales méthodes offertes par **sessionStorage** et **localStorage** so
 ## setItem()
 Cette méthode permet d'enregistrer, pour une clé donnée, la valeur associée :
 
-```js numbered {5}
+```js numbered highlighting="5"
 const STORE_NAME = 'user';
 
 const setUserSessionData = (user) => {
@@ -76,7 +76,7 @@ Hé bien il suffit de le sérialiser, comme cela est fait dans l'exemple à l'ai
 ## getItem()
 Cette méthode permet d'obtenir la valeur associée à la clé donnée en argument :
 
-```js numbered {4}
+```js numbered highlighting="4"
 const STORE_NAME = 'user';
 
 const getUserSessionData = () => {
@@ -91,7 +91,7 @@ Pour cet exemple, comme la valeur a été sérialisée, nous pouvons récupérer
 ## removeITem()
 Cette méthode permet d'effacer une clé / valeur :
 
-```js numbered {4}
+```js numbered highlighting="4"
 const STORE_NAME = 'user';
 
 const removeSessionData = () => {
@@ -120,7 +120,7 @@ Pour la suite du tutoriel, nous considérons que tous les chemins absolus démar
 
 Afin de sauvegarder les données de session, c'est à dire l'objet **authenticatedUser** contenant un token et un username, nous devons juste mettre à jour le fichier **/usr/utils/auths.js** :
 
-```js numbered {1,7,10,15-16,24}
+```js numbered highlighting="1,7,10,15-16,24"
 const STORE_NAME = 'user';
 let currentUser;
 
@@ -233,7 +233,7 @@ npm i cookie-session
 
 Veuillez mettre à jour **/app.json** pour mettre en place la gestion de cookies :
 
-```js {4,12-23}
+```js highlighting="4,12-23"
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -287,7 +287,7 @@ Dans le cadre de la RESTful API gérant les pizzas, cela est fait lors d'une op�
 
 Veuillez mettre à jour le router **/routes/auths.js** :
 
-```js numbered {17,19,33,35,38-42,44-47}
+```js numbered highlighting="17,19,33,35,38-42,44-47"
 const express = require('express');
 const { register, login } = require('../models/users');
 
@@ -347,7 +347,7 @@ Quand nous gérons une session via des cookies, il n'est pas évident de bien cl
 Il nous reste à changer le mécanisme d'autorisation.
 Les tokens ne seront plus reçu via un authorization header, mais via un cookie.  
 Nous allons donc mettre à jour le middleware **/utils/authorize** (1 seule ligne) :
-```js numbered {7}
+```js numbered highlighting="7"
 const jwt = require('jsonwebtoken');
 const { readOneUserFromUsername } = require('../models/users');
 

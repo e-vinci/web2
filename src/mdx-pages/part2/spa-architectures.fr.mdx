@@ -221,7 +221,7 @@ Pour la suite du tutoriel, nous considérons que tous les chemins absolus démar
 
 Veuillez mettre à jour le fichier **src/Components/Pages/HomePage.js** en supprimant l'array **MENU** et en remplaçant la ligne **`renderMenuFromString(pizzas);`** par cette requête **fetch** pour lire toutes les pizzas :
 
-```js numbered {4-14}
+```js numbered highlighting="4-14"
 const HomePage = () => {
   clearPage();
 
@@ -263,7 +263,7 @@ Comme la fonction **fetch** est asynchrone, le programme principal ne se bloque 
 donc pas les résultats de l'appel de **fetch**. Directement après le début du **fetch**, on passe à la ligne 16 du morceau de code précédent : **`attachOnMouseEventsToGoGreen(pizzas);`**.  
 Dans cette fonction, voici ce qui est fait :
 
-```js numbered {2-3}
+```js numbered highlighting="2-3"
 function attachOnMouseEventsToGoGreen() {
   const table = document.querySelector('table');
   table.addEventListener('mouseover', () => {
@@ -296,7 +296,7 @@ Pour récupérer le résultat d'une méthode asynchrone, on va faire appel :
 
 - **.then( callback )** : ce morceau de code permet de chaîner des traitements asynchrones. Par exemple, à la fin du premier traitement asynchrone associé au **fetch()**, on appelle
 
-```js numbered {2-5}
+```js numbered highlighting="2-5"
 fetch('http://localhost:3000/pizzas')
   .then((response) => {
     if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
@@ -315,7 +315,7 @@ La callback sera appelée et recevra comme paramètre un objet de type **Respons
 C'est ce qui est fait en renvoyant **`return response.json();`** : la fonction **json()** renvoie une promesse, c'est à dire qu'une fois le traitement terminé, nous pourrons chaîner celui-ci via un autre **.then()**.
 C'est ainsi que nous chaînons, une fois le **body** (au format JSON) disponible, l'appel d'une deuxième callback qui s'occupe de faire un render du menu de la pizzeria. Cette deuxième callback recevra en paramètre le body de la réponse sous forme d'un objet JS :
 
-```js numbered {6-8}
+```js numbered highlighting="6-8"
 fetch('http://localhost:3000/pizzas')
   .then((response) => {
     if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);
@@ -332,7 +332,7 @@ fetch('http://localhost:3000/pizzas')
 
 Si nous souhaitons chaîner l'ajout des écouteurs d'événements sur la table HTML, puis l'affichage des boissons, c'est donc dans cette callback qu'il faut le faire. Veuillez mettre à jour le code afin d'éliminer la première erreur qu'il y avait dans la console :
 
-```js numbered {9-13}
+```js numbered highlighting="9-13"
 const HomePage = () => {
   clearPage();
 
@@ -356,7 +356,7 @@ La console de votre browser devrait afficher une erreur en moins.
 
 - **.catch( callback )** : ce morceau de code permet d'exécuter une callback lorsque la tâche asynchrone associée à la promesse échoue. Dans le code, on voit que l'on affiche juste un message dans la console :
 
-```js numbered {11-13}
+```js numbered highlighting="11-13"
 fetch('http://localhost:3000/pizzas')
   .then((response) => {
     if (!response.ok) throw new Error(`fetch error : ${response.status} : ${response.statusText}`);

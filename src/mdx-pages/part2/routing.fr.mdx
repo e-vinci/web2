@@ -221,7 +221,7 @@ Par exemple, pour rendre la page de login, il suffit d'appeler **`LoginPage()`**
 
 Finalement, nous allons appeler la Navbar au sein d'**index.js** :
 
-```js {8,11}
+```js highlighting="8,11"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './stylesheets/main.css';
 import 'animate.css';
@@ -284,7 +284,7 @@ On ajoute dans l'HTML des éléments de la Navbar un data-attribute nommé **uri
 Le nom de la propriété commence toujours par **`data-`** suivi du nom du "data attribute" : **`data-uri`**.  
 Veuillez mettre à jour le code de la fonction **renderNavbar** de **Navbar.js** :
 
-```js {21,24,27}
+```js highlighting="21,24,27"
 function renderNavbar() {
   const navbar = document.querySelector('#navbarWrapper');
   navbar.innerHTML = `
@@ -325,7 +325,7 @@ Pour accéder en JS à ce data attribute, on y accède via l'attribut **dataset*
 
 Veuillez mettre à jour le code de la fonction **onNavBarClick** de **Navbar.js** :
 
-```js {7,9,11}
+```js highlighting="7,9,11"
 function onNavBarClick() {
   const navItems = document.querySelectorAll('.nav-link');
 
@@ -434,7 +434,7 @@ export default Router;
 
 Pour utiliser le Router, il faut y faire appel au bon moment dans **index.js** :
 
-```js {9,13}
+```js highlighting="9,13"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './stylesheets/main.css';
 import 'animate.css';
@@ -460,7 +460,7 @@ Nous souhaiterions pouvoir le configurer via un dictionnaire d'URI et des compos
 
 Veuillez mettre à jour **Router.js** :
 
-```js numbered {5-9,20-23}
+```js numbered highlighting="5-9,20-23"
 import HomePage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
 import RegisterPage from '../Pages/RegisterPage';
@@ -509,7 +509,7 @@ L'**History API** du browser offre cette fonction **`window.history.pushState(st
 
 Mettez à jour le code de **Router.js** pour créer une entrée dans l'historique du browser et ajouter l'URL au browser :
 
-```js numbered {20,26}
+```js numbered highlighting="20,26"
 import HomePage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
 import RegisterPage from '../Pages/RegisterPage';
@@ -563,7 +563,7 @@ Pour récupérer l'URI que nous avons assigné à une page et qui sera visible d
 
 Veuillez mettre à jour le code de **Router.js** :
 
-```js numbered {13,32-38}
+```js numbered highlighting="13,32-38"
 import HomePage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
 import RegisterPage from '../Pages/RegisterPage';
@@ -621,7 +621,7 @@ Lors d'un "load", nous allons récupérer l'URI que nous avons assigné à une p
 
 Veuillez mettre à jour le code de **Router.js** :
 
-```js numbered {12,41-49}
+```js numbered highlighting="12,41-49"
 import HomePage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
 import RegisterPage from '../Pages/RegisterPage';
@@ -717,7 +717,7 @@ Lors d'un clic sur la pizza au fromage qui se trouve dans le footer, on va redir
 
 Veuillez donc mettre à jour `Footer.js` :
 
-```js numbered {3,12,13,22,26-31}
+```js numbered highlighting="3,12,13,22,26-31"
 import pizzaImage from '../../img/pizza2.jpg';
 import logo from '../../img/js-logo.png';
 import Navigate from '../Router/Navigate';

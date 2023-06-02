@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
+import { NavigationContext } from '../contexts/navigation-context';
 
 /**
  * An internal page menu made up of InternalPageMenu item.
@@ -24,10 +25,20 @@ const InternalPageMenu = ({
   className = 'page-menu',
   sticky = false,
 }) => {
+  const { activePageMenuItem, setActivePageMenuItem } =
+    useContext(NavigationContext);
+
+  console.log('page menu loaded with active item:', activePageMenuItem);
+
+  /* a delay has been added, because when we click on a menu item, the scroll event will mess up the active
+  item that shall be the clicked item. The delay ensure that the scroll event are superseeded by the click 
+  event.*/
+  const onItemClick = (itemTextInSnakeCase) => {
+    setTimeout(() => setActivePageMenuItem(itemTextInSnakeCase), 100);
+  }; 
+
   return (
-    <div className={`${className} ${
-      sticky ? className + '--sticky' : ''
-    }`}>
+    <div className={`${className} ${sticky ? className + '--sticky' : ''}`}>
       {React.Children.map(children, (child, index) =>
         React.cloneElement(child, {
           id: index,
@@ -36,6 +47,8 @@ const InternalPageMenu = ({
           numbering: index + 1,
           endOfLeadingString,
           className: `${className}__item`,
+          activePageMenuItem,
+          onItemClick,
         })
       )}
     </div>

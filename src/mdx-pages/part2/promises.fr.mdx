@@ -35,7 +35,7 @@ Pour la suite du tutoriel, nous considérons que tous les chemins absolus démar
 
 Nous allons donc refactorer le code où est fait le **fetch**, c'est à dire **/src/Components/Pages/HomePage.js** (veuillez mettre à jour tout le code de la fonction arrow associée à la variable **HomePage**) :
 
-```js numbered {1,5,9}
+```js numbered highlighting="1,5,9"
 const HomePage = async () => {
   try {
     clearPage();
@@ -115,7 +115,7 @@ export default AddPizzaPage;
 
 Nous devons aussi ajouter un élément dans la Navbar afin de pouvoir accéder à cette nouvelle page. Pour ce faire, veuillez mettre à jour **/src/Components/Navbar/Navbar.js** :
 
-```js numbered {36-38}
+```js numbered highlighting="36-38"
 // eslint-disable-next-line no-unused-vars
 import { Navbar as BootstrapNavbar } from 'bootstrap';
 
@@ -166,7 +166,7 @@ export default Navbar;
 
 Et finalement, comme le frontend de ce tutoriel utilise le boilerplate du cours, il faut encore configurer le router de l'IHM afin d'indiquer la page à afficher lorsqu'on clique sur le lien dont **`data-uri`** vaut **add-pizza**. Pour ce faire, veuillez mettre à jour le fichier **/src/Components/Router/Router.js** pour ajouter ces deux lignes :
 
-```js {1,10}
+```js highlighting="1,10"
 import AddPizzaPage from '../Pages/AddPizzaPage';
 import HomePage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
@@ -201,7 +201,7 @@ Si l'ajout se fait avec succès, on souhaite faire en sorte que l'utilisateur so
 
 Pour arriver à nos fins, veuillez ajouter ce code dans la page **/src/Components/Pages/AddPizzaPage.js** :
 
-```js numbered {34,37-63}
+```js numbered highlighting="34,37-63"
 import { clearPage, renderPageTitle } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
@@ -281,7 +281,7 @@ Pour la nouveauté et le **fetch** :
   Cela est indiqué dans un objet que nous appelons généralement **options** qui doit contenir la propriété **method**.
 - lorsque l'on doit envoyer des données dans le **body** d'une requête, alors il faut le faire au sein de la propriété **body**. Ici, nous souhaitons envoyer un objet content les propriétés **title** et **content** au format JSON. Nous devons donc utiliser la méthode **`JSON.stringify`** qui permet de créer une représentation JSON d'un objet JS. Notez ici que nous avons écrit l'objet JS selon une notation simplifiée :
 
-```js {4-7,9-12}
+```js highlighting="4-7,9-12"
 const title = document.querySelector('#title').value;
 const content = document.querySelector('#content').value;
 
@@ -340,7 +340,7 @@ Pour que cela fonctionne, vous devez donc faire en sorte, dans vos fonctions asy
 Comment utiliser ce code au sein de la **HomePage** ?  
 Voici comment le code pourrait être mis à jour pour utiliser la fonction asynchrone **getAllPizzas** au sein de **HomePage.js** :
 
-```js {1,5}
+```js highlighting="1,5"
 const HomePage = async () => {
   try {
     clearPage();

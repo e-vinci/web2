@@ -55,7 +55,7 @@ Veuillez vous rendre sur la page **Add a pizza**.
 Pour le titre de la pizza, vous pouvez ajouter n'importe quoi.
 Dans le contenu de la pizza, veuillez ajouter cela et soumettre : 
 
-``` text
+```text
 <img src="#" onerror="alert('You have been hacked !')">
 ```
 
@@ -63,7 +63,7 @@ En fait, nous avons ajouté une balise **`img`** contenant du inline JS. **`onee
 
 Maintenant, tout utilisateur connecté ou pas qui se loguera sur le site va exécuter ce script "malicieux". Il verra le pop-up apparaître avec le message "You have been hacked !".  
 En effet, le menu des pizzas, tel qu'il est construit, est basé sur toutes les ressources de type "pizzas" renvoyées par l'API, dont une des pizzas contient le JS malicieux qui est exécuté dans une cellule de la table via ce code de la **HomePage** de l'IHM :
-```js {7}
+```js highlighting="7"
 function getAllTableLinesAsString(menu) {
   let pizzaTableLines = '';
 
@@ -108,7 +108,7 @@ Nous allons supprimer, s'il existe, le fichier reprenant le code malicieux intro
 
 Nous allons à présent mettre à jour le modèle de pizzas pour échapper les caractères dangereux.
 Veuillez modifier **/models/pizzas.js** :
-```js {1,9-10}
+```js highlighting="1,9-10"
 const escape = require('escape-html');
 // other bits of code
 
@@ -175,7 +175,7 @@ Nous préférons utiliser les librairies asynchrone afin de laisser l'API plus d
 Veuillez effacer le fichier **/data/users.json** contenant les credentials d'utilisateurs où les passwords ne sont pas hachés.
 
 Nous allons maintenant mettre à jour le modèle de "users" pour utiliser **bcrypt**. Veuillez modifier **/models/users.js** :
-```js numbered {2,9,17,21,25-26,42,46,70,73}
+```js numbered highlighting="2,9,17,21,25-26,42,46,70,73"
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const path = require('node:path');
@@ -285,7 +285,7 @@ Voici les modifications apportées :
 - pour créer l'utilisateur **admin** se trouvant dans les **defaultUsers**, on souhaite indiquer comme **password** le password haché correspondant au password "admin". Pour se simplifier la vie, on appelle la fonction synchrone `hashSync` (voir ligne 16). Bien évidemment, dans une application plus robuste, on évitera d'hardcoder ce genre de secrets dans les sources de notre application.
 
 Afin de traiter des deux fonctions du modèle **users** qui sont devenues asynchrones, `login` et `register`, nous allons modifier le router **/routes/auths** :
-```js numbered {7,13,21,27}
+```js numbered highlighting="7,13,21,27"
 const express = require('express');
 const { register, login } = require('../models/users');
 

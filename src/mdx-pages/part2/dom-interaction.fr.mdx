@@ -258,7 +258,7 @@ Une **callback** sera donc la fonction qui sera appelée le moment venu. Dans le
 
 Dans ce code-ci :
 
-```js numbered {7-13}
+```js numbered highlighting="7-13"
 const btn1 = document.querySelector("#myBtn1");
 const btn2 = document.querySelector("#myBtn2");
 const buttons = document.querySelectorAll("button");
@@ -531,7 +531,7 @@ Toujours en lisant la documentation, si nous souhaitons ajouter un délai au reb
 
 Veuillez mettre à jour votre page **index.html** :
 
-```html numbered {9-12,16,36-38}
+```html numbered highlighting="9-12,16,36-38"
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -669,7 +669,7 @@ Un peu de style pour bien visualiser les 6 divs au sein de **main.css** :
 
 Voici comment on pourrait gérer les mouvements de la souris au sein de **index.js** :
 
-```js {8-9}
+```js highlighting="8-9"
 const divs = document.querySelectorAll(".message");
 
 divs.forEach((div) => {
@@ -695,7 +695,7 @@ N'hésitez pas à exécuter le code ci-dessus, si vous le souhaitez, en créant 
 
 Voici un exemple partiel de gestion de formulaire où l'on utilise l'objet "event" pour stopper l'action par défaut qui est d'envoyer les données au serveur (indiqué par la propriété **action** du formulaire) et de recharger la page :
 
-```js {3,5}
+```js highlighting="3,5"
 // code to get the reference to the form shall be imagined
 
 const onSubmit = (e) => {
@@ -727,7 +727,7 @@ Voici un exemple :
 </html>
 ```
 
-```js numbered {7,12-14,18}
+```js numbered highlighting="7,12-14,18"
 const btn1 = document.querySelector("#myBtn1");
 const btn2 = document.querySelector("#myBtn2");
 
@@ -779,7 +779,7 @@ On souhaiterait programmer une horloge, voici un simple exemple :
 </html>
 ```
 
-```js numbered {6,11,22}
+```js numbered highlighting="6,11,22"
 const btn = document.querySelector("button");
 const clockHolder = document.querySelector("span");
 

@@ -40,7 +40,7 @@ npm i nodemon -D
 
 - Pour lancer **nodemon** (au lieu du simple **node**) quand on tape **`npm run dev`** : Veuillez ajouter la ligne **`"dev": "nodemon /bin/www"`** dans **package.json** :
 
-```json {2}
+```json highlighting="2"
 "scripts": {
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www"
@@ -96,7 +96,7 @@ Trouver une configuration qui permet de bien débugger n'est pas si aisé. Nous 
 Premièrement, il est important que quand on lance le debugger, on puisse bénéficier de **nodemon** et des redémarrages automatiques en cas de changement de code.  
 Pour ce faire, veuillez mettre à jour le fichier **packages.json** pour rajouter un script de démarrage :
 
-```json {2}
+```json highlighting="2"
 "scripts": {
     "debug": "nodemon ./bin/www",
     "dev": "nodemon ./bin/www",
@@ -111,7 +111,7 @@ Nous allons maintenant créer une configuration de debugging associée à notre 
   NB : Peu importe le debugger que vous sélectionnez, car vous aller par la suite copier / coller la configuration proposée.
 - Une fois le debugger **Node.js** choisi, VS Code crée un répertoire **.vscode** à la racine du folder ouvert au sein de VS Code (normalement vous devriez avoir ouvert votre repo local **web2**) contenant un fichier **launch.json** et une configuration initiale. Veuillez remplacer le contenu de ce fichier (**.vscode/launch.json**) par celui-ci :
 
-```json {10-14,19}
+```json highlighting="10-14,19"
 {
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
@@ -185,7 +185,7 @@ Afin de réaliser cet exercice, voici les contraintes d'implémentation :
 Tant que nous n'installez pas les packages, le linter n'est pas activé dans VS Code. Il faut aussi fermer et réouvrir les fichiers une fois les packages installés pour que les erreurs de style apparaissent dans VS Code.  
 Il est intéressant de corriger toutes les erreurs de style avant de s'attaquer à la persistance.
 - Vous avez un problème du type "no such file or directory" ? N'hésitez pas à créer un chemin correct vers votre fichier JSON à l'aide de la méthode `join` de l'objet **path** :
-``` js
+```js
 const path = require('node:path');
 
 const jsonDbPath = path.join(__dirname, '/../data/films.json');

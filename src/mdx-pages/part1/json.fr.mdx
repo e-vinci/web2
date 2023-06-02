@@ -174,7 +174,7 @@ const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
 
 Automatiquement grâce à Express et au middleware appelé dans **apps.js** (**`app.use(express.json());`**), **`req.body`** contient un objet JS représentant toutes les données JSON qui étaient présentes dans le body de la requête cliente, comme par exemple :
 
-```http {5-8}
+```http highlighting="5-8"
 ### Create a pizza
 POST {{baseUrl}}/pizzas
 Content-Type: application/json
@@ -192,7 +192,7 @@ Plus tard, nous verrons comment une IHM peut utiliser les données envoyées par
 La méthode **`fetch`** en collaboration avec la méthode **`json`** sur la réponse d'une API permet de récupérer et parser des données JSON vers un objet JS.  
 Par exemple, cette requête de création d'une pizza parse la ressource qui a été rajoutée côté API au sein de la variable **`pizza`** :
 
-```js {13}
+```js highlighting="13"
 const options = {
   method: 'POST',
   body: JSON.stringify({
@@ -322,7 +322,7 @@ Voici ce que nous devons faire pour les opérations de :
 
 Voici le code du router mis à jour afin de gérer la persistance selon la stratégie définie ci-dessus, les modifications étant surlignées :
 
-```js numbered {2,5,45,47,51,58,60,64,76-78,87,89,98,100,104,107,123,125,129,131,133}
+```js numbered highlighting="2,5,45,47,51,58,60,64,76-78,87,89,98,100,104,107,123,125,129,131,133"
 var express = require('express');
 const { serialize, parse } = require('../utils/json');
 var router = express.Router();

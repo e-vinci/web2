@@ -49,7 +49,7 @@ Pour la suite du tutoriel, nous considérons que tous les chemins absolus démar
 **/web2/tutorials/pizzeria/hmi/jwt-fetch**.
 
 Veuillez mettre à jour le code de la **RegisterPage** afin de faire appel à la méthode **POST /auths/register** et, si tout est OK, renvoyer l'utilisateur vers la **HomePage** via la fonction **Navigate** :
-```js numbered {2,34-63}
+```js numbered highlighting="2,34-63"
 import { clearPage, renderPageTitle } from '../../utils/render';
 import Navigate from '../Router/Navigate';
 
@@ -151,7 +151,7 @@ export { getAuthenticatedUser, setAuthenticatedUser, isAuthenticated, clearAuthe
 ```
 
 Veuillez mettre à jour le code de la **RegisterPage** afin de sauver en mémoire vive l'utilisateur authentifié. Nous allons aussi préparer la suite afin d'avoir une Navbar qui s'adaptera lorsqu'un utilisateur est authentifié, c'est pourquoi nous allons appeler le composant **Navbar** :
-```js numbered {1,3,66,68}
+```js numbered highlighting="1,3,66,68"
 import { setAuthenticatedUser } from '../../utils/auths';
 import { clearPage, renderPageTitle } from '../../utils/render';
 import Navbar from '../Navbar/Navbar';
@@ -226,7 +226,7 @@ export default RegisterPage;
 ```
 
 Pour la **LoginPage**, les modifications à faire sont les mêmes :
-```js numbered {1,3-4,36-69}
+```js numbered highlighting="1,3-4,36-69"
 import { setAuthenticatedUser } from '../../utils/auths';
 import { clearPage, renderPageTitle } from '../../utils/render';
 import Navbar from '../Navbar/Navbar';
@@ -422,7 +422,7 @@ On pourrait se dire qu'il suffit de faire appel à la fonction **`onNavBarClick`
 Dès lors, le mieux serait de mettre un écouteur d'événements au niveau du wrapper de la Navbar.  
 Comme le wrapper n'est jamais réinitialisé, tout sera en ordre.  
 Veuillez donc mettre à jour la fonction **`onNavBarClick`** de **/src/Components/Router/Router.js** :
-```js {2,4,6-8}
+```js highlighting="2,4,6-8"
 function onNavBarClick() {
   const navbarWrapper = document.querySelector('#navbarWrapper');
 
@@ -465,7 +465,7 @@ export default Logout;
 
 Attention, même si nous avons mis à jour la **Navbar** et créé le composant **Logout**, le boilerplate du frontend impose de rajouter une route au sein du **Router** pour qu'un clic sur l'élément **Logout** de la **Navbar** amène à appeler le composant **Logout**.
 Veuillez donc mettre à jour **`routes`** au sein de **/src/Components/Router/Router.js** :
-```js {1,12}
+```js highlighting="1,12"
 import Logout from '../Logout/Logout';
 import AddPizzaPage from '../Pages/AddPizzaPage';
 import HomePage from '../Pages/HomePage';
@@ -495,7 +495,7 @@ Veuillez vous connecter à l'IHM **jwt-fetch** à l'aide du compte **manager** e
 En effet, l'API attend un token pour autoriser l'opération de création d'une pizza.
 
 Nous allons donc mettre à jour **/src/Components/Pages/AddPizzaPage.js** pour ajouter le token de l'utilisateur authentifié au sein du header de la requête (il n'y a que trois lignes à rajouter) :
-```js numbered {1,44,54}
+```js numbered highlighting="1,44,54"
 import { getAuthenticatedUser } from '../../utils/auths';
 import { clearPage, renderPageTitle } from '../../utils/render';
 import Navigate from '../Router/Navigate';

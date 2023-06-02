@@ -173,7 +173,7 @@ NB : Il est possible d'envisager un workflow différent : après le **register**
 Nous allons à présent mettre en place le code permettant d'implémenter le workflow que l'on vient de découvrir.
 
 Veuillez créer le modèle **users** en créant le fichier **/models/users.js** et y inclure ce code :
-```js numbered {1,5-6,23-27,29-31,34,43-47,49-52,54}
+```js numbered highlighting="1,5-6,23-27,29-31,34,43-47,49-52,54"
 const jwt = require('jsonwebtoken');
 const path = require('node:path');
 const { parse, serialize } = require('../utils/json');
@@ -320,7 +320,7 @@ module.exports = router;
 Il n'y a rien de bien spécial à ce code. On fait simplement appel aux opérations du modèle **users**.
 
 Attention, il faut rajouter le nouveau router au sein de **app.js** pour que notre API puisse offrir les nouvelles opérations. Veuillez ajouter ce code dans **/app.js** :
-```js {7,18}
+```js highlighting="7,18"
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -444,7 +444,7 @@ En effet, l'API indiquerait ainsi qu'elle aurait vérifié que l'utilisateur est
 😨 Wow, le workflow d'autorisation pour la création d'une pizza est assez long.  Nous allons maintenant l'implémenter. Nous vous inquiétez pas, ce qui importe dans le code qui va suivre, ce n'est pas de savoir écrire tout le code, mais de bien comprendre le mécanisme. En effet, en règle générale, vous allez utiliser des librairies vous permettant d'autoriser les accès aux opérations de vos API. Vous écrirez donc rarement le mécanisme d'autorisation, par contre, vous devrez pouvoir utiliser ces mécanismes.
 
 Veuillez créer les nouvelles fonctions middleware **authorize** et **isAdmin** au sein d'un nouveau fichier **/utils/auths.js** :
-```js numbered {1,4,7,11,}
+```js numbered highlighting="1,4,7,11"
 const jwt = require('jsonwebtoken');
 const { readOneUserFromUsername } = require('../models/users');
 
@@ -510,7 +510,7 @@ Nous pouvons le faire au niveau que nous souhaitons, soit au niveau :
     - On veut pouvoir afficher le menu des pizzas pour tous les utilisateurs, même s'ils sont anonymes.
     - On ne veut pas simplement vérifier qu'un utilisateur est authentifié pour créer une pizza, on veut aussi vérifier qu'il est admin.
 - d'une route, pour une opération de notre RESTful API. C'est ce que nous souhaitons faire ici. Veuillez mettre à jour le code du router de "pizzas" au sein de **/routes/pizzas.js** :
-```js {2,7}
+```js highlighting="2,7"
 // See existing code
 const { authorize, isAdmin } = require('../utils/auths');
 
@@ -636,7 +636,7 @@ Cela permet de créer des requêtes plus concises.
 Veuillez mettre à jour votre RESTful API gérant les pizzas afin que toutes les opérations d'écriture soient protégées par une autorisation JWT, n'autorisant que l'utilisateur **admin**.
 
 Voici le code à mettre à jour dans **/routes/pizzas** pour correctement autoriser les opérations de suppression et de modification sur des ressources de type "pizzas":
-```js {2,11}
+```js highlighting="2,11"
 // Delete a pizza from the menu based on its id
 router.delete('/:id', authorize, isAdmin, (req, res) => {
   const deletedPizza = deleteOnePizza(req.params.id);
@@ -664,7 +664,7 @@ router.patch('/:id', authorize, isAdmin, (req, res) => {
 ```
 
 Pour vous assurer que les opérations de suppression et de modification sont bien fonctionnelles, veuillez mettre à jour les requêtes associées afin d'utiliser un token. Veuillez mettre à jour **/REST Client/pizzas.http** en ajoutant ces deux lignes :
-```http numbered {25,30}
+```http numbered highlighting="25,30"
 ### Create a pizza by using the admin account
 #### First login as the admin
 ##### Define a request variable nammed admin

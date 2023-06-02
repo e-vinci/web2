@@ -88,7 +88,7 @@ la librairie **cors**.
 
 Pour configurer et utiliser les **CORS**, veuillez mettre à jour le fichier **/app.js** :
 
-```js numbered {4-8,21}
+```js numbered highlighting="4-8,21"
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -179,7 +179,7 @@ Le **pathRewrite** permet de ne pas reprendre **/api** dans l'URL de la redirect
 
 Dans le code du tutoriel en cours (**basic-fetch**), veuillez mettre à jour l'URL au niveau du **fetch** dans **HomePage.js** :
 
-```js numbered {4}
+```js numbered highlighting="4"
 const HomePage = () => {
   clearPage();
 
@@ -259,7 +259,7 @@ Comment gérer la mise à jour des données d'un film ?
     <ScrollableImage name="movies.png" minWidth="700px" maxWidth="1268px" />
     - Veuillez noter que contrairement au frontend précédent réalisée à l'Exercice 3.1, l'info **title** et **link** ne sont plus intégrées dans une même colonne, via des hyperlinks ; avec l'option 1, nous devrions considérer deux colonnes, une pour le titre et l'autre pour le lien.
     - Vous pouvez utiliser la propriété HTML **contenteditable="true"** pour rendre les cellules du tableau éditables. Voici un exemple pour rendre une cellule associée au titre éditable :
-    ```js {1}
+    ```js highlighting="1"
     <td class="fw-bold text-info" contenteditable="true">${
                 element.title
     }</td>

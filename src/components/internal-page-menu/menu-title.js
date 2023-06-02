@@ -51,6 +51,16 @@ const InternalPageTitle = ({ children, className, level }) => {
 
   useEffect(() => {
     const handleScroll = () => {
+      console.log(
+        'scroll : ',
+        internalPageMenuItemId,
+        'isInView',
+        isInView,
+        'isVisible',
+        isVisible,
+        'above half viewport:',
+        isElementAboveHalfViewport(ref.current)
+      );
       if (isInView) {
         if (!isVisible) {
           // the item has just appeared above the half of viewport, it shall be shown
@@ -69,8 +79,9 @@ const InternalPageTitle = ({ children, className, level }) => {
           const previousVisibleItemIndex = titles.findIndex(
             (element) => element.id === internalPageMenuItemId
           );
-          if (previousVisibleItemIndex === -1 || previousVisibleItemIndex === 0) return;
-         
+          if (previousVisibleItemIndex === -1 || previousVisibleItemIndex === 0)
+            return;
+
           const currentVisibleItemId = titles[previousVisibleItemIndex - 1].id;
           setActivePageMenuItem(currentVisibleItemId);
         } else {
