@@ -12,12 +12,13 @@ description: "Introduction au JSON et persistance des données"
 # b) Introduction au JSON et persistance des données
 
 <InternalPageMenu>
-  <InternalPageMenuItem> Introduction au JSON </InternalPageMenuItem>
-  <InternalPageMenuItem> Communication de données en JSON </InternalPageMenuItem>
-  <InternalPageMenuItem> Sauvegarde de données JSON </InternalPageMenuItem>
+  <InternalPageMenuItem> Le JSON, c'est quoi ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Communication de données en JSON à une API </InternalPageMenuItem>
+  <InternalPageMenuItem> Lecture et sauvegarde de données dans un fichier JSON par une API </InternalPageMenuItem> 
+  <InternalPageMenuItem> Exercice 1.7 : Persistance des données </InternalPageMenuItem>
 </InternalPageMenu>
 
-# <InternalPageTitle> Introduction au JSON </InternalPageTitle>
+# <InternalPageTitle> Le JSON, c'est quoi ? </InternalPageTitle>
 
 Précédemment, nous avons développé notre première RESTful API.  
 Nous avons implicitement découvert le JSON, notamment lorsque nous avons fait des requêtes vers nos API.
@@ -32,14 +33,14 @@ Du JSON, c'est du texte en notation JS.
 
 Voici les types de données qui sont valides en JSON :
 
-- **string**
-- **number**
-- **object**
-- **array**
-- **boolean**
-- **null**
+- **`string`**
+- **`number`**
+- **`object`**
+- **`array`**
+- **`boolean`**
+- **`null`**
 
-⚡ Il n'y a donc pas de **function**, **date** et **undefined**.
+⚡ Il n'y a donc pas de **`function`**, **`date`** et **`undefined`**.
 
 Voici un exemple de représentation de données en JSON qui correspond à ce que très souvent une API renvoie, un array d'objets :
 
@@ -60,15 +61,20 @@ Voici un exemple de représentation de données en JSON qui correspond à ce que
 ]
 ```
 
-# <InternalPageTitle> Communication de données en JSON </InternalPageTitle>
+# <InternalPageTitle> Communication de données en JSON à une API </InternalPageTitle>
 
-## Sérialisation d'objets JS vers du JSON
+## Introduction
+Dans le tutoriel précédent, nous avons communiqué des données au format JSON :
+- soit lors des requêtes via REST Client : nous avons envoyé les données permettant de créer ou modifier une pizza :
+- soit lors du traitment des requêtes par l'API, afin de créer ou modifier les pizzas et les sauvegarder en mémoire vive (dans un tableau d'objets).
 
-### Envoi d'une application serveur vers un client
+Nous allons maintenant approfondir comment les données au format JSON ont été traitées par l'API.
+
+## Envoi de données d'une API vers un client & sérialisation
 
 Via Express, nous pouvons très facilement convertir un objet JS en JSON afin de l'envoyer vers une application cliente grâce à la méthode **`res.json()`**.
 
-C'est ce que nous appelons de la sérialisation de données, nous passons du monde "objets en mémoire" vers du texte (ou des octets) qui vont voyager sur un réseau.
+C'est ce que nous appelons de la **sérialisation** de données : nous passons du monde "objets en mémoire" vers du texte (ou des octets) qui va voyager sur un réseau.
 
 Le code actuel de notre RESTful API, renvoyant un array de pizzas au format JSON, est géré automatiquement via :
 
@@ -114,65 +120,20 @@ L'API renvoie un array d'objets, des pizzas, au format JSON, qui correspond en f
 Il est donc possible à n'importe quelle application cliente d'utiliser ces données, quelque soit la technologie, le langage utilisé pour développer cette application cliente.   
 Ainsi, par exemple, une application Android, développée en Java, pourrait consommer cette API pour afficher un menu de pizzas !
 
-### Envoi d'une application cliente vers un serveur
-
-Il est possible aussi, et nous le verrons plus tard en détails, de communiquer des données d'une IHM vers une API.
-
-Nous avons déjà envoyé du JSON à une API via REST Client.  
-Voici la requête envoyant, dans son body, la représentation JSON d'une ressource de type "pizzas" à créer :
-
-```http
-### Create a pizza
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"Magic Green",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-```
-
-Il est important de communiquer le "media type" (ou **MIME**) du corps de la requête : "**application/json"**.  
-Cela indique à l'application qui est la cible de la requête quelle genre d'outil elle devra utiliser pour décoder les données.  
-Par exemple, il faut faire un traitement différent pour récupérer des données au format JSON que pour récupérer des données directement associées à un fichier image.
-
-Si l'on considère une IHM, il sera utile plus tard d'avoir un formulaire permettant d'ajouter des pizzas.  
-Le JS associé à l'IHM permettra d'envoyer les données du formulaire au format JSON, via la méthode **`fetch`**, vers notre RESTful API gérant les ressources de type pizzas.
-
-Voici un exemple de code que vous ne devez pas encore comprendre, qui permet à une IHM de créer une ressource de type "pizzas" :
-
-```js
-const options = {
-  method: 'POST',
-  body: JSON.stringify({
-    title: title.value,
-    content: content.value,
-  }),
-  headers: {
-    'Content-Type': 'application/json',
-  },
-};
-
-const response = await fetch('/api/pizzas', options);
-const pizza = await response.json();
-```
-
-## Parsing de données JSON vers un objet JS
-
-### Réception par une application serveur
+## Réception de données d'un client par une API & parsing
 
 Via Express, nous pouvons très facilement convertir du JSON vers un objet JS à l'aide du middleware **`express.json()`**.
 
-C'est ce que nous appelons du parsing de données, ou de la désérialisation, c'est quand nous passons du monde texte / JSON (ou des octets) vers des "objets en mémoire".
+C'est ce que nous appelons du **parsing** de données, ou de la **désérialisation** : nous passons du monde texte / JSON (ou des octets) vers des "objets en mémoire".
 
-Le code actuel de notre RESTful API récupérant les données d'une pizza à créer est très simple :
+Le code actuel de notre RESTful API, récupérant les données d'une pizza à créer, est très simple :
 
 ```js
 const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
 const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
 ```
 
-Automatiquement grâce à Express et au middleware appelé dans **apps.js** (**`app.use(express.json());`**), **`req.body`** contient un objet JS représentant toutes les données JSON qui étaient présentes dans le body de la requête cliente, comme par exemple :
+Automatiquement, grâce à Express et au middleware appelé dans **`apps.js`** (**`app.use(express.json());`**), **`req.body`** contient un objet JS représentant toutes les données JSON qui étaient présentes dans le body de la requête cliente, comme par exemple :
 
 ```http highlighting="5-8"
 ### Create a pizza
@@ -185,40 +146,58 @@ Content-Type: application/json
 }
 ```
 
-### Réception par une application cliente
+Il est important de communiquer le "**media type**" (ou **MIME type**) dans le corps de la requête : **`application/json`**.  
+Cela indique à l'application qui est la cible de la requête (l'API dans notre cas) quelle genre d'outil elle devra utiliser pour décoder les données.  
+Par exemple, il faut faire un traitement différent pour récupérer des données au format JSON que pour récupérer des données directement associées à un fichier image.
 
-Plus tard, nous verrons comment une IHM peut utiliser les données envoyées par une API.
+# <InternalPageTitle> Lecture et sauvegarde de données dans un fichier JSON par une API </InternalPageTitle>
 
-La méthode **`fetch`** en collaboration avec la méthode **`json`** sur la réponse d'une API permet de récupérer et parser des données JSON vers un objet JS.  
-Par exemple, cette requête de création d'une pizza parse la ressource qui a été rajoutée côté API au sein de la variable **`pizza`** :
+## Lecture de données se trouvant dans un fichier JSON
 
-```js highlighting="13"
-const options = {
-  method: 'POST',
-  body: JSON.stringify({
-    title: title.value,
-    content: content.value,
-  }),
-  headers: {
-    'Content-Type': 'application/json',
-  },
-};
+La fonction **`JSON.parse(objectSerialized) `** permet de créer un objet JS à partir d'une **`string`** contenant des données au format JSON.
 
-const response = await fetch('/api/pizzas', options);
-const pizza = await response.json();
+Par exemple, voici une fonction, permettant à une application Express de créer un objet JS en lisant des données se trouvant dans un fichier **`.json`** dont le chemin et nom complet sont indiqués dans le paramètre **`filePath`** :
+
+```js
+/**
+ * Parse items given in a .json file
+ * @param {String} filePath - path to the .json file
+ * If the file does not exist or it's content cannot be parsed as JSON data,
+ * use the default data.
+ * @param {Array} defaultArray - Content to be used when the .json file does not exists
+ * @returns {Array} : the array that was parsed from the file (or defaultData)
+ */
+function parse(filePath, defaultArray = []) {
+  if (!fs.existsSync(filePath)) return defaultArray;
+  const fileData = fs.readFileSync(filePath);
+  try {
+    // parse() Throws a SyntaxError exception if the string to parse is not valid JSON.
+    return JSON.parse(fileData);
+  } catch (err) {
+    return defaultArray;
+  }
+}
 ```
 
-# <InternalPageTitle> Sauvegarde de données JSON </InternalPageTitle>
+Imaginez que plutôt que de lire le menu de pizza à partir d'un array d'objets, on souhaite lire ce menu grâce au contenu d'un fichier contenant du JSON. Voici ce que donnerait l'opération de lecture de toutes les pizzas si le chemin et nom complet du fichier JSON était donné dans la constante **jsonDbPath**. :
 
-## Sérialisation d'objets JS vers du JSON
+```js
+const jsonDbPath = __dirname + '/../data/pizzas.json';
+// Read all the pizzas from the menu
+router.get('/', function (req, res) {
+  console.log('GET /pizzas');
+  const pizzas = parse(jsonDbPath, DEFAULT_MENU);
+  res.json(pizzas);
+});
+```
 
-### Application côté serveur
+## Sauvegarde de données dans un fichier JSON
 
-La fonction JS **`JSON.stringify(objectToSerialised)`** permet de créer une **string** contenant la représentation JSON de l'objet à sérialiser.
+La fonction **`JSON.stringify(objectToSerialised)`** permet de créer une **`string`** contenant la représentation JSON de l'objet à sérialiser.
 
 Côté serveur, il est ensuite facile de sauvegarder les données JSON au sein d'un fichier.
 
-Voici un exemple de code, une fonction, permettant à une application Express de sauvegarder au format JSON un objet dans un fichier **.json** dont son chemin et nom complet sont indiqués dans le paramètre **filePath** :
+Par exemple, voici une fonction permettant à une application Express de sauvegarder au format JSON un objet dans un fichier **`.json`** dont son chemin et nom complet sont indiqués dans le paramètre **`filePath`** :
 
 ```js
 /**
@@ -233,30 +212,31 @@ function serialize(filePath, object) {
 }
 ```
 
-Imaginez que, au sein du router traitant des ressources de type "pizzas", vous passiez la valeur suivante à **filePath** :
+Imaginez que, au sein du router traitant des ressources de type "pizzas", vous passiez la valeur suivante à **`filePath`** :
 
 ```js
 const jsonDbPath = __dirname + '/../data/pizzas.json';
 serialize(jsonDbPath, MENU);
 ```
 
-Cela signifie que dans le projet contenant notre API, nous allons sauvegarder le menu des pizzas au format JSON dans le fichier JSON **/data/pizzas.json**.
+Cela signifie que dans le projet contenant notre API, nous allons sauvegarder le menu des pizzas au format JSON dans le fichier JSON **`/data/pizzas.json`**.
 
-Ce fichier est en fait une base de données simplifiée !  
-Nous allons prochainement voir comment récupérer ces données au sein d'un array.
+Ce fichier est en fait une **base de données simplifiée** !  
+
+## Persistance des données : d'une sauvegarde en mémoire vive vers un fichier JSON
 
 Nous allons maintenant réaliser un tutoriel pour rendre les ressources de type "pizzas" persistantes.  
-Nous allons repartir de l'API créée au module 4.
+Nous allons repartir de l'API créée au tutoriel précédent.
 
-Dans votre repo **web2**, veuillez copier / coller le répertoire **/tutorials/pizzeria/api/basic** et le renommer en **/tutorials/pizzeria/api/persistence**.
+Dans votre repo **`web2`**, veuillez copier / coller le répertoire **`/tutorials/pizzeria/api/basic`** et le renommer en **`/tutorials/pizzeria/api/persistence`**.
 
 En cas de souci, vous pouvez télécharger le code du tutoriel précédent ici : [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
 
 Veuillez ouvrir un terminal au niveau de ce répertoire.
 
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/pizzeria/api/persistence** (ou **/web2/tutorials/pizzeria/api/persistence** si l'on considère le nom du répertoire du repo).
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **`/tutorials/pizzeria/api/persistence`** (ou **`/web2/tutorials/pizzeria/api/persistence`** si l'on considère le nom du répertoire du repo).
 
-Veuillez créer un nouveau répertoire **/utils**. Au sein de ce répertoire, veuillez créer le module **/utils/json.js** dans lequel vous allez ajouter ces fonctions :
+Veuillez créer un nouveau répertoire **`/utils`**. Au sein de ce répertoire, veuillez créer le module **`/utils/json.js`** dans lequel vous allez ajouter ces fonctions :
 
 ```js
 const fs = require('fs');
@@ -307,14 +287,15 @@ function createPotentialLastDirectory(filePath) {
 module.exports = { parse, serialize };
 ```
 
-L'opération de sérialisation des données est faite via la fonction **serialize** de **/utils/json.js**. Pour se simplifier la vie et ne pas obliger les développeurs à devoir créer manuellement un répertoire qui contiendra la mini DB de pizzas (le fichier **pizzas.json** dans la suite de l'exemple), une fonction a été créée qui s'appelle **createPotentialLastDirectory**.  
-La fonction **serialize** fait appel à cette fonction qui va, si nécessaire, créer le dernier répertoire donné dans le chemin vers le fichier JSON (le répertoire **/data** dans la suite de l'exemple).
 
-Il n'est pas intéressant de retenir par coeur le code donné dans **/utils/json.js**. Par contre, il est important que vous compreniez celui-ci, ce qu'il fait.
+L'opération de sérialisation des données est faite via la fonction **`serialize`** de **`/utils/json.js`**. Pour se simplifier la vie et ne pas obliger les développeurs à devoir créer manuellement un répertoire qui contiendra la mini DB de pizzas (le fichier **`pizzas.json`** dans la suite de l'exemple), une fonction a été créée qui s'appelle **`createPotentialLastDirectory`**.  
+La fonction **`serialize`** fait appel à cette fonction qui va, si nécessaire, créer le dernier répertoire donné dans le chemin vers le fichier JSON (le répertoire **`/data`** dans la suite de l'exemple).
+
+Il n'est pas intéressant de retenir par coeur le code donné dans **`/utils/json.js`**. Par contre, il est important que vous compreniez celui-ci, ce qu'il fait.
 
 A présent, nous allons convertir le code du router de "pizzas" pour rendre les données peristantes.    
 Voici ce que nous devons faire pour les opérations de :
-- **lecture de ressources** : il suffit de faire appel à la fonction **`parse`** qui tentera de charger les ressources qui devraient se trouver dans le répertoire **/data/pizzas.json**. Notons que le chemin vers ce fichier JSON est un simple choix, il doit être configurable.
+- **lecture de ressources** : il suffit de faire appel à la fonction **`parse`** qui tentera de charger les ressources qui devraient se trouver dans le répertoire **`/data/pizzas.json`**. Notons que le chemin vers ce fichier JSON est un simple choix, il doit être configurable.
 - **écriture de ressources** : lors d'une opération d'écriture pour créer une nouvelle ressource, ou pour mettre à jour une ressource existante, voici les étapes :
   - création d'une liste de toutes les pizzas dans un array : cela correspond à l'utilisation de la fonction **`parse`** pour tenter de charger ce qui est contenu dans la mini DB de pizzas.
   - mise à jour de l'array soit en ajoutant un nouvel objet (une pizza), soit en modifiant un objet existant, soit en supprimant un objet.
@@ -463,76 +444,16 @@ router.patch('/:id', (req, res) => {
 module.exports = router;
 ```
 
-Veuillez mettre à jour votre fichier **/router/pizzas.js** sur base du code donné et testez le bon fonctionnement de l'application. Faites quelques requêtes pour ajouter et modifier des données et vérifiez, une fois que vous redémarrer votre application, que les données persistent.
+Veuillez mettre à jour votre fichier **`/router/pizzas.js`** sur base du code donné et testez le bon fonctionnement de l'application. Faites quelques requêtes pour ajouter et modifier des données et vérifiez, une fois que vous redémarrer votre application, que les données persistent.
 
-### Application côté client
 
-Au niveau d'une IHM, il doit aussi être possible de sauvegarder des informations.  
-Or, pour des raisons de sécurité, le browser ne peut pas créer des fichiers JSON de manière transparente à l'utilisateur.  
-Afin de sauvegarder des données, le browser met néanmoins à disposition un web storage dans lequel on peut sauvegarder des données sous forme de paires "clé / valeur", au format texte.  
-Nous verrons cela plus tard en détails.
+# <InternalPageTitle> Exercice 1.7 : Persistance des données </InternalPageTitle>
 
-Voici déjà malgré tout un exemple de code, une fonction, permettant de sauvegarder les données de session d'un utilisateur dans le web storage d'un browser :
+Vous allez mettre à jour la RESTful API de **myMovies** afin de rendre les données persistantes dans un fichier JSON : **`/data/films.json`**.
 
-```js
-const setUserSessionData = (user) => {
-  const storageValue = JSON.stringify(user);
-  localStorage.setItem(STORE_NAME, storageValue);
-};
-```
+Veuillez repartir du code de la solution de votre [Exercice 1.6](../express-api/#exercice_1_6_suppression_modification_de_ressources).  
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.7`**.  
 
-## Parsing de données JSON vers un objet JS
+Veuillez tester toutes les fonctions de la RESTful API pour la collection de films à l'aide de REST Client en copiant les requêtes développées pour l'exercice précédent (fichier **films.http** du répertoire **REST Client**). Normalement, il n'y a pas de nouvelles requêtes à écrire, il suffit juste de les exécuter.
 
-### Application côté serveur
-
-La fonction JS **`JSON.parse(objectSerialized) `** permet de créer un objet JS à partir d'une **string** contenant des données au format JSON.
-
-Côté serveur, il est ensuite facile de sauvegarder les données JSON au sein d'un fichier.
-
-Voici un exemple de code, une fonction, permettant à une application Express de créer un objet JS sur base de données JSON se trouvant dans un fichier **.json** dont le chemin et nom complet sont indiqués dans le paramètre **filePath** :
-
-```js
-/**
- * Parse items given in a .json file
- * @param {String} filePath - path to the .json file
- * If the file does not exist or it's content cannot be parsed as JSON data,
- * use the default data.
- * @param {Array} defaultArray - Content to be used when the .json file does not exists
- * @returns {Array} : the array that was parsed from the file (or defaultData)
- */
-function parse(filePath, defaultArray = []) {
-  if (!fs.existsSync(filePath)) return defaultArray;
-  const fileData = fs.readFileSync(filePath);
-  try {
-    // parse() Throws a SyntaxError exception if the string to parse is not valid JSON.
-    return JSON.parse(fileData);
-  } catch (err) {
-    return defaultArray;
-  }
-}
-```
-
-Imaginez que, au sein du router traitant des ressources de type "pizzas", que l'on récupère le menu des pizzas à l'aide du fichier JSON dont le chemin et nom complet est donné dans **jsonDbPath**. Voici ce que donnerait l'opération de lecture de toutes les pizzas :
-
-```js
-// Read all the pizzas from the menu
-router.get('/', function (req, res) {
-  console.log('GET /pizzas');
-  const pizzas = parse(jsonDbPath, DEFAULT_MENU);
-  res.json(pizzas);
-});
-```
-
-### Application côté client
-
-Au niveau d'une IHM, il doit aussi être possible de récupérer des données JSON qui auraient été sauvegardées au sein du web browser.
-
-Nous verrons cela plus tard en détails. Voici déjà malgré tout un exemple de code, une fonction, permettant de parser les données de session d'un utilisateur se trouvant dans le web storage d'un browser :
-
-```js
-const getUserSessionData = () => {
-  const retrievedUser = localStorage.getItem(STORE_NAME);
-  if (!retrievedUser) return;
-  return JSON.parse(retrievedUser);
-};
-```
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.7 : API : persistence`**.
