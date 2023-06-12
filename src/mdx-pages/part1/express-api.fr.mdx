@@ -6,25 +6,29 @@ description: "Introduction aux RESTful API en Node.js & Express"
 <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
     <PathViewerItem to="/part1"> Partie 1 </PathViewerItem>
-    <PathViewerItem selected> b) RESTful API </PathViewerItem>
+    <PathViewerItem selected> a) RESTful API </PathViewerItem>
 </PathViewer>
 
-# b) Introduction aux RESTful API en Node.js & Express
+# a) Introduction aux RESTful API en Node.js & Express
 
 <InternalPageMenu>
   <InternalPageMenuItem> Introduction aux RESTful API & conventions </InternalPageMenuItem>
   <InternalPageMenuItem> Configuration & démarrage d'une RESTful API en Express </InternalPageMenuItem>
   <InternalPageMenuItem> Les fonctions middleware en Express </InternalPageMenuItem>
   <InternalPageMenuItem> Définition d'une route en Express </InternalPageMenuItem>
-  <InternalPageMenuItem> Opération de lecture </InternalPageMenuItem>
-  <InternalPageMenuItem> Chemin et paramètres de route </InternalPageMenuItem>
-  <InternalPageMenuItem> Chemin et paramètres de requête </InternalPageMenuItem>
+  <InternalPageMenuItem> Opérations de lecture </InternalPageMenuItem> 
+  <InternalPageMenuItem> Exercice 1.1 : lecture de toutes les ressources </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 1.2 : middleware s'exécutant sur toutes les routes </InternalPageMenuItem>
+  <InternalPageMenuItem> Paramètres de route </InternalPageMenuItem>
+  <InternalPageMenuItem> Paramètres de requête </InternalPageMenuItem>
   <InternalPageMenuItem> Opération de création & parsing du body </InternalPageMenuItem>
   <InternalPageMenuItem> Client REST </InternalPageMenuItem>
-  <InternalPageMenuItem> Répondre avec un code de statut HTTP </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 1.3 : lectures spécifiques, création & REST Client </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Exercice 1.4 : Gestion de la pagination, du tri et du filtrage </InternalPageMenuItem>
+  <InternalPageMenuItem> Codes de statut HTTP associés aux réponses </InternalPageMenuItem> 
+  <InternalPageMenuItem> Exercice 1.5 : codes de statut HTTP </InternalPageMenuItem>
   <InternalPageMenuItem> Opérations de suppression & de modification </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 1.1 : Création d'une RESTfull API non protégée pour myMovies </InternalPageMenuItem>
-  <InternalPageMenuItem> 🍬 Exercice 1.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 1.6 : suppression & modification de ressources </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> Introduction aux RESTful API & conventions </InternalPageTitle>
@@ -65,7 +69,7 @@ Voici un exemple d'application de ces conventions REST dans le cadre d'une RESTf
 
 <br/>
 
-Si cette API est hébergée à l'URL racine **https://jsonplaceholder.typicode.com/**, alors nous pourrions identifier une ressource de type **posts** de cette façon : **https://jsonplaceholder.typicode.com/posts/10**.
+Lors de l'ajout d'un film, si cette API est hébergée à l'URL racine **https://jsonplaceholder.typicode.com/**, alors nous pourrions identifier une ressource de type **posts** de cette façon : **https://jsonplaceholder.typicode.com/posts/10**.
 
 Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : **https://jsonplaceholder.typicode.com/posts/10**.
 
@@ -135,7 +139,7 @@ Les fonctions middleware s'occupent du traitement des requêtes des clients et d
 
 Une fonction middleware a accès aux objets de la requête et de la réponse et peut utiliser la requête et la réponse pour ajouter, par exemple, un log, pour autoriser un utilisateur, pour parser des données Json vers des objets JS, pour servir des fichiers statiques, pour faire un traitement pour une route bien spécifique...
 
-Si une fonction middleware ne termine pas le cycle de requête-réponse, elle doit appeler **`next()`** pour permettre à d'autres fonctions qui sont dans la queue de pouvoir être exécutées.
+Lors de l'ajout d'un film, si une fonction middleware ne termine pas le cycle de requête-réponse, elle doit appeler **`next()`** pour permettre à d'autres fonctions qui sont dans la queue de pouvoir être exécutées.
 
 Voici les éléments associés à l'appel d'une fonction middleware :
 
@@ -191,7 +195,7 @@ var pizzaRouter = require('./routes/pizzas');
 app.use('/pizzas', pizzaRouter);
 ```
 
-Si le router est utilisé de cette façon, en relisant l'avant-dernier snippet, on voit que : 
+Lors de l'ajout d'un film, si le router est utilisé de cette façon, en relisant l'avant-dernier snippet, on voit que : 
 - la première fonction (où il y a un `console.log`) s'applique donc à toutes les routes qui commencent par **/pizzas** ;
 - la deuxième fonction middleware s'appliquent seulement aux requêtes de type **GET** sur la route (ou le chemin) **/pizzas** (équivalent de la route **/pizzas/**).
 
@@ -239,7 +243,7 @@ On définit une route de cette façon : **`app.`** ou **`router.`**  **`METHOD(P
 
 👍 Dans notre cours, nous vous recommandons d'organiser vos routes par type de ressources et donc de mettre en place des routers.
 
-# <InternalPageTitle> Opération de lecture </InternalPageTitle>
+# <InternalPageTitle> Opérations de lecture </InternalPageTitle>
 
 Nous souhaitons par commencer à développer une opération permettant de lire toutes les ressources de type "pizzas".  
 Veuillez créer un router pour traiter des ressources **/pizzas** au sein de **`/routes/pizzas.js`**.  
@@ -327,16 +331,60 @@ npm start
 Pour consommer l'opération de lecture via un browser, nous pouvons lire toutes les ressources de type "pizzas" ici :
 [http://localhost:3000/pizzas](http://localhost:3000/pizzas)
 
-# <InternalPageTitle> Chemin et paramètres de route </InternalPageTitle>
+# <InternalPageTitle> Exercice 1.1 : lecture de toutes les ressources </InternalPageTitle>
+Vous allez créer la première version de la RESTful API de **myMovies**, un site qui permettra de présenter des films. Vous devez, sous Express, mettre à disposition cette opération :
+
+| URI | Méthode HTTP | Opération |
+|---|---|---|
+| **`films`** | GET | READ ALL : Lire toutes les ressources de la collection |
+
+<br/>
+
+Une ressource de type **`films`** doit contenir les propriétés suivantes :
+  - **`id`** : un entier 
+  - **`title`** : titre du film (String)
+  - **`duration`** : durée du film en minutes ; elle doit être un nombre positif (pas une string !).
+  - **`budget`** : pour informer du coût qu'a couté la production du film, en millions ; le budget doit être un nombre positif (pas une string !).
+  - **`link`** : pour donner une URL vers la description du film (lien vers imdb, rottentomatoes ou autre).
+
+Veuillez donc "hardcoder" au moins trois ressources, parmi vos films préférés, dans un array au sein de votre RESTful API.
+
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.1`**.  
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.1 API : read`**.
+
+# <InternalPageTitle> Exercice 1.2 : middleware s'exécutant sur toutes les routes </InternalPageTitle>
+Veuillez créer un middleware qui permet d'enregistrer et d'afficher dans la console des statistiques sur les requêtes faites à votre API.
+
+Vous devez enregistrer, depuis le démarrage du serveur, le nombre de requêtes faites à votre API.
+
+Vous devez catégoriser le nombre d'appels par **`PATH`** et par **`méthode HTTP`**.
+
+Voici un example de ce qui devrait être affiché dans la console à chaque requête vers votre API :
+```bash
+Request counter :
+- GET / : 10
+- GET /pizzas : 2
+- POST /pizzas : 5
+- DELETE /pizzas : 2
+```
+
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.2`**.  
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.2 : app middleware`**.
+
+#### 🤝 Tips
+- Comment récupérer la méthode HTTP ? **`req.method`** ...
+- Comment appliquer un middleware à toutes les routes ? revoir les **application-level middleware**...
+
+# <InternalPageTitle> Paramètres de route </InternalPageTitle>
 
 Les **route parameters** sont des segments d'une URL qui sont utilisés pour capturer une valeur spécifiée à leur position dans l'URL. On récupère ces paramètres via l'objet **`req.params`**.
 
 Pour notre pizzeria, nous souhaitons pouvoir lire une pizza identifiée par son **id**.
 
 Nous allons donc ajouter le paramètre de route **id**.  
-En respect des conventions REST, un client, pour faire appel à cette opération, devra faire une requête du genre : **`GET /pizzas/2`**.
+En respect des conventions REST, un client devra faire ce genre de requête pour appeler cette opération : **`GET /pizzas/2`**.
 
-Voici la nouvelle route permettant de traiter de cette opération, à ajouter dans le router **`/routes/pizza.js`** :
+Pour continuer le tutoriel que nous avons initié dans le répertoire **`/tutorials/pizzeria/api/basic`**,  voici la nouvelle route à ajouter dans le router **`/routes/pizza.js`** :
 ```js
 // Read the pizza identified by an id in the menu
 router.get('/:id', (req, res) => {
@@ -360,20 +408,20 @@ Le paramètre de la route "2" est récupéré dans l'URL de la route par Express
 
 N'hésitez pas à faire une requête pour un identifiant n'existant pas de le menu pour voir ce qui se passe : [http://localhost:3000/pizzas/666](http://localhost:3000/pizzas/666).
 
-# <InternalPageTitle> Chemin et paramètres de requête </InternalPageTitle>
+# <InternalPageTitle> Paramètres de requête </InternalPageTitle>
 
 Les **query parameters** sont des paramètres qui peuvent être ajoutés à une URL.  
 On récupère ces paramètres via l'objet **`req.query`**.
 
 Pour notre pizzeria, nous souhaitons pouvoir lire toutes les ressources de type "pizzas" triées par ordre ascendant ou descendant du titre.
 
-En respect des conventions REST, un client, pour faire appel à cette opération, devra faire une requête du genre : 
+En respect des conventions REST, un client devra faire ce genre de requêtes : 
 - pour le tri ascendant : **`GET /pizzas?order=title`** ;
 - pour le tri descendant : **`GET /pizzas?order=-title`**.
 
 Il n'y a donc pas de nouvelle route à ajouter ici. En effet, ça reste une requête de type GET sur la route **`/pizzas`**. 
 
-Veuillez donc mettre à jour **/routes/pizza.js** pour la lecture de toutes les pizzas :
+Veuillez donc mettre à jour **`/routes/pizza.js`** pour la lecture de toutes les pizzas :
 ```js
 /* Read all the pizzas from the menu
    GET /pizzas?order=title : ascending order by title
@@ -406,7 +454,7 @@ N'hésitez pas à tester d'autres tris.
 
 Nous souhaitons développer une opération permettant de créer une ressource de type "pizzas".  
 Selon les conventions REST, il faut faire une requête de type **`POST /pizzas`** qui offre une représentation de la ressource à créer. La représentation utilisée est le JSON que nous verrons plus en détails plus tard.  
-Si nous souhaitons créer une ressource dont le titre est "Magic Green" et le contenu est "Epinards, Brocolis, Olives vertes, Basilic", la représentation de la ressource à créer sera la suivante :
+Lors de l'ajout d'un film, si nous souhaitons créer une ressource dont le titre est "Magic Green" et le contenu est "Epinards, Brocolis, Olives vertes, Basilic", la représentation de la ressource à créer sera la suivante :
 ```json
 {
     "title":"Magic Green",
@@ -417,10 +465,10 @@ Si nous souhaitons créer une ressource dont le titre est "Magic Green" et le co
 Selon les conventions REST, une requête de création est de type **POST** et contient ses **paramètres 
 au sein du body** de la requête.
 
-**`/routes/pizzas.js`** doit offrir une nouvelle route permettant d'ajouter une nouvelle pizza au menu, qui est un array d'objets. Une nouvelle pizza doit donc être ajoutée à une variable, un array, qui est contenu dans la mémoire vive de votre machine.  
-Lorsque l'ajout d'une pizza au menu a réussi, nous souhaitons renvoyer la représentation de la nouvelle ressource au client. Ainsi, le client aura notamment accès à l'**id** de la pizza créé par l'API.
+**`/routes/pizzas.js`** doit offrir une nouvelle route permettant d'ajouter une nouvelle pizza au menu, qui est un array d'objets. Une nouvelle pizza doit donc être ajoutée à une variable, un array, qui est contenu dans la mémoire vive de notre machine.  
+Lorsque l'ajout d'une pizza au menu a réussi, nous souhaitons renvoyer la représentation de la nouvelle ressource au client. Ainsi, le client aura notamment accès à l'**id** de la pizza créée par l'API.
 
-Voici le code du router **`/routes/pizzas.js`** pour la nouvelle opération, veuillez le rajouter dans votre application :
+Voici le code du router **`/routes/pizzas.js`** pour la nouvelle opération. Rajoutons-le dans notre application :
 ```js
 // Create a pizza to be added to the menu.
 router.post('/', (req, res) => {
@@ -462,34 +510,32 @@ Nous avons donc besoin d'un client léger permettant de faire des requêtes HTTP
 # <InternalPageTitle> Client REST </InternalPageTitle>
 
 ## Introduction
-Dans le cadre de ce cours, tout comme généralement dans un environnement professionnel, nous souhaitons pouvoir développer une API indépendamment du développement d'une IHM.
+Dans le cadre de ce cours, tout comme généralement dans un environnement professionnel, nous souhaitons pouvoir développer une API indépendamment du développement d'une IHM (Interface Homme Machine, ce sont les écrans permettant d'interagir avec l'application web).
 
 En effet, cela prendrait trop de temps de devoir développer un frontend (HTML / JavaScript / CSS) pour tester nos API.
 
 Nous allons donc utiliser un client léger permettant de faire des requêtes à nos API.  
-Il en existe de nombreux, comme REST Client [[R.55]](/references/#r55) ou Postman [[R.56]](/references/#r56).
-
-Pour ce cours, nous vous présentons et recommandons d'utiliser REST Client pour écrire et exécuter vos requêtes HTTP.
+Il en existe de nombreux, comme [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) [[R.55]](/references/#r55) ou [Postman](https://www.postman.com/) [[R.56]](/references/#r56).
 
 ## REST Client
-Dans le cadre de ce cours, nous utilisons REST Client [[R.55]](/references/#r55) de Visual Studio Code pour tester nos API.
+Dans le cadre de ce cours, nous utilisons [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) [[R.55]](/references/#r55) de Visual Studio Code pour tester nos API.
 
 Pour installer REST Client au sein de VS Code, veuillez cliquer sur l'onglet **Extensions**. 
 
 Recherchez l'extension **REST Client** et cliquez sur **Install**.
 
 Quelques notions pour utiliser REST Client :
-- Il faut créer un fichier **.http** (ou **.rest**) contenant les requêtes vers vos RESTful APIs.  
-NB : Il est approprié de créer un fichier par par type de ressources.
-- Chaque requête est introduite par **###** (3 "**#**"" ou plus) ; voici la requête permettant de lire toutes les pizzas :
+- Il faut créer un fichier **`.http`** (ou **`.rest`**) contenant les requêtes vers vos RESTful APIs.  
+NB : Il est approprié de créer un fichier par type de ressources.
+- Chaque requête est introduite par **`###`** (3 "**`#`**"" ou plus) ; voici la requête permettant de lire toutes les pizzas :
 ```http
 ### Read all pizzas
 GET http://localhost:3000/pizzas
 ```
-- Pour exécuter une requête, il suffit de cliquer sur **Send Request**.
-- Lorsqu'on envoie des données au format JSON, il est important d'avoir un espace avant les accolades (avant le "**&#123;**" ).
-- On peut définir des "**File variables**" via ce genre de syntaxe : **@baseUrl = http://localhost:3000**.
-- Pour utiliser la variable **baseUrl**, il suffit de la mettre entre double accolades. Par exemple, voici la requête permettant de lire toutes les pizzas :  
+- Pour exécuter une requête, il suffit de cliquer sur **`Send Request`**.
+- Lorsqu'on envoie des données au format JSON, il est important d'avoir un espace avant les accolades (avant le "**`{`**" ).
+- On peut définir des **File variables** via ce genre de syntaxe : **`@baseUrl = http://localhost:3000`**.
+- Pour utiliser la variable **`baseUrl`**, il suffit de la mettre entre double accolades. Par exemple, voici la requête permettant de lire toutes les pizzas :  
 ```http
 ### Read all pizzas with File variable
 @baseUrl = http://localhost:3000
@@ -498,9 +544,9 @@ GET {{baseUrl}}/pizzas
 
 Nous allons maintenant tester l'API de la pizzeria que nous avons créée pour toutes ses opérations.
 
-Au sein de VS Code, dans votre projet **/tutorials/pizzeria/api/basic**, veuillez créer un répertoire nommé **REST Client**. Dans ce répertoire, veuillez créer un fichier nommé **pizzas.http**.
+Au sein de VS Code, dans votre projet **`/tutorials/pizzeria/api/basic`**, veuillez créer un répertoire nommé **`REST Client`**. Dans ce répertoire, veuillez créer un fichier nommé **`pizzas.http`**.
 
-Dans **pizzas.http**, veuillez ajouter cette requête pour la lecture de toutes les pizzas et exécutez la : 
+Dans **`pizzas.http`**, veuillez ajouter cette requête pour la lecture de toutes les pizzas et exécutez la : 
 ```http
 ### Read all pizzas with File variable
 @baseUrl = http://localhost:3000
@@ -510,7 +556,7 @@ GET {{baseUrl}}/pizzas
 Est-ce que cela fonctionne bien ?  Avez vous bien démarré votre API ?  
 Vous devriez obtenir le même résultat que si vous accédiez à votre API à l'aide du browser.
 
-Au sein de **pizzas.http**, veuillez ajouter ces deux requêtes pour la lecture de toutes les pizzas en les triant selon leur titre :
+Au sein de **`pizzas.http`**, veuillez ajouter ces deux requêtes pour la lecture de toutes les pizzas en les triant selon leur titre :
 ```http
 ### Read all pizzas sorted by title (ascending)
 GET {{baseUrl}}/pizzas/?order=+title
@@ -521,9 +567,9 @@ GET {{baseUrl}}/pizzas/?order=-title
 
 Veuillez exécuter ces deux requêtes.
 
-Il semble que nous sommes prêts pour créer une requête appelant l'opération de création d'une pizza.
+Nous sommes prêts pour ajouter une requête appelant l'opération de création d'une pizza.
 
-Au sein de **pizzas.http**, veuillez ajouter cette requête pour la création d'une pizza :
+Au sein de **`pizzas.http`**, veuillez ajouter cette requête pour la création d'une pizza :
 ```http
 ### Create a pizza
 POST {{baseUrl}}/pizzas
@@ -535,17 +581,74 @@ Content-Type: application/json
 }
 ```
 
-On remarque qu'il est important de mettre une ligne vide avant les accolades représentant le body de la requête.  N'hésitez pas à tester cette requête avec ou sans la ligne vide pour y croire.
+On remarque qu'il est important de mettre une ligne vide avant les accolades représentant le body de la requête.
 
 💭 Comment tester que le bon fonctionnement de l'opération de création ?
 
 Et bien il suffit d'exécuter l'opération de lecture de toutes les pizzas 😎 !
-Si la nouvelle ressource apparaît, c'est qu'elle a bien été créée !
-Faites le test.
+Lors de l'ajout d'un film, si la nouvelle ressource apparaît, c'est qu'elle a bien été créée !
+Faites le test !
 
-# <InternalPageTitle> Répondre avec un code de statut HTTP </InternalPageTitle>
+# <InternalPageTitle> Exercice 1.3 : lectures spécifiques, création & REST Client </InternalPageTitle>
 
-On ne peut pas toujours renvoyer du JSON suite à une requête client ainsi qu'un code HTTP correspondant au fait que tout est OK ("200 OK").
+Veuillez continuer le développement de la RESTful API de **myMovies**, sous Express, afin de mettre à disposition de nouvelles opérations sur des films et utiliser **REST Client**.
+
+Veuillez repartir du code de la solution de votre [Exercice 1.1](#exercice_1_1_lecture_de_toutes_les_ressources) ou de votre [Exercice 1.2](#exercice_1_2_middleware_sexecutant_sur_toutes_les_routes) si celui-ci contient l'opération de lecture de tous les films.
+
+Veuillez rajouter ces opérations à votre API :
+
+| URI | Méthode HTTP | Opération |
+|---|---|---|
+| **`films?minimum-duration=value`** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
+| **`films/{id}`** | GET | READ ONE : Lire la ressource identifiée |
+| **`films`** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
+
+<br/>
+
+Pour rappel, une ressource de type **`films`** doit contenir les propriétés suivantes :
+  - **`id`** : un entier 
+  - **`title`** : titre du film (String)
+  - **`duration`** : durée du film en minutes ; elle doit être un nombre positif (pas une string !).
+  - **`budget`** : pour informer du coût qu'a couté la production du film, en millions ; le budget doit être un nombre positif (pas une string !).
+  - **`link`** : pour donner une URL vers la description du film (lien vers imdb, rottentomatoes ou autre).
+
+Les ressources ne doivent toujours pas persister : dès lors, ajoutez les données associées aux films dans un array.
+
+Veuillez bien valider les paramètres reçu par les opérations de vos API ; vérifiez par exemple que **`budget`** et **`duration`** sont des **nombres positifs**. 
+
+Veuillez **tester toutes les fonctions de la RESTful API** pour la collection de films à l'aide du **REST Client** dans VS Code. Veuillez ajouter vos requêtes au sein du fichier **`films.http`** dans le répertoire **REST Client** du dossier associé à cet exercice.
+
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.3`**.  
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.3 : API : create & REST client`**.
+
+#### 🤝 Tips
+- Développez les opérations de votre API de manière incrémentale : testez une opération via REST Client avant de passer à une nouvelle opération.
+- Pour le filtre sur les films, vous allez récupérer un paramètre de requête.  
+⚡ Attention, le signe **`-`** est un opérateur en JS, vous ne pouvez pas récupérer le paramètre de requête via **`req.query.minimum-duration`**...  
+💭 Mais alors comment faire ?  
+On accède aussi au propriété d'un objet à l'aide d'un array, ici ça serait via **`req.query['minimum-duration']`**.
+- N'hésitez pas à vous inspirer du code du tutoriel [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
+- Pour vérifier le type d'une variable, n'hésitez pas à utiliser l'opérateur **`typeof`**.
+
+
+# <InternalPageTitle> 🍬 Exercice 1.4 : Gestion de la pagination, du tri et du filtrage </InternalPageTitle>
+
+N'hésitez pas, c'est optionnel, de gérer de nouvelles opérations au sein de votre RESTful API de **myMovies** :
+-	Filtrez tous les films qui commencent par une certaines chaînes de caractères.
+-	Permettez de trier les films.
+
+Le code de votre application est à ajouter dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.4`**.  
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.4 : API : ordering & filtering client`**.
+
+🍬 Et si vraiment vous avez encore du temps et souhaitez déjà approfondir les RESTful APIs, n'hésitez pas aussi à implémenter la gestion de la pagination. Pour cette partie, veuillez faire un **`commit`** de votre code avec le message suivant : **`1.4 : API : pagination`**.
+
+#### 🤝 Tips
+Besoin d'inspiration pour l'aspect filtrage et la gestion du tri des ressources ? [REST API Guide](https://dev.to/drminnaar/rest-api-guide-14n2) [[R.58]](/references/#r58).
+
+
+# <InternalPageTitle> Codes de statut HTTP associés aux réponses </InternalPageTitle>
+
+On ne peut pas toujours renvoyer du JSON suite à une requête client ainsi qu'un code HTTP correspondant au fait que tout est OK (**`200 OK`**).
 
 Quand vous exécutez cette requête :
 ```http
@@ -558,9 +661,9 @@ Vous faites appel à l'opération de lecture de toutes les pizzas. La dernière 
 res.json(orderedMenu ?? MENU);
 ```
 
-En fait, la fonction **json** renvoie une réponse au format JSON, mais de plus, elle renvoie un "status code" **200** indiquant au client que tout s'est bien passé.
+La fonction **`json`** renvoie une réponse au format JSON, mais de plus, elle renvoie un **status code** **`200`** indiquant au client que tout s'est bien passé.
 
-Au sein de **pizzas.http**, veuillez ajouter cette requête pour tenter de créer une pizza en oubliant un paramètre :
+Au sein de **`pizzas.http`**, veuillez ajouter cette requête pour tenter de créer une pizza en oubliant un paramètre :
 ```http
 ### Create a pizza which lacks a property
 POST {{baseUrl}}/pizzas
@@ -572,9 +675,9 @@ Content-Type: application/json
 ```
 
 Veuillez exécuter cette requête. Que se passe-t-il ?  
-On récupère un code d'erreur "400 Bad Request".
+On récupère un code d'erreur **`400 Bad Request`**.
 
-En effet, lorsqu'on omet un paramètre dans la représentation de la ressource à créer, voici les lignes de code amenant au renvoi du code d'erreur 400 au sein de **pizzas.js** :
+En effet, lorsqu'on omet un paramètre dans la représentation de la ressource à créer, voici les lignes de code amenant au renvoi du code d'erreur **`400`** au sein de **`pizzas.js`** :
 ```js numbered highlighting="3,4,8"
 // Create a pizza to be added to the menu.
 router.post('/', (req, res) => {
@@ -605,30 +708,50 @@ Le client est donc bien informé qu'il y a eu un problème lors de l'exécution 
 Il pourrait par exemple utiliser cette information pour présenter un message d'erreur au niveau d'une IHM.
 
 Voici les grandes catégories de "status codes" :
-- Réponses informatives : **100-199**
-- Réponses en cas de succès : **200-299**
-- Redirections : **300-399**
-- Erreurs du client : **400-499**
-- Erreurs du serveur : **500-599**
+- Réponses informatives : **`100-199`**
+- Réponses en cas de succès : **`200-299`**
+- Redirections : **`300-399`**
+- Erreurs du client : **`400-499`**
+- Erreurs du serveur : **`500-599`**
 
 Voici les "status codes" que nous allons généralement utiliser :
-- **200 OK** : tout s'est bien passé, Express ajoute ce code automatiquement pour nous quand nous utilisons une méthode comme **res.json()**.
-- **400 Bad Request** : pour indiquer au client que la requête contient des paramètres non valides ou n'est pas complète.
-- **401 Unauthorized** : pour indiquer au client qu'il doit s'authentifier pour accéder à cette opération. On renvoie aussi ce code d'erreur quand un client fournit un mauvais username ou password.
-- **403 Forbidden** : le client est connu du serveur, mais il n'a pas les privilèges pour accéder à cette opération (par exemple, le client n'est pas admin et tente d'accéder à une opération seulement accessible à un admin).
-- **404 Not Found** : la ressource demandée n'existe pas, bien que l'URL semble valide.
-- **409 Conflict** : l'état du serveur entre en conflit avec la requête. Par exemple, la requête demande de créer un utilisateur qui existe déjà.
-- **500 Internal Server Error** : le serveur a rencontré une erreur qu'il ne peut pas régler. Par exemple, le serveur de base de données ne répond pas et ne permet donc pas d'accéder aux ressources.
+- **`200 OK`** : tout s'est bien passé, Express ajoute ce code automatiquement pour nous quand nous utilisons une méthode comme **`res.json()`**.
+- **`400 Bad Request`** : pour indiquer au client que la requête contient des paramètres non valides ou n'est pas complète.
+- **`401 Unauthorized`** : pour indiquer au client qu'il doit s'authentifier pour accéder à cette opération. On renvoie aussi ce code d'erreur quand un client fournit un mauvais username ou password.
+- **`403 Forbidden`** : le client est connu du serveur, mais il n'a pas les privilèges pour accéder à cette opération (par exemple, le client n'est pas admin et tente d'accéder à une opération seulement accessible à un admin).
+- **`404 Not Found`** : la ressource demandée n'existe pas, bien que l'URL semble valide.
+- **`409 Conflict`** : l'état du serveur entre en conflit avec la requête. Par exemple, la requête demande de créer un utilisateur qui existe déjà.
+- **`500 Internal Server Error`** : le serveur a rencontré une erreur qu'il ne peut pas régler. Par exemple, le serveur de base de données ne répond pas et ne permet donc pas d'accéder aux ressources.
+
+# <InternalPageTitle> Exercice 1.5 : codes de statut HTTP </InternalPageTitle>
+
+Veuillez continuer le développement de la RESTful API de **myMovies**, sous Express, afin de mieux gérer la création de pizza et le réponses à donner aux clients.
+
+Veuillez repartir du code de la solution de votre [Exercice 1.3](#exercice_1_3_lectures_specifiques_creation_rest_client) ou de votre [Exercice 1.4 optionnel](#🍬_exercice_1_4_gestion_de_la_pagination_du_tri_et_du_filtrage).
+
+Veuillez améliorer cette opération :
+
+| URI | Méthode HTTP | Opération |
+|---|---|---|
+| **`films`** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête. |
+
+<br/>
+
+Lors de l'ajout d'un film, si la ressource existe déjà, c'est-à-dire s'il y a déjà un film présent avec le **`title`** donné, veuillez renvoyer le status code approprié.
+
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.5`**.  
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.5 : API : status code`**.
 
 # <InternalPageTitle> Opérations de suppression & de modification </InternalPageTitle>
 
 ## Opération de suppression
 Nous souhaitons développer une opération permettant de supprimer une ressource de type "pizzas" à l'aide de son identifiant.  
-Selon les conventions REST, il faut faire une requête de type **`DELETE /pizzas/{id}`** contenant l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter".
 
-Une opération de suppression ne contient donc pas de body et est de type DELETE. 
+Selon les conventions REST, une **opération de suppression**:
+- est associée à une requête de type **`DELETE /pizzas/{id}`** contenant l'**identifiant** de la ressource à supprimer au sein de l'URI comme **paramètre de route**.
+- **ne contient pas de données dans le body** et est de **type DELETE**.
 
-Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez la rajouter dans votre application :
+Voici le code du router **`/routes/pizzas.js`** pour la nouvelle opération, veuillez la rajouter dans le répertoire de votre tutoriel en cours :
 ```js
 // Delete a pizza from the menu based on its id
 router.delete('/:id', (req, res) => {
@@ -645,7 +768,7 @@ router.delete('/:id', (req, res) => {
 });
 ```
 
-Au sein de **pizzas.http**, veuillez ajouter cette requête pour supprimer la pizza possédant l'identifiant "2" :
+Au sein de **`pizzas.http`**, veuillez ajouter cette requête pour supprimer la pizza possédant l'identifiant "2" :
 ```http
 ### Delete pizza identified by 2
 DELETE {{baseUrl}}/pizzas/2
@@ -654,11 +777,13 @@ DELETE {{baseUrl}}/pizzas/2
 Veuillez exécuter cette requête et vérifier que la pizza a bien été supprimée.
 
 ## Opération de modification
-Nous souhaitons développer une opération permettant de modifier une ressource de type "pizzas" à l'aide de son identifiant et de nouvelles valeurs pour ses propriétés.  
-Selon les conventions REST, comme on accepte de modifier que certaines des propriétés d'une pizza, qu'il ne faut pas fournir toutes les propriétés d'une pizza, il faut faire une requête de type **`PATCH /pizzas/{id}`** contenant 
-l'identifiant de la ressource à supprimer au sein de l'URL comme "path parameter" ainsi que les nouvelles données au sein du body de la requête.
+Nous souhaitons développer une opération permettant de modifier une ressource de type "pizzas" à l'aide de son identifiant et de nouvelles valeurs pour ses propriétés. 
 
-Si nous souhaitons modifier une ressource identifiée par 6 en fournissant un nouveau titre "Magic Green 2", la représentation des données de la ressource à modifier sera la suivante :
+Selon les conventions REST, une **opération de modification** :
+- si l'on accepte de modifier que certaines des propriétés d'une pizza (qu'il ne faut donc pas fournir toutes les propriétés d'une pizza), est associée à une requête de type **`PATCH /pizzas/{id}`** contenant l'**identifiant** de la ressource à supprimer au sein de l'URL comme **paramètre de route**.
+- **contient les nouvelles données au sein du body** et est de **type PATCH ou PUT**.
+
+Lors de l'ajout d'un film, si nous souhaitons modifier une ressource identifiée par **`6`** en fournissant un nouveau titre "Magic Green 2", la représentation des données de la ressource à modifier sera la suivante :
 ```json
 {
     "title":"Magic Green 2"
@@ -667,7 +792,7 @@ Si nous souhaitons modifier une ressource identifiée par 6 en fournissant un no
 
 Selon les conventions REST, la requête de modification est de type PATCH et contient ses paramètres au sein du body de la requête.
 
-Voici le code du router **/routes/pizzas.js** pour la nouvelle opération, veuillez la rajouter dans votre application :
+Voici le code du router **`/routes/pizzas.js`** pour la nouvelle opération à rajouter dans votre tutoriel en cours :
 ```js
 // Update a pizza based on its id and new values for its parameters
 router.patch('/:id', (req, res) => {
@@ -692,7 +817,7 @@ router.patch('/:id', (req, res) => {
 });
 ```
 
-Au sein de **pizzas.http**, veuillez ajouter cette requête pour modifier la pizza possédant l'identifiant "6" :
+Au sein de **`pizzas.http`**, veuillez ajouter cette requête pour modifier la pizza possédant l'identifiant "6" :
 ```http
 ### Update the pizza identified by 6
 PATCH {{baseUrl}}/pizzas/6
@@ -708,61 +833,29 @@ Veuillez exécuter cette requête et vérifier que la pizza a bien été modifi�
 💭 Cela ne fonctionne pas ?  
 Avez vous précédemment exécuté la requête permettant de créer une sixième pizza.
 
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**api-basic**".
+Lors de l'ajout d'un film, si votre tutoriel fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**`tutorial : api-basic`**".
 
 En cas de souci, vous pouvez accéder au code du tutoriel ici : [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
 
-# <InternalPageTitle> Exercice 1.1 : Création d'une RESTfull API non protégée pour myMovies </InternalPageTitle>
+# <InternalPageTitle> Exercice 1.6 : suppression & modification de ressources </InternalPageTitle>
 
-Veuillez continuer le développement de **myMovies**. Vous allez créer la première version de la RESTful API de **myMovies**, sous Express, afin de mettre à disposition toutes les opération de type CRUD sur des films.
+Veuillez continuer le développement de la RESTful API de **myMovies**, sous Express, afin d'ajouter les opérations de suppression et de modification de ressources.
 
+Veuillez repartir du code de la solution de votre [Exercice 1.5](#exercice_1_5_codes_de_statut_http).
 
-Afin de réaliser cet exercice, voici les contraintes d'implémentation :
--	Veuillez créer une RESTful API pour la collection de films, qui réponde sur le port par défaut d'une application Express (3000), et qui couvre ces opérations :
+Veuillez ajouter ces trois nouvelles opérations :
 
 | URI | Méthode HTTP | Opération |
 |---|---|---|
-| **films** | GET | READ ALL : Lire toutes les ressources de la collection |
-| **films?minimum-duration=value** | GET | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
-| **`films/{id}`** | GET | READ ONE : Lire la ressource identifiée |
-| **films** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête |
 | **`films/{id}`** | DELETE | DELETE ONE : Effacer la ressource identifiée |
 | **`films/{id}`** | PATCH | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
+| **`films/{id}`** | PUT | UPDATE ONE or CREATE ONE : Remplacer la ressource par une ressource reprenant les valeurs données dans la requête, seulement si toutes les propriétés de la ressource sont données ! Si la ressource n'existe pas, créer cette ressource seulement si l'**id** donné n'est pas déjà existant. |
 
-- Une ressource de type **films** doit contenir les propriétés suivantes :
-  - **id** : un entier 
-  - **title** : titre du film (String)
-  - **duration** : durée du film en minutes ; elle doit être un nombre positif (pas une string !).
-  - **budget** : pour informer du coût qu'a couté la production du film, en millions ; le budget doit être un nombre positif (pas une string !).
-  - **link** : pour donner une URL vers la description du film (lien vers imdb, rottentomatoes ou autre)
--	Les ressources ne doivent pas persister : dès lors, ajoutez les données associées aux films dans un array.
-- Veuillez bien valider les paramètres reçu par les opérations de vos API (vérifier par exemple que **budget** et **duration** sont des **number** positifs) et veuillez renvoyer les bons status codes en cas d'erreur.
--	Veuillez tester toutes les fonctions de la RESTful API pour la collection de films à l'aide du REST Client dans VS Code (extension à installer au sein de VS Code). Veuillez ajouter vos requêtes au sein du fichier **films.http** dans le répertoire **REST Client** du dossier associé à cet exercice.
+Veuillez bien valider les paramètres reçus par les opérations de vos API ; vérifiez par exemple que **`budget`** et **`duration`** sont des **nombres positifs**. 
 
-#### 🤝 Tips
-- N'hésitez pas à utiliser le générateur d'applications d'Express pour initier votre projet.
-- Développez les opérations de votre API de manière incrémentale : testez une opération via REST Client avant de passer à une nouvelle opération.
-- Pour le filtre sur les films, vous allez récupérer un paramètre de requête.  
-⚡ Attention, le signe **-** est un opérateur en JS, vous ne pouvez pas récupérer le paramètre de requête via **`req.query.minimum-duration`**...  
-💭 Mais alors comment faire ?  
-On accède aussi au propriété d'un objet à l'aide d'un array, ici ça serait via **`req.query['minimum-duration']`**.
-- N'hésitez pas à vous inspirer du code du tutoriel [api-basic](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic).
-- Pour vérifier le type d'une variable, n'hésitez pas à utiliser l'opérateur **`typeof`**.
+Veuillez **tester toutes les fonctions de la RESTful API** pour la collection de films à l'aide du **REST Client** dans VS Code. Veuillez ajouter vos requêtes au sein du fichier **`films.http`** dans le répertoire **REST Client** du dossier associé à cet exercice.
 
-Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module4/4.1**.
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.6`**.  
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.6 : API : delete & modify`**.
 
-Veuillez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 4 : basic API**".
 
-# <InternalPageTitle> 🍬 Exercice 1.2 : Gestion de la pagination, de l'ordre de présentation et du filtrage de films </InternalPageTitle>
-
-N'hésitez pas, c'est optionnel, de gérer de nouvelles opérations au sein de votre RESTful API de **myMovies** :
--	Filtrez tous les films qui commencent par une certaines chaînes de caractères.
--	Gérez l'ordre de présentation des films.
-
-#### 🤝 Tips
-Besoin d'inspiration pour l'aspect filtrage et la gestion de l'ordre des ressources ? [REST API Guide](https://dev.to/drminnaar/rest-api-guide-14n2) [[R.58]](/references/#r58).
-
-Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : module 4 : ordering & filtrering**".
-
-🍬 Et si vraiment vous avez encore du temps et souhaitez déjà approfondir les RESTful APIs, n'hésitez pas aussi à implémenter la gestion de la pagination.

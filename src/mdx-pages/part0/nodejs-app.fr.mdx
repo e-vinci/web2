@@ -6,10 +6,10 @@ description: "Introduction aux applications backend Nodes.js & Express"
 <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
     <PathViewerItem to="/part1"> Partie 1 </PathViewerItem>
-    <PathViewerItem selected> a) Node.js </PathViewerItem>
+    <PathViewerItem selected> e) Node.js </PathViewerItem>
 </PathViewer>
 
-# a) 🍬 Introduction aux applications backend Nodes.js & Express
+# e) Introduction aux applications backend en Nodes.js & Express
 
 <InternalPageMenu>
   <InternalPageMenuItem> C'est quoi une application backend ? </InternalPageMenuItem>
@@ -20,9 +20,10 @@ description: "Introduction aux applications backend Nodes.js & Express"
   <InternalPageMenuItem> Express c'est quoi ? </InternalPageMenuItem>
   <InternalPageMenuItem> Créer une application Express "from scratch" </InternalPageMenuItem>
   <InternalPageMenuItem> Créer une application Express via un générateur </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 0.2 : mise à disposition d'une page HTML via une app Express </InternalPageMenuItem>
 </InternalPageMenu>
 
-Si vous n'avez jamais développé d'application via Express, ou que vous avez oublié comment faire, nous vous recommandons de suivre cette introduction. Sinon, vous pouvez passer à la suite : [b) Introduction aux RESTful API Node.js & Express](/part1/express-api).
+Si vous n'avez jamais développé d'application via Express, ou que vous avez oublié comment faire, nous vous recommandons de suivre cette introduction. Sinon, vous pouvez passer à la suite : [a) Introduction aux RESTful API Node.js & Express](/part1/express-api).
 
 # <InternalPageTitle> C'est quoi une application backend ? </InternalPageTitle>
 ## Frontend, backend, c'est quoi ?
@@ -471,7 +472,7 @@ En cas de souci, vous pouvez accéder au code de ce tutoriel ici :
 [express-static-file-server](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/express-static-file-server/).
 
 
-# <InternalPageTitle>  Créer une application Express via un générateur </InternalPageTitle>
+# <InternalPageTitle> Créer une application Express via un générateur </InternalPageTitle>
 
 Le générateur d'applications **express-generator** permet de générer le boilerplate d'une application Express de base.
 
@@ -505,3 +506,20 @@ Actuellement, on remarquera :
 - **`app.js`** met aussi à disposition un serveur de fichier statiques servant le contenu du répertoire **`/public`**.
 
 Avant d'aller dans les détails d'Express que nous souhaitons utiliser pour développer des services web de type RESTful, nous allons voir ce que nous entendons par **RESTful**.
+
+# <InternalPageTitle> Exercice 0.2 : mise à disposition d'une page HTML via une app Express </InternalPageTitle>
+
+Veuillez utiliser le générateur d'application d'Express pour générer une application.
+
+Vous devez configurer votre application pour qu'elle offre la page HTML du site http://perfectionkills.com/ via cette URL :
+http://localhost:678.
+
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/0.2`**.  
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`0.2 : app express creation & HTML reminder`**.
+
+
+#### 🤝 Tips
+- N'hésitez pas à créer une page html et à y intégrer une **iframe**. Vous allez devoir travailler sur le style de votre **iframe** pour qu'elle prenne toute la page.
+- Si vous n'êtes pas inspiré par une **iframe**, vous pouvez toujours simplement copier le code source de la page d'index du site http://perfectionkills.com/ et copier le code source de la feuille de style associée.
+
+ 
