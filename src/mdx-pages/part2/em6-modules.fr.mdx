@@ -32,9 +32,9 @@ Pour créer un module, il suffit de créer un script JS et d'exporter des objets
 
 Le nom du module est le nom du fichier.
 
-Admettons que l'on souhaite créer un module permettant de mettre à disposition une classe **Car**.
+Admettons que l'on souhaite créer un module permettant de mettre à disposition une classe **`Car`**.
 
-Nous pourrions créer le fichier **Car.js** dans lequel nous exportons **Car** de cette façon :
+Nous pourrions créer le fichier **`Car.js`** dans lequel nous exportons **`Car`** de cette façon :
 
 ```js
 // ... Imagine the code of a class (we will see later how to create a class)
@@ -45,16 +45,17 @@ export default Car;
 # <InternalPageTitle> Export d'objets </InternalPageTitle>
 
 ## Introduction
-Pour mettre à disposition des objets (fonctions, constantes, objets, classes...) dans un module, il suffit d'utiliser le mot clé **export**.
+Pour mettre à disposition des objets (fonctions, constantes, objets, classes...) dans un module, il suffit d'utiliser le mot clé **`export`**.
 
-En JS, si vous souhaitez rendre un objet (fonction, constante, objet, classe...) privé au sein d'une librairie, il suffit simplement de ne pas l'exporter. En résumé, les seules éléments publiques sont ce que vous exportez.  
+En JS, si vous souhaitez rendre un objet (fonction, constante, objet, classe...) privé au sein d'une librairie, il suffit simplement de ne pas l'exporter. En résumé, **les seules éléments publiques sont ce que vous exportez**.  
 Vous verrez plus tard que si vous programmez en orienté objet, à l'aide de classes, la notion de public / privé n'existe pas en JS. Il faut donc utiliser des modules pour bénéficier d'une sorte d'équivalent.
 
 Il existe deux types d'export.
 
 ## Default export
 Lorsque vous avez un seul objet à exporter, il est préférable de le faire via un "default export".  
-D'ailleurs, le Linter utilisé dans ce cours vous forcera à le faire, vous ne pourrez pas faire un "named export" si vous exportez un seul objet.
+
+D'ailleurs, le linter utilisé dans ce cours vous forcera à le faire, vous ne pourrez pas faire un "named export" si vous exportez un seul objet.
 
 Cela permet d'importer cet objet en lui donnant le nom que l'on souhaite.
 
@@ -82,7 +83,7 @@ Si vous souhaitez plus de détails sur l'export, vous pouvez consulter [la docum
 # <InternalPageTitle> Import d'objets </InternalPageTitle>
 
 ## Introduction
-Pour utiliser des objets (fonctions, constantes, objets, classes...) au sein d'un script JS provenant de modules, on le fait à l'aide du mot clé **import** et du chemin vers le module à utiliser.
+Pour utiliser des objets (fonctions, constantes, objets, classes...) au sein d'un script JS provenant de modules, on le fait à l'aide du mot clé **`import`** et du chemin vers le module à utiliser.
 
 Il existe deux types d'import, en fonction de comment les objets ont été exportés.
 
@@ -93,17 +94,17 @@ Lorsqu'un objet a été exporté via un "default export", on l'importe en lui do
 
 👍 Néanmoins, afin de ne pas créer la confusion, nous recommandons d'utiliser le même nom que celui utilisé lors de l'export.
 
-Si l'on souhaite importer la fonction **Header** exportée précédemment :
+Si l'on souhaite importer la fonction **`Header`** exportée précédemment :
 
 ```js
 import Header from './Components/Header/Header';
 ```
 
-👍 Il est recommandé, lorsqu'on indique le chemin du module que l'on importe, de ne pas indiquer l'extension du nom de fichier (**.js**). Cela rend le code plus lisible. D'ailleurs, votre Linter va vous forcer à ne pas indiquer les extensions de vos modules.
+👍 Il est recommandé, lorsqu'on indique le chemin du module que l'on importe, de ne pas indiquer l'extension du nom de fichier (**`.js`**). Cela rend le code plus lisible. D'ailleurs, votre linter va vous forcer à ne pas indiquer les extensions de vos modules.
 
-🤝 Il est possible d'utiliser l'autocompletion pour générer le chemin vers un "default export module". Il suffit de taper ici **`import Header** et d'appuyer sur **Enter** et VS Code générera automatiquement le chemin (path) du module.
+🤝 Il est possible d'utiliser l'autocompletion pour générer le chemin vers un "default export module". Il suffit de taper ici **`import Header`** et d'appuyer sur **`Enter`** et VS Code générera automatiquement le chemin (path) du module.
 
-Notons qu'ici nous aurions pu donner n'importe quel nom à la fonction **Header** lors de l'import, par exemple :
+Notons qu'ici nous aurions pu donner n'importe quel nom à la fonction **`Header`** lors de l'import, par exemple :
 
 ```js
 import AmazingHeader from './Components/Header/Header';
@@ -127,19 +128,19 @@ Bien sûr, avant d'importer un objet d'un package, il faut l'avoir préalablemen
 ## Named import
 Lorsqu'un objet a été exporté via un "Named export", on l'importe en utilisant des accolades et en indiquant le chemin vers le module à utiliser.
 
-Par exemple, pour importer les fonctions **setPageTitle** et **setHeaderTitle** définies ci-dessus, il suffit de faire :
+Par exemple, pour importer les fonctions **`setPageTitle`** et **`setHeaderTitle`** définies ci-dessus, il suffit de faire :
 
 ```js
 import { setPageTitle, setHeaderTitle } from './utils/render';;
 ```
 
-Si l'on souhaitait changer le nom, on pourrait le faire via le mot-clé **as** :
+Si l'on souhaitait changer le nom, on pourrait le faire via le mot-clé **`as`** :
 
 ```js
 import { setPageTitle as renderPageTitle, setHeaderTitle as renderHeaderTitle} from './utils/render';;
 ```
 
-On pourrait maintenant appeler la fonction **renderPageTitle** pour (ré)afficher le titre d'une page.
+On pourrait maintenant appeler la fonction **`renderPageTitle`** pour (ré)afficher le titre d'une page.
 
 Il est aussi possible d'importer des objets de packages offerts par la communauté via votre gestionnaire de package.  
 Pour ce faire, il est juste nécessaire d'indiquer le nom du package lors de l'import, et de sélectionner le ou les objet(s) qui vous intéresse entre les accolades.
@@ -174,31 +175,31 @@ C'est juste une vision parmi d'autres de comment structurer une IHM pour facilit
 
 Nous allons restructurer le code du site de la pizzeria, notamment afin d'éviter, lors de l'ajout de pages, de la duplication de code. De plus, nous souhaitons que tous nos écrans soient générés dynamiquement, via du JS. Ca nous permettra de facilement changer l'affichage.
 
-Pour démarrer, nous allons repartir du code du tutoriel du module 2.  
-Au sein de votre repo (normalement **web2**) veuillez donc faire un copier coller de votre code se trouvant dans **/tutorials/pizzeria/hmi/modern** au sein du nouveau répertoire **/tutorials/pizzeria/hmi/structured**.  
-En cas de souci, vous pouvez utiliser le code du tutoriel du module 2 : [modern-dynamic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-dynamic-hmi).
+Pour démarrer ce nouveau tutoriel, nous allons repartir du code du tutoriel précédent.  
+Au sein de votre repo (normalement **`web2`**) veuillez donc faire un copier/coller de votre code se trouvant dans **`/tutorials/pizzeria/hmi/modern`** au sein du nouveau répertoire **`/tutorials/pizzeria/hmi/structured`**.  
+En cas de souci, vous pouvez utiliser ce code-ci : [modern-dynamic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-dynamic-hmi).
 
-Pour la suite de ce tutoriel, **/tutorials/pizzeria/hmi/structured** est considéré comme la racine du projet.
+Pour la suite de ce tutoriel, **`/tutorials/pizzeria/hmi/structured`** est considéré comme la racine du projet.
 
 ## Créer une structure logique de répertoires et de modules
 Dans ce projet, veuillez créer tous ces nouveaux répertoires et fichiers vides pour reprendre nos composants fonctionnels :
-- **/src/Components** : répertoire qui reprendra tous les composants fonctionnels.
-- **/src/Components/Pages** : répertoire qui donnera toutes les pages qui seront accessibles en cliquant sur la Navbar.
-- **/src/Components/Pages/HomePage.js** : **HomePage** de notre site, c'est l'affichage du menu des pizzas et de la liste des boissons.
-- **/src/Components/Pages/LoginPage.js** : **LoginPage** de notre site, elle permettra plus tard aux admins de se connecter.
-- **/src/Components/Pages/RegisterPage.js** : **RegisterPage** de notre site, elle pourrait permettre de créer des admins.
-- **/src/Components/Header** : répertoire qui reprendra le header.
-- **/src/Components/Header/Header.js** : module qui reprendra la génération du header via du JS.
-- **/src/Components/Footer** : répertoire qui reprendra le footer.
-- **/src/Components/Footer/Footer.js** : module qui reprendra la génération du header via du JS.
-- **/src/Components/Navbar** : répertoire qui reprendra la Navbar.
-- **/src/Components/Navbar/Navbar.js** : module qui reprendra la génération de la Navbar via du JS.
+- **`/src/Components`** : répertoire qui reprendra tous les composants fonctionnels.
+- **`/src/Components/Pages`** : répertoire qui donnera toutes les pages qui seront accessibles en cliquant sur la Navbar.
+- **`/src/Components/Pages/HomePage.js`** : **`HomePage`** de notre site, c'est l'affichage du menu des pizzas et de la liste des boissons.
+- **`/src/Components/Pages/LoginPage.js`** : **`LoginPage`** de notre site, elle permettra plus tard aux admins de se connecter.
+- **`/src/Components/Pages/RegisterPage.js`** : **`RegisterPage`** de notre site, elle pourrait permettre de créer des admins.
+- **`/src/Components/Header`** : répertoire qui reprendra le **`Header`**.
+- **`/src/Components/Header/Header.js`** : module qui reprendra la génération du **`Header`** via du JS.
+- **`/src/Components/Footer`** : répertoire qui reprendra le **`Footer`**.
+- **`/src/Components/Footer/Footer.js`** : module qui reprendra la génération du **`Footer`** via du JS.
+- **`/src/Components/Navbar`** : répertoire qui reprendra la **`Navbar`**.
+- **`/src/Components/Navbar/Navbar.js`** : module qui reprendra la génération de la **`Navbar`** via du JS.
 
 ## Créer le layout des écrans
-Il n'est pas utile de générer le squelette de tous les écrans via du JS.  
-Comme nous souhaitons un layout identique pour tous les écrans, nous allons garder ce layout au sein de **/src/index.html**, via des "wrappers" statiques ; ici nous utiliserons le **`<header>`**,  le **`<main>`** et le **`<footer>`** comme wrapper. 
+Il n'est pas utile de générer dynamiquement le squelette de tous les écrans via du JS.  
+Comme nous souhaitons un layout identique pour tous les écrans, nous allons garder ce layout au sein de **`/src/index.html`**, via des "wrappers" statiques ; ici nous utiliserons le **`<header>`**,  le **`<main>`** et le **`<footer>`** comme wrapper. 
 
-Veuillez mettre à jour le code de **/src/index.html** :
+Veuillez mettre à jour le code de **`/src/index.html`** :
 
 ```html
 <!DOCTYPE html>
@@ -221,14 +222,14 @@ A ce stade-ci, l'application web ne présente plus le header et le footer, ainsi
 
 ## Génération des contenus dynamiques
 Probablement que générer dynamiquement le header et le footer n'a pas une grande valeur ajoutée à ce stade-ci car ces composants vont pas ou peu changer lorsqu'on affichera différents écrans.  
-Néanmoins, plus tard vous pourriez choisir d'ajouter des fonctionnalités dans ce header ou dans le footer : par exemple le choix de la langue, affichage d'une Navbar différente si l'utilisateur est authentifié ou pas...
+Néanmoins, plus tard vous pourriez choisir d'ajouter des fonctionnalités dans ce header ou dans le footer : par exemple le choix de la langue, l'affichage d'une **`Navbar`** différente si l'utilisateur est authentifié ou pas...
 
-Pour générer un composant fonctionnel, nous devons décider de comment faire le rendu de ceux-ci.  
-Pour ce cours, nous avons décidé que chaque composant fonctionnel est une fonction, et que cette fonction est responsable de se rendre au sein d'un "wrapper" existant.
+Pour générer un composant fonctionnel, nous devons décider de comment faire le rendu de ceux-ci. Nous devons déterminer quelles composants sont responsables de l'affichage : Est-ce un composant parent qui affiche ses enfants ? Est-ce que chaque composant est responsable de s'afficher ? ...  
+Pour ce cours, nous avons décidé que chaque composant fonctionnel est une fonction, et que cette fonction est responsable de s'afficher (ou de se rendre, car "render" en anglais) au sein d'un "wrapper" existant.
 
-Commençons par compléter la **HomePage**. Tout son code se trouve actuellement dans **index.js**. Nous devons faire un petit refactor afin de créer une fonction **HomePage()** qui sera appelée dans **index.js** au chargement de la page. Notons que la **HomePage** ne doit plus s'occuper du **footer**. C'est pourquoi la fonction **renderPizzaImage** a été supprimée.  
+Commençons par compléter la **`HomePage`**. Tout son code se trouve actuellement dans **`index.js`**. Nous devons faire un petit refactor afin de créer une fonction **`HomePage()`** qui sera appelée dans **`index.js`** au chargement de la page. Notons que la **`HomePage`** ne doit plus s'occuper du **`footer`**. C'est pourquoi la fonction **`renderPizzaImage`** a été supprimée.  
 
-Veuillez compléter le code de **HomePage.js** :
+Veuillez compléter le code de **`HomePage.js`** :
 
 ```js
 const MENU = [
@@ -389,13 +390,11 @@ function getDrinksTableAsNode(drinks) {
 export default HomePage;
 ```
 
-💭 Veuillez bien vous assurer que vous comprenez chaque ligne de code. Il n'y a pas de nouveau code à ce stade-ci.
+Ce code pourrait être nettoyé. En effet, les données (**`MENU`** et **`DRINKS`**) devraient se trouver dans un autre module, afin de séparer les données de la logique. Nous allons gérer l'aspect "données" plus tard.
 
-Ce code pourrait être nettoyé. En effet, les données (**MENU** et **DRINKS**) devrait se trouver dans un autre module, afin de séparer les données de la logique. Nous gérons l'aspect "données" plus tard.
-
-Maintenant, **index.js** va appeler la **HomePage**.  
-Il faut donc importer la fonction **HomePage** et l'appeler.  
-Voici le code de **index.js** à ce stade-ci :
+Maintenant, **`index.js`** va appeler la **`HomePage`**.  
+Il faut donc importer la fonction **`HomePage`** et l'appeler.  
+Voici le code de **`index.js`** à ce stade-ci :
 
 ```js
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -409,8 +408,8 @@ HomePage();
 
 Nous allons générer le header, sans se soucier à ce stade-ci de la Navbar.  
 Comme nous souhaitons que le lecteur audio puisse être visible dans tous les écrans, celui-di sera ajouté au header.  
-Nous allons aussi au sein du Header ajouter un "wrapper" dans lequel la Navbar pourra être affichée.  
-Voici le code de **Header.js** :
+Nous allons aussi au sein du header ajouter un "wrapper" dans lequel la Navbar pourra être affichée.  
+Voici le code de **`Header.js`** :
 
 ```js
 import sound from '../../sound/Infecticide-11-Pizza-Spinoza.mp3';
@@ -459,7 +458,7 @@ function startOrStopSound() {
 export default Header;
 ```
 
-Pour appeler le **Header**, il suffit de compléter **index.js** :
+Pour appeler le **`Header`**, il suffit de compléter **`index.js`** :
 
 ```js highlighting="6,8"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -473,7 +472,7 @@ Header();
 HomePage();
 ```
 
-On voit que le style permettant les animations, tout comme Bootstrap, ne doivent pas être chargé dans chacun des modules. Comme cela est fait dans le point d'entrée du programme **index.js**, ces styles sont disponibles dans tous les modules appelés par le biais d'**index.js**.
+On voit que le style permettant les animations, tout comme Bootstrap, ne doivent pas être chargé dans chacun des modules. Comme cela est fait dans le point d'entrée du programme **`index.js`**, ces styles sont disponibles dans tous les modules appelés par le biais d'**`index.js`**.
 
 Nous allons générer le footer.
 
@@ -501,7 +500,7 @@ function renderSmallImage(wrapper, url) {
 }
 ```
 
-Pour appeler le **Footer**, il suffit de compléter **index.js** :
+Pour appeler le **`Footer`**, il suffit de compléter **`index.js`** :
 
 ```js highlighting="7,11"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -517,6 +516,6 @@ HomePage();
 Footer();
 ```
 
-Veuillez exécuter votre application pour vous assurer que celle-ci offre la même fonctionnalité qu'au tutoriel du module 2.
+Veuillez exécuter votre application pour vous assurer que celle-ci offre la même fonctionnalité qu'au tutoriel précédent.
 
 Nous allons maintenant rajouter des pages et travailler l'aspect navigation entre les pages.

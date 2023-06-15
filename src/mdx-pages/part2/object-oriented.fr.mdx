@@ -26,7 +26,7 @@ EN JS, tout objet peut être le prototype d'un autre objet, permettant à l'autr
 Il n'y a pas de distinction entre une classe et une instance, tout est objet : les strings, les tableaux, les API du browser, les objets personnalisés, les fonctions...
 
 Le JS moderne permet de facilement créer des objets et des classes.  
-Néanmoins, l'orienté objet n'est pas le point fort et le plus intéressant du JS.  
+Néanmoins, l'orienté objet n'est pas le point fort du JS.  
 Dans ce cours, nous allons généralement pas utiliser la notion de classe, nous préférons faire de la programmation fonctionnelle car cela est plus naturelle quand on fait du Vanilla JS.  
 
 Nous aimerions que vous vous sentiez libre de faire de l'orienté objet si vous le souhaitez, c'est pourquoi nous vous présentons rapidement certaines possibilités.
@@ -35,15 +35,15 @@ Si vous souhaitez des détails sur l'orienté objet en JS, n'hésitez pas à con
  
 # <InternalPageTitle> Les objets </InternalPageTitle>
 
-La syntaxe pour créer et accéder à des objets a été vue dans l'introduction : [e.10) Les objets](/intro/#e10).
+La syntaxe pour créer et accéder à des objets a été vue dans l'introduction : [Les objets](../../part0/js-language/#les_objets).
 
 # <InternalPageTitle> Les classes </InternalPageTitle>
 
-Quand on écrit du code JS moderne, on définit une classe à l'aide du mot-clé **class** et d'un **constructor()**.
+Quand on écrit du code JS moderne, on définit une classe à l'aide du mot-clé **`class`** et d'un **`constructor()`**.
 
 Une seul constructeur est possible, sinon il y aura une erreur.
 
-Voici le code qui permettrait de créer une classe **Car** :
+Voici le code qui permettrait de créer une classe **`Car`** :
 
 ```js
 import { v4 as uuidv4 } from 'uuid';
@@ -65,7 +65,7 @@ export default Car;
 
 Les attributs sont directement définis dans le constructeur à l'aide de **`this.nomAttribut`**.
 
-Voici le code créant une instance de **Car** et affichant sa description dans la console : 
+Voici le code créant une instance de **`Car`** et affichant sa description dans la console : 
 
 ```js
 const dacia = new Car('Dacia', 'Sandero');

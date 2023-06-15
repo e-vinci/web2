@@ -18,7 +18,8 @@ description: "Le routage des écrans"
   <InternalPageMenuItem> Information cachée dans l'HTML : les data-attributes </InternalPageMenuItem>
   <InternalPageMenuItem> Création du routeur </InternalPageMenuItem>
   <InternalPageMenuItem> Utilisation du routeur & boilerplate </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.9 : Gestion locale d'une collection de films </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.11 : Utilisation d'un router </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 2.12 : Navigation & router </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> C'est quoi le routage d'écrans ? </InternalPageTitle>
@@ -31,18 +32,18 @@ Il n'y a pas de normes imposant un système de routage, il existe une multitude 
 - **une simple gestion de wrappers et de génération dynamique d'HTML** ; c'est l'option la plus légère qui a été sélectionnée pour ce cours.
 - **via l'utilisation de Web Components API** [[R.41]](/references/#r41) ; façon intéressante de faire du web qui demanderait un cours dédié à cette technologie ; dès lors cela n'a pas été sélectionné comme technologie pour ce cours de JS ;
 - **via l'utilisation d'un langage de templating** : Handlebars [[R.42]](/references/#r42), Mustache… ; cette technologie n'est pas appropriée lorsque l'on souhaite réagir à beaucoup d'événements différents.
-- **via l'utilisation de librairies légères**, comme par exemple Lit [[R.43]](/references/#r43) ou **[[R.44]](/references/#r44)** ; nous préférons l'idée du Vanilla JS pour ce cours-ci plutôt que de nous "marier" à une technologie.
+- **via l'utilisation de librairies légères**, comme par exemple Lit [[R.43]](/references/#r43) ou Underscore **[[R.44]](/references/#r44)** ; nous préférons l'idée du Vanilla JS pour ce cours-ci plutôt que de nous lier à une librairie supplémentaire.
 - **via l'utilisation de frameworks / librairies** : React, Vue, Angular, tous ces frameworks mettent à disposition des librairies pour gérer le routage. Néanmoins, le choix de départ fait pour ce cours est de ne pas utiliser de framework pour la création de nos IHM.
 
 Nous allons voir ensemble comment via une simple gestion de wrapper et de génération dynamique d'HTML nous pouvons assurer le routage de nos écrans.
 
 # <InternalPageTitle> Ajout d'une Navbar </InternalPageTitle>
 
-Nous souhaitons créer une Navbar à l'aide de JS et de Bootstrap afin de pouvoir afficher différentes pages : **HomePage**, **LoginPage** ou **RegisterPage**.  
+Nous souhaitons créer une **`Navbar`** à l'aide de JS et de Bootstrap afin de pouvoir afficher différentes pages : **`HomePage`**, **`LoginPage`** ou **`RegisterPage`**.  
 
 Dans un premier temps, nous allons créer les deux nouvelles pages.
 
-Veuillez compléter le code de **/src/Component/Pages/Login.js** :
+Pour continuer notre tutorial (dans le répertoire **`structured`**), veuillez compléter le code de **`/src/Component/Pages/Login.js`** :
 
 ```js
 import { clearPage, renderPageTitle } from '../../utils/render';
@@ -82,7 +83,7 @@ function renderRegisterForm() {
 export default LoginPage;
 ```
 
-Veuillez compléter le code de **/src/Component/Pages/Register.js** :
+Veuillez compléter le code de **`/src/Component/Pages/Register.js`** :
 
 ```js
 import { clearPage, renderPageTitle } from '../../utils/render';
@@ -122,8 +123,8 @@ function renderRegisterForm() {
 export default RegisterPage;
 ```
 
-Avant d'afficher une page, nous nous assurons de faire un "clear" du "wrapper" utilisé pour afficher les pages (**main**). Comme nous allons utiliser le "clear" dans de multiples pages, et bien, afin d'éviter des duplications de code, veuillez ajouter un nouveau module **render.js** dans un nouveau répertoire **/src/utils**. De plus, nous allons y ajouter une fonction permettant de donner un titre à une page.  
-Voici le code de **/src/utils/render.js** :
+Avant d'afficher une page, nous nous assurons de faire un "clear" du "wrapper" utilisé pour afficher les pages (**`main`**). Comme nous allons utiliser le "clear" dans de multiples pages, afin d'éviter des duplications de code, veuillez ajouter un nouveau module **`render.js`** dans un nouveau répertoire **`/src/utils`**. De plus, nous allons y ajouter une fonction permettant de donner un titre à une page.  
+Voici le code de **`/src/utils/render.js`** :
 
 ```js
 const clearPage = () => {
@@ -142,8 +143,8 @@ const renderPageTitle = (title) => {
 export { clearPage, renderPageTitle };
 ```
 
-Afin de pouvoir naviguer entre les pages, nous allons créer la Navbar.  
-Veuillez compléter **/src/Component/Navbar/Navbar.js** :
+Afin de pouvoir naviguer entre les pages, nous allons créer la **`Navbar`**.  
+Veuillez compléter **`/src/Component/Navbar/Navbar.js`** :
 
 ```js
 // eslint-disable-next-line no-unused-vars
@@ -212,14 +213,14 @@ function onNavBarClick() {
 export default Navbar;
 ```
 
-La gestion du routage de la bonne page, c'est-à-dire l'affichage de la page correspondant à l'élément de la Navbar qui a été cliqué, est simple.  
-Lors d'un clic sur un élément de la Navbar, on identifie cet élément grâce au texte associé à celui-ci (via **`e.target.innerHTML`**).  
+La gestion du routage de la bonne page, c'est-à-dire l'affichage de la page correspondant à l'élément de la **`Navbar`** qui a été cliqué, est simple.  
+Lors d'un clic sur un élément de la **`Navbar`**, on identifie cet élément grâce au texte associé à celui-ci (via **`e.target.innerHTML`**).  
 Ensuite, la fonction associée à la page est appelée.
 
 Par exemple, pour rendre la page de login, il suffit d'appeler **`LoginPage()`** du module **`/src/Components/Pages/LoginPage`**.
 
 
-Finalement, nous allons appeler la Navbar au sein d'**index.js** :
+Finalement, nous allons appeler la Navbar au sein d'**`index.js`** :
 
 ```js highlighting="8,11"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -237,18 +238,19 @@ HomePage();
 Footer();
 ```
 
-Attention, il faut aussi faire un "clear" de la HomePage avant de rendre le menu et la carte des boissons. Veillez donc à mettre à jour **HomePage.js** pour le faire, sinon lorsque vous passez de LoginPage à la HomePage, vous allez avoir des éléments de UI qui s'additionnent.
+Attention, il faut aussi faire un "clear" de la **`HomePage`** avant de rendre le menu et la carte des boissons. Veillez donc à mettre à jour **`HomePage.js`** pour le faire, sinon lorsque vous passez de **`LoginPage`** à la **`HomePage`**, vous allez avoir des éléments de UI qui s'additionnent.
 
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**structured-hmi**".
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`structured-hmi tutorial`**.
 
 En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : [structured-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/structured-hmi).
 
 Le site de la pizzeria est fonctionnel, nous pouvons facilement naviguer entre les pages.  
 Néanmoins, il nous manque certaines fonctionnalités importantes.  
+
 💭 Mais qu'est-ce qui nous manque ?
 
 Voici ce qui fait défaut :
-- Si nous faisons un refresh de la page, nous perdons la page en cours. Par exemple, si nous sommes sur LoginPage, nous serons redirigé sur la HomePage.
+- Si nous faisons un refresh de la page, nous perdons la page en cours. Par exemple, si nous sommes sur **`LoginPage`**, nous serons redirigé sur la **`HomePage`**.
 - Nous n'avons pas d'historique des pages visitées, nous ne pouvons pas revenir en arrière et en avant dans le temps.
 - Nous n'avons pas une URL spécifique pour chaque écran.
 
@@ -263,7 +265,7 @@ Nous souhaitons mettre en place en routeur permettant ces 4 fonctionnalités :
 - **Routage lors d'une redirection vers une URL** : on fera appel au composant fonctionnel associé à la redirection, on affichera dans le browser l'URL associée à l'élément redirigé et l'on gardera l'URL dans l'historique.
 
 La mise en place d'un routeur pourrait se faire à l'aide de librairies comme **page.js**, **Vaadin Router**...  
-Dans le cadre de ce cours, pour la partie IHM, nous estimons qu'il est plus intéressant de comprendre le code associé à un routeur que d'utiliser une librairie existante.
+Dans le cadre de ce cours, pour la partie IHM, nous estimons qu'il est plus intéressant de comprendre les concepts associés à un routeur que d'utiliser une librairie existante.
 
 Dans la suite de ce chapitre, nous allons donc créer ensemble un routeur, qui sera inspiré de : 
 [How I Implemented my own SPA Routing System in Vanilla JS](https://medium.com/@bryanmanuele/how-i-implemented-my-own-spa-routing-system-in-vanilla-js-49942e3c4573) [[R.45]](/references/#r45).  
@@ -275,14 +277,21 @@ Plus tard dans le cours, nous utiliserons un boilerplate contenant déjà le rou
 # <InternalPageTitle> Information cachée dans l'HTML : les data-attributes </InternalPageTitle>
 
 Pour pouvoir associer des URL à des écrans, nous avons besoin d'améliorer la façon de cacher de l'information dans l'HTML.    
-Actuellement, notre Navbar utilise le "innerHTML" de ses éléments pour déterminer sur quel élément on a cliqué. Si l'on venait à changer le nom d'un élément, il ne faudrait pas à avoir à mettre à jour notre routeur.
 
-Nous allons donc cacher de l'information dans chaque élément HTML en utilisant les **data-attributes**.
+Pour démarrer ce nouveau tutoriel, nous allons repartir du code du tutoriel précédent.  
+Au sein de votre repo (normalement **`web2`**) veuillez donc faire un copier/coller de votre code se trouvant dans **`/tutorials/pizzeria/hmi/structured`** au sein du nouveau répertoire **`/tutorials/pizzeria/hmi/routing`**.  
+En cas de souci, vous pouvez utiliser ce code-ci : [structured-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/structured-hmi).
 
-On ajoute dans l'HTML des éléments de la Navbar un data-attribute nommé **uri**. 
+Pour la suite de ce tutoriel, **`/tutorials/pizzeria/hmi/routing`** est considéré comme la racine du projet.
 
-Le nom de la propriété commence toujours par **`data-`** suivi du nom du "data attribute" : **`data-uri`**.  
-Veuillez mettre à jour le code de la fonction **renderNavbar** de **Navbar.js** :
+Actuellement, notre **`Navbar`** utilise le **`innerHTML`** de ses éléments pour déterminer sur quel élément on a cliqué. Si l'on venait à changer le nom d'un élément, il ne faudrait pas à avoir à mettre à jour notre routeur.
+
+Nous allons donc cacher de l'information dans chaque élément HTML en utilisant les **`data-attributes`**.
+
+On ajoute dans l'HTML des éléments de la **`Navbar`** un **`data-attribute`** nommé **`uri`**. 
+
+Le nom de la propriété commence toujours par **`data-`** suivi du nom du **`data-attribute `**: **`data-uri`**.  
+Veuillez mettre à jour le code de la fonction **`renderNavbar`** de **`Navbar.js`** :
 
 ```js highlighting="21,24,27"
 function renderNavbar() {
@@ -321,9 +330,9 @@ function renderNavbar() {
 }
 ```
 
-Pour accéder en JS à ce data attribute, on y accède via l'attribut **dataset** d'un élément HTML, par exemple : **`e.target.dataset.uri`** pour accéder au "data attribute" nommé **uri**.
+Pour accéder en JS à ce **`data-attribute`**, on y accède via l'attribut **`dataset`** d'un élément HTML, par exemple : **`e.target.dataset.uri`** pour accéder au **`data-attribute`** nommé **`uri`**.
 
-Veuillez mettre à jour le code de la fonction **onNavBarClick** de **Navbar.js** :
+Veuillez mettre à jour le code de la fonction **`onNavBarClick`** de **`Navbar.js`** :
 
 ```js highlighting="7,9,11"
 function onNavBarClick() {
@@ -346,13 +355,13 @@ function onNavBarClick() {
 
 Veuillez vérifier que le site de la pizzeria fonctionne toujours après ces changements.
 
-Si un "data attribute" contient un "**-**" dans l'HTML, lorsqu'on y accède en JS, il faut convertir le "**-**" en camelCase. Exemple pour un "data attribute" nommé **project-number**, on y accédera via **`refToHtmlElement.dataset.projectNumber`**.
+Si un **`data-attribute`** contient un "**-**" dans l'HTML, lorsqu'on y accède en JS, il faut convertir le "**-**" en camelCase. Exemple pour un **`data-attribute`** nommé **`project-number`**, on y accédera via **`refToHtmlElement.dataset.projectNumber`**.
 
 # <InternalPageTitle> Création du routeur </InternalPageTitle>
 ## Routage lors d'un clic sur un élément de la Navbar
-Nous souhaitons que la gestion des clics sur un élément de la Navbar soit faite au sein du routeur.
+Nous souhaitons que la gestion des clics sur un élément de la **`Navbar`** soit faite au sein du routeur.
 
-Pour ce faire, veuillez effacer la gestion des clics faite au sein de **Navbar.js**.  
+Pour ce faire, veuillez effacer la gestion des clics faite au sein de **`Navbar.js`**.  
 Votre code devrait donc se résumer à cela :
 
 ```js
@@ -401,8 +410,8 @@ function renderNavbar() {
 export default Navbar;
 ```
 
-Veuillez créer un nouveau composant fonctionnel **/src/Components/Router/Router.js** en créant le dossier **Routeur** et le module **Router.js**.  
-Le code de **Router.js** à ce stade-ci serait le suivant, si l'on transfert directement la fonction **onNavBarClick** de **Navbar.js** vers **Router.js** :
+Veuillez créer un nouveau composant fonctionnel **`/src/Components/Router/Router.js`** en créant le dossier **`Router`** et le module **`Router.js`**.  
+Le code de **`Router.js`** serait le suivant, si l'on transfert directement la fonction **`onNavBarClick`** de **`Navbar.js`** vers **`Router.js`** :
 
 ```js
 import HomePage from '../Pages/HomePage';
@@ -432,7 +441,7 @@ function onNavBarClick() {
 export default Router;
 ```
 
-Pour utiliser le Router, il faut y faire appel au bon moment dans **index.js** :
+Pour utiliser le Router, il faut y faire appel au bon moment dans **`index.js`** :
 
 ```js highlighting="9,13"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -452,13 +461,13 @@ HomePage();
 Footer();
 ```
 
-Le Router doit être appelé après que la Navbar ait été rendue.
+Le Router doit être appelé après que la **`Navbar`** ait été rendue.
 
 A ce stade-ci, votre application devrait être fonctionnelle comme auparavant.  
 Néanmoins, notre routeur n'est pas très générique.  
-Nous souhaiterions pouvoir le configurer via un dictionnaire d'URI et des composants fonctionnels associés et ne jamais à avoir à modifier le code de la gestion des clics.
+Nous souhaiterions pouvoir le configurer via un dictionnaire d'URI et des composants fonctionnels associés et ne jamais avoir à modifier le code de la gestion des clics.
 
-Veuillez mettre à jour **Router.js** :
+Veuillez mettre à jour **`Router.js`** :
 
 ```js numbered highlighting="5-9,20-23"
 import HomePage from '../Pages/HomePage';
@@ -491,9 +500,9 @@ function onNavBarClick() {
 export default Router;
 ```
 
-**routes** est un dictionnaire liant les URI aux composants fonctionnels.
-Ce dictionnaire, qui est un objet, est composé de paires de clé / valeur :
-- la clé est l'URI qui a été cachée dans le data-attribute **uri** de la Navbar.
+**`routes`** est un dictionnaire liant les URI aux composants fonctionnels.
+Ce **dictionnaire**, qui est un objet, est composé de **paires de clé / valeur** :
+- la clé est l'URI qui a été cachée dans le **`data-attribute`** **`uri`** de la `Navbar`.
 - la valeur est une fonction importée permettant de rendre une page.
 
 Pour rappel, pour accéder à la valeur d'une propriété d'un objet, on peut le faire soit via **`objectName.key`**, soit via **`objectName[key]`**. C'est ce que l'on fait via **`routes[uri]`**, on accède à la valeur (le composant fonctionnel) associé à la clé (l'URI).
@@ -503,11 +512,11 @@ Si l'on a bien accès à une fonction, il ne reste plus qu'à l'appeler via **`c
 Bien, tout ceci est pas trop mal, mais nous n'avons pas encore la bonne URL dans le browser ainsi que l'historique. Nous allons maintenant voir comment ajouter l'URL au sein du browser.
 
 L'**History API** du browser offre cette fonction **`window.history.pushState(state, unused, url)`** :
-- **state** : c'est un objet qui est associé avec l'entrée historique créée par **pushState** ; quand un utilisateur navigue à l'aide de l'historique (vers un nouvel état), un événement **popstate** est lancé contenant une copie de l'objet state sauvegardé dans l'entrée historique au sein de la propriété **state** (**e.state** par exemple). Une taille limite de 16MB est imposée à l'objet state. 
-- **unused** : peu être omis, est présent pour des raisons historiques 😵.
-- **url** : l'URL associée à l'entrée historique, c'est l'URL qui apparaîtra dans votre browser.
+- **`state`** : c'est un objet qui est associé avec l'entrée historique créée par **`pushState`** ; quand un utilisateur navigue à l'aide de l'historique (vers un nouvel état), un événement **`popstate`** est lancé ; cet événement contient une copie de l'objet `state` sauvegardé dans l'entrée historique au sein de la propriété **`state`** (**`e.state`** par exemple). Une taille limite de 16MB est imposée à l'objet **`state`**. 
+- **`unused`** : peu être omis, est présent pour des raisons historiques 😵.
+- **`url`** : l'URL associée à l'entrée historique, c'est l'URL qui apparaîtra dans votre browser.
 
-Mettez à jour le code de **Router.js** pour créer une entrée dans l'historique du browser et ajouter l'URL au browser :
+Mettez à jour le code de **`Router.js`** pour créer une entrée dans l'historique du browser et ajouter l'URL au browser :
 
 ```js numbered highlighting="20,26"
 import HomePage from '../Pages/HomePage';
@@ -546,22 +555,22 @@ export default Router;
 💭 Pourquoi prévenir le comportement par défaut associé à un clic sur un hyperlink ?  
 Faites le test sans cette ligne et naviguer entre les pages. Vous voyez une différence ?
 
-En fait, le comportement par défaut lorsque un hyperlink redirige vers un lien interne (même origine), l'action est de scroller en top position de l'élément (qui pourrait être indiqué par une "anchor" via l'id de l'élément) ou en haut de la page si aucun élément est trouvé (via l'éventuel id d'un élément). De plus, le contenu de **href** s'ajoute à l'URL du browser, ce qui affiche un "**#**" inutile.
+En fait, le comportement par défaut lorsque un hyperlink redirige vers un lien interne (même origine), l'action est de scroller en top position de l'élément (qui pourrait être indiqué par une "anchor" via l'id de l'élément) ou en haut de la page si aucun élément est trouvé (via l'éventuel id d'un élément). De plus, le contenu de **`href`** s'ajoute à l'URL du browser, ce qui affiche un **`#`** inutile.
 
-NB : La configuration des routes faites via le dictionnaire **routes** pourrait être externalisée dans un fichier de configuration afin de rendre le code plus générique. Cela sera fait dans le futur boilerplate du cours, nous pouvons laisser cela de côté pour le tutoriel.
+NB : La configuration des routes faites via le dictionnaire **`routes`** pourrait être externalisée dans un fichier de configuration afin de rendre le code plus générique. Cela sera fait dans le futur boilerplate du cours ; nous pouvons laisser cette action de côté pour le tutoriel.
 
 ## Routage lors de l'utilisation de l'historique du browser
 Nous avons maintenant une URL différente quand nous naviguons d'une page à l'autre.  
 Mais nous ne pouvons pas encore utiliser les flèches du browser pour revenir en arrière.
 
-Lorsque nous avons découvert la méthode **`window.history.pushState(state, unused, url)`**, nous avons introduit l'événement "**popstate**".  
+Lorsque nous avons découvert la méthode **`window.history.pushState(state, unused, url)`**, nous avons introduit l'événement **`popstate`**.  
 C'est l'événement qui se produit lorsque l'historique de la fenêtre du browser change.
 
-Il nous suffit donc, lors d'un **popstate**, de récupérer la nouvelle URI qui sera automatiquement affichée dans le browser.
+Il nous suffit donc, lors d'un **`popstate`**, de récupérer la nouvelle URI qui sera automatiquement affichée dans le browser.
 
 Pour récupérer l'URI que nous avons assigné à une page et qui sera visible dans l'URL de la fenêtre du browser, nous l'obtenons via : **`window.location.pathname`**.
 
-Veuillez mettre à jour le code de **Router.js** :
+Veuillez mettre à jour le code de **`Router.js`** :
 
 ```js numbered highlighting="13,32-38"
 import HomePage from '../Pages/HomePage';
@@ -606,20 +615,20 @@ function onHistoryChange() {
 export default Router;
 ```
 
-Tout comme précédemment, via **`routes[uri]`**, on accède à la valeur (le composant fonctionnel) associé à la clé (l'URI) de **routes**.
+Tout comme précédemment, via **`routes[uri]`**, on accède à la valeur (le composant fonctionnel) associé à la clé (l'URI) de **`routes`**.
 
 
 ## Routage lors du chargement de l'IHM
-Actuellement, le chargement de la HomePage est fait au sein d'**index.js**.  
+Actuellement, le chargement de la **`HomePage`** est fait au sein d'**index.js**.  
 Nous souhaitons changer cela afin que cela soit fait dans notre routeur.
 
-⚡ De plus, faites le tests, si vous êtes par exemple sur la LoginPage est que vous faites un refresh au niveau du browser, l'URL restera sur **/login** mais vous afficherez la HomePage.
+⚡ De plus, faites le tests, si vous êtes par exemple sur la **`LoginPage`** est que vous faites un refresh au niveau du browser, l'URL restera sur **`/login`** mais vous afficherez la **`HomePage`**.
 
-L'événement qui se produit lorsque la page **index.html** est chargée, incluant les stylesheets et image, c'est **load**.
+L'événement qui se produit lorsque la page **`index.html`** est chargée, incluant les stylesheets et image, c'est **`load`**.
 
-Lors d'un "load", nous allons récupérer l'URI que nous avons assigné à une page et qui est visible dans l'URL de la fenêtre du browser via : **`window.location.pathname`**.
+Lors d'un **`load`**, nous allons récupérer l'URI que nous avons assigné à une page et qui est visible dans l'URL de la fenêtre du browser via : **`window.location.pathname`**.
 
-Veuillez mettre à jour le code de **Router.js** :
+Veuillez mettre à jour le code de **`Router.js`** :
 
 ```js numbered highlighting="12,41-49"
 import HomePage from '../Pages/HomePage';
@@ -675,18 +684,18 @@ function onFrontendLoad() {
 export default Router;
 ```
 
-Tout comme précédemment, via **`routes[uri]`**, on accède à la valeur (le composant fonctionnel) associé à la clé (l'URI) de **routes**.
+Tout comme précédemment, via **`routes[uri]`**, on accède à la valeur (le composant fonctionnel) associé à la clé (l'URI) de **`routes`**.
 
-Pour pouvoir afficher la HomePage lors du chargement du frontend, c'est maintenant le routeur qui va prendre en charge cette action.  
-Lors de l'événement "load", l'URI qui sera détectée par le Router est "/".  
-C'est donc bien la HomePage qui devra être affichée comme c'est configuré dans **routes**.
+Pour pouvoir afficher la **`HomePage`** lors du chargement du frontend, c'est maintenant le routeur qui va prendre en charge cette action.  
+Lors de l'événement **`load`**, l'URI qui sera détectée par le Router est *`"/"`*.  
+C'est donc bien la **`HomePage`** qui devra être affichée comme c'est configuré dans **`routes`**.
 
-Veuillez donc effacer l'import et l'appel de **HomePage** au sein de **index.html** et vous assurer que votre application est toujours fonctionnelle.
+Veuillez donc effacer l'import et l'appel de **`HomePage`** au sein de **`index.html`** et vous assurer que votre application est toujours fonctionnelle.
 
 ## Routage lors d'une redirection vers une URL
 Nous souhaitons créer une fonction qui permette de rediriger l'utilisateur vers un nouvel écran en mettant l'écran actuel dans l'historique et en changeant l'URL au sein de la fenêtre du browser.
 
-Veuillez ajouter cette fonction au sein d'un nouveau fichier **/src/Components/Router/Navigate.js** :
+Veuillez ajouter cette fonction au sein d'un nouveau fichier **`/src/Components/Router/Navigate.js`** :
 
 ```js
 const Navigate = (toUri) => {
@@ -704,18 +713,18 @@ export default Navigate;
 Nous avons créé une fonction qui n'a pas de dépendances, pas d'imports associés au routeur.  
 Nous avons fait cela afin d'éviter les dépendances cycliques.
 
-💭En effet, imaginez que le routeur mette à disposition la fonction **Navigate**.  
+💭En effet, imaginez que le routeur mette à disposition la fonction **`Navigate`**.  
 Le job du routeur impose qu'il importe toutes les pages.  
 Si une page a besoin de faire appel au routeur, par exemple pour effectuer une redirection, alors nous aurions une dépendance cyclique.
 
-Dès lors, nous avons simulé l'événement **popstate** via la fonction **dispatchEvent**.  
-Ainsi, lors de l'appel de la fonction **Navigate**, la nouvelle URI est mise à jour dans la fenêtre du browser via l'appel de **pushState**, puis **popstate** est simulé.  
+Dès lors, nous avons simulé l'événement **`popstate`** via la fonction **`dispatchEvent`**.  
+Ainsi, lors de l'appel de la fonction **`Navigate`**, la nouvelle URI est mise à jour dans la fenêtre du browser via l'appel de **`pushState`**, puis **`popstate`** est simulé.  
 Le routeur détecte qu'il y a eu un changement d'historique et charge le composant associé à la nouvelle URI.
 
-Nous allons tester la fonction **Navigate** en ajoutant un gestionnaire de clics sur la pizza au fromage.  
-Lors d'un clic sur la pizza au fromage qui se trouve dans le footer, on va rediriger l'utilisateur vers la HomePage. 
+Nous allons tester la fonction **`Navigate`** en ajoutant un gestionnaire de clics sur la pizza au fromage.  
+Lors d'un clic sur la pizza au fromage qui se trouve dans le footer, on va rediriger l'utilisateur vers la **`HomePage`**. 
 
-Veuillez donc mettre à jour `Footer.js` :
+Veuillez donc mettre à jour **`Footer.js`**:
 
 ```js numbered highlighting="3,12,13,22,26-31"
 import pizzaImage from '../../img/pizza2.jpg';
@@ -755,32 +764,73 @@ Nous avons ajouté un identifiant à l'image sur laquelle nous souhaitons écout
 
 Veuillez tester que tout fonctionne bien.
 
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**routing-hmi**".
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message  : **`routing-hmi`**.
 
-En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi).
+En cas de souci, vous pouvez accéder au code du tutoriel ici : [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi).
 
 # <InternalPageTitle> Utilisation du routeur & boilerplate </InternalPageTitle>
 
 Dans le cadre de ce cours, pour vos futures applications, vous allez utiliser le [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git) qui met à disposition un projet bien configuré.
 
 Voici ce qu'il ne faut faire pour bien router ses écrans :
-- **`/src/Components/Router/routes.js`** : c'est le fichier dans lequel vous devez associer une URL à chaque page que vous souhaitez proposer dans la Navbar. C'est là que vous centralisez les imports de vos pages.
-- **`/src/Components/Navbar/Navbar.js`** : c'est le fichier où vous devez créer les éléments de votre Navbar et indiquer l'URI associée à chaque hyperlink (ou élément de votre Navbar) au sein d'un data-attribute nommé **uri**.
-- **`/src/Components/Pages`** : c'est le répertoire où il est recommandé d'ajouter vos futures pages ou pour mettre à jour la HomePage.
+- **`/src/Components/Router/routes.js`** : c'est le fichier dans lequel vous devez associer une URL à chaque page que vous souhaitez proposer dans la **`Navbar`**. C'est là que vous centralisez les imports de vos pages.
+- **`/src/Components/Navbar/Navbar.js`** : c'est dans ce fichier que vous devez créer les éléments de votre **`Navbar`** et indiquer l'URI associée à chaque élément de votre **`Navbar`** au sein d'un data-attribute nommé **uri**. Par exemple, ici on a indiqué **`"/login"`** : **`<a class="nav-link" href="#" data-uri="/login">Login</a>`**
+- **`/src/Components/Pages`** : c'est le répertoire où il est recommandé d'ajouter vos futures pages ou pour mettre à jour la **`HomePage`**.
 
-# <InternalPageTitle> Exercice 2.9 : Gestion locale d'une collection de films </InternalPageTitle>
+# <InternalPageTitle> Exercice 2.11 : Utilisation d'un router </InternalPageTitle>
 
-Veuillez continuer le développement de **myMovies** afin de permettre la navigation et de proposer deux nouvelles pages permettant d'enregistrer temporairement et localement des films sur une page et d'afficher les films enregistrés sur une autre page.
+## Objectif
 
-A ce stade-ci de nos connaissances, nous acceptons qu'à chaque refresh du site, on redémarre avec une liste vide de films.
+Vous allez continuer le développement de **myMovies** afin de permettre la navigation et de proposer deux nouvelles pages permettant d'enregistrer temporairement et localement des films sur une page et d'afficher les films enregistrés sur une autre page.
 
-Votre formulaire doit contenir les champs :
--	**title** : titre du film ;
--	**duration** : durée du film en minutes ;
--	**budget** : pour informer du prix qu'a couté la production du film, en millions ;
--	**link** : pour donner un lien vers la description du film (lien vers imdb, rottentomatoes ou autre).
+## Navigation entre pages & router
 
-A chaque submit du formulaire, vous allez naviguer vers la page affichant la liste des films "enregistrés".  
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.11`** sur base du [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git).
+
+⚡ Si vous avez fait un clone du boilerplate, attention au Git dans le Git, n'oubliez pas de supprimer le dossier **`.git`** présent dans votre nouveau projet.
+
+Dans un premier temps, veuillez créer la **`HomePage`** en utilisant votre dernier design de **myMovies**. 
+
+Intégrez donc le code que vous avez fait pour l'[Exercice 2.5](../modern-tools/#exercice_2_5_module_bundler).
+
+<UnAuthenticatedBlock>
+
+Si pour votre projet vous avez choisi de travailler sur l'application **myMovies**, intégrez donc votre dernière version de votre code : [Projet 2.9](../dynamic-ui/#projet_2_9_changement_dynamique_du_contenu_dune_page).
+
+</UnAuthenticatedBlock>
+
+Afin de s'assurer que la navigation est bien mise en place, veuillez intégrer deux nouvelles pages contenant simplement un titre :
+- la page permettant l'ajout d'un film : **`AddMoviePage`** ;
+- la page permettant l'affichage de tous les films : **`ViewMoviePage`**.
+
+A ce stade-ci, vous devriez avoir au moins 3 pages : **`HomePage`**, **`AddMoviePage`** et **`ViewMoviePage`**. Vous devriez avoir configuré votre **`Navbar`** et votre **`Router`** pour que lorsqu'on clic sur un lien, la bonne page s'affiche. Quand la navigation entre vos pages statiques et fonctionnelle, veuillez faire un **`commit`** de votre code avec comme message : **`2.11.1 : router & static pages`**.
+
+## Ajout de films
+
+Nous allons maintenant travailler sur la page permettant d'ajouter des films à l'aide d'un formulaire. A ce stade-ci de nos connaissances, nous acceptons qu'à chaque refresh du site, on redémarre avec une liste vide de films.
+
+Notre formulaire doit contenir les champs :
+-	**`title`** : titre du film ;
+-	**`duration`** : durée du film en minutes ;
+-	**`budget`** : pour informer du prix qu'a couté la production du film, en millions ;
+-	**`link`** : pour donner un lien vers la description du film (lien vers imdb, rottentomatoes ou autre).
+
+Veuillez valider les champs de votre formulaire à l'aide d'HTML5 (**`required`**, **`type`**, **`min`**, **`max`**, **`minlength`**...).
+
+A chaque submit du formulaire, dans un premier temps, vous allez afficher le nouveau film enregistré dans la console.  
+
+Quand cette étape est fonctionnelle, veuillez faire un **`commit`** de votre code avec comme message : **`2.11.2 : add films`**.
+
+## Redirection vers une page
+
+A chaque ajout de film, vous allez naviguer vers la page affichant la liste des films "enregistrés". 
+
+Quand cette redirection est fonctionnelle, veuillez faire un **`commit`** de votre code avec comme message : **`2.11.3 : redirect to a page`**.
+
+## Affichage de films enregistrés
+
+Ensuite, vous allez construire la page affichant la liste des films enregistrés.  
+
 Voici un exemple de ce que pourrait être la page affichant la liste des films :
 
 | Title |	Duration (min) |	Budget (million) |
@@ -789,15 +839,13 @@ Voici un exemple de ce que pourrait être la page affichant la liste des films :
 | [Avengers: Endgame](https://en.wikipedia.org/wiki/Avengers:_Endgame) | 181	| 181 | 
 | … |   |  |
 
-Veuillez noter que le champs link est utilisé pour créer un lien dans la colonne **Title**.
+<br/>
 
-Veuillez valider les champs de votre formulaire.
+Veuillez noter que le champs **`link`** est utilisé pour créer un lien dans la colonne **`Title`**.
+
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.11.4 : render films dynamically`**.
 
 #### 🤝 Tips 
-- Utilisez le [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git) pour ajouter à votre projet **exercises/myMovies** tous les répertoires et fichiers utiles.
-- ⚡ Si vous avez fait un clone du boilerplate, attention au Git dans le Git, n'oubliez pas de supprimer le dossier **.git** présent dans votre nouveau projet.
-- Faites d'abord une version statique de votre IHM ; mettez en place la navigation, la HomePage qui reprendra l'UI que vous avez fait au module 2 ainsi qu'une version sans interactivité de la ViewMoviePage (affichant les films) et de la AddMoviePage (contenant le formulaire demandé).
-- Une fois que la version statique réagit correctement, passez à l'ajout de l'interactivité au sein de chacune des pages.
 - Créez une structure en mémoire pour accueillir les données d'un film, un array. Lorsqu'un formulaire est soumis et est valide, vous pouvez ajouter un objet (object literal) à votre array. Voici un exemple d'ajout d'un film :
 ```js
 const films = [];
@@ -808,11 +856,28 @@ films.push({
   link: 'https://amazing-javascript.world',
 });
 ```
-- 💭 Okay, j'ai un array de films... Mais comment partager cet array avec ma ViewMoviePage et avec AddMoviePage ?  
-Pensez à la notion de module JS. Une bonne solution serait de créer un nouveau script, par exemple **movies.js**. Ce script déclarerait un array, et plutôt que de le partager (c'est interdit de modifier un objet importé en ECMAScript), de partager des méthodes qui pourraient s'appeler, par exemple, **readAllMovies** et **addOneMovie**.
+- 💭 Okay, j'ai un array de films... Mais comment partager cet array avec ma **`ViewMoviePage`** et avec **`AddMoviePage`** ?  
+Pensez à la notion de module JS. Une bonne solution serait de créer un nouveau script, par exemple **`movies.js`**. Ce script déclarerait un array, et plutôt que de le partager (c'est interdit de modifier un objet importé en ECMAScript), exporterait des méthodes qui pourraient s'appeler, par exemple, **`readAllMovies`** et **`addOneMovie`**.
 
-Veuillez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 3 : refactoring & MooviePage**"".
+# <InternalPageTitle> Projet 2.12 : Navigation & router </InternalPageTitle>
 
-NB : Le code de votre application web se trouve dans votre repository local et
-votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module3/3.1**.
+Vous allez mettre à jour votre **`HomePage`** et **`AboutPage`**  développée pour [Projet 2.9](../dynamic-ui/#projet_2_9_changement_dynamique_du_contenu_dune_page) afin d'utiliser le router offert dans le boilerplate du cours.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/project/2.12`** sur base du [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git).
+
+⚡ Si vous avez fait un clone du boilerplate, attention au Git dans le Git, n'oubliez pas de supprimer le dossier **`.git`** présent dans votre nouveau projet.
+
+Dans ce nouveau projet, veuillez intégrer le code la dernière version de votre projet, probablement écrit pour le [Projet 2.9](../dynamic-ui/#projet_2_9_changement_dynamique_du_contenu_dune_page). 
+
+
+Quand la navigation fonctionne correctement pour naviguer entre la **`HomePage`** et **`AboutPage`** à l'aide de votre **`Navbar`**, veuillez faire un **`commit`** de votre code avec comme message : **`2.12 : dynamic page content`**.
+
+<AuthenticatedBlock>
+
+Veuillez travailler avec les membres de votre groupe. N'hésitez pas à soit chacun coder un prototype de l'application, soit en pair programming, soit à 3-4-5 étudiants, selon vos goûts. 
+
+</AuthenticatedBlock>
+
+
+#### 🤝 Tips
+- Les boutons sont utilisés pour afficher deux contenus différents, un contenu de type "HomePage", ou un contenu de type "AboutPage".

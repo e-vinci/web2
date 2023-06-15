@@ -19,32 +19,39 @@ description: "Création dynamique de UI"
   <InternalPageMenuItem> Ajout dynamique d'écouteurs d'événements avant de rendre le DOM </InternalPageMenuItem>
   <InternalPageMenuItem> Ajout dynamique d'images ou d'autres assets </InternalPageMenuItem>
   <InternalPageMenuItem> Debbuging d'un frontend tournant sous Webpack </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.6 : Génération dynamique de la Homepage de myMovies </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.7 : Génération dynamique d'une table sur base d'un formulaire </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.8 : design responsive </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 2.8 : Génération dynamique d'une HomePage </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 2.9 : Changement dynamique du contenu d'une page </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Exercice 2.10 : Génération dynamique d'une table sur base d'un formulaire </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> Pourquoi générer dynamiquement une UI ? </InternalPageTitle>
 
-Nous souhaitons parfois générer des parties d'IHM dynamiquement, à l'aide de JS.
+Pour différentes raisons, nous souhaitons parfois générer des parties d'IHM dynamiquement, à l'aide de JS.
 
-Nous pourrions souhaiter générer de l'HMTL dynamiquement pour plusieurs raisons. Par exemple, si nous souhaitions afficher différentes pages sans faire appel au serveur.
+Par exemple, si nous souhaitions afficher différentes pages sans faire appel au serveur.
 Lors d'un clic sur un élément d'une Navbar, nous pourrions générer dynamiquement l'HTML de la page associée à cet élément.
 
-Un autre exemple serait l'affichage d'un tableau HTML suite à la réception de données envoyées par un web service.
+Un autre exemple serait l'affichage d'un tableau HTML suite à la réception de données envoyées par un service web.
 
-Il existe principalement deux façon de générer des éléments HTML, soit à partir de String, soit à partir de "Nodes" (ou HTML elements).
+Il existe principalement deux façon de générer des éléments HTML, soit à partir de String, soit à partir de Nodes (ou "HTML elements").
 
 # <InternalPageTitle> Génération d'HTML à partir d'une string </InternalPageTitle>
 
-Nous pouvons utiliser la propriété **innerHTML** d'un élément existant pour créer de l'HTML à l'aide d'une String.
+Nous pouvons utiliser la propriété **`innerHTML`** d'un élément existant pour créer de l'HTML à l'aide d'une String.
 
-Lorsque nous allons ajouter une String à la propriété **innerHTML** d'un élément, le browser va s'occuper de créer des "Node elements" et les attacher au "DOM tree" au sein de l'élément que nous modifions. 
+Lorsque nous allons ajouter une String à la propriété **`innerHTML`** d'un élément, le browser va s'occuper de créer des "Node elements" et les attacher au "DOM tree" au sein de l'élément que nous modifions. 
+
+Dans votre repo **`web2`**, veuillez copier/coller le répertoire **`/tutorials/pizzeria/hmi/-esthetic`** et le renommer en **`/tutorials/pizzeria/hmi/modern-dynamic`**.
+
+En cas de souci, vous pouvez télécharger le code du tutoriel précédent ici : [modern-esthetic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-esthetic-hmi).
+
+Veuillez ouvrir un terminal au niveau de ce répertoire.
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **`/tutorials/pizzeria/hmi/modern-dynamic`** (ou **`/web2/tutorials/pizzeria/hmi/modern-dynamic`** si l'on considère le nom du répertoire du repo).
 
 Nous souhaitons ajouter un menu à notre site de la pizzeria à générer à partir d'un array.
 
-Voici le nouveau code à ajouter pour générer ce menu au sein de **/src/index.js** : 
-
+Voici le nouveau code à ajouter dans votre projet pour générer ce menu au sein de **`/src/index.js`** : 
 
 ```js numbered highlighting="5-31,37,46-86"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -135,16 +142,16 @@ function getAllTableLinesAsString(menu) {
 }
 ```
 
-Dans un premier temps, nous avons accéder à l'élément **main** en tant qu'HTML element (ou Node).
+Dans un premier temps, nous avons accédé à l'élément **`main`** en tant qu'HTML element (ou Node).
 
-Nous avons ensuite généré une String multilignes à l'aide des `template literals` pour représenter le menu, pour finalement ajouter au **main** de nouveaux éléments en concaténant cette String à sa propriété **innerHTML**. 
+Nous avons ensuite généré une String multilignes à l'aide des **`template literals`** pour représenter le menu, pour finalement ajouter au **`main`** de nouveaux éléments en concaténant cette String à sa propriété **`innerHTML`**. 
 
 # <InternalPageTitle> Ajout dynamique d'écouteurs d'événements une fois le DOM rendu </InternalPageTitle>
 
 A ce stade-ci, nous souhaiterions ajouter un gestionnaire de passage de souris sur le menu.  
 Au passage sur le menu, nous souhaitons changer la couleur du background afin que le menu devienne vert. Lorsqu'on quitte le menu, celle-ci doit reprendre sa couleur initiale.
 
-Voici le code mis à jour de **index.js** :
+Voici le code à mettre à jour de **`index.js`** :
 
 ```js numbered highlighting="39,90-99"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -250,17 +257,17 @@ function attachOnMouseEventsToGoGreen() {
 
 Une fois le menu rendu, nous y accédons en obtenant une référence vers le Node représentant ce menu au sein du DOM tree.
 
-Nous accédons à l'attribut **class** d'une **table** en modifiant, en JS, l'attribut **className**.  
-Il est aussi possible d'affiner la gestion des classes CSS en ajoutant ou supprimant des classes via la propriété **classList** d'un Node (ou HTML element).
+Nous accédons à l'attribut **`class`** d'une **`table`** en modifiant, en JS, l'attribut **`className`**.  
+Il est aussi possible d'affiner la gestion des classes CSS en ajoutant ou supprimant des classes via la propriété **`classList`** d'un Node (ou HTML element).
 
-Ici, nous avons utilisé les classes Bootstrap "table-success" pour mettre en vert, et "table-danger" pour que ça soit en rouge.
+Ici, nous avons utilisé les classes Bootstrap **`table-success`** pour mettre en vert, et **`table-danger`** pour que ça soit en rouge.
 
 Il est à noter ces dangers quand on utilise des Strings pour générer de l'HTML.
 
 ## ⚡ Danger N°1 : oubli de mettre à jour le DOM avant d'attacher ses écouteurs
 
 Il arrive très souvent aux jeunes développeurs web de faire une erreur de ce genre.  
-Regarder le code d'**index.js** et imaginez que vous attachiez les écouteurs d'événements dans **renderMenuFromString()** et plus après l'appel de cette fonction :
+Regardez le code d'**`index.js`** et imaginez que vous attachiez les écouteurs d'événements dans **`renderMenuFromString()`** et plus après l'appel de cette fonction :
 
 ```js highlighting="6"
 function renderMenuFromString(menu) {
@@ -274,7 +281,7 @@ function renderMenuFromString(menu) {
 }
 ```
 
-Comme la **table** n'a pas été rendue dans le DOM, il n'est pas possible d'accéder à celle-ci !  
+Comme la **`table`** n'a pas été rendue dans le DOM, il n'est pas possible d'accéder à celle-ci !  
 Une exception serait donc lancée dans la console de votre browser.
 
 Tout cela semble logique, mais pensez-y en cas de souci avec vos écouteurs d'événements 😉.
@@ -282,7 +289,7 @@ Tout cela semble logique, mais pensez-y en cas de souci avec vos écouteurs d'é
 ## ⚡ Danger N°2 : mise à jour du DOM après avoir ajouté ses écouteurs
 
 Il arrive aussi régulièrement aux jeunes développeurs web de faire une erreur de ce style.  
-Regardez le code d'**index.js** et imaginez que vous souhaitiez ajouter une légende au menu :
+Regardez le code d'**`index.js`** et imaginez que vous souhaitiez ajouter une légende au menu :
 
 ```js highlighting="5-6"
 renderMenuFromString(MENU);
@@ -316,8 +323,7 @@ mainWrapper.appendChild(h1);
 
 Nous souhaitons ajouter un nouveau menu pour les boissons à notre site de la pizzeria, à générer à partir d'un array.
 
-Voici le nouveau code à ajouter pour générer la liste des boissons au sein de **/src/index.js** : 
-
+Voici le nouveau code à ajouter à votre projet pour générer la liste des boissons au sein de **/src/index.js** : 
 
 ```js numbered highlighting="33-49,59,121-159"
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -488,7 +494,7 @@ Lorsque l'on vient de créer un Node, il est possible de directement lui attache
 Nous souhaiterions ajouter un gestionnaire de passage de souris sur la liste des boissons.  
 Au passage sur la liste, nous souhaitons changer la couleur du background afin qu'elle devienne rouge. Lorsqu'on quitte la liste, celle-ci doit reprendre sa couleur initiale.
 
-Voici le code que vous devez ajouter à la méthode **getDrinksTableAsNode()** au sein de **index.js** :
+Voici le code que vous devez ajouter à la méthode **`getDrinksTableAsNode()`** au sein de **`index.js`** :
 
 ```js numbered highlighting="30-36"
 function getDrinksTableAsNode(drinks) {
@@ -532,10 +538,10 @@ function getDrinksTableAsNode(drinks) {
 }
 ```
 
-Nous avons ajouté deux écouteurs d'événements à la **table** en cours de construction.  
+Nous avons ajouté deux écouteurs d'événements à la **`table`** en cours de construction.  
 Notons que ces écouteurs peuvent être ajoutés avant ou après avoir fait l'ajout de la table dans le "DOM tree", cela ne change rien.
 
-Regardez le code d'**index.js** et imaginez que vous souhaitiez ajouter une légende à la liste de boissons, en utilisant des Nodes :
+Regardez le code d'**`index.js`** et imaginez que vous souhaitiez ajouter une légende à la liste de boissons, en utilisant des Nodes :
 
 ```js highlighting="3-7"
 renderDrinksFromNodes(DRINKS);
@@ -553,9 +559,9 @@ N'hésitez pas à tester ce morceau de code pour vous rendre compte que la liste
 
 # <InternalPageTitle> Ajout dynamique d'images ou d'autres assets  </InternalPageTitle>
 
-Lorsque l'on souhaite ajouter une image ou tout autre assets (son, vidéo...) via du JS et que l'on utilise un module bundler comme Webpack, on ne peut pas juste ajouter une balise **`<image`** avec le chemin en relatif vers celle-ci.
+Lorsque l'on souhaite ajouter une image ou tout autre assets (son, vidéo...) via du JS et que l'on utilise un module bundler comme Webpack, on ne peut pas juste ajouter une balise **`<image>`** avec le chemin en relatif vers celle-ci.
 
-Pourquoi pas ?  Parce qu'en fait, le bundler va s'occuper de copier, et parfois d'optimiser les assets dans le "build", généralement généré dans le répertoire **/dist** de votre projet.
+Pourquoi pas ?  Parce qu'en fait, le bundler va s'occuper de copier, et parfois d'optimiser les assets dans le "build", généralement généré dans le répertoire **`/dist`** de votre projet.
 Ainsi, lorsque vous développez votre code, l'image se trouve à un endroit différent d'où se trouvera l'image lors du build.
 
 Pour bien gérer les URL au sein de votre JS, vous devez d'abord importer vos assets.  
@@ -575,14 +581,14 @@ function renderPizzaImage(pizzaUrl) {
 }
 ```
 
-Le type du Asset Module configuré dans le fichier **webpack.config.js** est **'asset/resource'**.  
-Cela signifie que pour chaque fichier importé dans le JS, il sera émis dans le "output directory", (ou "build directory"), généralement dans **/dist**, avec comme non de fichier qqch qui ressemble à un hash (par exemple 151cfcfa1bd74779aadb.png) et leur chemins (paths) seront injecté dans le bundle.
+Le type du Asset Module configuré dans le fichier **`webpack.config.js`** est **`asset/resource`**.  
+Cela signifie que pour chaque fichier importé dans le JS, il sera émis dans le "output directory", (ou "build directory"), généralement dans **`/dist`**, avec comme nom de fichier quelque chose qui ressemble à un hash (par exemple 151cfcfa1bd74779aadb.png) et leur chemins (paths) seront injectés dans le bundle.
 
-Dans l'exemple, le chemin de l'image **pizza2.png** lors de l'exécution de l'application sera donné dans la variable **pizzaImage**.
+Dans l'exemple, le chemin de l'image **`pizza2.png`** lors de l'exécution de l'application sera donné dans la variable **`pizzaImage`**.
 
 Veuillez mettre à jour votre site de la pizzeria pour afficher cette image dans le footer : <LinkFile name="pizza2.jpg" target="_blank" download>Pizza à ajouter dans le footer [R.38]</LinkFile>.
 
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**modern-dynamic-hmi**".
+Si tout fonctionne bien, faites un **commit** de votre repo (**`web2`**) avec comme message : **`modern-dynamic-hmi tutorial`**.
 
 En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : [modern-dynamic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-dynamic-hmi).
 
@@ -617,23 +623,58 @@ Le tutoriel qui suit apprend à débugger un frontend qui est développé en JS 
     </li>
 </ul>
 
-# <InternalPageTitle> Exercice 2.6 : Génération dynamique de la Homepage de myMovies </InternalPageTitle>
+# <InternalPageTitle> Projet 2.8 : Génération dynamique d'une HomePage </InternalPageTitle>
 
-Faites un refactor de votre application **myMovies** afin de générer dynamiquement l'HTML des images et du texte au chargment d'**index.html**.
+Veuillez faire un refactor de la HomePage que vous avez développée pour [Projet 2.7](../ui/#projet_2_7_ui_esthetique).
 
-Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémentation :
--	Utilisez Webpack pour un frontend moderne, en utilisant le code l'exercice précédent (**/exercises/module2/2.1**).
--	Veuillez créer un container statique, ou autrement dit un "wrapper", dans votre page **index.html** (par exemple une balise **main** ou une **div**).
--	Ajoutez dynamiquement les images et le texte associé à votre **Homepage** dans votre "wrapper".
+Vous devez utiliser un container statique, ou autrement dit un "wrapper", dans votre page **`index.html`** (par exemple une balise **`main`** ou une **`div`**). 
+Vous allez dynamiquement ajouter les images et le texte associé à votre **Homepage** dans votre "wrapper".
 
-Veuillez faire un **commit** de votre code avec le message suivant : "**myMovies : module 2 : dynamic homepage**"".
+Veuillez repartir du code de [Projet 2.7](../ui/#projet_2_7_ui_esthetique).  
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.8`**. 
 
-NB : Le code de votre application web se trouve dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module2/2.2**.
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.8: dynamic HomePage`**.
+
+<AuthenticatedBlock>
+
+Veuillez travailler avec les membres de votre groupe. N'hésitez pas à soit chacun coder un prototype de l'application, soit en pair programming, soit à 3-4-5 étudiants, selon vos goûts. 
+
+</AuthenticatedBlock>
+
 
 #### 🤝 Tips
-- Pensez à faire l'import de vos images au sein de **index.js**.
+- Pensez à faire l'import de vos images au sein de **`index.js`**.
 
-# <InternalPageTitle> Exercice 2.7 : Génération dynamique d'une table sur base d'un formulaire </InternalPageTitle>
+# <InternalPageTitle> Projet 2.9 : Changement dynamique du contenu d'une page </InternalPageTitle>
+
+Vous allez mettre à jour la HomePage développée pour [Projet 2.8](#projet_2_8_generation_dynamique_dune_home_page) afin de permettre d'afficher un texte sur le ou les auteur(s) de l'application lorsqu'on clique sur un bouton.
+
+Veuillez ajouter un bouton (nommé "About" par exemple) :
+- lorsqu'on clic dessus, vous devez remplacer tout le contenu de la HomePage par un texte présentant le ou les auteur(s) de l'application.
+- quand le contenu de type "About" est affiché, un bouton (nommé "Back" par exemple) doit permettre de revenir au contenu initial de la HomePage.
+
+Veuillez repartir du code de [Projet 2.8](#projet_2_8_generation_dynamique_dune_home_page).  
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.9`**. 
+
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.9: dynamic page content`**.
+
+<AuthenticatedBlock>
+
+Veuillez travailler avec les membres de votre groupe. N'hésitez pas à soit chacun coder un prototype de l'application, soit en pair programming, soit à 3-4-5 étudiants, selon vos goûts. 
+
+Au cours de la séance, vos enseignants vous inviteront :
+- à identifier les différentes façons d'avoir programmé la page ;
+- à discuter de ce que vous avez appris, des difficultés rencontrées ; 
+- à comparer les applications produites afin de sélectionner un mode de programmation qui convient aux membres du groupe.
+
+</AuthenticatedBlock>
+
+
+#### 🤝 Tips
+- Les boutons sont utilisés pour afficher deux contenus différents, un contenu de type "HomePage", ou un contenu de type "AboutPage".
+
+
+# <InternalPageTitle> 🍬 Exercice 2.10 : Génération dynamique d'une table sur base d'un formulaire </InternalPageTitle>
 
 Vous allez réaliser une application web permettant de générer une table sur base d'un formulaire.
 
@@ -655,29 +696,19 @@ Voici un exemple de résultat :
 <br/>
 
 Afin de réaliser cet exercice nous vous proposons ces contraintes d'implémentation :
-- Créez une 1ère fonction nommée **`createArray`** qui retourne un **Array** à deux dimensions avec :
-  - Comme valeur pour chaque élément : une String au format `"chaine de base[numéro de ligne][numéro de colonne]"`,
+- Créez une 1ère fonction nommée **`createArray`** qui retourne un **`Array`** à deux dimensions avec :
+  - Comme valeur pour chaque élément : une String au format **"chaine de base[numéro de ligne][numéro de colonne]"**,
   - Sur base de 3 paramètres : le nombre de lignes, de colonnes, et la chaine de base à afficher dans chaque élément du tableau.
--	Créez une deuxième fonction nommée **`createHtmlTableAsString`** qui renvoie, sous forme de string, une table HTML basée sur un **Array** ; vous lui passerez l'array créé par la 1ère fonction.
--	Appelez ces deux fonctions afin d'afficher la table de manière dynamique au sein d'un "wrapper" (une **div** est conseillée).
+-	Créez une deuxième fonction nommée **`createHtmlTableAsString`** qui renvoie, sous forme de string, une table HTML basée sur un **`Array`** ; vous lui passerez l'array créé par la 1ère fonction.
+-	Appelez ces deux fonctions afin d'afficher la table de manière dynamique au sein d'un "wrapper" (une **`div`** est conseillée).
 
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.10`** sur base du boilerplate : [boilerplate de base](https://github.com/e-vinci/js-basic-boilerplate.git).
+
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.10: dynamic table`**.
 
 #### 🤝 Tips 
-- Vous pouvez utiliser la propriété **.innerHtml** de votre wrapper pour afficher dynamiquement la table.
-- Pour gérer le submit d'un formulaire, il existe plusieurs façons de le faire. La façon recommandée est d'écouter les événements de type "submit" sur le formulaire. Il est ainsi possible de faire un submit d'un formulaire à l'aide de la touche **Enter**.
+- Vous pouvez utiliser la propriété **`.innerHtml`** de votre wrapper pour afficher dynamiquement la table.
+- Pour gérer le submit d'un formulaire, il existe plusieurs façons de le faire. La façon recommandée est d'écouter les événements de type "submit" sur le formulaire. Il est ainsi possible de faire un submit d'un formulaire à l'aide de la touche **`Enter`**.
 - Comment accéder aux champs de votre formulaire lors du "submit" ?  
-La valeur d'un champs est accessible via la propriété **value** d'une **input**.
+La valeur d'un champs est accessible via la propriété **`value`** d'un **`input`**.
 - N'oubliez pas que lors d'un clic sur un élément qui amène à un "submit", le comportement par défaut du formulaire est de recharger la page. Vous devez donc stopper ce comportement par défaut pour assurer que le tableau que vous générez ne soit pas "effacé".
-
-
-Le code de votre application web doit se retrouver dans votre repository local et votre web repository (normalement appelé **web2**) dans un répertoire nommé **/exercises/module2/2.3**.
-
-Veuillez faire un **commit** de votre code avec le message suivant : "**Exercice 2.3**"".
-
-# <InternalPageTitle> 🍬 Exercice 2.8 : design responsive </InternalPageTitle>
-
-N'hésitez pas à libérer votre créativité et améliorer la UI de la Homepage de **myMovies**.  
-Voici quelques idées : 	
--	Assurez-vous qu'elle soit design responsive.
--	Prévoyez deux layouts : un layout pour les appareils mobile, un autre layout pour les appareils ayant un écran moyen voire large.
--	Peaufinez votre favicon, header, footer…

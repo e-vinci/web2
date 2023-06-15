@@ -14,9 +14,9 @@ description: "Les animations et jeux vidéo"
 <InternalPageMenu>
   <InternalPageMenuItem> 🍬 Animations via l'API Canvas </InternalPageMenuItem>
   <InternalPageMenuItem> 🍬 Animations via une librairie externe </InternalPageMenuItem>
-  <InternalPageMenuItem> 🍬 Jeux vidéo en 2D via Phaser </InternalPageMenuItem> 
-  <InternalPageMenuItem> Exercice 2.10 : Gérer des événements associés à une animation </InternalPageMenuItem>
-
+  <InternalPageMenuItem> Exercice 2.13 : Gestion d'événements associés à une animation </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Jeux vidéo en 2D via Phaser </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 2.14 : animation </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> 🍬 Animations via l'API Canvas </InternalPageTitle>
@@ -28,14 +28,14 @@ Il existe d'autres API fournies par le browser pour dessiner dans un browser qui
 Voici les étapes pour créer une animation à l'aide de l'API Canvas :
 
 1. Ajout d'un élément **`<canvas>`** dans votre HTML et accès à cet objet via du JS ;  
-*Voici un exemple où l'on crée un élément **canvas** dans le main d'**index.html** à l'aide de JS* :
+*Voici un exemple où l'on crée un élément **`canvas`** dans le main d'**`index.html`** à l'aide de JS* :
 ```js
 const main = document.querySelector('main');  
 main.innerHTML = '<canvas />';
 const canvas = document.querySelector('canvas');
 ```
 
-2. Si nécessaire, définition du style du **canvas** et éventuellement du **body** à l'aide de CSS, Bootstrap ou autres, ou directement du JS.  
+2. Si nécessaire, définition du style du **`canvas`** et éventuellement du **`body`** à l'aide de CSS, Bootstrap ou autres, ou directement du JS.  
 *Voici un exemple où l'on gère la taille du canvas via du JS* :
 ```js
 const main = document.querySelector('main');
@@ -47,7 +47,7 @@ canvas.height = mainHeight;
 ```
 
 3. Accès au contexte de rendu du canvas pour pouvoir dessiner dessus en 2D en utilisant les **Canvas API**.  
-*Voici un exemple où l'on dessine un carré de couleur bleu à une position aléatoire dans le main :*
+*Voici un exemple où l'on dessine un carré de couleur bleue à une position aléatoire dans le main :*
 ```js
 const DEFAULT_COLOR = 'blue';
 const main = document.querySelector('main');
@@ -59,8 +59,8 @@ canvasContext.fillStyle = DEFAULT_COLOR;
 canvasContext.fillRect(Math.random() * mainWidth, Math.random() * mainHeight, 20, 20);
 ```
 
-4. Création d'une animation en affichant successivement des "frames".
-*On pourrait appeler la fonction `setInterval`, néanmoins cette fonction n'est pas optimisée pour s'assurer que le browser a les ressources pour effectuer les appels périodiques demandés.  On utilise donc la fonction `window.requestAnimationFrame(callback)` qui permet d'appeler une **callback** environ 60 fois / s, quand le browser est prêt. Voici la structure du code JS qui permet de créer une animation à l'aide des Canvas API : *
+4. Création d'une animation en affichant successivement des "frames".  
+*On pourrait appeler la fonction **`setInterval`**, néanmoins cette fonction n'est pas optimisée pour s'assurer que le browser a les ressources pour effectuer les appels périodiques demandés.  On utilise donc la fonction **`window.requestAnimationFrame(callback)`** qui permet d'appeler une **`callback`** environ 60 fois / s, quand le browser est prêt. Voici la structure du code JS qui permet de créer une animation à l'aide des Canvas API :*
 ```js
 requestAnimationFrame(drawOneFrame);
 function drawOneFrame() {
@@ -74,7 +74,7 @@ function drawOneFrame() {
 ## Exemple d'animation
 Nous vous offrons un exemple d'animation faite à l'aide des Canvas API : [canvas](https://github.com/e-vinci/js-demos/tree/main/frontend/canvas).  
 
-N'hésitez pas à exécuter cette application et à comprendre le code associé. Ce code va être utilisé à l'exercice un peu plus loin.
+N'hésitez pas à exécuter cette application et à comprendre le code associé. Ce code va être utilisé pour un prochain exercice.
 
 # <InternalPageTitle> 🍬 Animations via une librairie externe </InternalPageTitle>
 
@@ -98,17 +98,17 @@ Imaginez que nous souhaitons faire une animation qui mette à disposition un mot
   - arrêter de tourner
   - se mettre à grandir puis rapetissir.
 
-Fonctionnellement, il semble clair ce que nous souhaitons faire.
+Fonctionnellement, ce que nous souhaitons faire semble clair.
 
 Maintenant, à l'aide d'éléments HTML, de propriétés CSS, et de JS, comment pourrions nous aborder ce problème ?
 
-- Nous avons besoin d'une hélice qui tourne. Nous allons probablement pouvoir utiliser une **div** pour cela qui prendra la largeur du mot. 
-*Dans le code associé, nous pourrions identifier cette balise par l'id `propeller`*.
-- Nous avons besoin de faire monter ou descendre notre hélice. Pourquoi ne pas utiliser une **div** qui fera office d'ascenseur, et qui contiendra notre hélice.  
-*Dans le code associé, nous pourrions identifier cette balise par l'id `lift`*.
+- Nous avons besoin d'une hélice qui tourne. Nous allons probablement pouvoir utiliser une **`div`** pour cela qui prendra la largeur du mot.  
+*Dans le code associé, nous pourrions identifier cette balise par l'id **`propeller`***.
+- Nous avons besoin de faire monter ou descendre notre hélice. Pourquoi ne pas utiliser une nouvelle **`div`** qui fera office d'ascenseur, et qui contiendra notre hélice.  
+*Dans le code associé, nous pourrions identifier cette balise par l'id **`lift`***.
 - Ensuite, il reste à gérer des écouteurs d'événements sur le clavier, et sur ces divs. Il serait pratique d'utiliser une librairie d'animation 2D pour faciliter les mouvements de l'hélice.
 
-La suite montre comment cela a été implémenté à l'aide de la librairie **anime.js**.
+La suite montre comment cela a été implémenté à l'aide de la librairie **`anime.js`**.
 
 ## Exemple d'animation à l'aide d'anime.js
 
@@ -117,7 +117,8 @@ Nous vous offrons un exemple d'animation faite à l'aide d'**anime** : [anime](h
 N'hésitez pas à exécuter cette application et à comprendre le code associé.
 
 Voici quelques explications :
-- Nous avons statiquement implémenté la structure de l'hélice et de l'ascenseur dans le fichier **index.html** ;  
+- Nous avons statiquement implémenté la structure de l'hélice et de l'ascenseur dans le fichier **`index.html`** :
+
  ```html 
 <div id="lift">
   <!-- d-inline-block allow to wrap the div to the width of its content -->
@@ -128,15 +129,39 @@ Voici quelques explications :
  ```
 
 - Nous avons installé **anime.js** et appris à l'utiliser grâce à la documentation https://github.com/juliangarnier/anime/ :
-    - Installation :  
+    - **Installation** :  
     ```bash
     npm i animejs
     ```
-    - Utilisation de la librairie dans un module :  
+    - **Utilisation de la librairie** dans un module :  
     ```js
     import anime from 'animejs/lib/anime.es.js';
     ```
-- On utilise la fonction `anime` pour réaliser les animations que l'on cible aux **div** via leur **id** dans la propriété **`targets`**.
+- On utilise la fonction **`anime`** pour réaliser les animations que l'on cible aux **`div`** via leur **`id`** dans la propriété **`targets`**.
+
+# <InternalPageTitle> Exercice 2.13 : Gestion d'événements associés à une animation </InternalPageTitle>
+
+Veuillez adapter une application web permettant l'affichage de différents scintillements de formes selon la demande de l'utilisateur.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.13`** en copiant/collant le code à adapter se trouvant dans ce dossier (du repo associé aux tutoriels & démos) : [/demo/canvas](https://github.com/e-vinci/js-demos/tree/main/frontend/canvas).
+
+Veuillez retravailler l'animation pour que :
+-	elle s'arrête ou démarre lors d'un clic gauche d'un utilisateur ;
+-	les carrés grandissent ou rapetississent au clic sur la touche **`+`** ou la touche **`-`** ; 
+-	lors d'un clic droit de la souris, la couleur des carrés change de manière aléatoire.
+
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.13 : canvas event management`**.
+
+#### 🤝 Tips
+-	N'hésitez pas à découvrir la documentation de **`requestAnimationFrame()`** pour voir comment stopper une animation.  
+Toujours pas d'idée ? N'hésitez pas à utiliser la fonction **`cancelAnimationFrame()`**.
+-	Vous pouvez utiliser le type d'événement **`contextmenu`** pour gérer les clics droits. Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event)
+-	Vous pouvez écouter le type d'événement **`keydown`** sur l'objet **`document`** pour gérer l'appui sur les touches **`+`** ou **`-`**.  
+Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event).
+-	Si vous avez besoin de générer un nombre aléatoire de 0 à 255 : 
+```js
+Math.floor(Math.random() * 256); // [0,255]
+```
 
 # <InternalPageTitle> 🍬 Jeux vidéo en 2D via Phaser </InternalPageTitle>
 
@@ -156,28 +181,37 @@ Nous vous offrons donc un boilerplate si vous souhaitez créer un jeu vidéo Pha
 Pour information, la source de la configuration de Webpack provient principalement de [Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template).  
 Le jeu présenté dans le boilerplate est basé sur le tutoriel nommé [Modern JavaScript Phaser 3 Tutorial : Part 1 to Part 5](https://blog.ourcade.co/posts/2020/make-first-phaser-3-game-modern-javascript-part1/) et utilise Webpack au lieu de Parcel comme module bundler.
 
-# <InternalPageTitle> Exercice 2.10 : Gérer des événements associés à une animation </InternalPageTitle>
+# <InternalPageTitle> Projet 2.14 : animation </InternalPageTitle>
 
-Veuillez adapter une application web permettant l'affichage de différents scintillements de formes selon la demande de l'utilisateur.
+Veuillez enrichir le frontend de votre projet en développant une animation 2D, 3D ou un jeu vidéo en utilisant une librairie externe. Nous vous conseillons d'utiliser une des librairies proposées sur cette page, néanmoins, vous pouvez tenter d'utiliser d'autres librairies.
 
-Le code a adapter se trouve dans ce dossier [/demo/canvas](https://github.com/e-vinci/js-demos/tree/main/frontend/canvas) du repo associé aux démos.
+Dans un premier temps, identifiez ce qui pourrait être rendu interactif, ce qui aurait du sens. 
+Si par exemple votre projet offre un quizz, alors il serait intéressant d'avoir une animation si le score est bon, et une autre animation si le score est mauvais.
 
-Veuillez retravailler l'animation pour que :
--	elle s'arrête ou démarre lors d'un clic gauche d'un utilisateur ;
--	les carrés grandissent ou rapetississent au clic sur la touche **+** ou la touche **-** ; 
--	lors d'un clic droit de la souris, la couleur des carrés change de manière aléatoire.
+Une fois que vous avez une bonne idée de ce que vous souhaitez animer, du comportement fonctionnel attendu, vous devez sélectionner une librairie externe pour le faire (**anime.js**, **three.js**...).
 
-#### 🤝 Tips
--	N'hésitez pas à découvrir la documentation de **requestAnimationFrame()** pour voir comment stopper une animation.  
-Toujours pas d'idée ? N'hésitez pas à utiliser la fonction **cancelAnimationFrame()**.
--	Vous pouvez utiliser le type d'événement "**contextmenu**" pour gérer les clics droits. Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/contextmenu_event)
--	Vous pouvez écouter le type d'événement "**keydown**" sur l'objet **document** pour gérer l'appui sur les touches **+** ou **-**.  
-Plus d'info dans la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event).
--	Si vous avez besoin de générer un nombre aléatoire de 0 à 255 : 
-```js
-Math.floor(Math.random() * 256); // [0,255]
-```
+Veuillez repartir du code de [Projet 2.12](../routing/#projet_2_12_navigation_router).  
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.14`**.
 
-Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module3/3.2**.
+<UnAuthenticatedBlock>
 
-Veuillez faire un **commit** de votre code avec le message suivant : "**module 3 : exercise 3.2 canvas event management**".
+Si vous avez choisi comme projet de travailler sur l'application **`myMovies`**, vous pourriez commencer par créer une simple animation à l'aide de la librairie anime.js pour rendre votre **`HomePage`** attractive.
+
+</UnAuthenticatedBlock>
+
+<AuthenticatedBlock>
+
+Veuillez travailler avec les membres de votre groupe.  
+S'il y a plusieurs animations à développer pour votre projet, il est intéressant de vous partager le travail.  
+N'hésitez pas à soit chacun coder un prototype de l'application, soit en pair programming, soit à 3-4-5 étudiants, selon vos goûts. 
+
+Au cours de la séance, vos enseignants vous inviteront :
+- à identifier les technologies appropriées pour vos animations ;
+- à discuter de vos choix technologiques ; 
+- à identifier comment vous allez apprendre la nouvelle technologie (**anime.js**, **three.js**...) et développer vos animations.
+
+Quand vous travaillez sur le code de votre projet, vous pouvez aussi directement travailler sur le web repo de votre groupe. Néanmoins, il peut être intéressant de d'abord fournir un prototype d'animation dans votre web repo personnel au sein de **`/project/2.14`**.
+
+</AuthenticatedBlock>
+
+Quand un prototype d'animation est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`2.14 : animation`**.
