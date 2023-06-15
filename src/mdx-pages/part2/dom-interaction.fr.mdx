@@ -17,14 +17,16 @@ description: "JS dans un browser"
   <InternalPageMenuItem> La programmation événementielle </InternalPageMenuItem>
   <InternalPageMenuItem> Flux des événements du DOM </InternalPageMenuItem>
   <InternalPageMenuItem> Les écouteurs d'événements </InternalPageMenuItem>
-  <InternalPageMenuItem> Les callbacks </InternalPageMenuItem>
-  <InternalPageMenuItem> Création d'une IHM classique : tutoriel </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.2 : compteur d'événements </InternalPageMenuItem>
+  <InternalPageMenuItem> Les callbacks & la programmation fonctionnelle </InternalPageMenuItem>
+  <InternalPageMenuItem> Création d'une IHM classique </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.2 : interaction avec le DOM </InternalPageMenuItem>
   <InternalPageMenuItem> L'objet event </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.3 : objet event & formulaire </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.4 : objet event & multiples éléments </InternalPageMenuItem>
   <InternalPageMenuItem> Les timers & actions </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.5 : timer pour lancer une action </InternalPageMenuItem>
   <InternalPageMenuItem> Les intervalles de temps & actions répétées  </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.3 : événements différés dans le temps </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.4 : autres événements </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.6 : séquence d'événements différés dans le temps </InternalPageMenuItem>
 </InternalPageMenu>
 
 
@@ -47,7 +49,7 @@ Le DOM donne accès aux éléments HTML ainsi qu'à leur style. Il est donc poss
 Il existe plusieurs moyens d'accéder à un élément HTML via des méthodes offertes par le DOM.  
 Nous allons voir ensemble les façons les plus pratiques.
 
-## querySelector()
+## `querySelector()`
 
 Cette méthode retourne le 1er élément qui correspond à un sélecteur CSS.
 
@@ -70,14 +72,14 @@ let duplicateMsg = document.querySelector("div"); // HTML tag name
 
 Les CSS sélecteurs sont importants en JS, tout comme en CSS :
 
-- **#** : permet l'accès via la propriété html **id**.
-- **.** : permet l'accès via une classe qui aurait été donnée à l'élément HTML (via la propriété **class**).
-- **TAG_NAME** : permet l'accès à un élément via le nom de la balise associée à l'élément HTML.
+- **`#`** : permet l'accès via la propriété html **`id`**.
+- **`.`** : permet l'accès via une classe qui aurait été donnée à l'élément HTML (via la propriété **`class`**).
+- **`TAG_NAME`** : permet l'accès à un élément via le nom de la balise associée à l'élément HTML.
 
 <br />
 
 Notons que pour modifier un élément HTML pour lequel nous avons obtenu une référence, il suffit de changer une de ses propriétés. On utilise pour cela le nom des propriétés associées à l'élément HTML.
-Par exemple, si l'on souhaite changer le texte de **btn2**, il suffit de changer sa propriété **innerText** ou **innerHTML** :
+Par exemple, si l'on souhaite changer le texte de **`btn2`**, il suffit de changer sa propriété **`innerText`** ou **`innerHTML`** :
 
 ```js
 btn2.innerText = "I have been clicked";
@@ -85,7 +87,7 @@ btn2.innerText = "I have been clicked";
 
 Une fois cette ligne exécutée par le browser, comme le DOM a été modifié, le bouton serait automatiquement réaffiché avec le nouveau texte `"I have been clicked"`.
 
-## getElementById()
+## `getElementById()`
 
 Cette méthode retourne l'élément dont la propriété HTML nommée **`id`** contient la valeur donnée en paramètre.
 
@@ -101,7 +103,7 @@ Voici comment on pourrait accéder à cet élément :
 let btn1 = document.getElementById("myBtn1");
 ```
 
-## querySelectorAll()
+## `querySelectorAll()`
 
 Cette méthode retourne tous les éléments qui correspondent à un sélecteur CSS, sous forme d'une **`NodeList`**.
 
@@ -126,7 +128,7 @@ buttons.forEach((btn) => {
 
 Il existe bien sûr d'autres méthodes pour accéder aux éléments HTML.
 
-Nous pensons que si vous retenez les **querySelector**, il n'est pas nécessaire d'en connaître d'autres.
+Nous pensons que si vous retenez **`querySelector`** & **`querySelectorAll`**, il n'est pas nécessaire d'en connaître d'autres.
 
 Néanmoins, n'hésitez pas à explorer [la documentation MDN sur l'interface Document](https://developer.mozilla.org/en-US/docs/Web/API/Document) [[23.]](/references/#r23).
 
@@ -136,10 +138,10 @@ Pour réaliser une bonne IHM, nous allons faire de la programmation événementi
 
 On va ajouter des écouteurs d'événements ("event listeners") sur des éléments du DOM pour définir des actions qui seront à réaliser une fois l'événement soulevé.
 
-Vous connaissez déjà des événements qui amènent à des actions par défaut, par exemple :
+Vous avez déjà expérimenté des événements qui amènent à des actions par défaut, par exemple :
 
-- lors d'un clic sur un bouton de type "submit" d'un formulaire, les données sont envoyées au serveur et la page est rafraichie.
-- lors d'un clic sur un "hyperlink", on est redirigé vers une nouvelle page.
+- lors d'un clic sur un bouton de type "submit" d'un formulaire : les données sont envoyées au serveur et la page est rafraichie.
+- lors d'un clic sur un "hyperlink" : on est redirigé vers une nouvelle page (où l'on voyage parfois aussi à l'intérieur de la même page).
 
 Certains types d'événements sont dits "cancelable events". Pour ces événements, il est possible de stopper l'action par défaut. Nous allons prochainement découvrir comment nous pourrions empêcher de rafraichir une page lors du clic sur le bouton "submit" d'un formulaire.
 
@@ -164,9 +166,9 @@ Il est possible de gérer des événements de plusieurs façons.
 
 ## Via des méthodes
 
-Vous pouvez ajouter des écouteurs d'événements à l'aide de la méthode **addEventListener()**.
+Vous pouvez ajouter des écouteurs d'événements à l'aide de la méthode **`addEventListener()`**.
 
-Vous pouvez enlever des écouteurs d'événements à l'aide de la méthode **removeEventListener()**.
+Vous pouvez enlever des écouteurs d'événements à l'aide de la méthode **`removeEventListener()`**.
 
 Voici un exemple :
 
@@ -195,7 +197,7 @@ const btn3 = buttons[2]; // fancy way to get a reference...
 const btn4 = document.querySelector('#myBtn4');
 
 btn1.addEventListener('click', () => {
-  btn1.innerText = 'I have been clicked !';
+  btn1.innerText = 'myBtn1 : I have been clicked !';
   console.log('onClickHandlerForBtn1::click');
 });
 btn2.addEventListener('click', onClickHandlerForBtn2);
@@ -203,7 +205,7 @@ btn2.addEventListener('click', onClickHandlerForBtnExtra);
 btn3.addEventListener('click', onClickHandlerForBtn3);
 
 function onClickHandlerForBtn2() {
-  btn2.innerText = 'I have also been clicked';
+  btn2.innerText = 'myBtn2 : I have also been clicked';
   console.log('onClickHandlerForBtn2::click');
 }
 
@@ -217,7 +219,7 @@ function onClickHandlerForBtnExtra() {
 }
 
 btn4.onclick = function() {
-  btn4.innerText = 'You clicked on me : )';
+  btn4.innerText = 'myBtn4 : You clicked on me : )';
   console.log('onClickHandlerForBtn4::click');
 };
 ```
@@ -226,11 +228,11 @@ N'hésitez pas à exécuter ce code.
 
 Comment faire ?
 
-Au sein de votre répertoire **/web2/tutorial**, vous pourriez créer un répertoire **events**, et y ajouter un fichier **index.html** contenant l'HTML ci-dessus.
+Au sein de votre répertoire **`/web2/tutorial`**, vous pourriez créer un répertoire **`dom-events`**, et y ajouter un fichier **`index.html`** contenant l'HTML ci-dessus.
 
-Puis vous pourriez ajouter un fichier **index.js** contenant le JS ci-dessus.
+Puis vous pourriez ajouter un fichier **`index.js`** contenant le JS ci-dessus.
 
-Utilisez Live Server pour lancer **index.html** et accédez à la console de votre browser pour voir ce qui se passe lors de clic sur chacun des boutons.
+Utilisez Live Server pour lancer **`index.html`** et accédez à la console de votre browser pour voir ce qui se passe lors de clic sur chacun des boutons.
 
 ## Via des propriétés
 
@@ -245,75 +247,76 @@ btn4.onclick = function () {
 
 Sur internet, vous trouverez beaucoup d'exemples de gestion d'événements à l'aide de propriétés.
 
-👍 Si vous veniez à utiliser ce genre de code, nous vous recommandons un refactor vers l'utilisation de **addEventListenner**.
+👍 Si vous veniez à utiliser ce genre de code, nous vous recommandons un refactor vers l'utilisation de **`addEventListenner`**.
 
-# <InternalPageTitle> Les callback </InternalPageTitle>
+# <InternalPageTitle> Les callbacks & la programmation fonctionnelle </InternalPageTitle>
 
 Les écouteurs d'événements ont besoin de préciser une action asynchrone, une action qui sera à réaliser le moment venu.
 
 Pour spécifier cette action asynchrone, nous faisons ce que nous appelons de la programmation fonctionnelle.
-A la fonction **addEventListenner**, nous lui passons en paramètre une autre fonction que nous appelons une **callback**.
+A la fonction **`addEventListenner`**, nous lui passons en paramètre une autre fonction que nous appelons une **`callback`**.
 
-Une **callback** sera donc la fonction qui sera appelée le moment venu. Dans le cadre de la fonction **addEventListenner**, la **callback** sera appelée lorsque l'événement sera traité par l'élément HTML cible.
+Une **`callback`** sera donc la fonction qui sera appelée le moment venu. Dans le cadre de la fonction **`addEventListenner`**, la **`callback`** sera appelée lorsque l'événement sera traité par l'élément HTML cible.
 
 Dans ce code-ci :
 
 ```js numbered highlighting="7-13"
-const btn1 = document.querySelector("#myBtn1");
-const btn2 = document.querySelector("#myBtn2");
-const buttons = document.querySelectorAll("button");
+const btn1 = document.querySelector('#myBtn1');
+const btn2 = document.querySelector('#myBtn2');
+const buttons = document.querySelectorAll('button');
 const btn3 = buttons[2]; // fancy way to get a reference...
-const btn4 = document.querySelector("#myBtn4");
+const btn4 = document.querySelector('#myBtn4');
 
-btn1.addEventListener("click", () => {
-  btn1.innerText = "I have been clicked !";
-  console.log("onClickHandlerForBtn1::click");
+btn1.addEventListener('click', () => {
+  btn1.innerText = 'myBtn1 : I have been clicked !';
+  console.log('onClickHandlerForBtn1::click');
 });
-btn2.addEventListener("click", onClickHandlerForBtn2);
-btn2.addEventListener("click", onClickHandlerForBtnExtra);
-btn3.addEventListener("click", onClickHandlerForBtn3);
+btn2.addEventListener('click', onClickHandlerForBtn2);
+btn2.addEventListener('click', onClickHandlerForBtnExtra);
+btn3.addEventListener('click', onClickHandlerForBtn3);
 
 function onClickHandlerForBtn2() {
-  btn2.innerText = "I have also been clicked";
-  console.log("onClickHandlerForBtn2::click");
+  btn2.innerText = 'myBtn2 : I have also been clicked';
+  console.log('onClickHandlerForBtn2::click');
 }
 
 function onClickHandlerForBtn3() {
-  console.log("onClickHandlerForBtn3::click");
-  btn2.removeEventListener("click", onClickHandlerForBtnExtra);
+  btn2.removeEventListener('click', onClickHandlerForBtnExtra);
+  console.log('onClickHandlerForBtn3::click');
 }
 
 function onClickHandlerForBtnExtra() {
-  console.log("onClickHandlerForBtnExtra::click");
+  console.log('onClickHandlerForBtnExtra::click');
 }
+
+btn4.onclick = function() {
+  btn4.innerText = 'myBtn4 : You clicked on me : )';
+  console.log('onClickHandlerForBtn4::click');
+};
 ```
 
-On voit que les callback, le 2ème paramètre d'**addEventListener**, peuvent être soit des fonctions "arrow" ou anonymes, soit des fonctions nommées.
+On voit que les callback, le 2ème paramètre d'**`addEventListener`**, peuvent être soit des fonctions "arrow" ou anonymes, soit des fonctions nommées.
 
-⚡ Lorsque vous indiquez une callback, il est important que vous omettiez les parenthèses de la fonction. Sinon, cela ne fonctionne pas, vous devez donner la définition d'une fonction, pas l'appel d'une fonction !
+⚡ Lorsque vous indiquez une callback, il est important que vous omettiez les parenthèses de la fonction. Sinon, cela ne fonctionnera pas ! Vous devez donner la définition d'une fonction, pas l'appel d'une fonction !
 
-# <InternalPageTitle> Création d'une IHM classique : tutoriel </InternalPageTitle>
-## Introduction aux tutoriels
+# <InternalPageTitle> Création d'une IHM classique </InternalPageTitle>
+## Introduction
 
 Tout au long du cours, nous développons de manière incrémentale, via une série de tutoriels, un site pour une pizzeria.
 
-Il est important que vous exécutiez et compreniez le code associé à ces tutoriels qui reprendront toutes les compétences attendues dans le cadre de ce cours.
-
-Une fois un tutoriel réalisé, vous pourrez voir si vous avez bien acquis les compétences en vous attaquant aux exercices qui suivent.
-
-Dans votre repo **web2**, veuillez créer les répertoires **/tutorials/pizzeria/hmi/classic**.
+Dans votre repo **`web2`**, veuillez créer le répertoire **`/tutorials/pizzeria/hmi/classic`**.
 
 Nous allons maintenant développer la version classique du site d'une pizzeria dans le dossier **classic**.
 
-Veuillez ajouter dans **classic** ces 3 répertoires :
+Veuillez ajouter dans le dossier **`classic`** ces 3 répertoires :
 
-- **/tutorials/pizzeria/hmi/classic/img** : c'est là que seront reprises les photos ;
-- **/tutorials/pizzeria/hmi/classic/sound** : c'est là que les fichiers sonores seront ajoutés ;
-- **/tutorials/pizzeria/hmi/classic/stylesheets** : c'est là que le CSS sera donné.
+- **`/tutorials/pizzeria/hmi/classic/img`** : c'est là que seront reprises les photos ;
+- **`/tutorials/pizzeria/hmi/classic/sound`** : c'est là que les fichiers sonores seront ajoutés ;
+- **`/tutorials/pizzeria/hmi/classic/stylesheets`** : c'est là que le CSS sera donné.
 
-Par la suite, nous considérons que tous les chemins absolus démarrent du répertoire **/tutorials/pizzeria/hmi/classic** (ou **/web2/tutorials/pizzeria/hmi/classic** si l'on considère le nom du répertoire du repo).
+Par la suite de ce tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **`/tutorials/pizzeria/hmi/classic`** (ou **`/web2/tutorials/pizzeria/hmi/classic`** si l'on considère le nom du répertoire du repo).
 
-Veuillez ajouter ces 3 images dans **/img** :
+Veuillez ajouter ces 3 images dans **`/img`** :
 
 - <LinkFile name="pizza.jpg" target="_blank" download>
     Photo à utiliser comme background [R.29]
@@ -325,7 +328,7 @@ Veuillez ajouter ces 3 images dans **/img** :
     Logo à utiliser dans le footer
   </LinkFile>
 
-Veuillez ajouter la musique du site dans **/sound** :
+Veuillez ajouter la musique du site dans **`/sound`** :
 
 <LinkFile name="Infecticide-11-Pizza-Spinoza.mp3" target="_blank" download>Pizza Spinoza [R.30]</LinkFile>
 
@@ -334,9 +337,9 @@ Veuillez ajouter la musique du site dans **/sound** :
 
 ## Les abréviations Emmet
 
-Nous allons d'abord créer la structure des éléments de la page au sein d'un nouveau fichier **/index.html**.
+Nous allons d'abord créer la structure des éléments de la page au sein d'un nouveau fichier **`/index.html`**.
 
-Pour générer le corps de sa page HTML, on peut utiliser une abréviation **Emmet** au sein de VS Code ; pour cela, commencez à taper **html:5** et utilisez l'autocompletion (ou saisie automatique) dans le fichier **index.html** (il suffit de cliquer sur **html:5** qui apparaît dans la liste associée à l'autocompletion). Donnez le titre **Pizzeria** à votre page web.
+Pour générer le corps de sa page HTML, on peut utiliser une abréviation **Emmet** au sein de VS Code ; pour cela, commencez à taper **`html:5`** et utilisez l'autocompletion (ou saisie automatique) dans le fichier **`index.html`** (il suffit de cliquer sur **`html:5`** qui apparaît dans la liste associée à l'autocompletion). Donnez le titre **Pizzeria** à votre page web.
 
 Les abréviations **Emmet** permettent donc d'automatiser l'écriture d'HTML.
 
@@ -348,11 +351,11 @@ Nous allons ajouter un header, un main et un footer à notre page web.
 
 Le header reprendra un simple texte ("We love Pizza").
 
-Le main contiendra seulement une balise **audio** pour offrir un lecteur contenant la chanson Pizza Spinoza.
+Le main contiendra seulement une balise **`audio`** pour offrir un lecteur contenant la chanson Pizza Spinoza.
 
 Le footer présentera un texte ("But we also love JS") et le logo de JS.
 
-Voici ce que devrait donner à ce stade-ci votre **index.html** :
+Voici ce que devrait donner à ce stade-ci votre **`index.html`** :
 
 ```html
 <!DOCTYPE html>
@@ -386,7 +389,7 @@ Voici ce que devrait donner à ce stade-ci votre **index.html** :
 </html>
 ```
 
-Exécutez cette page web, même si ce n'est pas très esthétique, tous les éléments sont présents.
+Veuillez exécuter cette page web. Même si ce n'est pas très esthétique, tous les éléments sont présents.
 
 ## Mise en forme
 
@@ -394,13 +397,13 @@ A l'aide de CSS, nous allons mettre en forme notre page web via un nouveau fichi
 
 Nous souhaitons que le layout de la page fasse toujours, au minimum, la hauteur complète du navigateur ; pour ce faire nous allons :
 - utiliser un body repris comme un un élément Flexbox faisant 100% de hauteur.
-- paramétrer le **main** pour lui permettre de remplir l'espace disponible.
+- paramétrer le **`main`** pour lui permettre de remplir l'espace disponible.
 
-Ainsi, le footer donnera l'effet d'être "sticky" en bas de la page.
+Ainsi, le footer donnera l'effet d'être "sticky" en bas de page.
 
-De plus, nous allons ajouter "pizza.jpg" comme background de l'élément **html**.
+De plus, nous allons ajouter **`pizza.jpg`** comme background de l'élément **`html`**.
 
-Voici le code de **/stylesheets/style.css** (veuillez l'ajouter dans votre fichier) :
+Voici le code de **`/stylesheets/style.css`** (veuillez l'ajouter dans votre fichier) :
 
 ```css
 html, body {
@@ -441,19 +444,19 @@ footer h1{
 }
 ```
 
-Pour appliquer la stylesheet à **index.html**, il suffit d'ajouter cette balise dans **index.html** à la fin de la balise **head** :
+Pour appliquer la stylesheet à **`index.html`**, il suffit d'ajouter cette balise dans **`index.html`** à la fin de la balise **`head`** :
 
 ```html
 <link rel="stylesheet" href="./stylesheets/style.css" />
 ```
 
-Pour ajouter cette balise, il est possible de juste taper l'abréviation **Emmet** "**link:css**" dans VS Code. Il ne reste plus qu'à ajouter le chemin vers le fichier au sein de **href**. Dans la valeur de **href**, si vous tapez "./", vous verrez tous les fichiers et répertoires disponibles.
+Pour ajouter cette balise, il est possible de juste taper l'abréviation **Emmet** "**`link:css`**" dans VS Code. Il ne reste plus qu'à ajouter le chemin vers le fichier au sein de **`href`**. Dans la valeur de **`href`**, si vous tapez **`./`**, vous verrez tous les fichiers et répertoires disponibles.
 
-👍 Il est recommandé d'utiliser un chemin relatif dans **href** et d'utiliser la saisie automatique (autocompletion) afin de ne pas se tromper dans l'écriture du chemin d'un fichier.
+👍 Il est recommandé d'utiliser un chemin relatif dans **`href`** et d'utiliser la saisie automatique (autocompletion) afin de ne pas se tromper dans l'écriture du chemin d'un fichier.
 
 Il est temps d'ajouter le fichier favicon comme logo pour notre site.
 
-Tapez l'abréviation **Emmet** "**link:favicon**" à la fin de la balise **head** d'**index.html**.  
+Tapez l'abréviation **Emmet** **`link:favicon`** à la fin de la balise **`head`** d'**`index.html`**.  
 Une balise de ce genre doit avoir été ajoutée :
 
 ```html
@@ -470,11 +473,11 @@ La page web de la pizzeria devrait paraître pas trop mal à ce stade ci.
 
 Nous souhaitons maintenant rendre cette page un peu plus interactive.
 
-Nous nous sommes rendu compte que les clients de la pizzeria ont des difficultés à cliquer juste sur le bouton Play / Stop du lecteur.
+Nous nous sommes rendu compte que les clients de la pizzeria ont des difficultés à cliquer juste sur le bouton Play/Pause du lecteur.
 
 Dès lors, nous allons permettre aux visiteurs de cliquer n'importe où sur la page pour démarrer ou stopper la musique.
 
-Nous allons ajouter un script **index.js** gérant les clics des utilisateurs sur la page :
+Nous allons ajouter un script **`index.js`** gérant les clics des utilisateurs sur la page :
 
 ```js
 const body = document.querySelector("body");
@@ -489,20 +492,19 @@ function startOrStopSound() {
 }
 ```
 
-Ici, à l'aide d'un script JS et du DOM, nous pouvons accéder à l'**HTMLAudioElement** contenu dans la page web.
-Nous avons ensuite accès à toutes les propriétés et fonctions mises à disposition par cet objet.
+Ici, à l'aide d'un script JS et du DOM, nous pouvons accéder à l'**`HTMLAudioElement`** contenu dans la page web. Nous avons ensuite accès à toutes les propriétés et fonctions mises à disposition par cet objet.
 
-Pour ajouter le fichier JS externe à la page HTML à la fin de la balise **body**, vous pouvez utiliser une abréviation **Emmet** "**script:src**" et il ne vous restera plus qu'à indiquer le chemin vers **index.js** au sein de **src**.
+Pour ajouter le fichier JS externe à la page HTML à la fin de la balise **`body`**, vous pouvez utiliser une abréviation **Emmet** "**`script:src`**" et il ne vous restera plus qu'à indiquer le chemin vers **`index.js`** au sein de **`src`**.
 
 ```html
 <script src="./index.js"></script>
 ```
 
-Voila, vous devriez pouvoir bien exécuter la HomePage du site de la pizzeria qui traite des clics n'importe où sur la page.
+Voila, vous devriez pouvoir bien exécuter la **`HomePage`** du site de la pizzeria qui traite des clics n'importe où sur la page.
 
 ## Ajout d'une librairie externe
 
-Nous souhaiterions ajouter une librairie externe à notre application et l'utiliser afin d'afficher une petite animation sur notre HomePage.
+Nous souhaiterions ajouter une librairie externe à notre application et l'utiliser afin d'afficher une petite animation sur notre **`HomePage`**.
 
 Après quelques recherches dans google, nous découvrons la librairie [Animate.css](https://animate.style/) [[R.32]](/references/#r32).
 
@@ -529,7 +531,7 @@ Toujours en lisant la documentation, si nous souhaitons ajouter un délai au reb
 </h1>
 ```
 
-Veuillez mettre à jour votre page **index.html** :
+Veuillez mettre à jour votre page **`index.html`** :
 
 ```html numbered highlighting="9-12,16,36-38"
 <!DOCTYPE html>
@@ -580,40 +582,40 @@ Veuillez mettre à jour votre page **index.html** :
 
 Nous avons très facilement ajouté deux animations à notre application web sans effort, en nous reposant sur une librairie externe.
 
-Si tout fonctionne bien, faites un commit de votre repo (**web2**) avec le message "**classic-hmi**".
+Si tout fonctionne bien, faites un commit de votre repo (**`web2`**) avec comme message : **`classic-hmi tutorial`**.
 
 En cas de souci, vous pouvez accéder au code final de ce tutorial ici : [classic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/classic-hmi).
 
 
-# <InternalPageTitle> Exercice 2.2 : compteur d'événements </InternalPageTitle>
+# <InternalPageTitle> Exercice 2.2 : interaction avec le DOM </InternalPageTitle>
 
 Veuillez réaliser une application web permettant d'afficher un compteur de clics sur votre page web.
 
 Affichez le message suivant sur votre page web :
-- Au 5ème clic jusqu'au 9ème clic : « Bravo, bel échauffement ! »
-- Au 10ème clic et au-delà : « Vous êtes passé maître en l'art du clic ! »
+- Au 5ème clic jusqu'au 9ème clic : *"Bravo, bel échauffement !"*
+- Au 10ème clic et au-delà : *"Vous êtes passé maître en l'art du clic !"*
 
 N'oubliez pas, bien sûr, d'afficher le compteur de clics sur votre page.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.2`**.  Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.2 : HMI : dom interaction`**.
 
 #### 🤝 Tips
 
 - Vous avez besoin d'un container pour afficher de l'information.
-  Vous pouvez utiliser la propriété **innerHtml** ou **textContent** d'un paragraphe **`<p>`** ou d'un **`<span>`** pour afficher votre compteur.
+  Vous pouvez utiliser la propriété **`innerHtml`** ou **`textContent`** d'un paragraphe **`<p>`** ou d'un **`<span>`** pour afficher votre compteur.
 - Vous pouvez faire de même pour afficher votre message.
-- Vous pouvez ajouter un gestionnaire d'événement sur l'objet **window** de votre navigateur.
-
-Le code de votre application web doit se retrouver dans votre repository local et votre web repository (normalement appelé **web2**) dans un répertoire nommé **/exercises/module1/1.3**.
+- Vous pouvez ajouter un gestionnaire d'événement sur l'objet **`window`** de votre navigateur.
 
 # <InternalPageTitle> L'objet event </InternalPageTitle>
 
-L'objet "event" est automatiquement passé à la callback d'un écouteur d'événement.
+L'objet **`event`** est automatiquement passé à la callback d'un écouteur d'événement.
 
-Il est très utile pour deux raisons principalement :
+Il est très utile, pour deux raisons principalement :
 
 - Stopper l'action par défaut suite à un événement.
 - Lorsqu'on attache une même callback à une multitude d'éléments, pour retrouver la cible de l'événement.
 
-Voici un exemple où l'on souhaite découvrir l'id de la **div** lorsque la souris quitte celle-ci. **index.html** contient 6 divs :
+Voici un exemple où l'on souhaite découvrir l'id de la **`div`** lorsque la souris quitte celle-ci. **`index.html`** contient 6 divs :
 
 ```html
 <!DOCTYPE html>
@@ -657,7 +659,7 @@ Voici un exemple où l'on souhaite découvrir l'id de la **div** lorsque la sour
 </html>
 ```
 
-Un peu de style pour bien visualiser les 6 divs au sein de **main.css** :
+Un peu de style pour bien visualiser les 6 divs au sein de **`main.css`** :
 
 ```css
 .message {
@@ -667,7 +669,7 @@ Un peu de style pour bien visualiser les 6 divs au sein de **main.css** :
 }
 ```
 
-Voici comment on pourrait gérer les mouvements de la souris au sein de **index.js** :
+Voici comment on pourrait gérer les mouvements de la souris au sein de **`index.js`** :
 
 ```js highlighting="8-9"
 const divs = document.querySelectorAll(".message");
@@ -683,17 +685,17 @@ divs.forEach((div) => {
 });
 ```
 
-L'objet event a été nommé **e** ici, mais nous aurions pu lui donner le nom que l'on souhaitait.
+L'objet **`event`** a été nommé **`e`** ici, mais nous aurions pu lui donner le nom que l'on souhaitait.
 
-👍 Pour éviter la confusion, il est recommandé de l'appeler **e** (ou éventuellement **event**).
+👍 Pour éviter la confusion, il est recommandé de l'appeler **`e`** (ou éventuellement **`event`**).
 
-**e.target** est l'élément HTML qui lance la propagation de l'événement dans le DOM tree.
+**`e.target`** est l'élément HTML qui lance la propagation de l'événement dans le DOM tree.
 
-Parfois on préfère utiliser **e.currentTarget** qui est l'élément HTML sur lequel est attaché l'écouteur d'événement.
+Parfois on préfère utiliser **`e.currentTarget`** qui est l'élément HTML sur lequel est attaché l'écouteur d'événements.
 
 N'hésitez pas à exécuter le code ci-dessus, si vous le souhaitez, en créant les 3 fichiers nécessaires.
 
-Voici un exemple partiel de gestion de formulaire où l'on utilise l'objet "event" pour stopper l'action par défaut qui est d'envoyer les données au serveur (indiqué par la propriété **action** du formulaire) et de recharger la page :
+Voici un exemple partiel de gestion de formulaire où l'on utilise l'objet **`event`** pour stopper l'action par défaut qui est d'envoyer les données au serveur (indiqué par la propriété **`action`** du formulaire) et de recharger la page :
 
 ```js highlighting="3,5"
 // code to get the reference to the form shall be imagined
@@ -706,11 +708,47 @@ const onSubmit = (e) => {
 myForm.addEventListener("submit", onSubmit);
 ```
 
+# <InternalPageTitle> Exercice 2.3 : objet event & formulaire </InternalPageTitle>
+
+Veuillez réaliser une application web permettant d'afficher un formulaire demandant votre souhait de l'instant et un bouton pour le soumettre.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.3`**.
+
+Lorsqu'on clique pour soumettre son souhait, veuillez faire disparaître le formulaire et afficher le souhait soumis. Attention, vous devez vous assurer que la page n'est pas rechargée lors de la soumission du formulaire.
+
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.3 : event object & form`**.
+
+#### 🤝 Tips
+
+- Pour faire disparaître un container (une **`div`** par exemple), vous pourriez utiliser sa propriété **`style.display`** et la mettre à **`none`**.
+- Pour faire apparaître du contenu dans un container, (une **`div`** par exemple), vous pourriez utiliser sa propriété **`innerText`**.
+
+# <InternalPageTitle> Exercice 2.4 : objet event & multiples éléments </InternalPageTitle>
+
+Veuillez réaliser une application web permettant d'afficher la couleur associée à une div parmi environ un millier de divs.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.4`**.
+
+La page HTML contenant environ un millier de divs vous est offerte :
+<LinkFile name="many-divs.html" target="_blank" download> Fichier HTML de base </LinkFile>
+
+Il ne vous reste plus qu'à ajouter l'interactivité : 
+- Quand on clique sur une div, vous devez l'agrandir et afficher à l'intérieur sa couleur.
+- Vous devez faire cela en utilisant l'objet **`event`**.
+
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.4 : event object & multiple divs`**.
+
+#### 🤝 Tips
+
+- N'hésitez pas à récupérer une liste de toutes les divs via **`querySelectorAll`**.
+- Vous pourriez, sur base de cette liste, attacher un écouteur de clics sur chaque div : **`addEventListener`**.
+- La callback passée à **`addEventListener`** vous donne accès à la cible de l'événement via l'objet **`event`**.
+
 # <InternalPageTitle> Les timers & actions </InternalPageTitle>
 
-**setTimeout(f,t)** permet l'exécution d'une callback **f** à l'expiration d'un timer, après **t** ms.
+**`setTimeout(f,t)`** permet l'exécution d'une callback **`f`** à l'expiration d'un timer, après **`t`** ms.
 
-**clearTimeout()** permet de stopper l'exécution d'une callback qui a été appelée via **setTimeout()**.
+**`clearTimeout()`** permet de stopper l'exécution d'une callback qui a été appelée via **`setTimeout()`**.
 
 Voici un exemple :
 
@@ -749,15 +787,33 @@ function clearAlert() {
 }
 ```
 
-N'hésitez pas à exécuter ce code si vous le souhaitez en créant les 2 fichiers nécessaires.
+N'hésitez pas à exécuter ce code, si vous le souhaitez, en créant les 2 fichiers nécessaires.
 
-Normalement, si vous cliquez sur le 1er bouton, puis avant deux secondes sur le deuxième bouton, aucun pop-up ne sera lancé.
+Normalement, si vous cliquez sur le 1<sup>er</sup> bouton, puis avant deux secondes sur le deuxième bouton, aucun pop-up ne sera lancé.
+
+
+# <InternalPageTitle> Exercice 2.5 : timer pour lancer une action </InternalPageTitle>
+
+Veuillez réaliser une application web permettant d'afficher le temps qu'il faut pour qu'un utilisateur clique 10 fois sur un bouton : 
+- Le jeu démarre dès que la souris de l'utilisateur passe sur le bouton.
+- Si 5 secondes après que l'utilisateur soit passé sur le bouton, l'utilisateur n'a pas terminé son 10<sup>ème</sup> clic, veuillez afficher un message de type : *"Game over, you did not click 10 times within 5s !"*.
+- Si l'utilisateur a terminé ses 10 clics avant 5s, veuillez afficher :* "You win ! You clicked 10 times within X ms"* où X est une valeur entière.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.5`**.
+
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.5 : run action within timer`**.
+
+#### 🤝 Tips
+
+- Quelle action doit être programmée dans le temps ? Peut-être celle en cas d'échec, lorsque le temps est écoulé...
+- Quid si l'utilisateur réussi à cliquer suffisamment vite ? Peut-être faut il annuler l'action programmée...
+
 
 # <InternalPageTitle> Les intervalles de temps & actions répétées </InternalPageTitle>
 
-**setInterval(f,t)** permet l'exécution d'une callback **f** tous les **t** ms.
+**`setInterval(f,t)`** permet l'exécution d'une callback **`f`** tous les **`t`** ms.
 
-**clearInterval()** permet de stopper les appels à la callback qui ont été programmés via **setInterval()**.
+**`clearInterval()`** permet de stopper les appels à la callback qui ont été programmés via **`setInterval()`**.
 
 On souhaiterait programmer une horloge, voici un simple exemple :
 
@@ -813,10 +869,10 @@ La gestion d'intervalles, de cette façon, est l'ancêtre des animations en JS !
 
 Si vous souhaitez consulter la documentation MDN concernant la gestion d'événements, afin d'approfondir certains éléments, la voici :
 
-- Introduction aux événements [[R.27]](/references/#r27)
-- Index & liste de tous les événements [[R.28]](/references/#r28)
+- [Introduction aux événements](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events) [[R.27]](/references/#r27)
+- [Index & liste de tous les événements](https://developer.mozilla.org/en-US/docs/Web/Events) [[R.28]](/references/#r28)
 
-# <InternalPageTitle> Exercice 2.3 : événements différés dans le temps </InternalPageTitle>
+# <InternalPageTitle> Exercice 2.6 : séquence d'événements différés dans le temps </InternalPageTitle>
 
 Veuillez réaliser une application web permettant d'afficher un feu rouge.
 
@@ -832,31 +888,17 @@ Voila à quoi pourrait ressembler votre application web :
 
 <ScrollableImage name="red-light.gif" minWidth="308px" maxWidth="308px" />
 
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.3`**.  Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.3 : timed events`**.
+
 #### 🤝 Tips
 
 - Vous avez besoin d'un container pour afficher une couleur.
-  Vous pourriez utiliser la propriété **style.backgroundColor** d'une div.
-- Quelles sont les fonctions permettant de lancer & stopper des appels à intervalles de
-  temps bien déterminés ? N'hésitez pas à jeter un oeil au § [b.3.7) Gestion d'intervalles de temps](#b3.7).
-- Comment afficher une **div** vide avec une bordure ? N'hésitez pas à vous inspirer de ce morceau de code :
+  Vous pourriez utiliser la propriété **`style.backgroundColor`** d'une **`div`**.
+- Comment afficher une **`div`** vide avec une bordure ? N'hésitez pas à vous inspirer de ce morceau de code :
 ``` js
 <div
   class="red"
   style="display: inline-block; min-width: 50px; min-height: 50px; border:1px solid black"
 ></div>
 ```
-
-Le code de votre application web doit se retrouver dans votre repository local et votre web repository (normalement appelé **web2**) dans un répertoire nommé **/exercises/module1/1.4**.
-
-# <InternalPageTitle> Exercice 2.4 : autres événements</InternalPageTitle>
-
-N'hésitez pas à libérer votre créativité et approfondir la gestion des événements.
-
-Vous pourriez compléter l'Exercice 1.3 en gérant d'autres événements que le clic.
-
-Voici quelques idées :
-
-- Affichez des informations cachées de votre page lorsque les utilisateurs passent la souris sur une partie bien précise de la page :
-  par exemple, apparition d'une image quand la souris se trouve sur sa zone d'affichage, disparition de l'image lorsque la souris en sort (ou ne s'y trouve pas).
-- Réalisez une action spécifique lors d'un clic droit sur votre page…
-- C'est votre application web, qu'est ce qui serait chouette à ajouter ? 😉

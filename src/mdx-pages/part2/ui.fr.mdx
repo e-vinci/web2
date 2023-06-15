@@ -3,6 +3,9 @@ title: "Création UI"
 description: "Création d'UI esthétiques"
 ---
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
     <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
@@ -14,10 +17,11 @@ description: "Création d'UI esthétiques"
 <InternalPageMenu>
   <InternalPageMenuItem> Comment créer une UI ? </InternalPageMenuItem>
   <InternalPageMenuItem> Qu'est-ce que Bootstrap ? </InternalPageMenuItem>
-  <InternalPageMenuItem> Le layout en Bootstrap  </InternalPageMenuItem>
+  <InternalPageMenuItem> Le layout en Bootstrap </InternalPageMenuItem>
   <InternalPageMenuItem> Les breakpoints en Bootstrap </InternalPageMenuItem>
   <InternalPageMenuItem> Les composants Bootstrap </InternalPageMenuItem>
   <InternalPageMenuItem> Utilisation de Bootstrap avec Webpack </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 2.7 : UI esthétique </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> Comment créer une UI ? </InternalPageTitle>
@@ -27,13 +31,13 @@ Le design de UI (User Interface) est un métier réprésenté par tout un univer
 L'objectif de ce cours est de pouvoir créer une IHM de qualité, avec peu d'efforts, qui paraisse bien sur tous les appareils (Responsive Web Design).
 
 Il existe de nombreuses façon de gérer le design, le graphisme d'une UI, en passant par l'utilisation :
-- de Vanilla CSS / HTML 
-- de SASS (pour faciliter la génération de CSS)
+- de Vanilla CSS / HTML ;
+- de SASS (pour faciliter la génération de CSS) ;
 - de librairies ; les plus connues sont **Bootstrap** et **tailwindcss**.
 
-Dans le cadre de ce cours, nous vous conseillons d'utiliser **Bootstrap** pour travailler le style de vos applications. Toutes les futurs démos données dans le cadre de ce cours utiliseront **Bootstrap**.
+Dans le cadre de ce cours, nous vous conseillons d'utiliser **Bootstrap** pour travailler le style de vos applications. Toutes les futurs tutoriels données dans le cadre de ce cours utiliseront **Bootstrap**.
 
-Néanmoins, si vous avez déjà beaucoup d'affinités avec le Vanilla CSS, vous pouvez continuer à approfondir le CSS.
+Néanmoins, si vous avez déjà beaucoup d'affinités avec le Vanilla CSS, vous pouvez continuer à l'approfondir.
 
 <AuthenticatedBlock>
 
@@ -47,17 +51,19 @@ Par contre, dans le cadre de votre projet web, le style de vos UI, tout comme l'
 
 Bootstrap est une librairie permettant de créer rapidement des sites web "responsive".
 
-Nous faisons une petite introduction à cet outil dans le cadre de ce cours, afin que vous puissiez facilement découvrir en autonomie cet technologie via son site web : [Bootstrap](https://getbootstrap.com/) [[R.36]](/references/#r36).
+Nous faisons une petite introduction à cet outil dans le cadre de ce cours, afin que vous puissiez , en autonomie, approfondir cette technologie via son site web : [Bootstrap](https://getbootstrap.com/) [[R.36]](/references/#r36).
 
 Bootstrap offre principalement : 
-- Un système de **Layout** : un **Grid** est constitué de **Container**, de **Rows** et de **Columns**. Le tout est construit en utilisant "flexbox" et est donc entièrement responsive.
-- 6 **responsive breakpoints** : ce sont des règles permettant d'affecter tout ce qui se trouve à une certaine largeur ou au-delà. Ils permettent d'indiquer les parties du **Layout** qui doivent s'adapter à une particulière taille d'un appareil.
-- Des **Components** : ce sont des éléments d'UI prédéfinis, comme par exemple des **Alerts** pour fournir des messages de feedback, des **Cards** pour afficher des infos mêlant images et textes...
-- Des **Helpers** et des **Utilities** notamment afin de gérer la couleurs, la taille et l'affichage des **Components**.
+- Un système de **`Layout`** : un **`Grid`** est constitué de **`Container`**, de **`Rows`** et de **`Columns`**. Le tout est construit en utilisant "flexbox" et est donc entièrement responsive.
+- 6 **responsive breakpoints** : ce sont des règles permettant d'affecter tout ce qui se trouve à une certaine largeur ou au-delà. Ils permettent d'indiquer les parties du **`Layout`** qui doivent s'adapter à la taille d'un appareil.
+- Des **`Components`** : ce sont des éléments d'UI prédéfinis, comme par exemple des **`Alerts`** pour fournir des messages de feedback, des **`Cards`** pour afficher des infos mêlant images et textes...
+- Des **`Helpers`** et des **`Utilities`** notamment afin de gérer la couleurs, la taille et l'affichage des **`Components`**.
 
-En Bootstrap, quand on souhaite créer un composant, on va simplement créer un élément HTML, souvent des **`<div>`**, et indiquer des classes CSS issues de Bootstrap pour styler ces composants.
+En Bootstrap, quand on souhaite créer un composant, on va simplement :
+- **créer un élément HTML**, souvent des **`<div>`**, puis, 
+- **associer des classes CSS** issues de **Bootstrap** pour styler ces composants.
 
-Voici un exemple de comment afficher ce composant **Alert** affichant un message de feedback :
+Voici un exemple de comment utiliser le composant **`Alert`** permettant d'afficher un message de feedback :
 
 <div class="alert alert-primary" role="alert">
   A simple primary alert—check it out!
@@ -71,11 +77,11 @@ Le code associé est le suivant :
 </div>
 ```
 
-On voit donc que la classe **alert** défini le style globale du message de feedback, et **alert-primary** définit les couleurs (background, texte et bordures).
+On voit donc que la classe **`alert`** défini le style globale du message de feedback, et **`alert-primary`** définit les couleurs (background, texte et bordures).
 
 # <InternalPageTitle> Le layout en Bootstrap </InternalPageTitle>
 
-En Bootstrap, il y a 12 colonnes disponibles par ligne (12 **col** par **row**).
+En Bootstrap, il y a 12 colonnes disponibles par ligne (12 **`col`** par **`row`**).
 
 Le layout permet notamment d'organiser les contenus d'une page, de définir son squelette.
 
@@ -131,7 +137,7 @@ Le code associé est le suivant :
 </div>
 ```
 
-Et si l'on souhaitait ajouter une couleur de background et des bordures à l'aide des **Utilities**, on pourrait le faire avec **.bg-info** et **.border .border-primary** :
+Et si l'on souhaitait ajouter une couleur de background et des bordures à l'aide des **`Utilities`**, on pourrait le faire avec **`.bg-info`** et **`.border .border-primary`** :
 
 <div class="container">
   <div class="row">
@@ -185,9 +191,9 @@ Le code associé est le suivant :
 
 # <InternalPageTitle> Les breakpoints en Bootstrap </InternalPageTitle>
 
-Admettons que nous souhaitons construire une page qui contient un header et un footer : sur toute la largeur de la page, et un body qui lui contient : 
-- pour les appareils **large** (≥992px) 1 colonne à gauche de la taille de 2 / 12 pour un menu et une colonne à droite prenant l'espace restant.
-- pour les appareils **extra small** (\<576px) jusque **large**, une seule colonne. Ainsi, le menu sera présenté sur une 1ère ligne...
+Admettons que nous souhaitions construire une page qui contienne un header et un footer sur toute la largeur de la page, et un body formé : 
+- pour les appareils **large** (≥992px) : d'1 colonne à gauche de la taille de 2 / 12 pour un menu et une colonne à droite prenant l'espace restant.
+- pour les appareils **extra small** (\<576px) jusque **large** : d'une seule colonne. Ainsi, le menu sera présenté sur une 1<sup>ère</sup> ligne...
 
 Comment ferions nous cela ?
 
@@ -214,7 +220,7 @@ Comment ferions nous cela ?
 
 <br/>
 
-Veuillez utiliser le mode développeur de votre browser (**F12** par exemple) afin de faire varier la taille de la fenêtre de votre browser et d'observer le changement au niveau du layout des composants.
+Veuillez utiliser le mode développeur de votre browser (**`F12`** par exemple) afin de faire varier la largeur de la fenêtre de votre browser et d'observer le changement au niveau du layout des composants.
 
 Voici le code associé :
 
@@ -241,9 +247,9 @@ Voici le code associé :
 </div>
 ```
 
-Via **col-12**, cela signifie que les 12 colonnes disponibles dans une ligne sont prises.
-
-Via **col-lg-2**, on indique que dès que l'on égale ou dépasse les 992px, on ne prend que 2/12 d'espace d'une ligne. Notons que **col-lg** prend l'espace restant, on aurait pu indiquer **col-lg-10** pour obtenir le même résultat.
+Quelques explications :
+- **`col-12`** : cela signifie que les 12 colonnes disponibles dans une ligne sont prises.
+- **`col-lg-2`** : dès qu'on dépasse les 992px, on ne prend que 2/12 d'espace d'une ligne. Notons que **`col-lg`** prend l'espace restant, on aurait pu indiquer **`col-lg-10`** pour obtenir le même résultat.
 
 Voici tous les breakpoints par défaut offerts par Bootstrap :
 
@@ -260,13 +266,13 @@ Voici tous les breakpoints par défaut offerts par Bootstrap :
 
 # <InternalPageTitle> Les composants Bootstrap </InternalPageTitle>
 
-Lorsque vous construisez vos UI, il est préférable de bénéficier de composants existants au design soigné. Il en existe de nombreux : **Card**, **Navbar**, **Alert**, **Button**, **Modal**...
+Lorsque vous construisez vos UI, il est préférable de bénéficier de composants existants au design soigné. Il en existe de nombreux : **`Card`**, **`Navbar`**, **`Alert`**, **`Button`**, **`Modal`**...
 
 Pour les découvrir, allez observer la documentation de [Bootstrap](https://getbootstrap.com/) [[R.36]](/references/#r36).
 
 Pour utiliser certains composants qui offre une interactivité, il est nécessaire d'inclure le JavaScript associé.
 
-Par exemple, afin d'offrir une **Navbar** comme celle-ci :
+Par exemple, afin d'offrir une **`Navbar`** comme celle-ci :
 
  <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
@@ -307,7 +313,7 @@ Par exemple, afin d'offrir une **Navbar** comme celle-ci :
 
 <br/>
 
-Il est nécessaire de faire l'import suivant, notamment afin que la **Dropdown** s'affiche quand on clique dessus (le reste du code est un copier / coller de la documentation de Bootstrap) : 
+Il est nécessaire de faire l'import suivant, notamment afin que la **`Dropdown`** s'affiche quand on clique dessus (le reste du code est un copier/coller de la documentation de Bootstrap) : 
 
 ```js highlighting="1"
 import { Navbar } from 'bootstrap';
@@ -357,25 +363,25 @@ Nous avons configuré les boilerplates du cours afin que Bootstrap soit déjà i
 Il n'y a donc plus rien à installer, sauf si p-e vous souhaitez utiliser des icônes.
 
 Si un jour vous veniez à devoir installer Bootstrap au sein d'un projet qui utilise un module bundler comme Webpack, vous devriez faire ces manipulations :
-- Installation de Bootstrap & de ses dépendances : 
+- **Installation de Bootstrap & de ses dépendances** : 
 ```bash
 npm i bootstrap @popperjs/core
 ```
-- Chargement du CSS de Bootstrap : 
+- **Chargement du CSS de Bootstrap** : 
 ```js
 import 'bootstrap/dist/css/bootstrap.min.css';
 ```
 
-Et puis finalement, si vous utilisez un composant qui offre des interactions, vous devrez inclure le JS associé à ce composant. Par exemple pour une **Navbar** :
+Et puis finalement, si vous utilisez un composant qui offre des interactions, vous devrez **inclure le JS associé à ce composant**. Par exemple pour une **`Navbar`** :
 ```js
 import { Navbar } from 'bootstrap';
 ```
 
 Nous allons maintenant convertir le style du site de la pizzeria à l'aide de Bootstrap.  
-Reprenez donc au sein de VS Code votre projet **modern**.  
-La seule chose que nous allons laisser dans **/src/stylesheets/main.css** est la gestion d'une image en background car Bootstrap ne prévoit pas de solution.
+Reprenez donc au sein de VS Code votre projet **`modern`**.  
+La seule chose que nous allons laisser dans **`/src/stylesheets/main.css`** est la gestion d'une image en background car Bootstrap ne prévoit pas de solution.
 
-Veuillez donc mettre à jour **/src/stylesheets/main.css** pour ne garder que l'image en background :
+Veuillez donc mettre à jour **`/src/stylesheets/main.css`** pour ne garder que l'image en background :
 
 ```css
 body { 
@@ -384,15 +390,15 @@ body {
 }
 ```
 
-Il faut maintenant mettre à jour **index.html** et indiquer les bonnes classes de Bootstrap :
+Il faut maintenant mettre à jour **`index.html`** et indiquer les bonnes classes de Bootstrap :
 - **`text-center`** : pour centrer nos titres et le main
 - **`text-white font-weight-bold py-2`** : pour le style du texte dans le footer. **`py-2`** met du padding sur l'axe des **y**, est donc tant en haut qu'en bas du footer.
 - Pour que le layout de la page fasse toujour, au minimum, la hauteur complète du navigateur et donne l'effet au **`<footer>`** d'être "sticky" en bas de page, on utilise :
   - **`vh-100 d-flex flex-column`** au sein du **`<body>`**.
-  - **`flex-grow-1`** dans le **`<main>`** pour lui imposer de remplir l'espace disponible. Ainsi, le footer donne l'effet d'être "sticky" en bas de la page.
-- Pour la taille du logo JS, Bootstrap offre des classe pour le **Sizing** en fonction de la taille du parent ou du **viewport** (le browser). Ici, on préfère avoir une taille fixe de 50 pixel, donc on va indiquer cette taille directement dans l'attribut **`height`** de **`<img>`**.
+  - **`flex-grow-1`** dans le **`<main>`** pour lui imposer de remplir l'espace disponible. Ainsi, le footer donne l'effet d'être "sticky" en bas de page.
+- Pour la taille du logo JS, Bootstrap offre des classe pour le **`Sizing`** en fonction de la taille du parent ou du **viewport** (le browser). Ici, on préfère avoir une taille fixe de 50 pixel, donc on va indiquer cette taille directement dans l'attribut **`height`** de **`<img>`**.
 
-Voilà à quoi doit ressembler votre **index.html** suite aux changements :
+Voilà à quoi doit ressembler votre **`index.html`** suite aux changements :
 
 ```html
 <!DOCTYPE html>
@@ -423,7 +429,32 @@ Voilà à quoi doit ressembler votre **index.html** suite aux changements :
 </html>
 ```
 
-Si tout fonctionne bien, faites un commit de votre repo (**web2**) avec le message "**modern-esthetic-hmi**".
+Si tout fonctionne bien, faites un commit de votre repo (**`web2`**) avec comme message : **`modern-esthetic-hmi tutorial`**.
 
 En cas de souci, vous pouvez accéder au code de cette étape du tutoriel ici : [modern-esthetic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-esthetic-hmi).
+
+# <InternalPageTitle> Projet 2.7 : UI esthétique </InternalPageTitle>
+
+Veuillez développer la **`HomePage`** de votre projet, en utilisant le boilerplate offert dans ce cours et Bootstrap. 
+
+A ce stade-ci, vous ne devez pas ajouter d'interactivité à votre page.  
+Veuillez soigner le graphisme de votre UI en faisant en sorte que votre page soit responsive. Vous devez donc prévoir au minimum deux layouts :
+- un layout pour les écrans étroits ;
+- un layout pour les écrans larges.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/project/2.7`** sur base du boilerplate : [boilerplate de base](https://github.com/e-vinci/js-basic-boilerplate.git).
+
+<UnAuthenticatedBlock>
+
+Si vous n'avez pas d'idée pour votre propre projet, veuillez simplement refaire la **`HomePage`** de l'application **`myMovies`**.
+
+</UnAuthenticatedBlock>
+
+<AuthenticatedBlock>
+
+Veuillez travailler avec les membres de votre groupe. N'hésitez pas à chacun travailler sur un prototype de la **`HomePage`**, selon vos goûts. Au cours de la séance, n'hésitez pas à comparer les designs produits afin de sélectionner le thème qui plait le plus, celui que vous souhaitez approfondir sur votre projet.
+
+Même si vos wireframes ne sont pas encore finalisé, il est important que vous pratiquiez "Bootstrap". Ne travaillez donc pas sur vos wireframes dans le cadre de ce cours SVP.
+
+</AuthenticatedBlock>
 

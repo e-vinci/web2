@@ -151,9 +151,11 @@ Si vous souhaitez obtenir les compétences de base de l'utilisation de Git, nous
 
 # <InternalPageTitle> Exercice 0.1 : Créer un repository local et distant pour gérer vos exercices & tutoriels </InternalPageTitle>
 
-Veuillez créer un repo local portant le nom **web2**.
+Veuillez créer un repo local portant le nom **`web2`**.
 
-Voici comment nous vous proposons d'organiser la structure de répertoires au sein de votre repo local **web2** :
+⚡ Veuillez éviter de créer votre répertoire **`web2`** dans un répertoire qui est partagé sur le cloud (via OneDrive, Dropbox, Google Drive ou autres). En effet, il y aura des milliers de fichiers associés aux dépendances de vos futures applications ! Une vraie horreur à synchroniser 😨 !
+
+Voici comment nous vous proposons d'organiser la structure de répertoires au sein de votre repo local **`web2`** :
 - **`/exercises`**
   - **`/exercises/1.1`**
   - **`/exercises/1.2`**
@@ -165,7 +167,7 @@ Voici comment nous vous proposons d'organiser la structure de répertoires au se
 - **`/tutorials`**
   - **`/tutorials/...`**
 
-N'oubliez pas d'ajouter un fichier **`.gitignore`** à votre repo :
+Pour des applications JS, lorsqu'on installe des packages, ceux-ci se retrouvent dans le répertoire **`node_modules`**. Il peut vite s'y trouver des MBytes de dépendances, et donc des milliers de fichiers. C'est donc très important de ne jamais mettre ce dossier sur vos web repository, via Git. Pour ce faire, n'oubliez pas d'inclure un fichier **`.gitignore`** dans vos projets pour ignore **`node_modules`**. Voici un fichier **`.gitignore`** conseillé pour votre repo :
 
 ``` text
 # ignore all node_modules folders and nested folders & files
@@ -201,10 +203,9 @@ Néanmoins, si vous préférez utiliser GitLab, veuillez utiliser la plateforme 
   - e-Baron (Raphael Baroni)
   - NB : pour ce faire, dans l'interface web de GitLab : **Settings**, **Members**, **Invite member**, **Choose a role permission : Developer**.
 
-⚡⚡⚡ Veuillez soumettre le lien vers votre web repository (qqch du genre https://github.com/votre_username/web2.git ou https://gitlab.vinci.be/votre_username/web2.git) via ce [formulaire](https://forms.office.com/r/1e5hNWxUJg).  
 Pour trouver le lien vers votre repo :
-- dans GitHub : cliquez sur le bouton **Code** dans votre web repo, et copiez l'info associée à l'onglet **HTTPS**.
-- dans Gitlab : il vous suffit de cliquer sur **Clone** dans votre projet, et de prendre l'info associée à **Clone with HTTPS**.
+- dans GitHub : cliquez sur le bouton **`Code`** dans votre web repo, et copiez l'info associée à l'onglet **`HTTPS`**.
+- dans Gitlab : il vous suffit de cliquer sur **`Clone`** dans votre projet, et de prendre l'info associée à **`Clone with HTTPS`**.
 
 NB : Lorsque vous allez ajouter une remote pour vous synchroniser avec votre web repository, nous vous conseillons d'utiliser l'URL associée à **HTTPS**. Si vous souhaitez malgré tout vous connecter en SSH, vous pouvez consulter [cet article pour GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) ou [cet article pour GitLab](https://dev.to/sndrx/how-to-set-up-an-ssh-key-and-use-it-in-gitlab--42p1).
 
