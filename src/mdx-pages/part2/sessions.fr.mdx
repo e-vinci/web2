@@ -9,34 +9,29 @@ description: "Les sessions côté client"
     <PathViewerItem selected> m) Les sessions </PathViewerItem>
 </PathViewer>
 
-# m) Les sessions
+# m) Les sessions côté client
 
 <InternalPageMenu>
   <InternalPageMenuItem> Où sauvegarder de l'info dans un browser ? </InternalPageMenuItem>
   <InternalPageMenuItem> Persistance de données de session via le web storage </InternalPageMenuItem>
-  <InternalPageMenuItem> 🍬 Persistance de données de session via des cookies </InternalPageMenuItem>
-  <InternalPageMenuItem> 🍬 Gestion de sessions côté client via Express pour une API </InternalPageMenuItem>
-  <InternalPageMenuItem> 🍬 Test via REST Client d'une RESTful API attendant des cookies </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.14 : Persistance de la session de myMovies dans le web storage </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 2.20 : sauvegarde de sessions </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> Où sauvegarder de l'info dans un browser ? </InternalPageTitle>
 
-Nous avons vu qu'une des exigences associées à la création d'une application selon l'architecture REST, c'est qu'elle soit **stateless**, c'est à dire que l'API ne peut pas garder l'état du client, sa session, côté serveur.
+Nous avons vu qu'une des exigences associées à la création d'une application selon l'architecture REST, c'est qu'elle soit **stateless** : l'API ne peut pas garder l'état du client, sa session, côté serveur.
 
 C'est donc au client de sauvegarder ses données de session.
 
-Pour rappel, nous avons déjà vu les avantages et les inconvénients d'avoir un serveur **stateless** par rapport à un serveur **stateful** lorsque nous avons traité de l'authentification : [Module 7 : a.1.4) Stateful VS stateless authentication](/modules/7/#a1.4).
-
 Mais où pouvons nous sauvegarder des données de manière persistante côté client ?
 
-Il existe deux  façons principales de sauvegarder de l'info dans un browser :
+Il existe deux façons principales de sauvegarder de l'info dans un browser :
 - le **web storage** ; 
 - les **cookies**.
 
-Dans le cadre de ce cours, nous allons voir comment sauvegarder de l'info à l'aide de ces deux façons.
+Dans le cadre de ce cours, nous allons principalement voir comment sauvegarder de l'info à l'aide du **web storage**. Dans la partie du cours sur la gestion de l'authentification et l'autorisation d'utilisateurs, vous pourrez optionnellement voir comment les cookies peuvent être utilisés pour sauvegarder des données de session côté client.
 
-NB : le browser met à disposition d'autres API un peu moins connues pour sauvegarder des infos. Nous ne les verrons pas dans le cadre de ce cours, mais il reste néanmoins intéressant de lire rapidement de quoi il s'agit :
+NB : le browser met à disposition d'autres API un peu moins connues pour sauvegarder des infos. Nous ne les verrons pas dans le cadre de ce cours, mais il reste néanmoins intéressant de lire très rapidement de quoi il s'agit :
 - **IndexedDB API** : permet de sauvegarder côté client de grandes quantités d'infos structurées, incluant des fichiers ; c'est une base de données orientée objets en JS qui permet les transactions.
 - **Cache API** : permet d'enregistrer et retrouver des requêtes et leur réponses. Bien qu'à la base créé pour pouvoir fournir des réponses plus rapides à certaines requêtes, cette API peut aussi être utilisée comme mécanisme général de stockage.
 
@@ -47,16 +42,16 @@ Le **Web Storage API** fournit un mécanisme permettant aux browser d'enregistre
 
 Il existe deux mécanismes au sein du web storage :
 - **sessionStorage** :
-    - il offre un espace de stockage séparé pour chaque origine pour la durée de la session d'une page, tant que le browser est ouvert.
+    - offre un espace de stockage séparé pour chaque origine pour la durée de la session d'une page, tant que le browser est ouvert.
     - les clés / valeurs y sont enregistrées sous forme de string uniquement ;
-    - il met à disposition un espace de stockage plus grand qu'un cookie, ~5MB maximum par origine ;
+    - met à disposition un espace de stockage plus grand qu'un cookie, ~5MB maximum par origine ;
 - **localStorage** : 
     - offre aussi un espace de stockage séparé pour chaque origine, mais les données persistent quand le browser est fermé et réouvert ;
-    - espace de stockage plus grand qu'un cookie, limité à ~10MB en cas de crash/restart du browser.
+    - est un espace de stockage plus grand qu'un cookie, limité à ~10MB en cas de crash/restart du browser.
 
 Les principales méthodes offertes par **sessionStorage** et **localStorage** sont les mêmes. Voici quelques exemples de codes par méthode.
 
-## setItem()
+## `setItem()`
 Cette méthode permet d'enregistrer, pour une clé donnée, la valeur associée :
 
 ```js numbered highlighting="5"
@@ -68,12 +63,9 @@ const setUserSessionData = (user) => {
 };
 ```
 
-Comme le web storage est un système de paires de clé-valeur qui enregistre les données sous forme de string, cela vous rappelle p-e qu'il est possible d'enregistrer des objets. 
+Pour enregistrer un objet JS sous forme de string, il suffit de le sérialiser à l'aide de la méthode **`JSON.stringify()`**.
 
-💭 Comment enregistrer un objet JS sous forme de string ?  
-Hé bien il suffit de le sérialiser, comme cela est fait dans l'exemple à l'aide de la méthode **`JSON.stringify()`**.
-
-## getItem()
+## `getItem()`
 Cette méthode permet d'obtenir la valeur associée à la clé donnée en argument :
 
 ```js numbered highlighting="4"
@@ -88,7 +80,7 @@ const getUserSessionData = () => {
 
 Pour cet exemple, comme la valeur a été sérialisée, nous pouvons récupérer l'objet grâce à la méthode **`JSON.parse()`**.
 
-## removeITem()
+## `removeITem()`
 Cette méthode permet d'effacer une clé / valeur :
 
 ```js numbered highlighting="4"
@@ -99,511 +91,64 @@ const removeSessionData = () => {
 };
 ```
 
-## clear()
+## `clear()`
 Cette méthode permet d'effacer tout l'espace de stockage pour une origine donnée.
 
 Cette méthode est très utile lorsque l'on souhaite effacer toute la session d'un utilisateur, notamment lors du logout d'un utilisateur.
 
-# <InternalPageTitle> Mise en place du localStorage pour sauvegarder les données de session </InternalPageTitle>
 
-Dans le cadre du site nous permettant de gérer une pizzeria, nous allons faire en sorte de sauvegarder les données de session au sein du **localStorage**, et plus juste en mémoire vive.
+# <InternalPageTitle> Projet 2.20 : sauvegarde de sessions </InternalPageTitle>
 
-Veuillez démarrer la dernière version de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
-[safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
+## Objectif
 
-Nous allons maintenant finaliser le développement de l'IHM [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
+Veuillez enrichir le frontend développé dans le cadre de votre projet en lui ajoutant une gestion de thèmes et la gestion de l'affichage d'un message traitant du respect de la vie privée point de vue de la sauvegarde des préférences (RGPD).
 
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/web-storage** sur base d'un copier-coller de **/web2/tutorials/pizzeria/hmi/jwt-fetch** (ou [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)).
+## Mise en place du projet
 
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/hmi/web-storage**.
+<UnAuthenticatedBlock>
 
-Afin de sauvegarder les données de session, c'est à dire l'objet **authenticatedUser** contenant un token et un username, nous devons juste mettre à jour le fichier **/usr/utils/auths.js** :
+Pour votre frontend : veuillez repartir du code de [Projet 2.18](../comms-security/#project_2_18_autorisation_de_nouvelles_origines) ou de [Exercice 2.19](../promises/#exercice_2_19_integration_de_la_res_tful_api_au_sein_de_l_ihm_de_my_movies_via_un_proxy) si votre projet est **myMovies**.  
+Le code du frontend doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.20`**.
 
-```js numbered highlighting="1,7,10,15-16,24"
-const STORE_NAME = 'user';
-let currentUser;
+</UnAuthenticatedBlock>
 
-const getAuthenticatedUser = () => {
-  if (currentUser !== undefined) return currentUser;
+<AuthenticatedBlock>
 
-  const serializedUser = localStorage.getItem(STORE_NAME);
-  if (!serializedUser) return undefined;
+Pour votre frontend : veuillez repartir du code de [Projet 2.18](../comms-security/#project_2_18_autorisation_de_nouvelles_origines). 
+Le code du frontend doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.20`**.
 
-  currentUser = JSON.parse(serializedUser);
-  return currentUser;
-};
+Veuillez travailler avec les membres de votre groupe.  
+Il est intéressant que vous vous partagiez le travail :
+- certains membres de l'équipe travail sur la gestion de thèmes ;
+- les autres travaillent sur la gestion de l'affichage d'un message conforme aux demandes du RGPD.
 
-const setAuthenticatedUser = (authenticatedUser) => {
-  const serializedUser = JSON.stringify(authenticatedUser);
-  localStorage.setItem(STORE_NAME, serializedUser);
+</AuthenticatedBlock>
 
-  currentUser = authenticatedUser;
-};
+## Gestion d'un thème
 
-const isAuthenticated = () => currentUser !== undefined;
+Vous devez ajouter un moyen de switcher d'un thème "light" ou "dark" au sein de votre application. 
 
-const clearAuthenticatedUser = () => {
-  localStorage.removeItem(STORE_NAME);
-  currentUser = undefined;
-};
+Par exemple, vous pouvez le faire via un bouton dans le header permettant de basculer d'un thème à l'autre.
 
-// eslint-disable-next-line object-curly-newline
-export { getAuthenticatedUser, setAuthenticatedUser, isAuthenticated, clearAuthenticatedUser };
-```
+Vous devez sauvegarder le thème sélectionné par l'utilisateur comme donnée de session persistante. Ainsi, vous allez sauvegarder l'information du thème dans le localStorage.
 
-Au sein de **`getAuthenticatedUser`** : 
-- on fait un premier check afin d'éviter d'aller lire dans le **localStorage** si la variable **currentUser** est déjà initialisée.
-- on parse l'utilisateur authentifié et sérialisé qui est retrouvé dans le **localStorage** via la clé **STORE_NAME**.
+Au redémarrage du browser, ou lors du refresh du frontend, l'application doit toujours afficher ses écrans selon le dernier thème sélectionné : veuillez donc changer les couleurs de certains backgrounds et certains textes en fonction du thème.
 
-Au sein de **`setAuthenticatedUser`**, on sérialise **authenticatedUser** avant d'ajouter une paire clé / valeur au **localStorage**.  Ces données restent dans le browser, peu importe le nombre de fois que l'on ferme son browser. 
+Quand un prototype de gestion de thème est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`2.20.1 : user session & theme`**.
 
-Dans **`clearAuthenticatedUser`**, on efface la clé / valeur associée à l'utilisateur authentifié (via la clé **STORE_NAME**).
+## Gestion d'un message conforme RGPD pour sauvegarder les préférences
 
-Veuillez bien mettre à jour votre code et tester l'application.  
-Connectez-vous à l'aide de l'utilisateur **manager**.  Veuillez fermer votre browser.  
-Veuillez le réouvrir.  
-Voilà, vous devriez automatiquement être authentifié, veuillez observer l'état de la Navbar pour vous en assurer.
+La toute première fois que les utilisateurs chargent votre application, vous devez leur afficher un message conforme au RGPD, indiquant comment vous allez traiter de leurs données, sauvegarder leurs préférences...
 
-💭 Où puis-je observer l'état des données sauvegardées dans le web storage de mon browser ?  
-Tout en ayant la fenêtre de votre application ouverte, via Chrome, allez dans vos outils de développeurs : **F12**.  
-Puis, dans l'onglet **Application**, vous trouverez dans **Storage** : **Local Storage** et **Session Storage**.  
-Ici, nous utilisons le **Local Storage**, donc cliquez dessus, vous verrez apparaître `http://localhost:8080`. Cliquez sur cette URL, et vous verrez vos données de session, quelque chose du style `{"username":"manager","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbmFnZXIiLCJpYXQiOjE2NjE3NjM3MDksImV4cCI6MTc0ODE2MzcwOX0.jAxH0WsOgiK5vf4QduDZ8JgTR-SKC42G9aPieV_OTOo"}`.  
-N'hésitez pas à faire un clic droit sur l'URL `http://localhost:8080`, puis **Clear**.  
-Si vous faites ensuite un refresh de votre page, comme votre session aura été effacée, votre utilisateur ne sera plus connecté. Votre Navbar afficher le menu pour un utilisateur anonyme !  
-Faites ce test, c'est intéressant 😉.
+Vous devez demander l'accord aux utilisateurs de sauvegarder leurs préférences :
+- S'ils sélectionnent qu'ils sont OK que leur préférences soient sauvegardées (totalement anonyme puisque c'est fait au niveau de leur browser), alors vous devez :
+  - sauvegarder leur choix comme donnée de session persistente (localStorage).
+  - au redémarrage du browser, ou lors du refresh du frontend, ne plus présenter le message aux utilisateurs.
+  - si les utilisateurs changent de thème, vous devez sauvegarder ce choix dans le localStorage.
+  - mettre à disposition un moyen pour effacer ses préférences : par exemple, un bouton permettrait d'effacer les données associées à la sauvegarde des préférences et du choix du thème.
+- S'ils sélectionnent que leurs préférences ne peuvent pas être sauvegardées, alors vous devez :
+  - sauvegarder leur choix comme donnée de session temporaire (sessionStorage).
+  - au redémarrage du browser, ou lors du refresh du frontend, présenter à nouveau le message aux utilisateurs.
+  - si les utilisateurs changent de thème, vous devez sauvegarder ce choix dans le sessionStorage. Ainsi, au redémarrage du browser, le thème utilisé par l'application sera le thème par défaut et non pas le dernier thème sélectionné.
 
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
-"**web storage**".
-
-En cas de souci, vous pouvez utiliser le code du tutoriel :
-
-- pour le frontend : [web-storage](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage).
-- pour l'API : [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
-
-# <InternalPageTitle> 🍬 Persistance de données de session via des cookies </InternalPageTitle>
-
-Un cookie représente des données qu'un serveur envoie à un browser.  
-Le browser peut sauver ce cookie. Pour chaque requête faite au serveur sur la même origine (que l'origine où le cookie a été reçu), le cookie sera automatiquement envoyé au serveur.
-
-Il fut un temps où les cookies étaient utilisés comme un mécanisme général de stockage de données côté client. 
-
-👍 Actuellement, si les cookies sont utilisés pour sauvegarder les données de session, il faut se protéger contre les attaques XSS et rendre les cookies inaccessibles au JavaScript. On utilise donc les cookies **HttpOnly** qui sont inaccessibles à la **Document.cookie API**. 
-
-Du coup, si des données de session doivent être utilisée pour l'IHM, on ne peut pas se passer du **web storage** !
-
-Pour la suite, on va donc voir :
-- comment utiliser Express pour créer des cookies au niveau d'une API ;
-- comment rendre ces cookies inaccessibles aux attaques XSS en configurant **HttpOnly** ;
-- que, comme les cookies sont envoyés automatiquement au serveur, il faudra mettre à jour notre IHM pour ne plus envoyer le token via un authorization header. L'API va charger le token dans le cookie, et comme le cookie sera automatiquement envoyé au serveur via le browser, le code de l'IHM et les fetch seront plus simples. 
-- l'embêtant dans ce que nous allons faire, c'est que comme nous allons sécuriser le cookie, nous n'aurons pas accès au **username** via le cookie... Nous pourrions :
-    - soit toujours utiliser le web storage pour sauvegarder le **username**, 
-    - soit accepter de ne plus afficher le **username** et avoir aucun nouveau code à ajouter au niveau du frontend (juste enlever les authorization header inutiles) ;
-    - soit mettre à jour l'API pour offrir une route de type **GET /users/me** qui renvoie les données d'un utilisateur à la demande d'une requête cliente. Dans ce cas-là, à chaque fois que l'utilisateur ouvre le browser, la première chose à faire serait d'appeler cette opération de l'API.
-
-Pour le tutoriel, nous avons choisi la première option. Dans vos exercices optionnels, n'hésitez pas à explorer une autre option.
-
-💭 Mais pourquoi sécuriser le cookie et le rendre inaccessible au JS ?  
-Hé bien, imaginez qu'un attaquant arrive à faire une attaque XSS, via un JS malicieux, renvoyant le cookie de chaque utilisateur qui affiche le menu des pizzas vers un serveur malicieux...  
-Via ce cookie, qui contient le token de l'utilisateur, le pirate peut se faire passer pour l'utilisateur piraté !  
-Bon, pour la pizzeria, c'est p-e pas si grave, mais imaginez si c'est le token associé à votre compte banquaire !  
-Si le cookie est inaccessible au JS, il est donc impossible pour un hackeur, via du JS malicieux, d'accéder au token, et donc, de l'envoyer 😌.
-
-# <InternalPageTitle> 🍬 Gestion de sessions côté client via Express pour une API </InternalPageTitle>
-
-## Intro
-
-Nous allons donc créer une nouvelle version de l'API sauvegardant le token d'un utilisateur au sein d'un cookie, ainsi que son username, sans que ces infos soient accessible au JS côté client.
-
-Pour ce faire nous allons utiliser la librairie [cookie-session](https://github.com/expressjs/cookie-session) qui permet d'enregistrer des données de session dans des cookies.
-
-Nous allons maintenant continuer le développement de l'API [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
-
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/cookies** sur base d'un copié collé de **/web2/tutorials/pizzeria/api/safe** (ou [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe)).
-
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/api/cookies**.
-
-Veuillez installer la librairie **cookie-session** au sein de votre nouveau projet **auths** :
-```bash
-npm i cookie-session
-```
-
-## Utilisation de la fonction middleware `cookieSession`
-
-Veuillez mettre à jour **/app.json** pour mettre en place la gestion de cookies :
-
-```js highlighting="4,12-23"
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const cookieSession = require('cookie-session');
-
-const usersRouter = require('./routes/users');
-const pizzaRouter = require('./routes/pizzas');
-const authsRouter = require('./routes/auths');
-
-const app = express();
-
-const expiryDateIn3Months = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 3);
-const cookieSecreteKey = 'YouWouldnot!not!like!mypizza';
-app.use(
-  cookieSession({
-    name: 'user',
-    keys: [cookieSecreteKey],
-    cookie: {
-      httpOnly: true,
-      expires: expiryDateIn3Months,
-    },
-  }),
-);
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-app.use('/users', usersRouter);
-app.use('/pizzas', pizzaRouter);
-app.use('/auths', authsRouter);
-
-module.exports = app;
-```
-
-Nous avons donc bien indiqué que le cookie est inaccessible au JS via : `httpOnly: true`.
-
-Nous avons fait en sorte que le cookie soit signé via la clé `cookieSecreteKey`.  
-Le mécanisme de signature correspond à ce qui a été vu dans le cadre des tokens JWT.  
-Ainsi, si un cookie venait être modifié par un utilisateur, lors de la vérification du cookie, cela sera automatiquement détecté par la fonction middleware `cookieSession` et la session ne sera pas créée.
-
-Pour info, la fonction middleware `cookieSession` va créer deux cookies :
-- un cookie portant comme nom la valeur de `name` ; il est encodé en base64. N'hésitez pas à vous amuser à décoder un cookie généré par `cookieSession` sur [base64decode](https://www.base64decode.org/).
-- un cookie portant comme nom la valeur de `name` + `.sig` : c'est la signature qui prévient contre le "tempering" (acte intentionnel mais non autorisé qui amène à la modification d'un système ou de données).
-
-## Lecture et ajout de données de session via `req.session`
-Pour créer des données de session, il suffit de simplement les ajouter à l'objet **`req.session`**.
-
-Dans le cadre de la RESTful API gérant les pizzas, cela est fait lors d'une opération de type **register** ou **login**.
-
-Veuillez mettre à jour le router **/routes/auths.js** :
-
-```js numbered highlighting="17,19,33,35,38-42,44-47"
-const express = require('express');
-const { register, login } = require('../models/users');
-
-const router = express.Router();
-
-/* Register a user */
-router.post('/register', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
-
-  if (!username || !password) return res.sendStatus(400); // 400 Bad Request
-
-  const authenticatedUser = await register(username, password);
-
-  if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
-
-  createCookieSessionData(req, authenticatedUser);
-
-  return res.json({ username: authenticatedUser.username });
-});
-
-/* Login a user */
-router.post('/login', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
-
-  if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
-
-  const authenticatedUser = await login(username, password);
-
-  if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
-
-  createCookieSessionData(req, authenticatedUser);
-
-  return res.json({ username: authenticatedUser.username });
-});
-
-/* Logout a user */
-router.get('/logout', (req, res) => {
-  req.session = null;
-  return res.sendStatus();
-});
-
-function createCookieSessionData(req, authenticatedUser) {
-  req.session.username = authenticatedUser.username;
-  req.session.token = authenticatedUser.token;
-}
-
-module.exports = router;
-```
-
-Dans le code ci-dessus, nous préparons les données de session qui seront écrites dans le cookie à l'aide de l'objet `req.session`.  
-Lorsque nous renvoyons du JSON aux clients, nous ne renvoyons plus le token, mais juste le username de l'utilisateur. L'application cliente, le browser, pourra utiliser cette info pour afficher le nom de l'utilisateur. Pour rappel, le browser n'a pas accès, via le JS, à l'info se trouvant dans le cookie.
-
-Quand nous gérons une session via des cookies, il n'est pas évident de bien clôre une session. Nous avons créé une nouvelle opération de type **GET /auths/logout** qui permet d'effacer les données de session d'un utilisateur.
-
-Il nous reste à changer le mécanisme d'autorisation.
-Les tokens ne seront plus reçu via un authorization header, mais via un cookie.  
-Nous allons donc mettre à jour le middleware **/utils/authorize** (1 seule ligne) :
-```js numbered highlighting="7"
-const jwt = require('jsonwebtoken');
-const { readOneUserFromUsername } = require('../models/users');
-
-const jwtSecret = 'ilovemypizza!';
-
-const authorize = (req, res, next) => {
-  const { token } = req.session;
-  if (!token) return res.sendStatus(401);
-
-  try {
-    const decoded = jwt.verify(token, jwtSecret);
-    console.log('decoded', decoded);
-    const { username } = decoded;
-
-    const existingUser = readOneUserFromUsername(username);
-
-    if (!existingUser) return res.sendStatus(401);
-
-    req.user = existingUser; // request.user object is available in all other middleware functions
-    return next();
-  } catch (err) {
-    console.error('authorize: ', err);
-    return res.sendStatus(401);
-  }
-};
-
-const isAdmin = (req, res, next) => {
-  const { username } = req.user;
-
-  if (username !== 'admin') return res.sendStatus(403);
-  return next();
-};
-
-module.exports = { authorize, isAdmin };
-```
-
-# <InternalPageTitle> 🍬 Test via REST Client d'une RESTful API attendant des cookies  </InternalPageTitle>
-
-Il nous reste à tester nos requêtes via REST Client.
-
-Il n'y a pas de nouvelles notions à apprendre pour utiliser REST Client avec des cookies : le comportement par défaut de REST Client, lorsqu'un cookie est renvoyé dans une réponse, est d'inclure ce cookie dans chaque requête vers la même origine.
-
-Dès lors, pour tester l'API, il suffit d'enlever tous les authorization headers et de rajouter une requête pour tester l'effacement d'une session.
-
-Veuillez tester les requêtes à l'aide de **/REST Client/pizzas.http** :
-```http
-######### NORMAL OPERATION  ###########
-
-### Read all pizzas
-GET http://localhost:3000/pizzas
-
-### Read all pizzas with File variable
-@baseUrl = http://localhost:3000
-GET {{baseUrl}}/pizzas
-
-### Read all pizzas sorted by title (ascending)
-GET {{baseUrl}}/pizzas/?order=+title
-
-### Read all pizzas sorted by title (descending)
-GET {{baseUrl}}/pizzas/?order=-title
-
-### Read pizza identified by 2
-GET {{baseUrl}}/pizzas/2
-
-### Create a pizza by using the admin account
-#### First login as the admin
-POST {{baseUrl}}/auths/login
-Content-Type: application/json
-
-{
-    "username":"admin",
-    "password":"admin"
-}
-
-#### Create a pizza with the admin token
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"Magic Green",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### Delete pizza identified by 2 with the admin token
-DELETE {{baseUrl}}/pizzas/2
-
-### Update the pizza identified by 6 with the admin token
-PATCH {{baseUrl}}/pizzas/6
-Content-Type: application/json
-
-{
-    "title":"Magic Green 2"
-}
-
-
-######### ERROR OPERATION  ###########
-
-### 1. Create a pizza without a token
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"Magic Green",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### 2. Create a pizza without being the admin, use manager account
-#### 2.1 First login as the manager
-POST {{baseUrl}}/auths/login
-Content-Type: application/json
-
-{
-    "username":"manager",
-    "password":"manager"
-}
-
-#### 2.2 Try to create a pizza with the manager token
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"Magic Green",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### Read pizza which does not exists
-GET {{baseUrl}}/pizzas/100
-
-### Create a pizza which lacks a property
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### Create a pizza without info for a property
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### Update for a pizza which does not exist
-PATCH {{baseUrl}}/pizzas/200
-Content-Type: application/json
-
-{
-    "title":"Magic Green 2"
-}
-
-### Update for a pizza which does not provide any info for a property
-PATCH {{baseUrl}}/pizzas/1
-
-Content-Type: application/json
-
-{
-    "title":"Magic Green 2",
-    "content":""
-}
-```
-
-**/REST Client/auths.http** a été mis à jour pour tester **GET /auths/logout** :
-```http
-### Logout any user
-GET {{baseUrl}}/auths/logout
-```
-
-Pour ajouter une pizza, il suffit juste :
-1. De loguer l'admin.
-2. De créer une nouvelle pizza ; le cookie est automatiquement envoyé.
-
-Admettons que vous souhaitez tester l'ajout d'une pizza sans envoyer de token :
-1. Lancez l'opération de logout (GET /auths/logout) ; le cookie renvoyé ne contient pas de données de session ;
-2. Tentez la création d'une pizza qui renverra un code **401 Unauthorized**.
-
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
-"**cookies api**".
-
-En cas de souci, vous pouvez utiliser le code du tutoriel [cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
-
-## Gestion de session côté client via une IHM et des cookies
-
-A présent que notre API **cookies** renvoie les données de session dans un cookie non accessible par du JS, nous souhaitons mettre à jour notre IHM pour utiliser cette API.
-
-Nous allons repartir de la dernière version de notre frontend.
-
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/cookies** sur base d'un copié collé de **/web2/tutorials/pizzeria/hmi/web-storage** (ou [web-storage](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage)).
-
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/hmi/cookies**.
-
-Afin de sauvegarder les données de session, c'est à dire l'objet **authenticatedUser** contenant juste un username, nous ne devons même pas mettre à jour le fichier **/usr/utils/auths.js**. En effet, l'API **cookies** renvoie un objet du genre `{username: "manager"}`. Au niveau de l'IHM, le code est donc toujours fonctionnel pour sauvegarder le username grâce à `authenticatedUser`.
-
-Il ne reste donc qu'à changer le code où nous avons besoin d'une autorisation. Pour l'application de gestion de la pizzeria, il s'agit de la création de pizza.  
-Veuillez donc mettre à jour **/src/Components/AddPizzaPage.js** en enlevant ces deux lignes :
-- l'authenticatedUser : `const authenticatedUser = getAuthenticatedUser();` et l'import associé (`import { getAuthenticatedUser } from '../../utils/auths';`),
-- la ligne s'occupant de l'authorization header : `Authorization: authenticatedUser.token`.
-
-Veuillez tester votre dernière version du frontend.
-Loguez-vous avec l'utilisateur **admin** (et le password **admin**).  
-Ajoutez une pizza et vérifiez qu'elle s'affiche bien.  
-
-💭 Comment vérifier le cookie ?  
-Tout en ayant la fenêtre de votre application ouverte, via Chrome, allez dans vos outils de développeurs : **F12**.  
-Puis, dans l'onglet **Application**, cliquez sur **Cookies**, vous verrez apparaître `http://localhost:8080`. Cliquez sur cette URL, et vous verrez vos 2 cookies de session, **user.sig** et **user**.  
-N'hésitez pas à aller décoder la valeur du cookie **user** sur [base64decode](https://www.base64decode.org/) en faisant un copier / coller de **Value**. Vous devriez voir quelque chose apparaître du style `{"username":"manager","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbmFnZXIiLCJpYXQiOjE2NjE3NzUxMDgsImV4cCI6MTc0ODE3NTEwOH0.sAZqq6vbrjCCZZoLH-n8hJKBoXJJJ8jEoupk8xKu5WI"}`  !
-
-Toujours dans l'onglet **Application** des outils de développeurs de Chrome, faites un clear des cookies : clic droit sur `http://localhost:8080`, **Clear**.  
-Tentez maintenant d'ajouter une pizza... Ca ne fonctionne plus, et c'est bien normal, car il n'y a plus de token qui est envoyé à l'API !  
-
-Suite à ces tests, si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**cookies hmi**".
-
-En cas de souci, vous pouvez utiliser le code du tutoriel :
-
-- pour le frontend : [cookies](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/cookies).
-- pour l'API : [cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
-
-💭 Notons que cette version de notre frontend pourrait être améliorée. Actuellement, lorsqu'on fait un logout, on n'efface pas le cookie du browser.  
-Comment feriez vous ? Vous pourriez par exemple appeler la méthode **GET /auths/logout** 😉.
-
-# <InternalPageTitle> Exercice 2.14 : Persistance de la session de myMovies dans le web storage  </InternalPageTitle>
-
-Lors de l'exercice précédent (Exercice 7.2), vous avez développé une application qui permet de bien gérer des films, à l'exception du fait que quand vous fermez votre browser, vous devez à chaque fois vous reconnecter.
-
-Veuillez faire en sorte que vos données de session soient sauvegardées :
-- dans le **localStorage** si l'on clique sur une checkbox "Remember me" du login ou du register.
-- dans le **sessionStorage** si l'on ne clique pas sur la checkbox "Remember me" lors du login ou du register.
-
-Afin de réaliser cet exercice, voici les contraintes d'implémentation :
-- Veuillez démarrer votre API développée précédemment : **/exercises/module7/7.2/api**.
-- Pour le frontend, utilisez le contenu de votre répertoire d'exercices **/exercises/module7/7.1/hmi** comme point de départ pour créer, dans votre repository local et
-votre web repository (normalement appelé **web2**), le répertoire nommé
-**/exercises/module8/8.1/hmi**.
--	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
-
-
-#### 🤝 Tips
-Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API : [a.2) Persistance de données de sessions via le web storage](#a2).
-
-Nous vous recommandons, dans un premier temps, de gérer les sessions dans le localStorage, sans ajouter la fonctionnalité **Remember me**.  
-Une fois que c'est fonctionnel, il sera temps de gérer le **Remember me**.
-
-Vous allez pouvoir refaire un peu de gestion d'événements pour détecter les clics sur une checkbox. N'hésitez pas à voir ce que propose **Bootstrap 5** pour les **checkboxes**.
-
-💭 Prenez un moment pour voir comment gérer la persistance de l'info 'Remember me'...  
-Est-ce que ce n'est pas une donnée de session qui doit persister lorsque l'utilisateur ferme son browser ?  
-En effet, point de vue ergonomie, il est intéressant que le dernier choix de l'utilisateur soit toujours présenté. La checkbox devrait donc rester **checked** ou pas, tant que l'utilisateur ne change pas son état, via un clic, ou via un Logout ; et cet état doit subsister aux travers des connexions (ouvertures / fermetures du browser).
-
-Si vous gérez bien l'info 'Remember me' au travers des sessions, vous devriez facilement décider si les données de **authenticatedUser** sont à sauvegarder dans le localStorage ou le sessionStorage.
-
-Veuillez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 8 : web storage**"".
-
-NB : Le code de vos applications se trouve dans votre repository local et
-votre web repository (normalement appelé **web2**) dans le répertoire nommé
-**/exercises/module8/8.1/hmi**.
+Quand un prototype est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`2.20.2 : user session & user preferences`**.

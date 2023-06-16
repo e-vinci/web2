@@ -16,9 +16,9 @@ description: "Les SPA, architectures & communications"
   <InternalPageMenuItem> Caractéristiques et workflow associés à une SPA </InternalPageMenuItem>
   <InternalPageMenuItem> Architectures associées à une SPA </InternalPageMenuItem>
   <InternalPageMenuItem> Communications au sein d'une SPA </InternalPageMenuItem>
-  <InternalPageMenuItem> Librairies liées aux requêtes HTTP </InternalPageMenuItem>
   <InternalPageMenuItem> Requêtes asynchrones & les promesses </InternalPageMenuItem> 
-  <InternalPageMenuItem> Exercice 2.11 : Affichage de blagues </InternalPageMenuItem> 
+  <InternalPageMenuItem> Exercice 2.15 : Consommation de blagues online  </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.16 : Consommation de questions localement  </InternalPageMenuItem> 
 </InternalPageMenu>
 
 # <InternalPageTitle> Architectures classiques d'applications web </InternalPageTitle>
@@ -79,7 +79,7 @@ Comme cet appel est asynchrone, l'IHM du browser reste disponible pour des inter
 
 Il existe bien sûr d'autres types d'architectures web que celles présentées ci-dessus.
 
-Vous pourrez explorer par vous-même, si vous le souhaitez, et totalement optionnellement, les architectures suivantes :
+Vous pourrez explorer par vous-même, si vous le souhaitez, les architectures suivantes :
 
 - Progressive Web Applications
 - Hybrid Applications : Cordova, Electron, Ionic…
@@ -98,17 +98,19 @@ Une SPA (Single Page Application) offre de belles caractéristiques :
 - **Pas d'interruption de l'expérience de l'utilisateur** : lorsque l'utilisateur, via ses actions, amène par exemple à un appel à une API, l'IHM reste disponible. Le browser peut réaliser des actions
   de manière asynchrone (ou autrement dit, en parallèle) et ne bloque pas l'expérience utilisateur lors de long chargements (à l'exception bien sûr du tout premier accès à l'application nécessitant le chargement complet du frontend).
 
-Voici un exemple de workflow associé à la SPA qui gérera le site de la pizzeria, afin d'afficher le menu au sein de l'IHM :
+Voici un exemple de workflow associé à la SPA qui gérera le site de la pizzeria (que nous développons au sein des tutoriels de ce cours), afin d'afficher le menu au sein de l'IHM :
 
 <ScrollableImage name="readPizzas.png" minWidth="523px" maxWidth="523px" />
 <figcaption>Exemple de Workflow classique d'une SPA</figcaption>
 
-Une fois la page **index.html** chargée par le browser, celui-ci va faire des appels multiples au serveur de fichiers statiques afin de télécharger tous les assets nécessaires à l'IHM.
+Une fois la page **`index.html`** chargée par le browser, celui-ci va faire des appels multiples au serveur de fichiers statiques afin de télécharger tous les assets nécessaires à l'IHM.
 
-Une fois l'IHM chargée, le browser lance en parallèle un appel à la RESTful API pour lire toutes les pizzas, tout en étant à l'écoute d'événements qui pourrait se passer au niveau de l'IHM.
+Une fois l'IHM chargée, le browser lance en parallèle un appel à la RESTful API pour lire toutes les pizzas, tout en étant à l'écoute d'événements qui pourrait se passer au niveau de l'IHM (clic, passage de souris sur un élément...).
 
 # <InternalPageTitle> Architectures associées à une SPA </InternalPageTitle>
 
+## SPA : frontend indépendant du backend
+ 
 Il existe différentes architectures associées à une SPA.
 
 Dans le cadre de ce cours, nous avons choisi d'avoir une IHM qui soit entièrement indépendante de la RESTful API :
@@ -120,15 +122,17 @@ Dans le cadre de ce cours, nous avons choisi d'avoir une IHM qui soit entièreme
 />
 <figcaption> Frontend indépendant de l'API </figcaption>
 
-Lors du développement, nous utiliserons donc le boilerplate du cours pour avoir une IHM qui soit entièrement indépendante de l'API. Webpack sera utilisé comme serveur de fichiers statiques lors du développement. Notons qu'il est possible d'utiliser d'autres serveurs lors du développement, comme **Live Server** de VS Code, ou un package npm comme **serve**.  
+Lors du développement, nous utiliserons donc le boilerplate du cours pour implémenter cette architecture. Webpack sera utilisé comme serveur de fichiers statiques lors du développement. Notons qu'il est possible d'utiliser d'autres serveurs lors du développement, comme **Live Server** de VS Code, ou un package npm comme **serve**.  
 En production, lorsque nous mettrons l'IHM sur le web, nous devrons nous tourner vers un autre serveur de fichiers statiques.
 
-Voici l'architecture de l'API telle que développée dans les modules précédents :
+Voici l'architecture de la RESTfull API telle que développée dans les modules précédents :
 
 <ScrollableImage name="architecture.png" minWidth="859px" maxWidth="859px" />
 <figcaption>RESTful API indépendante du frontend</figcaption>
 
 Nous voyons que ces architectures (frontend & backend) amènent à deux projets bien distincts, un projet pour le frontend, et un autre pour le backend.
+
+## SPA : architecture monolithique frontend/backend
 
 Pour votre information, il est aussi possible d'avoir une architecture monolithique pour une SPA.  
 Dans ce scénario, la RESTful API s'occupe tant de fournir l'IHM via un serveur de fichiers statiques que d'offrir les opérations sur les ressources via un serveur dynamique.
@@ -142,16 +146,18 @@ Une fois le frontend chargé, le browser pourra faire appel aux API et c'est le 
 
 Nous n'appliquerons pas cette architecture dans le cadre de ce cours. Néanmoins, vous aurez toutes les connaissances pour l'appliquer si vous le souhaitez.
 
+## SPA : architectures en résumé
+
 Voici en résumé les caractéristiques des deux architectures présentées ci-dessus :
 
 - SPA dont le frontend est indépendant du backend :
-  - Frontend avec Serveur de fichiers statiques pour déployer l'IHM
-  - 2 serveurs : 1 serveur pour le frontend, 1 serveur pour le backend
-  - Ports différents pour le Frontend & le Backend
+  - Frontend avec un serveur de fichiers statiques pour offrir l'IHM.
+  - 2 serveurs : 1 serveur pour offrir le frontend, 1 serveur pour offrir le backend.
+  - Ports différents pour le frontend & le backend.
 - SPA monolithique :
-  - RESTful API avec serveur de fichiers statiques pour déployer l'IHM
-  - Même serveur pour déployer le backend & le frontend
-  - Même port pour le frontend & le backend
+  - RESTful API avec un serveur de fichiers statiques pour offrir l'IHM.
+  - Même serveur pour offrir le frontend & le backend.
+  - Même port pour le frontend & le backend.
 
 Pour information, les ports permettent à un même appareil de communiquer sur un réseau en offrant plusieurs services. Chaque service, ou application, communique sur un et un seul port.
 
@@ -166,40 +172,41 @@ Il en existe plusieurs. Dans le cadre de ce cours, nous allons simplement voir l
 C'est-à-dire que le frontend reste disponible aux actions des utilisateurs même lorsqu'il fait des requêtes HTTP asynchrone à des API.
 Le transport de données entre le frontend et l'API se faisait autrefois via **XML**. Actuellement, il se fait via **JSON**.
 
-Notons que dans le cadre d'architectures MPA "old school" (non vues dans le cadre de ce cours), généralement, l'appel aux API se fait pas par le frontend, mais par le backend. Pendant toute la durée de l'appel du frontend au backend,
-celui-ci reste en attente car la demande faite au backend est synchrone : par exemple, lorsqu'un formulaire est envoyé au serveur, l'action du formulaire est de faire l'appel à une nouvelle page au serveur (via la propriété "action" du formulaire HTML) ; jusqu'à la réponse du backend, aucune action d'un utilisateur ne sera possible au niveau de l'IHM.
+Notons que dans le cadre d'architectures MPA "old school" (non vues dans le cadre de ce cours), généralement, l'appel aux API ne se fait pas par le frontend, mais par le backend. Pendant toute la durée de l'appel du frontend au backend, celui-ci reste en attente car la demande faite au backend est synchrone. Par exemple, lorsqu'un formulaire est envoyé au serveur, l'action du formulaire est de demander une page au serveur (via la propriété "action" du formulaire HTML) ; jusqu'à la réponse du backend, aucune action d'un utilisateur ne sera possible au niveau de l'IHM.
 
 Il existe d'autres moyens de communiquer entre applications web. Par exemple, les **websockets** sont une technologie de communication temps-réel client / serveur et bidirectionnelle.  
 A la fin de ce cours, vous devriez être apte à découvrir cette technologie par vous même si vous le souhaitiez.
 
 Avec **AJAX**, c'est le client qui doit initier la communication. Ca n'est pas le cas pour les **websockets**, le serveur peut le faire. Ainsi, avec **AJAX**, le client doit créer une connexion HTTP à chaque requête.
 
-# <InternalPageTitle> Librairies liées aux requêtes HTTP </InternalPageTitle>
+## Librairies liées aux requêtes HTTP
 
 Voici une liste de librairies bien connues pouvant parfois être utilisée tant au niveau d'un browser (frontend) que via Node.js (backend) :
 
 <ScrollableImage name="ajax.png" minWidth="569px" maxWidth="569px" />
 <figcaption>Comparaison de librairies AJAX/HTTP [R.60]</figcaption>
 
-Anciennement, il y a environ 20 ans, c'est la librairie **XMLHttpRequest** qui était utilisée.  
-Puis la librairie **ajax** avait pris l'ascendant via la méthode **$.ajax()**.
+Anciennement, il y a environ 20 ans, c'est la librairie **`XMLHttpRequest`** qui était utilisée.  
+Puis la librairie **`ajax`** avait pris l'ascendant via la méthode **`$.ajax()`**.
 
-Le standard actuel pour le Vanilla JS, au niveau des browser, c'est la **Fetch API**. Dans ce cours, Nous allons utiliser cette API offerte par tous les browsers pour faire des requêtes vers nos API.   
-Notez que si vous souhaitez un jour utiliser une librairie pour vos requêtes HTTP, probablement que la plus utilisée actuellement c'est **axios**.
+Le standard actuel pour le Vanilla JS, au niveau des browser, c'est la **`Fetch API`**. Dans ce cours, Nous allons utiliser cette API offerte par tous les browsers.
+
+Notez que si vous souhaitez un jour utiliser une librairie pour vos requêtes HTTP, probablement que la plus utilisée actuellement c'est **`axios`**.
 
 # <InternalPageTitle> Requêtes asynchrones & les promesses </InternalPageTitle>
 
-La méthode **fetch** permet de faire des requêtes HTTP d'un browser vers des API.
+La méthode **`fetch`** permet de faire des requêtes HTTP d'un browser vers des API.
 
-Cette méthode est asynchrone, c'est-à-dire quelle n'est pas bloquante, elle renvoie des promesses de résultats via des objets **Promise**. Nous allons de manière intuitive découvrir la programmation asynchrone. Nous pourrons voir plus en détails par la suite ce qu'est la programmation asynchrone à l'aide de **promises** (les promesses).
+Cette méthode est asynchrone, c'est-à-dire quelle n'est pas bloquante, elle renvoie des promesses de résultats via des objets **`Promise`**. Nous allons de manière intuitive découvrir la programmation asynchrone. Nous pourrons voir plus en détails par la suite ce type de programmation à l'aide de **promises** (les promesses).
 
-Si un jour vous avez besoin de plus de documentation sur la méthode **fetch**, n'hésitez pas à consulter la [documentation MDN](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) [[R.61]](/references/#r61).
+Si un jour vous avez besoin de plus de documentation sur la méthode **`fetch`**, n'hésitez pas à consulter la [documentation MDN](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) [[R.61]](/references/#r61).
 
-Pour la pizzeria, l'IHM que nous avons développé au module 3 s'est terminée avec ce code :
-[routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi).
+Pour la pizzeria, l'IHM que nous avons développée [dans la partie sur le routage des écrans](../routing/) s'est terminée avec ce code :
+[routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi) (**`/tutorials/pizzeria/hmi/routing`** au sein de votre repo).  
+Pour ce nouveau tutoriel, au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/basic-fetch-no-proxy`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/routing`** (ou [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi)).
 
-Cette IHM était entièrement frontend, le **MENU** étant hardcodé dans la **HomePage**.  
-Nous souhaitons maintenant changer cela, l'IHM doit faire une requête **fetch** à notre RESTful API développée au module 5 :
+Cette SPA était entièrement frontend, le **`MENU`** étant hardcodé dans la **`HomePage`**.   
+Nous souhaitons changer ça : afin de récupérer une liste de pizzas, l'IHM doit faire une requête **`fetch`** à notre RESTful API développée dans la partie [Refactoring à l'aide d'un "fat model"](../../part1/refactoring/) :
 [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
 
 Nous n'allons donc plus utiliser REST Client mais une fonction offerte par le browser pour faire l'équivalent de cette requête :
@@ -209,17 +216,12 @@ Nous n'allons donc plus utiliser REST Client mais une fonction offerte par le br
 GET {{baseUrl}}/pizzas
 ```
 
-Veuillez démarrer la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
+Veuillez démarrer la RESTful API de la pizzeria (**`/tutorials/pizzeria/api/fat-model`** au sein de votre repo). En cas de souci, vous pouvez utiliser ce code-ci :
 [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
 
-Nous allons maintenant continuer le développement de l'IHM [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi).
+Nous allons maintenant continuer le développement de l'IHM (**`/web2/tutorials/pizzeria/hmi/basic-fetch-no-proxy`**). Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire **`/web2/tutorials/pizzeria/hmi/basic-fetch-no-proxy`**.
 
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/basic-fetch** sur base d'un copié collé de **/web2/tutorials/pizzeria/hmi/structured** (ou [routing-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi)).
-
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/hmi/basic-fetch**.
-
-Veuillez mettre à jour le fichier **src/Components/Pages/HomePage.js** en supprimant l'array **MENU** et en remplaçant la ligne **`renderMenuFromString(pizzas);`** par cette requête **fetch** pour lire toutes les pizzas :
+Veuillez mettre à jour le fichier **`src/Components/Pages/HomePage.js`** en supprimant l'array **`MENU`** et en remplaçant la ligne **`renderMenuFromString(pizzas);`** par cette requête **`fetch`** pour lire toutes les pizzas :
 
 ```js numbered highlighting="4-14"
 const HomePage = () => {
@@ -249,18 +251,18 @@ Ca ne fonctionne pas, nous obtenons ces erreurs dans la console du browser :
 <ScrollableImage name="errors.png" minWidth="589px" maxWidth="589px" />
 
 La première erreur est très intéressante pour comprendre la nature asynchrone de la fonction
-**fetch**.
+**`fetch`**.
 
-Par défaut, la fonction **fetch** fait une requête de type **GET**.  
-Ici on a donc demandé à la RESTful API, qui tourne sur le port **8080** de notre machine locale, la lecture (requête GET) de toutes les ressources de type "pizzas" :
+Par défaut, la fonction **`fetch`** fait une requête de type **`GET`**.  
+Ici on a donc demandé à la RESTful API, qui tourne sur le port **`8080`** de notre machine locale, la lecture de toutes les ressources de type "pizzas" :
 
 ```js
   fetch('http://localhost:3000/pizzas')
 };
 ```
 
-Comme la fonction **fetch** est asynchrone, le programme principal ne se bloque pas et n'attend
-donc pas les résultats de l'appel de **fetch**. Directement après le début du **fetch**, on passe à la ligne 16 du morceau de code précédent : **`attachOnMouseEventsToGoGreen(pizzas);`**.  
+Comme la fonction **`fetch`** est asynchrone, le programme principal ne se bloque pas et n'attend
+donc pas les résultats. Directement après le début du **`fetch`**, on passe à la ligne 16 du morceau de code précédent : **`attachOnMouseEventsToGoGreen(pizzas);`**.  
 Dans cette fonction, voici ce qui est fait :
 
 ```js numbered highlighting="2-3"
@@ -281,20 +283,20 @@ On essaie d'accéder à la table HTML qui doit être créée par la méthode **`
 Hé bien c'est ça la programmation asynchrone, ce n'est qu'une fois le programme principal exécuté que les tâches asynchrones, de priorité plus basses, pourront s'exécuter.
 
 Comment réecrire ce code pour chaîner l'appel de **`attachOnMouseEventsToGoGreen(pizzas)`**
-au succès de l'opération **fetch** ?
+au succès de l'opération **`fetch`** ?
 
-La méthode **fetch** renvoie une **Promise**, qui est un objet représentant un état intermédiaire d'une opération. Le code des callbacks s'exécute quand la tâche asynchrone est finie avec succès ou si la tâche échoue.
+La méthode **`fetch`** renvoie une **`Promise`**, qui est un objet représentant un état intermédiaire d'une opération. Le code des callbacks s'exécute quand la tâche asynchrone est finie avec succès ou si la tâche échoue.
 
 Les états d'une promesse sont les suivants :
 
 - **pending** : état initial,
 - **fulfilled** : l'opération asynchrone a été terminée avec succès ; par exemple la requête
-  **fetch()** a obtenu un flux de données avec la RESTful API,
-- **rejected** : l'opération asynchrone a échouée ; par exemple la requête **fetch** est mal construite.
+  **`fetch()`** a obtenu un flux de données avec la RESTful API,
+- **rejected** : l'opération asynchrone a échouée ; par exemple la requête **`fetch`** est mal construite.
 
 Pour récupérer le résultat d'une méthode asynchrone, on va faire appel :
 
-- **.then( callback )** : ce morceau de code permet de chaîner des traitements asynchrones. Par exemple, à la fin du premier traitement asynchrone associé au **fetch()**, on appelle
+- **`.then( callback )`** : ce morceau de code permet de chaîner des traitements asynchrones. Par exemple, à la fin du premier traitement asynchrone associé au **`fetch()`**, on appelle
 
 ```js numbered highlighting="2-5"
 fetch('http://localhost:3000/pizzas')
@@ -311,9 +313,9 @@ fetch('http://localhost:3000/pizzas')
 };
 ```
 
-La callback sera appelée et recevra comme paramètre un objet de type **Response**, un objet ne contenant pas encore le contenu du body de la réponse sous forme d'un objet JS. En fait, **Response.body** est un flux de données (un stream), il faudra donc faire appel à un traitement asynchrone pour obtenir le contenu du body sous forme d'un objet JS.  
-C'est ce qui est fait en renvoyant **`return response.json();`** : la fonction **json()** renvoie une promesse, c'est à dire qu'une fois le traitement terminé, nous pourrons chaîner celui-ci via un autre **.then()**.
-C'est ainsi que nous chaînons, une fois le **body** (au format JSON) disponible, l'appel d'une deuxième callback qui s'occupe de faire un render du menu de la pizzeria. Cette deuxième callback recevra en paramètre le body de la réponse sous forme d'un objet JS :
+La **callback** sera appelée et recevra comme paramètre un objet de type **`Response`** : cet objet ne contient pas encore le contenu du body de la réponse. En fait, **`Response.body`** est un flux de données (un stream), il faudra donc faire appel à un traitement asynchrone pour obtenir le contenu du body sous forme d'un objet JS.  
+C'est ce qui est fait en renvoyant **`return response.json();`** : la fonction **`json()`** renvoie une promesse, c'est à dire qu'une fois le traitement terminé, nous pourrons chaîner celui-ci via un autre **`.then()`**.
+C'est ainsi que nous chaînons, une fois le **`body`** disponible, l'appel d'une deuxième **callback** qui s'occupe de faire un render du menu de la pizzeria. Cette deuxième **callback** recevra en paramètre le body de la réponse sous forme d'un objet JS :
 
 ```js numbered highlighting="6-8"
 fetch('http://localhost:3000/pizzas')
@@ -330,7 +332,7 @@ fetch('http://localhost:3000/pizzas')
 };
 ```
 
-Si nous souhaitons chaîner l'ajout des écouteurs d'événements sur la table HTML, puis l'affichage des boissons, c'est donc dans cette callback qu'il faut le faire. Veuillez mettre à jour le code afin d'éliminer la première erreur qu'il y avait dans la console :
+Si nous souhaitons chaîner l'ajout des écouteurs d'événements sur la table HTML, puis l'affichage des boissons, c'est donc dans cette **callback** qu'il faut le faire. Veuillez mettre à jour le code afin d'éliminer la première erreur qu'il y avait dans la console :
 
 ```js numbered highlighting="9-13"
 const HomePage = () => {
@@ -354,7 +356,7 @@ const HomePage = () => {
 
 La console de votre browser devrait afficher une erreur en moins.
 
-- **.catch( callback )** : ce morceau de code permet d'exécuter une callback lorsque la tâche asynchrone associée à la promesse échoue. Dans le code, on voit que l'on affiche juste un message dans la console :
+- **`.catch( callback )`** : ce morceau de code permet d'exécuter une **callback** lorsque la tâche asynchrone associée à la promesse échoue. Dans le code, on voit que l'on affiche juste un message dans la console :
 
 ```js numbered highlighting="11-13"
 fetch('http://localhost:3000/pizzas')
@@ -373,15 +375,15 @@ fetch('http://localhost:3000/pizzas')
 };
 ```
 
-- **.finally( callback )** : si l'on souhaite exécuter une callback quelque soit le résultat de la promesse, en cas de succès ou d'échec.
+- **`.finally( callback )`** : si l'on souhaite exécuter une callback quelque soit le résultat de la promesse, en cas de succès ou d'échec.
 
-⚡ Pour le chaînage des traitements via plusieurs callback appelées au sein de **.then()**, cela n'est possible que s'il y a un **return** dans les callback.
+⚡ Pour le chaînage des traitements via plusieurs callback appelées au sein de **`.then()`**, cela n'est possible que s'il y a un **`return`** dans les callback.
 
 En effet, si une callback dans la gestion de promesses retourne :
 
-- **Une valeur** : la promesse retournée par **then** est résolue avec la valeur.
-- **Pas de valeur** : la promesse retournée par **then** est résolue avec **undefined**.
-- **Une autre promesse "pending"**: la promesse retournée par **then** est résolue/rejetée à la suite de la résolution/rejet de la promesse retournée par la callback.
+- **Une valeur** : la promesse retournée par **`then`** est résolue avec la valeur.
+- **Pas de valeur** : la promesse retournée par **`then`** est résolue avec **`undefined`**.
+- **Une autre promesse "pending"**: la promesse retournée par **`then`** est résolue/rejetée à la suite de la résolution/rejet de la promesse retournée par la **callback**.
 
 Pour info, autrefois, pour la programmation asynchrone en JS, nous utilisions simplement les callbacks, des fonctions que l'on passait en argument d'autres fonctions. Le code pouvait facilement devenir illisible et donc difficilement maintenable.
 
@@ -389,20 +391,71 @@ Pour info, autrefois, pour la programmation asynchrone en JS, nous utilisions si
 Mais ça ne fonctionne pas, nous n'avons toujours l'erreur associée aux "CORS policy".  
 Cette erreur, c'est un mur classique contre lequel tous les programmeurs web se cognent au moins une fois dans leur carrière 😵.
 
-# <InternalPageTitle> Exercice 2.11 : Affichage de blagues </InternalPageTitle>
+Nous allons apprendre à résoudre cette erreur dans la partie qui suit, car celle-ci dépend de la façon dont l'API a été configurée. Si vous souhaitez voir l'application fonctionner, vous pouvez :
+- Stopper la RESTful API ;
+- Télécharger, et désarchiver cette API : <LinkFile name="api-json-server.zip" target="_blank" download> RESTful API offerte grâce à json-server </LinkFile>
+- Lancer l'API téléchargée : 
+  - Ouvrir un terminal dans son répertoire.
+  - Installation des packages : **`npm i`**
+  - Exécution de l'API : **`npm start`**
+- Faire un refresh au niveau de votre browser. Le menu des pizzas devrait s'afficher 🎉.
+
+A ce stade-ci, faites un **commit** de votre repo (**`web2`**) avec comme message : **`basic-fetch-no-proxy tutorial`**.
+
+
+
+# <InternalPageTitle> Exercice 2.15 : Consommation de blagues online </InternalPageTitle>
 
 Nous souhaitons consommer une API qui nous permette d'afficher des blagues.  
-Nous avons trouvé une restful API qui permet très facilement de générer de manière aléatoire des **jokes** : [JokeAPI](https://v2.jokeapi.dev/).
+Nous avons trouvé une restful API qui permet très facilement de générer de manière aléatoire des **`jokes`** : [JokeAPI](https://v2.jokeapi.dev/).
 
-Cette API est très simple d'utilisation. D'ailleurs, la page du site [JokeAPI](https://v2.jokeapi.dev/) vous donne un exemple fonctionnel de comment récupérer des blagues simples dans l'onglet **Try it out here**. Pour cela, désélectionnez **twopart** et vous obtenez l'URL pour faire vos requêtes en dessous du formulaire.
+Cette API est très simple d'utilisation. D'ailleurs, la page du site [JokeAPI](https://v2.jokeapi.dev/) vous donne un exemple fonctionnel de comment récupérer des blagues simples dans l'onglet **`Try it out here`**. Pour cela, désélectionnez **`twopart`** et vous obtenez l'URL pour faire vos requêtes en dessous du formulaire.
 
-Dans la **HomePage** d'une nouvelle application frontend, veuillez afficher une **joke** après l'avoir récupérée de **JokeAPI**, en donnant ces 2 informations :
-- la catégorie associée à la **joke** ;
-- le texte associé à la **joke**.
+Dans la **`HomePage`** d'une nouvelle application frontend, veuillez afficher une **`joke`** après l'avoir récupérée de **`JokeAPI`**, en donnant ces 2 informations :
+- la catégorie associée à la **`joke`** ;
+- le texte associé à la **`joke`**.
 
-Le code de votre application web doit se trouver dans votre repository local et votre web repository (normalement appelé **web2**) dans le répertoire nommé **/exercises/module6/6.1**.
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.15`** sur base du [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git).
 
-#### 🤝 Tips 
-- Utilisez le [boilerplate du cours avec routeur](https://github.com/e-vinci/js-router-boilerplate.git) pour ajouter à votre projet **exercises/module6/6.1** tous les répertoires et fichiers utiles.
+⚡ Si vous avez fait un clone du boilerplate, attention au Git dans le Git, n'oubliez pas de supprimer le dossier **`.git`** présent dans votre nouveau projet.
 
-Veuillez faire un **commit** de votre code avec le message suivant : "**module 6 : exercise 6.1 read from JokeAPI**".
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.15 : view online jokes`**.
+
+# <InternalPageTitle> Exercice 2.16 : Consommation de questions localement </InternalPageTitle>
+
+## Affichage des questions et réponses
+
+Votre nouvelle application va proposer des jeux de devinettes éducatifs pour aider les enfants à améliorer leur logique, leur raisonnement et leurs compétences de résolution de problèmes.
+
+Au chargement de l'application, vous devez aléatoirement afficher trois devinettes sur base de la liste de toutes les questions qui vous est offerte par une RESTful API locale.
+
+La RESTful API vous est fournie ici : <LinkFile name="api-json-server.zip" target="_blank" download> RESTful API offerte grâce à json-server </LinkFile>. Une fois dans le dossier, à l'aide d'un terminal, vous pouvez lancer cette API en utilisant les commandes suivantes : 
+- **`npm i`**
+- **`npm start`**
+
+La liste de question est disponible via cette URL : **http://localhost:3000/questions**.
+
+
+Vous devez aussi ajouter un bouton à la fin du questionnaire qui permettra, plus tard, de calculer le score. 
+Voici comment vous devez afficher chaque devinette :
+-	La question doit être facilement reconnaissable par rapport aux réponses.
+-	Chaque réponse doit être associée à un "radio button".
+-	Il doit être impossible de "checker" plus qu'un "radio button" par devinette (car il n'y a jamais qu'une seule réponse possible !).
+
+Voici un exemple de ce à quoi pourrait ressembler votre application web :
+<ScrollableImage name="ex2-16-questions.png" minWidth="370px" maxWidth="370px" />
+
+Quand l'affichage des questions & réponses est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`2.16.1 : view local questions`**.
+
+## 🍬 Calcul et affichage des scores (suite optionnelle de l'exercice)
+
+Lorsque l'utilisateur clique sur le bouton pour calculer le score, vous devez afficher uniquement le score de l'utilisateur et un bouton permettant de recommencer un jeu de devinettes. Les questions ne sont donc plus visibles. Pour calculer le score :
+-	Une réponse juste amène 1 point.  
+NB : la réponse juste à une question doit être déterminée grâce à **`isCorrect`** qui est une propriété des ressources renvoyées par l'API ; si **`isCorrect`** est vrai, c'est que c'est la bonne réponse.
+-	Une réponse fausse amène 0 points. Si aucune réponse est sélectionnée pour une question, cela reviendra à une réponse fausse.
+-	Le score sera donné sur 3 points.
+
+Voici un exemple de ce à quoi pourrait ressembler l'écran pour le score :
+<ScrollableImage name="ex2-16-score.png" minWidth="268px" maxWidth="268px" />
+
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.16.2 : calculate score`**.
