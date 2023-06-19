@@ -6,22 +6,20 @@ description: "Sécurisation d'une RESTful API"
 <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
     <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
-    <PathViewerItem selected> C) Sécuritsation d'une API </PathViewerItem>
+    <PathViewerItem selected> b) Sécuritsation d'une RESTful API </PathViewerItem>
 </PathViewer>
 
 <InternalPageMenu>
   <InternalPageMenuItem> Protection contre les attaques XSS </InternalPageMenuItem>
   <InternalPageMenuItem> Sécurisation des passwords </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 4.3 : Sécurisation de l'API de myMovies </InternalPageMenuItem>
-  <InternalPageMenuItem> 🍬 Exercice 4.4 : Auto-refresh de myMovies </InternalPageMenuItem> 
-  <InternalPageMenuItem> 🍬 Exercice 4.5 : Gestion de la navigation lors de l'auto-refresh de myMovie </InternalPageMenuItem>
-  <InternalPageMenuItem> 🍬 Exercice 4.6 : L'essentiel du cours en action </InternalPageMenuItem> 
+  <InternalPageMenuItem> Projet 2.23 : Sécurisation d'API </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Authentification & autorisation JWT à l'aide de cookies </InternalPageMenuItem> 
 </InternalPageMenu>
 
-# c) Sécurisation d'une RESTful API
+# b) Sécurisation d'une RESTful API
 
 La sécurisation d'API est une problématique complexe.  
-Nous n'allons pas aller dans les détails de cette problématique, juste offrir une solution à deux problématiques simples à traiter.
+Nous n'allons pas aller dans les détails de cette problématique, juste offrir une solution à deux cas simples à traiter.
 
 # <InternalPageTitle> Protection contre les attaques XSS </InternalPageTitle>
 
@@ -35,22 +33,20 @@ Imaginez le forum web d'une banque et ce scénario :
 
 L'API de la banque permet d'enregistrer des messages qui sont associés à des forums sur lesquels leurs clients peuvent poster des messages.  
 Si l'API de la banque était mal sécurisée et qu'elle permettait d'enregistrer n'importe quels types d'information en tant que "messages" du forum, il serait possible à un attaquant d'injecter du JS malicieux dans l'API.  
-Plus tard, lors de l'affichage des messages par le forum de la banque (`https://forum.my-bank.com `), le JS malicieux pourra s'exécuter dans le browser de n'importe quel utilisateur.  
-Vous avez vu que via du JS, on peut envoyer de l'information n'importe où, notamment à l'aide de **fetch**. Ce qui permettrait donc à un hacker, via son script malicieux, d'envoyer des cookies contenant des infos sensibles à son API malicieuse, en vue de futures attaques encore plus diaboliques, comme notamment vider le compte en banque d'utilisateurs.
+Plus tard, lors de l'affichage des messages par le forum de la banque (**`https://forum.my-bank.com`**), le JS malicieux pourrait s'exécuter dans le browser de n'importe quel utilisateur.  
+Vous avez vu que via du JS, on peut envoyer de l'information n'importe où, notamment à l'aide de **`fetch`**. Ce qui permettrait donc à un hacker, via son script malicieux, d'envoyer des cookies contenant des infos sensibles à son API malicieuse, en vue de futures attaques encore plus diaboliques, comme notamment vider le compte en banque d'utilisateurs.
 
-La protection contre des attaques XSS se fait à différents niveaux. Ca n'est pas l'objet de ce cours de voir cela en détails, mais nous verrons un technique simple pour éviter certaines attaques XSS.
+La protection contre des attaques XSS se fait à différents niveaux. Ca n'est pas l'objet de ce cours de voir cela en détails, mais nous verrons un technique simple pour éviter certaines attaques.
 
 ## Réaliser une attaque XSS
 Nous allons maintenant réaliser une attaque XSS sur le site de la pizzeria.
 
-Veuillez lancer le frontend **jwt-fetch** et le backend **auths** du site de la pizzeria. En cas de soucis :
-- pour le frontend : [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
-- pour l'API : [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
+Veuillez lancer le frontend [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch) (nous allons le développer tout prochainement, vous pouvez simplement en faire une copie temporaire, l'installer et l'exécuter) et le backend **auths** du site de la pizzeria (**`/web2/tutorials/pizzeria/api/auths`** ou en cas de soucis : [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths)).
 
-Evidemment, un hackeur, pour tenter l'attaque XSS, doit d'abord trouver un moyen d'usurper la session d'**admin**. Nous ne verrons pas dans ce cours le genre d'attaques qui permettrait de le faire. Nous allons considérer que cette première attaque est réussie et nous allons prendre le rôle d'un hackeur pouvant accéder au compte **admin**.
+Evidemment, un hackeur, pour tenter l'attaque XSS, doit d'abord trouver un moyen d'usurper la session d'**`admin`**. Nous ne verrons pas dans ce cours le genre d'attaques qui permettrait de le faire. Nous allons considérer que cette première attaque est réussie et nous allons prendre le rôle d'un hackeur pouvant accéder au compte **`admin`**.
 
-Veuillez vous loguer à l'aide du compte **admin** (et le password **admin**).  
-Veuillez vous rendre sur la page **Add a pizza**.
+Veuillez vous loguer à l'aide du compte **`admin`** (et le password **`admin`**).  
+Veuillez vous rendre sur la page **`Add a pizza`**.
 
 Pour le titre de la pizza, vous pouvez ajouter n'importe quoi.
 Dans le contenu de la pizza, veuillez ajouter cela et soumettre : 
@@ -59,10 +55,10 @@ Dans le contenu de la pizza, veuillez ajouter cela et soumettre :
 <img src="#" onerror="alert('You have been hacked !')">
 ```
 
-En fait, nous avons ajouté une balise **`img`** contenant du inline JS. **`oneerror`** est un gestionnaire d'événements qui sera d'office appelé car la source (**`src="#"`** ) donné à **`img`** n'est pas une image.
+En fait, nous avons ajouté une balise **`img`** contenant du inline JS. **`onerror`** est un gestionnaire d'événements qui sera d'office appelé car la source (**`src="#"`** ) donné à **`img`** n'est pas une image.
 
-Maintenant, tout utilisateur connecté ou pas qui se loguera sur le site va exécuter ce script "malicieux". Il verra le pop-up apparaître avec le message "You have been hacked !".  
-En effet, le menu des pizzas, tel qu'il est construit, est basé sur toutes les ressources de type "pizzas" renvoyées par l'API, dont une des pizzas contient le JS malicieux qui est exécuté dans une cellule de la table via ce code de la **HomePage** de l'IHM :
+Maintenant, tout utilisateur connecté ou pas qui se loguera sur le site va exécuter ce script "malicieux". Il verra le pop-up apparaître avec le message *"You have been hacked !"*.  
+En effet, le menu des pizzas, tel qu'il est construit, est basé sur toutes les ressources de type "pizzas" renvoyées par l'API, dont une des pizzas contient le JS malicieux qui est exécuté dans une cellule de la table via ce code de la **`HomePage`** de l'IHM :
 ```js highlighting="7"
 function getAllTableLinesAsString(menu) {
   let pizzaTableLines = '';
@@ -82,7 +78,7 @@ function getAllTableLinesAsString(menu) {
 
 Par rapport à l'attaque précédente, le plus simple pour protéger de l'attaque pourrait être de faire en sorte que l'application cliente n'interprète pas d'HTML / JS / CSS envoyé par l'API.
 
-Ici, dans la **HomePage**, on utilise la propriété **`innerHTML`** d'une **`td`**. Ainsi, l'HTML et l'inline JS associé est exécuté. Si l'on utilisais la propriété **`innerText`** des **`td`**, alors, ni l'HTML et le JS serait interprété par le browser, et donc pas de possibilité de script malicieux au niveau de la **HomePage**.
+Ici, dans la **`HomePage`**, on utilise la propriété **`innerHTML`** d'une **`td`**. Ainsi, l'HTML et l'inline JS associé est exécuté. Si l'on utilisais la propriété **`innerText`** des **`td`**, alors, ni l'HTML et le JS serait interprété par le browser, et donc pas de possibilité de script malicieux au niveau de la **`HomePage`**.
 
 Oui, mais si nous allions vers cette solution, cela serait problématique si nous souhaitions réellement développer plusieurs applications clientes, il faudrait toujours faire attention à cette contrainte.
 
@@ -92,22 +88,22 @@ Au niveau de l'API, nous allons échapper les caractères dangereux, principalem
 
 Nous allons utiliser la librairie **[escape-html](https://www.npmjs.com/package/escape-html)** sous Node.js échappant les string pour une utilisation des string transformées en HTML.
 
-Nous allons maintenant continuer le développement de l'API [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths) et la sécuriser.
+Pour ce nouveau tutoriel, nous allons continuer le développement de l'API [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths) et la sécuriser.
 
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/safe** sur base d'un copié collé de **/web2/tutorials/pizzeria/api/auths** (ou [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/safe** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/api/auths`** (ou [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/api/safe**.
+**`/web2/tutorials/pizzeria/api/safe`**.
 
-Veuillez installer la librairie **escape-html** au sein de votre projet **safe** :
+Veuillez installer la librairie **`escape-html`** au sein de votre projet **`safe`** :
 ```bash
 npm i escape-html
 ```
 
-Nous allons supprimer, s'il existe, le fichier reprenant le code malicieux introduit précédemment : veuillez supprimer le fichier **/data/pizzas.json**.
+Nous allons supprimer, s'il existe, le fichier reprenant le code malicieux introduit précédemment : veuillez supprimer le fichier **`/data/pizzas.json`**.
 
-Nous allons à présent mettre à jour le modèle de pizzas pour échapper les caractères dangereux.
-Veuillez modifier **/models/pizzas.js** :
+Nous allons mettre à jour le modèle de pizzas pour échapper les caractères dangereux.
+Veuillez modifier **`/models/pizzas.js`** :
 ```js highlighting="1,9-10"
 const escape = require('escape-html');
 // other bits of code
@@ -130,8 +126,8 @@ function createOnePizza(title, content) {
 ```
 
 Nous allons maintenant tester si tout est réglé au niveau de l'attaque XSS.  
-Veuillez vous loguer à l'aide du compte **admin** (et le password **admin**).  
-Veuillez vous rendre sur la page **Add a pizza**.
+Dans votre frontend temporaire ([jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)), veuillez vous loguer à l'aide du compte **`admin`** (et le password **`admin`**).  
+Veuillez vous rendre sur la page **`Add a pizza`**.
 
 Comme précédemment : 
 - Pour le titre de la pizza, vous pouvez ajouter n'importe quoi.
@@ -141,7 +137,7 @@ Comme précédemment :
 <img src="#" onerror="alert('You have been hacked !')">
 ```
 
-Maintenant, tout utilisateur connecté verra simplement apparaître, quand il affiche la **HomePage**, le menu des pizzas avec :
+Maintenant, tout utilisateur connecté verra simplement apparaître, quand il affiche la **`HomePage`**, le menu des pizzas avec :
 
 <ScrollableImage name="hacked.png" minWidth="500px" maxWidth="744px" />
 
@@ -161,20 +157,20 @@ Afin de se protéger contre les "hash attacks", on utilise du **salt** :
 
 Pour hacher sous Node.js, nous utiliserons la librairie [bcrypt](https://www.npmjs.com/package/bcrypt).
 
-Veuillez installer la librairie **bcrypt** au sein de votre nouveau projet **safe** :
+Veuillez installer la librairie **`bcrypt`** au sein de votre API **`safe`** :
 ```bash
 npm i bcrypt
 ```
 
 En résumé, nous allons utiliser :
-- la fonction asynchrone **`hash`** de **bcrypt** pour hacher un password ;
-- la fonction asynchrone **`compare`** de **bcrypt** pour comparer un password en clair à un password haché ; si le résultat est positif, cela signifie que le password fournit pour un utilisateur correspond au password initial.
+- la fonction asynchrone **`hash`** de **`bcrypt`** pour **hacher un password** ;
+- la fonction asynchrone **`compare`** de **`bcrypt`** pour **comparer un password en clair à un password haché** ; si le résultat est positif, cela signifie que le password fournit pour un utilisateur correspond au password initial.
 
-Nous préférons utiliser les librairies asynchrone afin de laisser l'API plus disponible à gérer des requêtes clientes et pas bloquer celles-ci jusqu'à la fin d'une opération de **bcrypt**.
+Nous préférons utiliser les librairies asynchrone afin que l'API reste disponible à gérer des requêtes clientes et ne bloque pas celles-ci jusqu'à la fin d'une opération de **bcrypt** !
 
-Veuillez effacer le fichier **/data/users.json** contenant les credentials d'utilisateurs où les passwords ne sont pas hachés.
+Veuillez effacer le fichier **`/data/users.json`** contenant les credentials d'utilisateurs où les passwords sont donnés en clair.
 
-Nous allons maintenant mettre à jour le modèle de "users" pour utiliser **bcrypt**. Veuillez modifier **/models/users.js** :
+Nous allons maintenant mettre à jour le modèle de "users" pour utiliser **`bcrypt`**. Veuillez modifier **`/models/users.js`** :
 ```js numbered highlighting="2,9,17,21,25-26,42,46,70,73"
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -280,11 +276,11 @@ module.exports = {
 ```
 
 Voici les modifications apportées :
-- pour créer un password hashé : on utilise la fonction asynchrone `hash` pour créer le password haché. Dès lors, `createOneUser` devient asynchrone. De plus, comme `createOneUser` est devenue asynchrone, dans `register`, pour chaîner le traitement de création du token, on met un **await** à l'appel de `createOneUser`. Et comme un **await** est ajouté au sein de `register`, il faut mettre un **async** à la méthode `register`. Attention, du coup, comme `register` est devenue asynchrone, il faudra faire attention à bien chaîner les traitements là où `register` est appelé, dans le router **auths**.
-- pour vérifier qu'un password match à un password haché : on utilise la fonction asynchrone `compare` que l'on chaîne à la création du token à l'aide de **await**. Dès lors, la fonction `login` doit elle aussi être déclarée **async**. Attention, du coup, comme `login` est devenue asynchrone, il faudra faire attention à bien chaîner les traitements là où `login` est appelé, dans le router **auths**.
-- pour créer l'utilisateur **admin** se trouvant dans les **defaultUsers**, on souhaite indiquer comme **password** le password haché correspondant au password "admin". Pour se simplifier la vie, on appelle la fonction synchrone `hashSync` (voir ligne 16). Bien évidemment, dans une application plus robuste, on évitera d'hardcoder ce genre de secrets dans les sources de notre application.
+- **pour créer un password hashé** : on utilise la fonction asynchrone **`hash`** pour créer le password haché. Dès lors, **`createOneUser`** devient asynchrone. De plus, comme **`createOneUser`** est devenue asynchrone, dans **`register`**, pour chaîner le traitement de création du token, on met un **`await`** à l'appel de **`createOneUser`**. Et comme un **`await`** est ajouté au sein de **`register`**, il faut mettre un **`async`** à la méthode **`register`**. Attention, du coup, comme **`register`** est devenue asynchrone, il faudra aussi bien chaîner les traitements où **`register`** est appelé, dans le router **`auths`**.
+- **pour vérifier qu'un password en clair "match" à un password haché** : on utilise la fonction asynchrone **`compare`** que l'on chaîne à la création du token à l'aide de **`await`**. Dès lors, la fonction **`login`** doit elle aussi être déclarée **`async`**. Attention, du coup, comme `login` est devenue asynchrone, il faudra bien chaîner les traitements où **`login`** est appelé, dans le router **`auths`**.
+- **pour créer l'utilisateur **`admin`** se trouvant dans les **`defaultUsers`** avec des credentials par défaut** : on souhaite indiquer comme **`password`** le password haché correspondant au password **`"admin"`**. Pour se simplifier la vie, on appelle la fonction synchrone **`hashSync`** (voir ligne 16). Bien évidemment, dans une application plus robuste, on évitera d'hardcoder ce genre de secrets dans les sources de notre application 😉 !
 
-Afin de traiter des deux fonctions du modèle **users** qui sont devenues asynchrones, `login` et `register`, nous allons modifier le router **/routes/auths** :
+Afin de traiter des deux fonctions du modèle **`users`** qui sont devenues asynchrones, **`login`** et **`register`**, nous allons modifier le router **`/routes/auths`** :
 ```js numbered highlighting="7,13,21,27"
 const express = require('express');
 const { register, login } = require('../models/users');
@@ -322,11 +318,11 @@ router.post('/login', async (req, res) => {
 module.exports = router;
 ```
 
-Nous avons simplement chaîné les réponses à faire au client seulement une fois les opération `register` et `login` terminées. Pour ce faire, nous avons précédé le nom de ces méthodes par **await**. Nous avons donc du ajouter **async** aux fonctions middleware s'occupant des routes **POST /auths/register** et **POST /auths/login**.
+Nous avons simplement chaîné les réponses à faire au client seulement une fois les opération `register`** et **`login`** terminées. Pour ce faire, nous avons précédé le nom de ces méthodes par **`await`**. Nous avons donc du ajouter **`async`** aux fonctions middleware s'occupant des routes **`POST /auths/register`** et **`POST /auths/login`**.
 
 Veuillez vérifier que votre application fonctionne correctement.  
 Via l'IHM, veuillez faire un register d'un nouvel utilisateur.  
-Au niveau de l'API, allez voir le contenu du nouveau fichier **/data/users.json**. Les passwords devraient maintenant être hachés, comme par exemple :
+Au niveau de l'API, allez voir le contenu du nouveau fichier **`/data/users.json`**. Les passwords devraient maintenant être hachés, comme par exemple :
 
 ```json
 [
@@ -343,154 +339,386 @@ Au niveau de l'API, allez voir le contenu du nouveau fichier **/data/users.json*
 ]
 ```
 
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
-"**api-safe**".
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`api-safe tutorial`**.
 
 En cas de souci, vous pouvez utiliser le code du tutoriel :
 - pour le frontend : [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
-- pour l'API : [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
+- pour l'API : [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-# <InternalPageTitle> Exercice 4.3 : Sécurisation de l'API de myMovies </InternalPageTitle>
+# <InternalPageTitle> Projet 2.23 : Sécurisation d'API </InternalPageTitle>
 
-A l'exercice précédent (Exercice 7.1), vous avez développé le mécanisme d'authentification et d'autorisation d'accès à des opérations de votre RESTful API gérant des films.
+Vous devez mettre à jour l'API développée pour [Projet 2.22](../auths-api/#project_2_22_authentification_autorisation_doperations) afin de sécuriser l'API pour échapper les caractères dangereux et pour hacher les password.
 
-Néanmoins, cette API n'est pas encore sécurisée. Les passwords sont disponibles en clair dans un fichier JSON et il est possible de faire des attaques XSS.
+Le code doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.23/api`** sur base d'un copier/coller du code de [Projet 2.22](../auths-api/#project_2_22_authentification_autorisation_doperations).
 
-Commencez par hacker votre site en faisant une injection de Javascript. Ce script "malicieux" affichera un pop-up à chaque utilisateur affichant la liste des films ; ce pop-up sera suffisamment explicite pour que vos utilisateurs sachent qu'ils ont été piratés.
+<AuthenticatedBlock>
 
-Ensuite, veuillez sécuriser l'API pour échapper les caractères dangereux et pour hacher les password.
+Veuillez travailler avec les membres de votre groupe et vous partager le travail :
+- certains membres peuvent travailler sur cette sécurisation ;
+- d'autres membres sur d'autres aspect du projet.
 
-Afin de réaliser cet exercice, voici les contraintes d'implémentation :
--	Pour le frontend, il n'y a rien à développer, veuillez exécuter  le contenu de votre répertoire d'exercices **/exercises/module7/7.1/hmi**.
--	Pour l'API, utilisez le contenu de votre répertoire d'exercices **/exercises/module7/7.1/api** comme point de départ pour créer, dans votre repository local et
-votre web repository (normalement appelé **web2**), le répertoire nommé
-**/exercises/module7/7.2/api**.
+Un peu avant la fin de la séance, veuillez discuter :
+- présenter ce que vous avez appris au niveau de la sécurisation aux membres qui ont travaillé sur autre chose.
 
-#### 🤝 Tips
-Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API : [d) Sécurisation de RESTful API](#d).
+</AuthenticatedBlock>
 
-⚡ N'oubliez pas que vos méthodes de login et de register deviennent asynchrones, cela impose de bien chaîner les traitements dans le router, sinon vous risquez de renvoyer des objets vides en réponses aux requêtes.
+Vous devez tester, à l'aide de Rest Client, toutes les opérations que vous avez modifiées.
 
-Veuillez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 7 : safe api**"".
-
-NB : Le code de vos applications se trouve dans votre repository local et
-votre web repository (normalement appelé **web2**) dans le répertoire nommé
-**/exercises/module7/7.2/api**.
-
-# <InternalPageTitle> 🍬 Exercice 4.4 : Auto-refresh de myMovies </InternalPageTitle>
-
-S'il vous reste du temps, il serait vraiment intéressant de faire en sorte que cycliquement, tous les 5 secondes par exemple, l'affichage de la liste de films se mette automatiquement à jour.
-
-Ainsi, si d'autres utilisateurs ajoutent un film, vous les verrez directement apparaître dans votre fenêtre.
-
-⚡ Attention que si le composant d'affichage des films est utilisé pour permettre de directement mettre à jour un film, celui-ci ne doit pas se réafficher si un utilisateur est en train de mettre à jour un film.
+Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`2.23 : api bcrypt & escape-html`**.
 
 #### 🤝 Tips
-Pensez à la fonction **`setInterval`**.
 
-Vous pouvez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 7 : auto-refresh**"".
+⚡ N'oubliez pas que vos méthodes de **`login`** et de **`register`** deviennent asynchrones, cela impose de bien chaîner les traitements dans le router, sinon vous risquez de renvoyer des objets vides en réponses aux requêtes.
 
-NB : Le code de vos applications se trouverait dans votre repository local et
-votre web repository (normalement appelé **web2**) dans le répertoire nommé
-**/exercises/module7/7.3/hmi**.
+# <InternalPageTitle> 🍬 Authentification & autorisation JWT à l'aide de cookies </InternalPageTitle>
 
-# <InternalPageTitle> 🍬 Exercice 4.5 : Gestion de la navigation lors de l'auto-refresh de myMovie </InternalPageTitle>
+## Pourquoi utiliser l'autorisation JWT à l'aide de cookies ?
 
-💭 Que peut-il se passer de désagréable si un utilisateur passe rapidement de la page listant les informations d'un film vers la page d'ajout d'un film ?
+Dans la partie sur l'[Authentification et autorisation d'accès aux opérations d'une RESTful API via JWT](../auths-api/), nous avons vu une façon de gérer des token JWT, sans gérer de cookies.
 
-Comme le render de tous les films et une action asynchrone, il est possible que celui-ci soit réalisé après que l'utilisateur ait quitté la page d'affichage des films. Cela peut être gênant, car si vous êtes sur le composant pour ajouter un film, vous ne souhaitez pas que votre formulaire d'ajout d'un film soit remplacé, de manière erronée, par la liste des films !
+Cela impose aux client de sauvegarder les token et de les envoyer dans un **`authorization header`** lorsqu'ils souhaitent accéder à une opération protégée.
 
-Nous vous proposons d'implémenter ces deux fonctions :
--	Stopper les futurs appels de **fetch**, les appels automatiques vers vos APIs (**setInterval** et **clearInterval**) quand il y a un clic sur un lien ;
--	Stopper les appels de **fetch** en cours vers vos APIs quand il y a un clic sur un lien. En effet, si votre API doit renvoyer beaucoup de données, notamment quand il y a des images à communiquer, il est possible que cela prenne plusieurs secondes avant que l'API vous réponde.
+Il est aussi possible d'intégrer les tokens au sein de cookies. Dans ce cas-là, les clients qui ont reçu un cookie de l'API renverront automatiquement ce cookie (mécanisme des browsers). Les tokens JWT voyageront automatiquement grâce au mécanisme de cookies.
+
+💭 Faut-il mieux intégrer les token JWT dans des cookies ou pas ?  
+Il est difficile de donner une réponse à cette question. Chaque approche a des avantages et des inconvénients. Ce qui devrait être le point d'attention, c'est la sécurité. Et dans les deux cas, on atteint un niveau de sécurité raisonnable.
+Pour ce cours, nous avons choisi la façon la plus moderne, en laissant au client le choix de sauvegarder les token dans le web storage (nous allons voir ça tout prochainement pour l'aspect frontend).  
+Notons que le cas le plus sûr est probablement d'avoir deux types de token, ce qui est d'une complexité qui dépasse les objectifs de ce cours. Néanmoins, pour votre info, les mécanismes d'authentification comme OAuth (authorization de MS Azure) & OpenID Connect (authentification de MS Azure) gère deux types de token :
+- un token à durée de vie courte qui sera enregistré en mémoire vive au niveau du client (access token) ou dans le localStorage.
+- un token à durée de vie longue qui sera enregistré par le client dans un cookie (refresh token, notamment utilisé par l'API pour créer un nouvel access token).
+
+## Un cookie, c'est quoi ?
+
+Un **cookie** représente des données qu'un serveur envoie à un browser.  
+Le browser peut sauver ce cookie. Pour chaque requête faite au serveur sur la même origine (que l'origine où le cookie a été reçu), le cookie sera automatiquement envoyé au serveur.
+
+Il fut un temps où les cookies étaient utilisés comme un mécanisme général de stockage de données côté client. 
+
+👍 Actuellement, si les cookies sont utilisés pour sauvegarder les données de session, il faut se protéger contre les attaques XSS et rendre les cookies inaccessibles au JavaScript : on utilise donc les cookies **`HttpOnly`** qui sont inaccessibles à la **`Document.cookie API`**. 
+
+Pour la suite, on va donc voir :
+- comment utiliser Express pour créer des cookies au niveau d'une API ;
+- comment rendre ces cookies inaccessibles aux attaques XSS en configurant **`HttpOnly`**.
+
+## Implémentation de l'authentification & l'autorisation JWT au sein de cookies
+
+### Intro
+
+Nous allons donc créer une nouvelle version de l'API sauvegardant le token d'un utilisateur au sein d'un cookie, ainsi que son username, sans que ces infos soient accessible au JS côté client.
+
+Pour ce faire nous allons utiliser la librairie [cookie-session](https://github.com/expressjs/cookie-session) qui permet d'enregistrer des données de session dans des cookies.
+
+Nous allons maintenant continuer le développement de l'API [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
+
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/cookies`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/api/safe`** (ou [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe)).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**`/web2/tutorials/pizzeria/api/cookies`**.
+
+Veuillez installer la librairie **`cookie-session`** au sein de votre nouveau projet **`cookies`** :
+```bash
+npm i cookie-session
+```
+
+### Utilisation de la fonction middleware **cookieSession**
+
+Veuillez mettre à jour **`/app.json`** pour mettre en place la gestion de cookies :
+
+```js highlighting="4,12-21"
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cookieSession = require('cookie-session');
+
+const usersRouter = require('./routes/users');
+const pizzaRouter = require('./routes/pizzas');
+const authsRouter = require('./routes/auths');
+
+const app = express();
+
+const expiryDateIn3Months = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 3);
+const cookieSecreteKey = 'YouWouldnot!not!like!mypizza';
+app.use(
+  cookieSession({
+    name: 'user',
+    keys: [cookieSecreteKey],  
+    httpOnly: true,
+    expires: expiryDateIn3Months,
+  }),
+);
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use('/users', usersRouter);
+app.use('/pizzas', pizzaRouter);
+app.use('/auths', authsRouter);
+
+module.exports = app;
+```
+
+Nous avons donc bien indiqué que le cookie est inaccessible au JS via : **`httpOnly: true`**.
+
+Nous avons fait en sorte que le cookie soit signé via la clé **`cookieSecreteKey`**.  
+Le mécanisme de signature correspond à ce qui a été vu dans le cadre des tokens JWT.  
+Ainsi, si un cookie venait être modifié par un utilisateur, lors de la vérification du cookie, cela sera automatiquement détecté par la fonction middleware **`cookieSession`** et la session ne sera pas créée.
+
+Pour info, la fonction middleware **`cookieSession`** va créer deux cookies :
+- un cookie portant comme nom la valeur de **`name`** ; il est encodé en base64. N'hésitez pas à vous amuser à décoder un cookie généré par **`cookieSession`** sur [base64decode](https://www.base64decode.org/).
+- un cookie portant comme nom la valeur de **`name`** + **`.sig`** : c'est la signature qui prévient contre le "tempering" (acte intentionnel mais non autorisé qui amène à la modification d'un système ou de données).
+
+### Lecture et ajout de données de session via `req.session`
+
+Pour créer des données de session, il suffit de simplement les ajouter à l'objet **`req.session`**.
+
+Dans le cadre de la RESTful API gérant les pizzas, cela est fait lors d'une opération de type **`register`** ou **`login`**.
+
+Veuillez mettre à jour le router **`/routes/auths.js`** :
+
+```js numbered highlighting="17,19,33,35,38-42,44-47"
+const express = require('express');
+const { register, login } = require('../models/users');
+
+const router = express.Router();
+
+/* Register a user */
+router.post('/register', async (req, res) => {
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+
+  if (!username || !password) return res.sendStatus(400); // 400 Bad Request
+
+  const authenticatedUser = await register(username, password);
+
+  if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
+
+  createCookieSessionData(req, authenticatedUser);
+
+  return res.json({ username: authenticatedUser.username });
+});
+
+/* Login a user */
+router.post('/login', async (req, res) => {
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+
+  if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
+
+  const authenticatedUser = await login(username, password);
+
+  if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
+
+  createCookieSessionData(req, authenticatedUser);
+
+  return res.json({ username: authenticatedUser.username });
+});
+
+/* Logout a user */
+router.get('/logout', (req, res) => {
+  req.session = null;
+  return res.sendStatus();
+});
+
+function createCookieSessionData(req, authenticatedUser) {
+  req.session.username = authenticatedUser.username;
+  req.session.token = authenticatedUser.token;
+}
+
+module.exports = router;
+```
+
+Dans le code ci-dessus, nous préparons les données de session qui seront écrites dans le cookie à l'aide de l'objet **`req.session`**.  
+Lorsque nous renvoyons du JSON aux clients, nous ne renvoyons plus le token, mais juste le username de l'utilisateur. L'application cliente, le browser, pourra utiliser cette info pour afficher le nom de l'utilisateur. Pour rappel, le browser n'a pas accès, via le JS, à l'info se trouvant dans le cookie.
+
+Quand nous gérons une session via des cookies, il n'est pas évident de bien clôre une session. Nous avons créé une nouvelle opération de type **`GET /auths/logout`** qui permet d'effacer les données de session d'un utilisateur.
+
+Il nous reste à changer le mécanisme d'autorisation.
+Les tokens ne seront plus reçu via un authorization header, mais via un cookie.  
+Nous allons donc mettre à jour le middleware **`/utils/authorize`** (1 seule ligne) :
+
+```js numbered highlighting="7"
+const jwt = require('jsonwebtoken');
+const { readOneUserFromUsername } = require('../models/users');
+
+const jwtSecret = 'ilovemypizza!';
+
+const authorize = (req, res, next) => {
+  const { token } = req.session;
+  if (!token) return res.sendStatus(401);
+
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    console.log('decoded', decoded);
+    const { username } = decoded;
+
+    const existingUser = readOneUserFromUsername(username);
+
+    if (!existingUser) return res.sendStatus(401);
+
+    req.user = existingUser; // request.user object is available in all other middleware functions
+    return next();
+  } catch (err) {
+    console.error('authorize: ', err);
+    return res.sendStatus(401);
+  }
+};
+
+const isAdmin = (req, res, next) => {
+  const { username } = req.user;
+
+  if (username !== 'admin') return res.sendStatus(403);
+  return next();
+};
+
+module.exports = { authorize, isAdmin };
+```
+
+# <InternalPageTitle> 🍬 Test via REST Client d'une RESTful API attendant des cookies </InternalPageTitle>
+
+Il nous reste à tester nos requêtes via REST Client.
+
+Il n'y a pas de nouvelles notions à apprendre pour utiliser REST Client avec des cookies : le comportement par défaut de REST Client, lorsqu'un cookie est renvoyé dans une réponse, est d'inclure ce cookie dans chaque requête vers la même origine.
+
+Dès lors, pour tester l'API, il suffit d'enlever tous les authorization headers et de rajouter une requête pour tester l'effacement d'une session.
+
+Veuillez tester les requêtes à l'aide de **`/REST Client/pizzas.http`** :
+
+```http
+######### NORMAL OPERATION  ###########
+
+### Read all pizzas
+GET http://localhost:3000/pizzas
+
+### Read all pizzas with File variable
+@baseUrl = http://localhost:3000
+GET {{baseUrl}}/pizzas
+
+### Read all pizzas sorted by title (ascending)
+GET {{baseUrl}}/pizzas/?order=+title
+
+### Read all pizzas sorted by title (descending)
+GET {{baseUrl}}/pizzas/?order=-title
+
+### Read pizza identified by 2
+GET {{baseUrl}}/pizzas/2
+
+### Create a pizza by using the admin account
+#### First login as the admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+
+#### Create a pizza with the admin token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### Delete pizza identified by 2 with the admin token
+DELETE {{baseUrl}}/pizzas/2
+
+### Update the pizza identified by 6 with the admin token
+PATCH {{baseUrl}}/pizzas/6
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2"
+}
 
 
-#### 🤝 Tips
-- Pensez aux fonctions **`setInterval`** et **`clearInterval`**.
-- Pour stopper un fetch en cours, vous pouvez utiliser un **AbortControlller**. Toute l'info est disponible sur la [Documentation MDN](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+######### ERROR OPERATION  ###########
 
-Vous pouvez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 7 : auto-refresh improved**"".
+### 1. Create a pizza without a token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
 
-NB : Le code de vos applications se trouverait dans votre repository local et
-votre web repository (normalement appelé **web2**) dans le répertoire nommé
-**/exercises/module7/7.4/hmi**.
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
 
-# <InternalPageTitle> 🍬 Exercice 4.6 : L'essentiel du cours en action </InternalPageTitle>
+### 2. Create a pizza without being the admin, use manager account
+#### 2.1 First login as the manager
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
 
-## Introduction
-Voici un exercice qui fait revoir les compétences essentiels de ce cours de JS. Il a été utilisé comme examen pour les étudiants de Vinci en deuxième année de bachelier en Informatique de Gestion en août 2022. 
+{
+    "username":"manager",
+    "password":"manager"
+}
 
-Normalement, cette exercice, découpé en trois questions, devrait se réaliser dans un délai de 3h.
+#### 2.2 Try to create a pizza with the manager token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
 
-Veuillez télécharger ce fichier
-<LinkFile name="examen_js.zip" target="_blank" download>examen_js.zip</LinkFile>.
-Cette archive contient un boilerplate pour chaque question et les ressources à utiliser pour cet examen.
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
 
-Dans un premier temps, veuillez désarchiver **examen_js.zip** localement sur votre machine.  
-⚡ Veuillez éviter de le faire sur un répertoire qui est partagé sur le cloud. En effet, il y a des milliers de fichiers associés aux **node_modules** lorsque vous lancerez l'installation des packages ! Ca serait une vraie horreur à synchroniser 😨 !
+### Read pizza which does not exists
+GET {{baseUrl}}/pizzas/100
 
-## Objectif
-Nous allons développer deux frontends et une API pour une agence de voyages.
+### Create a pizza which lacks a property
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
 
-## Question 1 : Créer une IHM interactive & moderne
-Nous souhaitons afficher des lieux de vacances proposés par l'agence de voyages. Il y a 5 lieux différents, chacun avec un id, un nom et une image.
+{
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
 
-Le boilerplate pour cette question se trouve dans **/question1**.
-Vous trouverez 5 images correspondant à chaque lieu dans le répertoire **/question1/src/img**, ainsi qu'un fichier contenant une liste des lieux avec leur id, leur nom et leur image dans **/question1/src/utils/places.js**.
+### Create a pizza without info for a property
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
 
-Vous devez créer deux pages :
--	La page d'accueil, accessible avec l'URI "/" ou avec un lien nommé "Home" dans la barre de navigation, doit afficher une liste de tous les noms de lieux de vacances.
--	La page de photos, accessible avec l'URI "/photos" ou avec un lien nommé "Photos" dans la barre de navigation, doit afficher un carrousel des lieux proposés.
-  - Lorsqu'on arrive sur la page initialement, la page doit afficher le 3ème lieu dans la liste, avec son image et son nom en dessous.
-  - La page doit également afficher deux boutons. Le premier permet d'afficher le lieu précédent dans la liste à la place de celui-ci. Et  l'autre permet d'afficher le lieu suivant. Ces boutons ne doivent pas être cliquables s'il n'y a plus de lieu suivant ou de lieu précédent dans la liste.
+{
+    "title":"",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
 
-Contraintes d'implémentation : 
--	Veuillez utiliser le fichier **/question1/src/utils/places.js** qui reprend des lieux de vacances. Vous devez mettre à jour ce fichier pour pouvoir l'utiliser dans votre code JS comme module.
--	Aucune autre page ne doit être disponible sur le site web.
--	Vous devez implémenter le carrousel vous-même, vous ne pouvez pas utiliser un carrousel de Bootstrap.
--	Utilisez les images importées statiquement dans la liste des lieux de vacances et changez la source de l'image affichée quand l'utilisateur clique sur un bouton.
+### Update for a pizza which does not exist
+PATCH {{baseUrl}}/pizzas/200
+Content-Type: application/json
 
-Voici un exemple de ce à quoi pourrait ressembler votre site web :
+{
+    "title":"Magic Green 2"
+}
 
-<ScrollableImage name="places.png" minWidth="800px" maxWidth="1599x" />
+### Update for a pizza which does not provide any info for a property
+PATCH {{baseUrl}}/pizzas/1
 
-<ScrollableImage name="carousel.png" minWidth="800px" maxWidth="1599x" />
+Content-Type: application/json
 
-## Question 2 : Créer un service web
-Nous souhaitons développer une RESTful API pour gérer les lieux de vacances proposés par l'agence, les utilisateurs du site, ainsi que les lieux favoris de ces utilisateurs.
+{
+    "title":"Magic Green 2",
+    "content":""
+}
+```
 
-Le boilerplate pour l'API de cette question se trouve dans **/question2**, c'est une copie du boilerplate du cours.
+**`/REST Client/auths.http`** a été mis à jour pour tester **`GET /auths/logout`** :
+```http
+### Logout any user
+GET {{baseUrl}}/auths/logout
+```
 
-Veuillez créer les opérations suivantes :
--	**Créer un nouveau lieu de vacances**. L'opération doit prendre en entrée le nom du lieu ainsi que sa description, et doit retourner l'ID du lieu créé au format JSON. L'opération doit renvoyer une erreur si le nom ou la description ne sont pas fournis.
--	**Créer un nouvel utilisateur**. L'opération doit prendre en entrée le nom de l'utilisateur ainsi que son adresse mail, et doit retourner l'ID de l'utilisateur créé au format JSON. L'opération doit renvoyer une erreur si le nom ou l'adresse mail ne sont pas fournis, ainsi que si un utilisateur existe déjà pour cette adresse mail.
--	**Ajouter un lieu à ses favoris**. L'opération doit prendre en entrée l'ID de l'utilisateur et l'ID du lieu qu'il souhaite ajouter en favori. L'opération doit renvoyer une erreur si aucun utilisateur ne correspond à l'ID d'utilisateur donné, si aucun lieu ne correspond à l'ID de lieu donné, ou si cet utilisateur a déjà ce lieu dans ses favoris.
+Pour ajouter une pizza, il suffit juste :
+1. De loguer l'admin.
+2. De créer une nouvelle pizza ; le cookie est automatiquement envoyé.
 
-Vous devez également créer dans le fichier **/question2/RESTClient/tests.http** au minimum une requête par opération que vous devez implémenter. Vous pouvez également créer plus de tests si vous le souhaitez.
+Admettons que vous souhaitez tester l'ajout d'une pizza sans envoyer de token :
+1. Lancez l'opération de logout (**`GET /auths/logout`**) ; le cookie renvoyé ne contient pas de données de session ;
+2. Tentez la création d'une pizza qui renverra un code **`401 Unauthorized`**.
 
-Contraintes d'implémentation :
--	L'API que vous devez créer doit correspondre aux principes d'une API RESTful.
--	Votre API ne peut pas proposer d'autres opérations que celles décrites ci-dessus.
--	Les ID que génèrent votre API doivent provenir du package **uuid**.
--	Les demandes qui sont créées doivent persister et donc survivre au redémarrage de votre application. Vous pouvez faire persister les demandes côté serveur de la manière que vous voulez, du moment que cela soit en JSON. N'hésitez pas à utiliser **/question2/utils/json.js**.
--	Aucune autorisation JWT est nécessaire.
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message :
+**`cookies api tutorial`**.
 
-## Question 3 : Créer une SPA intégrant une IHM et un web service
-Grâce à l'API que nous avez développé dans la question 2, l'agence de voyages a pu améliorer son API pour proposer un système de recommandations. Cependant, cette API utilise un système d'Intelligence Artificielle complexe et les opérations qui récupèrent les recommandations peuvent prendre un certain temps. 
-
-Le boilerplate pour cette question se trouve dans **/question3**.
-Vous devez consommer l'API décrite ci-dessous et disponible à l'adresse **https://places-exam-api.azurewebsites.net** pour afficher des recommandations de lieux de vacances. Cette API accepte les requêtes venant de toutes les origines et n'a pas de problème de CORS. Vous ne devez donc pas utiliser de proxy pour consommer cette API.
-
-| Méthode HTTP | URI | Opération | Format |
-|---|---|---|---|
-| **GET** | **/places**| Récupérer tous les lieux de vacances | Renvoie : `[ { id, name } ]` |
-| **GET** | **/recommended** | Récupérer le lieu de vacances le plus apprécié | Renvoie : `{ id, name }` |
-
-Sur la page d'accueil du site web, veuillez afficher le nom de tous les lieux de vacances, renvoyés par l'API avec l'URI "/places" (il n'est pas nécessaire d'afficher leur ID). 
-
-Toujours sur la page d'accueil, veuillez également afficher le nom du lieu de vacances le plus apprécié, renvoyé par l'API avec l'URI "**/recommended**". Comme cette opération peut prendre un certain temps, elle ne peut pas ralentir le chargement de la page. Le reste de la page doit être affiché avant de consommer cette API, et son résultat doit être rajouté sur la page quand l'opération est terminée.
-
-Aucune autre page ne doit être disponible sur le site web. Pensez donc à effacer le code du boilerplate qui est inutile.
+En cas de souci, vous pouvez utiliser le code du tutoriel [cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).

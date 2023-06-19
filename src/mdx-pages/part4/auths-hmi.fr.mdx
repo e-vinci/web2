@@ -6,16 +6,17 @@ description: "Authentification & utilisation d'opérations protégées par JWT a
 <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
     <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
-    <PathViewerItem selected> b) HMI & JWT </PathViewerItem>
+    <PathViewerItem selected> c) HMI & JWT </PathViewerItem>
 </PathViewer>
 
-# b) Authentification & utilisation d'opérations protégées par JWT au sein d'une IHM
+# c) Authentification & utilisation d'opérations protégées par JWT au sein d'une IHM
 
 <InternalPageMenu>
   <InternalPageMenuItem> Authentification d'un utilisateur via une IHM & JWT </InternalPageMenuItem>
   <InternalPageMenuItem> Autorisation de l'appel à une opération protégée </InternalPageMenuItem>
-  <InternalPageMenuItem> Problèmes de sécurité </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 4.2 : Authentification & autorisation au sein de myMovies </InternalPageMenuItem> 
+  <InternalPageMenuItem> Mise en place du localStorage pour sauvegarder les données de session  </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 2.24 : Authentification et appel d'opérations protégées par JWT </InternalPageMenuItem> 
+  <InternalPageMenuItem> 🍬 Persistance de données de session via des cookies </InternalPageMenuItem> 
 </InternalPageMenu>
 
 # <InternalPageTitle> Authentification d'un utilisateur via une IHM & JWT </InternalPageTitle>
@@ -33,22 +34,23 @@ Dans le cadre du site de la pizzeria, nous savons que l'API met à disposition c
 
 | URI | Méthode HTTP | Opération |
 |---|---|---|
-| **auths/login** | POST | Vérifier les credentials d'une ressource de type "users" et renvoyer le username et un token JWT si les credentials sont OK |
-| **auths/register** | POST | Créer une ressource de type "users" et renvoyer le username et un token JWT |
+| **`auths/login`** | **POST** | Vérifier les credentials d'une ressource de type "users" et renvoyer le username et un token JWT si les credentials sont OK |
+| **`auths/register`** | **POST** | Créer une ressource de type "users" et renvoyer le username et un token JWT |
 
 <br/>
 
-Veuillez démarrer la dernière version de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
-[auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
+Pour ce nouveau tutoriel, nous allons continuer le développement de l'IHM [async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await) (**`/web2/tutorials/pizzeria/hmi/async-await`**) pour que le formulaire de register et de login fassent appelle à l'API et sauve temporairement le token renvoyé.
 
-Nous allons maintenant continuer le développement de l'IHM [async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await) pour que le formulaire de register et de login fassent appelle à l'API et sauve temporairement le token renvoyé.
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/jwt-fetch`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/async-await`** (ou [async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch)).
 
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/jwt-fetch** sur base d'un copié collé de **/web2/tutorials/pizzeria/hmi/async-await** (ou [async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch)).
+Veuillez démarrer la version **`/web2/tutorials/pizzeria/api/safe`** de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
+[api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/hmi/jwt-fetch**.
+**`/web2/tutorials/pizzeria/hmi/jwt-fetch`**.
 
-Veuillez mettre à jour le code de la **RegisterPage** afin de faire appel à la méthode **POST /auths/register** et, si tout est OK, renvoyer l'utilisateur vers la **HomePage** via la fonction **Navigate** :
+Veuillez mettre à jour le code de la **`RegisterPage`** afin de faire appel à la méthode **`POST /auths/register`** et, si tout est OK, rediriger l'utilisateur vers la **`HomePage`** via la fonction **`Navigate`** :
+
 ```js numbered highlighting="2,34-63"
 import { clearPage, renderPageTitle } from '../../utils/render';
 import Navigate from '../Router/Navigate';
@@ -120,17 +122,18 @@ export default RegisterPage;
 
 Veuillez exécuter le frontend et vous assurer que l'utilisateur que vous tentez de créer est bien créé par votre API. Si tout fonctionne, vous aurez une confirmation dans la console de votre browser.
 
-Bien, nous souhaitons pour l'instant sauvegarder **authenticatedUser** de manière temporaire, car cet objet contient comme info le username et le token de l'utilisateur.
+Bien, nous souhaitons pour l'instant sauvegarder **`authenticatedUser`** de manière temporaire, car cet objet contient comme info le username et le token de l'utilisateur.
 
 💭 Comment faire pour que cet objet soit disponible dans d'autres modules ?
-Cette question nous permet d'explorer un propriété importante des **export** d'objets via ECMAScript : ce sont des objets immuables, c'est-à-dire dont vous ne pouvez pas directement changer leurs valeurs. Comment faire alors pour offrir **authenticatedUser** ?  
+Cette question nous permet d'explorer un propriété importante des **`export`** d'objets via ECMAScript : ce sont des objets immuables, c'est-à-dire dont vous ne pouvez pas directement changer leurs valeurs. Comment faire alors pour offrir **`authenticatedUser`** ?  
 Nous allons offrir quatre nouvelles fonctions : 
-- une fonction qui renverra l'état d'une variable **authenticatedUser** ;
-- une fonction qui permettra de modifier la variable **authenticatedUser** ;
+- une fonction qui renverra l'état de la variable **`authenticatedUser`** ;
+- une fonction qui permettra de modifier la variable **`authenticatedUser`** ;
 - une fonction qui indiquera si l'utilisateur est authentifié ou pas ;
 - une fonction qui permettra de faire un reset de l'utilisateur en cours (on utilisera cette fonction lors d'un logout).
 
-Veuillez créer le fichier **/src/utils/auths.js** et y ajouter le code suivant :
+Veuillez créer le fichier **`/src/utils/auths.js`** et y ajouter le code suivant :
+
 ```js numbered
 let currentUser;
 
@@ -150,7 +153,8 @@ const clearAuthenticatedUser = () => {
 export { getAuthenticatedUser, setAuthenticatedUser, isAuthenticated, clearAuthenticatedUser };
 ```
 
-Veuillez mettre à jour le code de la **RegisterPage** afin de sauver en mémoire vive l'utilisateur authentifié. Nous allons aussi préparer la suite afin d'avoir une Navbar qui s'adaptera lorsqu'un utilisateur est authentifié, c'est pourquoi nous allons appeler le composant **Navbar** :
+Veuillez mettre à jour le code de la **`RegisterPage`** afin de sauver en mémoire vive l'utilisateur authentifié. Nous allons aussi préparer la suite afin d'avoir une **`Navbar`** qui s'adaptera lorsqu'un utilisateur est authentifié, c'est pourquoi nous allons appeler le composant **`Navbar`** :
+
 ```js numbered highlighting="1,3,66,68"
 import { setAuthenticatedUser } from '../../utils/auths';
 import { clearPage, renderPageTitle } from '../../utils/render';
@@ -225,7 +229,8 @@ async function onRegister(e) {
 export default RegisterPage;
 ```
 
-Pour la **LoginPage**, les modifications à faire sont les mêmes :
+Pour la **`LoginPage`**, les modifications à faire sont les mêmes :
+
 ```js numbered highlighting="1,3-4,36-69"
 import { setAuthenticatedUser } from '../../utils/auths';
 import { clearPage, renderPageTitle } from '../../utils/render';
@@ -300,11 +305,11 @@ async function onLogin(e) {
 export default LoginPage;
 ```
 
-Nous souhaitons maintenant faire en sorte que la Navbar affiche des éléments différents si l'utilisateur est authentifié au pas :
-- s'il est authentifié : on affiche **Home**, **Login**, **Register** et le **username** de l'utilisateur connecté.
-- s'il est anonyme : on affiche **Home**, **Add a pizza**, **Logout**.
+Nous souhaitons maintenant faire en sorte que la **`Navbar`** affiche des éléments différents si l'utilisateur est authentifié ou pas :
+- s'il est authentifié : on affiche **`Home`**, **`Login`**, **`Register`** et le **`username`** de l'utilisateur connecté.
+- s'il est anonyme : on affiche **`Home`**, **`Add a pizza`**, **`Logout`**.
 
-Nous allons mettre à jour la **Navbar** pour s'adapter à l'authentification d'un utilisateur :
+Nous allons mettre à jour la **`Navbar`** pour s'adapter à l'authentification d'un utilisateur :
 ```js
 // eslint-disable-next-line no-unused-vars
 import { Navbar as BootstrapNavbar } from 'bootstrap';
@@ -393,10 +398,12 @@ export default Navbar;
 ```
 
 Ce code est quasi entièrement neuf. On a rajouté l'élément qui permettra de réaliser le logout d'un utilisateur. Avant d'aller plus loin, veuillez tester l'application.  
-Loguez-vous avec l'utilisateur **admin** (et le password **admin**) et vérifier que vous êtes bien redirigé vers la HomePage une fois authentifié, que la Navbar contient bien les éléments attendus, dont le **username**.  
-Veuillez maintenant tester un clic sur l'élément **Add a pizza** de la Navbar. Il ne se passe rien...  
+Loguez-vous avec l'utilisateur **`admin`** (et le password **`admin`**) et vérifiez que vous êtes bien redirigé vers la **`HomePage`** une fois authentifié, que la **`Navbar`** contient bien les éléments attendus, dont le **`username`**.  
+Veuillez maintenant tester un clic sur l'élément **`Add a pizza`** de la **`Navbar`**. Il ne se passe rien...  
+
 💭 Pourquoi les clics ne sont plus pris en compte ?  
-En fait, regardons le code de notre **Router**, pour la gestion des clics sur la **Navbar** :
+En fait, regardons le code de notre **`Router`**, pour la gestion des clics sur la **`Navbar`** :
+
 ```js
 function onNavBarClick() {
   const navItems = document.querySelectorAll('.nav-link');
@@ -415,13 +422,14 @@ function onNavBarClick() {
 }
 ```
 
-En fait, tant dans **LoginPage** que dans **RegisterPage**, nous faisons appel à la fonction **`Navbar`** qui fait un "rerender" (réaffichage) de la Navbar. Ainsi, tous les éléments de la barre de navigation sont "rerender", et donc comme le **Router** n'est pas réappelé, la fonction **`onNavBarClick`** n'est pas réexécutée. Ainsi, même si les nouveaux éléments de la Navbar ont la classe CSS **`nav-link`**, leurs écouteurs d'événements de type click n'existent pas.
+Tant dans **`LoginPage`** que dans **`RegisterPage`**, nous faisons appel à la fonction **`Navbar`** qui fait un "rerender" (réaffichage) de la **`Navbar`**. Ainsi, tous les éléments de la barre de navigation sont "rerender", et donc comme le **`Router`** n'est pas réappelé, la fonction **`onNavBarClick`** n'est pas réexécutée. Ainsi, même si les nouveaux éléments de la **`Navbar`** ont la classe CSS **`nav-link`**, leurs écouteurs d'événements de type **`click`** n'existent plus.
 
-💭 Comment corriger cela ?
-On pourrait se dire qu'il suffit de faire appel à la fonction **`onNavBarClick`** dans la **Navbar**. Cette solution ne fonctionnerait pas car nous aurions des dépendances cycliques, la Navbar devrait faire appel aux routes, qui elles font appel aux pages, les pages faisant appel à la Navbar...  
-Dès lors, le mieux serait de mettre un écouteur d'événements au niveau du wrapper de la Navbar.  
+💭 Comment corriger cela ?  
+On pourrait se dire qu'il suffit de faire appel à la fonction **`onNavBarClick`** dans la **`Navbar`**. Cette solution ne fonctionnerait pas car nous aurions des dépendances cycliques, la **`Navbar`** devrait faire appel aux routes, qui elles font appel aux pages, les pages faisant appel à la **`Navbar`**...  
+Dès lors, le mieux serait de mettre un écouteur d'événements au niveau du wrapper de la **`Navbar`**.  
 Comme le wrapper n'est jamais réinitialisé, tout sera en ordre.  
-Veuillez donc mettre à jour la fonction **`onNavBarClick`** de **/src/Components/Router/Router.js** :
+Veuillez donc mettre à jour la fonction **`onNavBarClick`** de **`/src/Components/Router/Router.js`** :
+
 ```js highlighting="2,4,6-8"
 function onNavBarClick() {
   const navbarWrapper = document.querySelector('#navbarWrapper');
@@ -441,14 +449,14 @@ function onNavBarClick() {
 }
 ```
 
-Veuillez noter que le **navbarWrapper** est initialisé au sein du composant **Header**.  
-Dans la nouvelle version du code du **Router**, le gestionnaire de clic est ajouté au niveau de ce wrapper. Grâce à l'event objet **`e`**, on accède à l'élément sur lequel on a cliqué grâce à la propriété **`target`**. On retrouve donc l'élément de la navbar sur lequel on a cliqué très facilement. 
+Veuillez noter que le **`navbarWrapper`** est initialisé au sein du composant **`Header`**.  
+Dans la nouvelle version du code du **`Router`**, le gestionnaire de clics est ajouté au niveau de ce wrapper. Grâce à l'event objet **`e`**, on accède à l'élément sur lequel on a cliqué grâce à la propriété **`target`**. On retrouve donc l'élément de la navbar sur lequel on a cliqué très facilement. 
 
 Veuillez tester votre IHM et vérifier qu'une fois logué, vous puissiez bien voyager entre les pages.
 
-Il reste maintenant à créer un composant permettant de faire un logout. On souhaite que ce composant de logout supprime l'utilisateur authentifié, réaffiche la Navbar pour un utilisateur anonyme et redirige l'utilisateur vers la page de login.
+Il reste maintenant à créer un composant permettant de faire un logout. On souhaite que ce composant de logout supprime l'utilisateur authentifié, réaffiche la **`Navbar`** pour un utilisateur anonyme et redirige l'utilisateur vers la page de login.
 
-Pour ce faire, veuillez créer le dossier et le fichier **/src/Components/Logout/Logout.js** et y ajouter ce code :
+Pour ce faire, veuillez créer le dossier et le fichier **`/src/Components/Logout/Logout.js`** et y ajouter ce code :
 ```js
 import { clearAuthenticatedUser } from '../../utils/auths';
 import Navbar from '../Navbar/Navbar';
@@ -463,8 +471,9 @@ const Logout = () => {
 export default Logout;
 ```
 
-Attention, même si nous avons mis à jour la **Navbar** et créé le composant **Logout**, le boilerplate du frontend impose de rajouter une route au sein du **Router** pour qu'un clic sur l'élément **Logout** de la **Navbar** amène à appeler le composant **Logout**.
-Veuillez donc mettre à jour **`routes`** au sein de **/src/Components/Router/Router.js** :
+Attention, même si nous avons mis à jour la **`Navbar`** et créé le composant **`Logout`**, le boilerplate du frontend impose de rajouter une route au sein du **`Router`** pour qu'un clic sur l'élément **`Logout`** de la **`Navbar`** amène à appeler le composant **`Logout`**.
+Veuillez donc mettre à jour **`routes`** au sein de **`/src/Components/Router/Router.js`** :
+
 ```js highlighting="1,12"
 import Logout from '../Logout/Logout';
 import AddPizzaPage from '../Pages/AddPizzaPage';
@@ -488,13 +497,16 @@ Il nous reste à faire en sorte que l'on puisse autoriser l'opération de créat
 
 Nous allons maintenant voir comment, à partir d'une IHM, nous pouvons utiliser un token pour accéder à une opération d'une RESTful API.
 
-Veuillez vous assurer que la dernière version de la RESTful API de la pizzeria est bien démarrée. En cas de souci, vous pouvez utiliser ce code-ci :
-[auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
+Veuillez vous assurer que la version **`/web2/tutorials/pizzeria/api/safe`** de la RESTful API de la pizzeria est bien démarrée. En cas de souci, vous pouvez utiliser ce code-ci :
+[api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-Veuillez vous connecter à l'IHM **jwt-fetch** à l'aide du compte **manager** et tentez d'ajouter une pizza. Cela ne devrait pas fonctionner. Veuillez regarder dans la console : il devrait y avoir une erreur qui s'affiche avec le "status code" **401 : Unauthorized**.  
+Veuillez vous connecter à l'IHM du tutoriel en cours (**`/web2/tutorials/pizzeria/hmi/jwt-fetch`**) à l'aide du compte **`manager`** et tentez d'ajouter une pizza. Cela ne devrait pas fonctionner.
+
+Veuillez regarder dans la console : il devrait y avoir une erreur qui s'affiche avec le "status code" **`401 : Unauthorized`**.  
 En effet, l'API attend un token pour autoriser l'opération de création d'une pizza.
 
-Nous allons donc mettre à jour **/src/Components/Pages/AddPizzaPage.js** pour ajouter le token de l'utilisateur authentifié au sein du header de la requête (il n'y a que trois lignes à rajouter) :
+Nous allons donc mettre à jour **`/src/Components/Pages/AddPizzaPage.js`** pour ajouter le token de l'utilisateur authentifié au sein du header de la requête (il n'y a que trois lignes à rajouter) :
+
 ```js numbered highlighting="1,44,54"
 import { getAuthenticatedUser } from '../../utils/auths';
 import { clearPage, renderPageTitle } from '../../utils/render';
@@ -568,62 +580,52 @@ export default AddPizzaPage;
 
 ```
 
-Veuillez vous connecter à l'IHM à l'aide du compte **manager** et tentez d'ajouter une pizza. Cela ne devrait toujours pas fonctionner. Veuillez regarder dans la console : il devrait y avoir une erreur qui s'affiche avec le "status code" **403 : Forbidden**.  
-En effet, l'API attend un token pour autoriser l'opération de création d'une pizza, mais seulement **admin** a le privilège d'ajouter une pizza au menu !
+Veuillez vous connecter à l'IHM à l'aide du compte **`manager`** et tenter d'ajouter une pizza. Cela ne devrait toujours pas fonctionner. Veuillez regarder dans la console : il devrait y avoir une erreur qui s'affiche avec le "status code" **`403 : Forbidden`**.  
+En effet, l'API attend un token pour autoriser l'opération de création d'une pizza, mais seulement **`admin`** a le privilège d'ajouter une pizza au menu !
 
-Déconnectez-vous (logout), reconnectez-vous à l'aide du compte **admin**, et ajoutez une pizza.
+Déconnectez-vous (logout), reconnectez-vous à l'aide du compte **`admin`**, et ajoutez une pizza.
 Voila ! Le site devrait être entièrement fonctionnel !
 
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
-"**jwt-fetch**".
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`jwt-fetch`**.
 
 En cas de souci, vous pouvez utiliser le code du tutoriel :
 
 - pour le frontend : [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
-- pour l'API : [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
+- pour l'API : [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-💭 Est-ce que c'est "safe" que notre IHM affiche le menu "Add a pizza" pour un utilisateur qui n'est pas l'admin ?  
-En fait oui, c'est "safe", vous l'avez testé. L'API ne doit jamais faire confiance aux applications clientes pour appliquer la sécurité. Ainsi, même si le frontend autorise l'accès à des opérations qui ne devraient pas être permises, au regard des autorisations appliquées par l'API, ça n'a pas d'importance point de vue sécurité.  
-De la même façon, c'est pour ça qu'une API doit aussi toujours valider les paramètres qu'elle reçoit. Elle ne peut pas faire confiance aux applications clientes, comme par exemple à une application web tournant dans un browser, pour valider tous les champs d'un formulaire avant de faire la requête.  
-La raison est simple, l'API est développée indépendamment des applications clientes, elle ne peut pas supposer que les requêtes seront toujours bien construites.
+💭 Est-ce que c'est "safe" que notre IHM affiche le menu "Add a pizza" pour un utilisateur qui n'est pas l'admin ?    
+*En fait oui, c'est "safe", vous l'avez testé. L'API ne doit jamais faire confiance aux applications clientes pour appliquer la sécurité. Ainsi, même si le frontend autorise l'accès à des opérations qui ne devraient pas être permises, au regard des autorisations appliquées par l'API, ça n'a pas d'importance point de vue sécurité.  
+De la même façon, c'est pour ça qu'une API doit aussi toujours valider les paramètres qu'elle reçoit. Elle ne peut pas faire confiance aux applications clientes, comme par exemple à une application web tournant dans un browser, pour valider tous les champs d'un formulaire.    
+La raison est simple, l'API est développée indépendamment des applications clientes, elle ne peut pas supposer que les requêtes seront toujours bien construites.*
 
 💭 OK, tout est "safe" si l'API fait toutes les vérifications nécessaires. Néanmoins, n'y a-t-il pas des règles de bonnes pratiques au niveau des IHM, pour ne pas permettre de faire n'importe quelles requêtes vers des API ?  
-Et bien oui, au niveau des IHM, pour des questions d'**ergonomie**, d'expérience utilisateur, on va faire en sorte :
-- de ne pas offrir des opérations qui ne seront pas autorisées. Par exemple, dans le cadre de ce tutoriel sur un site permettant de gérer une pizzeria, si l'utilisateur n'est pas **admin**, alors il ne faut pas frustrer les utilisateurs en leur faisant croire qu'ils ont accès à l'opération de créer une pizza ! Imaginez-vous, vous créer une nouvelle pizza de 32 ingrédients, et lors de la soumission, vous recevez un message comme quoi vous n'êtes pas l'admin du site et que vous n'avez donc pas le droit de créer une pizza 😲!
-- de ne pas demander du travail à une API quand l'IHM peut détecter que ce n'est pas utile. 
-Ainsi, quand une IHM offre des formulaires, qui amèneront à des requêtes vers des API, on évitera d'autoriser la soumission des données tant que les champs n'ont pas été validés. Tout ce que l'IHM peut valider côté client, elle doit le faire. Le feedback sera plus rapide pour l'utilisateur, et les ressources de l'API seront économisées (pas d'appel inutile).
+*Et bien oui, au niveau des IHM, pour des questions d'**ergonomie**, d'expérience utilisateur, on va faire en sorte :*
+- *de ne pas offrir des opérations qui ne seront pas autorisées. Par exemple, dans le cadre de ce tutoriel sur un site permettant de gérer une pizzeria, il ne faut pas "frustrer" les utilisateurs en leur faisant croire qu'ils ont accès à l'opération de créer une pizza ! Imaginez-vous, vous créez une nouvelle pizza de 32 ingrédients, et lors de la soumission, vous recevez un message comme quoi vous n'êtes pas l'admin du site et que vous n'avez donc pas le droit de créer une pizza 😲!*
+- *de ne pas demander du travail à une API quand l'IHM peut détecter que ce n'est pas utile. 
+Ainsi, quand une IHM offre des formulaires, qui amèneront à des requêtes vers des API, on évitera d'autoriser la soumission des données tant que les champs n'ont pas été validés. Tout ce que l'IHM peut valider côté client, elle doit le faire. Le feedback sera plus rapide pour l'utilisateur, et les ressources de l'API seront économisées (pas d'appel inutile).*
 
-N'hésitez donc pas à mettre à jour ce tutoriel pour faire en sorte de n'afficher "Add a pizza" que si l'utilisateur est **admin**.
+N'hésitez donc pas à mettre à jour ce tutoriel pour faire en sorte de n'afficher "Add a pizza" que si l'utilisateur est **`admin`**.
 
-💭 Ca n'est pas un peu "cheap" que seul l'utilisateur **admin** puisse avoir le privilège d'administrateur du site ?  
-Hé bien oui, c'est "cheap". Généralement, dans le cadre d'applications plus robustes, nous allons ajouter un ou plusieurs rôles aux utilisateurs. Par exemple, dans le cadre d'applications où les rôles sont simples, qu'il n'y a jamais qu'un seul rôle associé à un utilisateur, il suffirait d'ajouter au niveau de l'API la propriété **role** aux utilisateurs. Par exemple, la majorité des utilisateurs pourrait avoir un rôle dont la valeur serait **default**, et une minorité d'utilisateur auraient le rôle d'**admin**...
+💭 Ca n'est pas un peu "cheap" que seul l'utilisateur **`admin`** puisse avoir le privilège d'administrateur du site ?  
+*Hé bien oui, c'est "cheap". Généralement, dans le cadre d'applications plus robustes, nous allons ajouter un ou plusieurs rôle(s) aux utilisateurs. Par exemple, dans le cadre d'applications où les rôles sont simples, qu'il n'y a jamais qu'un seul rôle associé à un utilisateur, il suffirait d'ajouter au niveau de l'API la propriété **`role`** aux utilisateurs. La majorité des utilisateurs pourrait avoir un rôle dont la valeur serait **`default`**, et une minorité d'utilisateur auraient le rôle d'**`admin`**...*
 
 On n'affiche actuellement **pas de message d'erreur** à l'utilisateur lorsque la réponse d'une API renvoie une erreur. Pour améliorer l'expérience de l'utilisateur, ce serait une amélioration à faire.
 
-Finalement, lorsqu'on ferme le browser et revient sur l'application par la suite, on n'est plus authentifié. Nous allons donc prochainement voir comment nous pourrions sauvegarder des données de session côté-client, dans le browser.
-
-# <InternalPageTitle> Problèmes de sécurité  </InternalPageTitle>
-
-Il y a un problème de sécurité majeur actuellement. Nous pourrions être victime d'attaques de type XSS : des injections de JS malicieux sont possibles 😨 !  
-De plus, si quelqu'un a accès au fichier **/data/users.json** présent sur l'API, il a accès à tous les passwords des utilisateurs en clair 😨 !
-
-Nous allons réaliser un exercice avant de traiter des problèmes de sécurité.
+Finalement, lorsqu'on ferme le browser et revient sur l'application par la suite, on n'est plus authentifié. Nous allons donc prochainement voir comment nous pourrions sauvegarder des données de session (le token et le username) côté-client, dans le browser.
 
 # <InternalPageTitle> Mise en place du localStorage pour sauvegarder les données de session </InternalPageTitle>
 
-Dans le cadre du site nous permettant de gérer une pizzeria, nous allons faire en sorte de sauvegarder les données de session au sein du **localStorage**, et plus juste en mémoire vive.
+Dans le cadre du site nous permettant de gérer une pizzeria, nous allons faire en sorte de sauvegarder les données de session au sein du **`localStorage`**, et plus juste en mémoire vive. Nous allons appliquer ce que nous avons appris dans la partie sur [Les sessions côté client](../../part2/sessions/).
 
-Veuillez démarrer la dernière version de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
-[safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
+Veuillez démarrer la version **`/web2/tutorials/pizzeria/api/safe`** de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
+[api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-Nous allons maintenant finaliser le développement de l'IHM [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
-
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/web-storage** sur base d'un copier-coller de **/web2/tutorials/pizzeria/hmi/jwt-fetch** (ou [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)).
+Pour ce nouveau tutoriel, au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/web-storage`** sur base d'un copier/coller de **`/web2/tutorials/pizzeria/hmi/jwt-fetch`** (ou [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/hmi/web-storage**.
+**`/web2/tutorials/pizzeria/hmi/web-storage`**.
 
-Afin de sauvegarder les données de session, c'est à dire l'objet **authenticatedUser** contenant un token et un username, nous devons juste mettre à jour le fichier **/usr/utils/auths.js** :
+Afin de sauvegarder les données de session, c'est à dire l'objet **`authenticatedUser`** contenant un token et un username, nous devons juste mettre à jour le fichier **`/usr/utils/auths.js`** :
 
 ```js numbered highlighting="1,7,10,15-16,24"
 const STORE_NAME = 'user';
@@ -658,478 +660,52 @@ export { getAuthenticatedUser, setAuthenticatedUser, isAuthenticated, clearAuthe
 ```
 
 Au sein de **`getAuthenticatedUser`** : 
-- on fait un premier check afin d'éviter d'aller lire dans le **localStorage** si la variable **currentUser** est déjà initialisée.
-- on parse l'utilisateur authentifié et sérialisé qui est retrouvé dans le **localStorage** via la clé **STORE_NAME**.
+- on fait un premier check afin d'éviter d'aller lire dans le **`localStorage`** si la variable **`currentUser`** est déjà initialisée.
+- on parse l'utilisateur authentifié et sérialisé qui est retrouvé dans le **`localStorage`** via la clé **`STORE_NAME`**.
 
-Au sein de **`setAuthenticatedUser`**, on sérialise **authenticatedUser** avant d'ajouter une paire clé / valeur au **localStorage**.  Ces données restent dans le browser, peu importe le nombre de fois que l'on ferme son browser. 
+Au sein de **`setAuthenticatedUser`**, on sérialise **`authenticatedUser`** avant d'ajouter une paire clé/valeur au **`localStorage`**.  Ces données restent dans le browser, peu importe le nombre de fois que l'on redémarre son browser. 
 
-Dans **`clearAuthenticatedUser`**, on efface la clé / valeur associée à l'utilisateur authentifié (via la clé **STORE_NAME**).
+Dans **`clearAuthenticatedUser`**, on efface la paire clé/valeur associée à l'utilisateur authentifié (via la clé **`STORE_NAME`**).
 
 Veuillez bien mettre à jour votre code et tester l'application.  
-Connectez-vous à l'aide de l'utilisateur **manager**.  Veuillez fermer votre browser.  
-Veuillez le réouvrir.  
-Voilà, vous devriez automatiquement être authentifié, veuillez observer l'état de la Navbar pour vous en assurer.
+Connectez-vous à l'aide de l'utilisateur **`manager`**.  Veuillez fermer votre browser.  
+Veuillez le réouvrir.   
+Vous devriez automatiquement être authentifié : veuillez observer l'état de la **`Navbar`** pour vous en assurer.
 
-💭 Où puis-je observer l'état des données sauvegardées dans le web storage de mon browser ?  
-Tout en ayant la fenêtre de votre application ouverte, via Chrome, allez dans vos outils de développeurs : **F12**.  
-Puis, dans l'onglet **Application**, vous trouverez dans **Storage** : **Local Storage** et **Session Storage**.  
-Ici, nous utilisons le **Local Storage**, donc cliquez dessus, vous verrez apparaître `http://localhost:8080`. Cliquez sur cette URL, et vous verrez vos données de session, quelque chose du style `{"username":"manager","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbmFnZXIiLCJpYXQiOjE2NjE3NjM3MDksImV4cCI6MTc0ODE2MzcwOX0.jAxH0WsOgiK5vf4QduDZ8JgTR-SKC42G9aPieV_OTOo"}`.  
-N'hésitez pas à faire un clic droit sur l'URL `http://localhost:8080`, puis **Clear**.  
-Si vous faites ensuite un refresh de votre page, comme votre session aura été effacée, votre utilisateur ne sera plus connecté. Votre Navbar afficher le menu pour un utilisateur anonyme !  
+💭 Où puis-je observer l'état des données sauvegardées dans le web storage de mon browser ?   
+Tout en ayant la fenêtre de votre application ouverte, via Chrome, allez dans vos outils de développeurs : **`F12`**.  
+Puis, dans l'onglet **`Application`**, vous trouverez dans **`Storage`** : **`Local Storage`** et **`Session Storage`**.  
+Ici, nous utilisons le **`Local Storage`**, donc cliquez dessus, vous verrez apparaître **`http://localhost:8080`**. Cliquez sur cette URL, et vous verrez vos données de session, quelque chose du style **`{"username":"manager","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbmFnZXIiLCJpYXQiOjE2NjE3NjM3MDksImV4cCI6MTc0ODE2MzcwOX0.jAxH0WsOgiK5vf4QduDZ8JgTR-SKC42G9aPieV_OTOo"}`**.  
+N'hésitez pas à faire un clic droit sur l'URL **`http://localhost:8080`**, puis **`Clear`**.  
+Si vous faites ensuite un refresh de votre page, comme votre session aura été effacée, votre utilisateur ne sera plus connecté. Votre **`Navbar`** affichera le menu pour un utilisateur anonyme !  
 Faites ce test, c'est intéressant 😉.
 
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
-"**web storage**".
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message :
+**`web storage tutorial`**.
 
 En cas de souci, vous pouvez utiliser le code du tutoriel :
 
 - pour le frontend : [web-storage](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage).
 - pour l'API : [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-# <InternalPageTitle> 🍬 Persistance de données de session via des cookies </InternalPageTitle>
+# <InternalPageTitle> Projet 2.24 : Authentification et appel d'opérations protégées par JWT </InternalPageTitle>
 
-Un cookie représente des données qu'un serveur envoie à un browser.  
-Le browser peut sauver ce cookie. Pour chaque requête faite au serveur sur la même origine (que l'origine où le cookie a été reçu), le cookie sera automatiquement envoyé au serveur.
+## Mise en place du projet
 
-Il fut un temps où les cookies étaient utilisés comme un mécanisme général de stockage de données côté client. 
+Vous devez mettre à jour votre frontend afin qu'il consomme les nouvelles opérations de votre API qui ont été développées pour [Projet 2.22](../auths-api/#project_2_22_authentification_autorisation_doperations).
 
-👍 Actuellement, si les cookies sont utilisés pour sauvegarder les données de session, il faut se protéger contre les attaques XSS et rendre les cookies inaccessibles au JavaScript. On utilise donc les cookies **HttpOnly** qui sont inaccessibles à la **Document.cookie API**. 
+Le code de votre frontend doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.24/hmi`** sur base d'un copier/coller du code de [Projet 2.21](../../part3/#projet_2_21_deploiement_de_votre_frontend_de_votre_backend).
 
-Du coup, si des données de session doivent être utilisée pour l'IHM, on ne peut pas se passer du **web storage** !
+## Authentification et appel d'opérations nécessitant une autorisation JWT
 
-Pour la suite, on va donc voir :
-- comment utiliser Express pour créer des cookies au niveau d'une API ;
-- comment rendre ces cookies inaccessibles aux attaques XSS en configurant **`HttpOnly`** ;
-- que, comme les cookies sont envoyés automatiquement au serveur, il faudra mettre à jour notre IHM pour ne plus envoyer le token via un authorization header. L'API va charger le token dans le cookie, et comme le cookie sera automatiquement envoyé au serveur via le browser, le code de l'IHM et les fetch seront plus simples. 
-- l'embêtant dans ce que nous allons faire, c'est que comme nous allons sécuriser le cookie, nous n'aurons pas accès au **username** via le cookie... Nous pourrions :
-    - soit toujours utiliser le web storage pour sauvegarder le **username**, 
-    - soit accepter de ne plus afficher le **username** et avoir aucun nouveau code à ajouter au niveau du frontend (juste enlever les authorization header inutiles) ;
-    - soit mettre à jour l'API pour offrir une route de type **GET /users/me** qui renvoie les données d'un utilisateur à la demande d'une requête cliente. Dans ce cas-là, à chaque fois que l'utilisateur ouvre le browser, la première chose à faire serait d'appeler cette opération de l'API.
+Même si votre projet ne nécessite pas d'authentification, afin d'apprendre les concepts associés à "JWT auths", veuillez créer un prototype de frontend introduisant ces cas d'utilisation :
+- **`register`** : les utilisateurs doivent pouvoir créer un compte.
+- **`login`** : les utilisateur doivent pouvoir se loguer.
+- **`logout`** : les utilisateurs doivent pouvoir se déconnecter.
 
-Pour le tutoriel, nous avons choisi la première option. Dans vos exercices optionnels, n'hésitez pas à explorer une autre option.
+<UnAuthenticatedBlock>
 
-💭 Mais pourquoi sécuriser le cookie et le rendre inaccessible au JS ?  
-Hé bien, imaginez qu'un attaquant arrive à faire une attaque XSS, via un JS malicieux, renvoyant le cookie de chaque utilisateur qui affiche le menu des pizzas vers un serveur malicieux...  
-Via ce cookie, qui contient le token de l'utilisateur, le pirate peut se faire passer pour l'utilisateur piraté !  
-Bon, pour la pizzeria, c'est p-e pas si grave, mais imaginez si c'est le token associé à votre compte banquaire !  
-Si le cookie est inaccessible au JS, il est donc impossible pour un hackeur, via du JS malicieux, d'accéder au token, et donc, de l'envoyer 😌.
-
-# <InternalPageTitle> 🍬 Gestion de sessions côté client via Express pour une API </InternalPageTitle>
-
-## Intro
-
-Nous allons donc créer une nouvelle version de l'API sauvegardant le token d'un utilisateur au sein d'un cookie, ainsi que son username, sans que ces infos soient accessible au JS côté client.
-
-Pour ce faire nous allons utiliser la librairie [cookie-session](https://github.com/expressjs/cookie-session) qui permet d'enregistrer des données de session dans des cookies.
-
-Nous allons maintenant continuer le développement de l'API [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
-
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/cookies** sur base d'un copié collé de **/web2/tutorials/pizzeria/api/safe** (ou [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe)).
-
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/api/cookies**.
-
-Veuillez installer la librairie **cookie-session** au sein de votre nouveau projet **auths** :
-```bash
-npm i cookie-session
-```
-
-## Utilisation de la fonction middleware `cookieSession`
-
-Veuillez mettre à jour **/app.json** pour mettre en place la gestion de cookies :
-
-```js highlighting="4,12-23"
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const cookieSession = require('cookie-session');
-
-const usersRouter = require('./routes/users');
-const pizzaRouter = require('./routes/pizzas');
-const authsRouter = require('./routes/auths');
-
-const app = express();
-
-const expiryDateIn3Months = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 3);
-const cookieSecreteKey = 'YouWouldnot!not!like!mypizza';
-app.use(
-  cookieSession({
-    name: 'user',
-    keys: [cookieSecreteKey],
-    cookie: {
-      httpOnly: true,
-      expires: expiryDateIn3Months,
-    },
-  }),
-);
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-app.use('/users', usersRouter);
-app.use('/pizzas', pizzaRouter);
-app.use('/auths', authsRouter);
-
-module.exports = app;
-```
-
-Nous avons donc bien indiqué que le cookie est inaccessible au JS via : `httpOnly: true`.
-
-Nous avons fait en sorte que le cookie soit signé via la clé `cookieSecreteKey`.  
-Le mécanisme de signature correspond à ce qui a été vu dans le cadre des tokens JWT.  
-Ainsi, si un cookie venait être modifié par un utilisateur, lors de la vérification du cookie, cela sera automatiquement détecté par la fonction middleware `cookieSession` et la session ne sera pas créée.
-
-Pour info, la fonction middleware `cookieSession` va créer deux cookies :
-- un cookie portant comme nom la valeur de `name` ; il est encodé en base64. N'hésitez pas à vous amuser à décoder un cookie généré par `cookieSession` sur [base64decode](https://www.base64decode.org/).
-- un cookie portant comme nom la valeur de `name` + `.sig` : c'est la signature qui prévient contre le "tempering" (acte intentionnel mais non autorisé qui amène à la modification d'un système ou de données).
-
-## Lecture et ajout de données de session via `req.session`
-Pour créer des données de session, il suffit de simplement les ajouter à l'objet **`req.session`**.
-
-Dans le cadre de la RESTful API gérant les pizzas, cela est fait lors d'une opération de type **register** ou **login**.
-
-Veuillez mettre à jour le router **/routes/auths.js** :
-
-```js numbered highlighting="17,19,33,35,38-42,44-47"
-const express = require('express');
-const { register, login } = require('../models/users');
-
-const router = express.Router();
-
-/* Register a user */
-router.post('/register', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
-
-  if (!username || !password) return res.sendStatus(400); // 400 Bad Request
-
-  const authenticatedUser = await register(username, password);
-
-  if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
-
-  createCookieSessionData(req, authenticatedUser);
-
-  return res.json({ username: authenticatedUser.username });
-});
-
-/* Login a user */
-router.post('/login', async (req, res) => {
-  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
-  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
-
-  if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
-
-  const authenticatedUser = await login(username, password);
-
-  if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
-
-  createCookieSessionData(req, authenticatedUser);
-
-  return res.json({ username: authenticatedUser.username });
-});
-
-/* Logout a user */
-router.get('/logout', (req, res) => {
-  req.session = null;
-  return res.sendStatus();
-});
-
-function createCookieSessionData(req, authenticatedUser) {
-  req.session.username = authenticatedUser.username;
-  req.session.token = authenticatedUser.token;
-}
-
-module.exports = router;
-```
-
-Dans le code ci-dessus, nous préparons les données de session qui seront écrites dans le cookie à l'aide de l'objet `req.session`.  
-Lorsque nous renvoyons du JSON aux clients, nous ne renvoyons plus le token, mais juste le username de l'utilisateur. L'application cliente, le browser, pourra utiliser cette info pour afficher le nom de l'utilisateur. Pour rappel, le browser n'a pas accès, via le JS, à l'info se trouvant dans le cookie.
-
-Quand nous gérons une session via des cookies, il n'est pas évident de bien clôre une session. Nous avons créé une nouvelle opération de type **GET /auths/logout** qui permet d'effacer les données de session d'un utilisateur.
-
-Il nous reste à changer le mécanisme d'autorisation.
-Les tokens ne seront plus reçu via un authorization header, mais via un cookie.  
-Nous allons donc mettre à jour le middleware **/utils/authorize** (1 seule ligne) :
-```js numbered highlighting="7"
-const jwt = require('jsonwebtoken');
-const { readOneUserFromUsername } = require('../models/users');
-
-const jwtSecret = 'ilovemypizza!';
-
-const authorize = (req, res, next) => {
-  const { token } = req.session;
-  if (!token) return res.sendStatus(401);
-
-  try {
-    const decoded = jwt.verify(token, jwtSecret);
-    console.log('decoded', decoded);
-    const { username } = decoded;
-
-    const existingUser = readOneUserFromUsername(username);
-
-    if (!existingUser) return res.sendStatus(401);
-
-    req.user = existingUser; // request.user object is available in all other middleware functions
-    return next();
-  } catch (err) {
-    console.error('authorize: ', err);
-    return res.sendStatus(401);
-  }
-};
-
-const isAdmin = (req, res, next) => {
-  const { username } = req.user;
-
-  if (username !== 'admin') return res.sendStatus(403);
-  return next();
-};
-
-module.exports = { authorize, isAdmin };
-```
-
-# <InternalPageTitle> 🍬 Test via REST Client d'une RESTful API attendant des cookies  </InternalPageTitle>
-
-Il nous reste à tester nos requêtes via REST Client.
-
-Il n'y a pas de nouvelles notions à apprendre pour utiliser REST Client avec des cookies : le comportement par défaut de REST Client, lorsqu'un cookie est renvoyé dans une réponse, est d'inclure ce cookie dans chaque requête vers la même origine.
-
-Dès lors, pour tester l'API, il suffit d'enlever tous les authorization headers et de rajouter une requête pour tester l'effacement d'une session.
-
-Veuillez tester les requêtes à l'aide de **/REST Client/pizzas.http** :
-```http
-######### NORMAL OPERATION  ###########
-
-### Read all pizzas
-GET http://localhost:3000/pizzas
-
-### Read all pizzas with File variable
-@baseUrl = http://localhost:3000
-GET {{baseUrl}}/pizzas
-
-### Read all pizzas sorted by title (ascending)
-GET {{baseUrl}}/pizzas/?order=+title
-
-### Read all pizzas sorted by title (descending)
-GET {{baseUrl}}/pizzas/?order=-title
-
-### Read pizza identified by 2
-GET {{baseUrl}}/pizzas/2
-
-### Create a pizza by using the admin account
-#### First login as the admin
-POST {{baseUrl}}/auths/login
-Content-Type: application/json
-
-{
-    "username":"admin",
-    "password":"admin"
-}
-
-#### Create a pizza with the admin token
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"Magic Green",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### Delete pizza identified by 2 with the admin token
-DELETE {{baseUrl}}/pizzas/2
-
-### Update the pizza identified by 6 with the admin token
-PATCH {{baseUrl}}/pizzas/6
-Content-Type: application/json
-
-{
-    "title":"Magic Green 2"
-}
-
-
-######### ERROR OPERATION  ###########
-
-### 1. Create a pizza without a token
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"Magic Green",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### 2. Create a pizza without being the admin, use manager account
-#### 2.1 First login as the manager
-POST {{baseUrl}}/auths/login
-Content-Type: application/json
-
-{
-    "username":"manager",
-    "password":"manager"
-}
-
-#### 2.2 Try to create a pizza with the manager token
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"Magic Green",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### Read pizza which does not exists
-GET {{baseUrl}}/pizzas/100
-
-### Create a pizza which lacks a property
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### Create a pizza without info for a property
-POST {{baseUrl}}/pizzas
-Content-Type: application/json
-
-{
-    "title":"",
-    "content":"Epinards, Brocolis, Olives vertes, Basilic"
-}
-
-### Update for a pizza which does not exist
-PATCH {{baseUrl}}/pizzas/200
-Content-Type: application/json
-
-{
-    "title":"Magic Green 2"
-}
-
-### Update for a pizza which does not provide any info for a property
-PATCH {{baseUrl}}/pizzas/1
-
-Content-Type: application/json
-
-{
-    "title":"Magic Green 2",
-    "content":""
-}
-```
-
-**/REST Client/auths.http** a été mis à jour pour tester **GET /auths/logout** :
-```http
-### Logout any user
-GET {{baseUrl}}/auths/logout
-```
-
-Pour ajouter une pizza, il suffit juste :
-1. De loguer l'admin.
-2. De créer une nouvelle pizza ; le cookie est automatiquement envoyé.
-
-Admettons que vous souhaitez tester l'ajout d'une pizza sans envoyer de token :
-1. Lancez l'opération de logout (GET /auths/logout) ; le cookie renvoyé ne contient pas de données de session ;
-2. Tentez la création d'une pizza qui renverra un code **401 Unauthorized**.
-
-Si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message
-"**cookies api**".
-
-En cas de souci, vous pouvez utiliser le code du tutoriel [cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
-
-## Gestion de session côté client via une IHM et des cookies
-
-A présent que notre API **cookies** renvoie les données de session dans un cookie non accessible par du JS, nous souhaitons mettre à jour notre IHM pour utiliser cette API.
-
-Nous allons repartir de la dernière version de notre frontend.
-
-Au sein de votre repo **web2**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/hmi/cookies** sur base d'un copié collé de **/web2/tutorials/pizzeria/hmi/web-storage** (ou [web-storage](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage)).
-
-Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
-**/web2/tutorials/pizzeria/hmi/cookies**.
-
-Afin de sauvegarder les données de session, c'est à dire l'objet **authenticatedUser** contenant juste un username, nous ne devons même pas mettre à jour le fichier **/usr/utils/auths.js**. En effet, l'API **cookies** renvoie un objet du genre `{username: "manager"}`. Au niveau de l'IHM, le code est donc toujours fonctionnel pour sauvegarder le username grâce à `authenticatedUser`.
-
-Il ne reste donc qu'à changer le code où nous avons besoin d'une autorisation. Pour l'application de gestion de la pizzeria, il s'agit de la création de pizza.  
-Veuillez donc mettre à jour **/src/Components/AddPizzaPage.js** en enlevant ces deux lignes :
-- l'authenticatedUser : `const authenticatedUser = getAuthenticatedUser();` et l'import associé (`import { getAuthenticatedUser } from '../../utils/auths';`),
-- la ligne s'occupant de l'authorization header : `Authorization: authenticatedUser.token`.
-
-Veuillez tester votre dernière version du frontend.
-Loguez-vous avec l'utilisateur **admin** (et le password **admin**).  
-Ajoutez une pizza et vérifiez qu'elle s'affiche bien.  
-
-💭 Comment vérifier le cookie ?  
-Tout en ayant la fenêtre de votre application ouverte, via Chrome, allez dans vos outils de développeurs : **F12**.  
-Puis, dans l'onglet **Application**, cliquez sur **Cookies**, vous verrez apparaître `http://localhost:8080`. Cliquez sur cette URL, et vous verrez vos 2 cookies de session, **user.sig** et **user**.  
-N'hésitez pas à aller décoder la valeur du cookie **user** sur [base64decode](https://www.base64decode.org/) en faisant un copier / coller de **Value**. Vous devriez voir quelque chose apparaître du style `{"username":"manager","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbmFnZXIiLCJpYXQiOjE2NjE3NzUxMDgsImV4cCI6MTc0ODE3NTEwOH0.sAZqq6vbrjCCZZoLH-n8hJKBoXJJJ8jEoupk8xKu5WI"}`  !
-
-Toujours dans l'onglet **Application** des outils de développeurs de Chrome, faites un clear des cookies : clic droit sur `http://localhost:8080`, **Clear**.  
-Tentez maintenant d'ajouter une pizza... Ca ne fonctionne plus, et c'est bien normal, car il n'y a plus de token qui est envoyé à l'API !  
-
-Suite à ces tests, si tout fonctionne bien, faites un **commit** de votre repo (**web2**) avec le message "**cookies hmi**".
-
-En cas de souci, vous pouvez utiliser le code du tutoriel :
-
-- pour le frontend : [cookies](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/cookies).
-- pour l'API : [cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
-
-💭 Notons que cette version de notre frontend pourrait être améliorée. Actuellement, lorsqu'on fait un logout, on n'efface pas le cookie du browser.  
-Comment feriez vous ? Vous pourriez par exemple appeler la méthode **GET /auths/logout** 😉.
-
-
-
-
-
-# <InternalPageTitle> Exercice 2.14 : Persistance de la session de myMovies dans le web storage  </InternalPageTitle>
-
-Lors de l'exercice précédent (Exercice 7.2), vous avez développé une application qui permet de bien gérer des films, à l'exception du fait que quand vous fermez votre browser, vous devez à chaque fois vous reconnecter.
-
-Veuillez faire en sorte que vos données de session soient sauvegardées :
-- dans le **localStorage** si l'on clique sur une checkbox "Remember me" du login ou du register.
-- dans le **sessionStorage** si l'on ne clique pas sur la checkbox "Remember me" lors du login ou du register.
-
-Afin de réaliser cet exercice, voici les contraintes d'implémentation :
-- Veuillez démarrer votre API développée précédemment : **/exercises/module7/7.2/api**.
-- Pour le frontend, utilisez le contenu de votre répertoire d'exercices **/exercises/module7/7.1/hmi** comme point de départ pour créer, dans votre repository local et
-votre web repository (normalement appelé **web2**), le répertoire nommé
-**/exercises/module8/8.1/hmi**.
--	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
-
-
-#### 🤝 Tips
-Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API : [a.2) Persistance de données de sessions via le web storage](#a2).
-
-Nous vous recommandons, dans un premier temps, de gérer les sessions dans le localStorage, sans ajouter la fonctionnalité **Remember me**.  
-Une fois que c'est fonctionnel, il sera temps de gérer le **Remember me**.
-
-Vous allez pouvoir refaire un peu de gestion d'événements pour détecter les clics sur une checkbox. N'hésitez pas à voir ce que propose **Bootstrap 5** pour les **checkboxes**.
-
-💭 Prenez un moment pour voir comment gérer la persistance de l'info 'Remember me'...  
-Est-ce que ce n'est pas une donnée de session qui doit persister lorsque l'utilisateur ferme son browser ?  
-En effet, point de vue ergonomie, il est intéressant que le dernier choix de l'utilisateur soit toujours présenté. La checkbox devrait donc rester **checked** ou pas, tant que l'utilisateur ne change pas son état, via un clic, ou via un Logout ; et cet état doit subsister aux travers des connexions (ouvertures / fermetures du browser).
-
-Si vous gérez bien l'info 'Remember me' au travers des sessions, vous devriez facilement décider si les données de **authenticatedUser** sont à sauvegarder dans le localStorage ou le sessionStorage.
-
-Veuillez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 8 : web storage**"".
-
-NB : Le code de vos applications se trouve dans votre repository local et
-votre web repository (normalement appelé **web2**) dans le répertoire nommé
-**/exercises/module8/8.1/hmi**.
-
-
-# <InternalPageTitle> Exercice 4.2 : Authentification & autorisation au sein de myMovies </InternalPageTitle>
-
-Lors de l'exercice précédent (Exercice 6.2), vous aviez une application qui permettait normalement de gérer des films, mais qui n'était pas sécurisée.
-
-A cet exercice, veuillez introduire l'authentification d'utilisateur via ces deux nouveaux cas d'utilisation :
-- UC5 : un utilisateur doit pouvoir créer un compte (register).
-- UC6 : un utilisateur doit pouvoir se loguer (login).
-- UC7 : un utilisateur doit pouvoir se déconnecter (logout).
-
-Vous allez continuer le développement du frontend de **myMovies** réalisé au module 3 (Exercice 3.1) et de la RESTful API développée au module 5 (Exercice 5.2).
-
-L'application **myMovies** doit maintenant autoriser les opérations suivantes aux utilisateurs authentifiés uniquement :
+Si vous avez choisi comme projet d'approfondir le développement de l'application **`myMovies`**, celle-ci doit maintenant autoriser les opérations suivantes que pour des utilisateurs authentifiés :
 -	UC2 : l'ajout d'une ressource de type films via un formulaire d'ajout d'un film.
 - UC3 : la suppression d'un film.
 - UC4 : la mise à jour des données d'un film (à l'exception de l'id associé à un film).
@@ -1137,57 +713,226 @@ L'application **myMovies** doit maintenant autoriser les opérations suivantes a
 Comme auparavant, cette opération est permise pour tous les utilisateurs, anonymes ou authentifiés :
 -	UC1 : l'affichage, sous forme de tableau, de toutes les ressources de type films.
 
-Vous allez devoir mettre à jour tant l'API que le frontend.
+</UnAuthenticatedBlock>
 
-Voici les opérations qui doivent être mises à disposition par votre API :
+Pensez à bien mettre à jour votre **`Navbar`** pour afficher les bons menus en fonction que l'utilisateur est authentifié ou pas.
 
-##### Opérations sur les ressources de type "auths"
-| URI | Méthode HTTP | Auths? | Opération |
-|---|---|---|---|
-| **auths/register** | POST | Non | Créer une ressource de type "users" et renvoyer le username et un token JWT |
-| **auths/login** | POST | Non | Vérifier les credentials d'une ressource de type "users" et renvoyer le username et un token JWT si les credentials sont OK |
+Faites attention, il n'est pas autorisé, pour des raisons d'ergonomie, que le frontend offre les fonctionnalités d'écriture de ressources pour les utilisateur non authentifiés. Vous devez donc rendre invisible les opérations non autorisées aux utilisateurs. 
 
-<br/>
+<UnAuthenticatedBlock>
 
-##### Opérations sur les ressources de type "films" (ou "movies", selon votre choix)
-| URI | Méthode HTTP | Auths? | Opération |
-|---|---|---|---|
-| **films** | GET | Non | READ ALL : Lire toutes les ressources de la collection |
-| **films?minimum-duration=value** | GET | Non | READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
-| **`films/{id}`** | GET | Non | READ ONE : Lire la ressource identifiée |
-| **films** | POST | JWT | CREATE ONE : Créer une ressource basée sur les données de la requête |
-| **`films/{id}`** | DELETE | JWT | DELETE ONE : Effacer la ressource identifiée |
-| **`films/{id}`** | PATCH | JWT | UPDATE ONE : Mettre à jour les propriétés de la ressource par les valeurs données dans la requête, pour une ou plusieurs propriétés |
+UC2 (create), UC3 (delete) et UC4 (update) doivent être invisibles pour les utilisateurs anonymes.
 
-<br/>
+</UnAuthenticatedBlock>
 
-Afin de réaliser cet exercice, voici les contraintes d'implémentation :
--	Commencez par mettre à jour l'API pour ajouter les opérations de register, de login, ainsi que les autorisations pour les fonctions d'écritures sur des ressources de type films. Utilisez le contenu de votre répertoire d'exercices **/exercises/module5/5.2** comme point de départ pour créer, dans votre repository local et votre web repository (normalement appelé **web2**), le répertoire nommé **/exercises/module7/7.1/api**.
-- Veuillez tester votre API via REST Client pour vous assurer que les autorisations JWT fonctionnent correctement. Quand tout est OK, vous pouvez passer au développement de votre frontend.
--	Pour le frontend, utilisez le contenu de votre répertoire d'exercices **/exercises/module6/6.2** comme point de départ pour créer, dans votre repository local et
-votre web repository (normalement appelé **web2**), le répertoire nommé
-**/exercises/module7/7.1/hmi**.
--	Veuillez utiliser le proxy de votre frontend afin de contourner les problèmes associé à la gestion des CORS.
-- Veuillez développer de manière incrémentale votre IHM, use case par use case, en vérifiant le bon fonctionnement de chaque cas d'utilisation avant de passer au développement de l'UC suivant.  
-Nous vous recommandons de commencer par le mécanisme d'authentification en ajoutant l'UC5 et l'UC6. Notez qu'il est facile de démarrer avec l'UC6 pour le login d'admin qui existe déjà au niveau de l'API par défaut.
-- Pensez à bien mettre à jour votre **Navbar** pour afficher les bons menus :
-  - si l'utilisateur est anonyme : liens uniquement vers la HomePage, vers l'UC1 (view movies), UC5 (login) & UC6 (register) ;
-  - si l'utilisateur est authentifié : liens uniquement vers la HomePage, vers l'UC1 (view movies) / UC2 (create) / UC3 (delete) / UC4 (update), UC7 (logout).
-- Faites attention, il n'est pas autorisé, pour des raisons d'ergonomie, que le frontend offre les fonctionnalités d'écriture de ressources si l'utilisateur n'est pas authentifié : UC2 (create), UC3 (delete) et UC4 (update) sont des opérations invisibles pour un utilisateur anonyme.
+Dans un premier temps, veuillez faire en sorte de rajouter dans le web storage ces nouvelles données de session lors du login ou du register : le token et le username.  
+NB : précédemment vous aviez des données de session à gérer pour le thème et pour un message concernant le respect de la vie privée.
+
+<AuthenticatedBlock>
+
+Veuillez travailler avec les membres de votre groupe et vous partager le travail :
+- certains membres peuvent travailler sur le frontend ;
+- d'autres membres peuvent travailler sur le backend s'il vous reste des opérations à rajouter.
+
+Un peu avant la fin de la séance, veuillez discuter :
+- présenter ce que vous avez appris au niveau de la sécurisation aux membres qui ont travaillé sur autre chose.
+
+</AuthenticatedBlock>
+
+Quand votre prototype de frontend offre l'authentification (register & login) et utilise toutes les opérations sécurisées de votre API, que les sessions sont bien sauvegardées, veuillez faire un **`commit`** de votre code avec comme message : **`2.24.1 : hmi jwt auths`**.
 
 #### 🤝 Tips
-- Cet exercice est l'application du tutoriel vu dans ce module-ci. N'hésitez pas donc à rejouer les étapes vues dans le tutoriel au niveau de votre API et à copier / coller les fichiers utiles (**authorize.js**, **users.js**, **auths.js**...) : [a) Authentification sécurisée et autorisation d'accès aux opérations d'une RESTful API via JWT](#a).
-- N'oubliez pas de tester chaque opération. Par exemple, il faut bien vérifier que l'on ne puisse pas créer une pizza sans token via REST Client.
-- Occupez-vous ensuite du frontend en copiant collant les fichiers utiles trouvés dans le tutoriel associé à cette partie (**RegisterPage**, **LoginPage**, **Logout**, **auths**, **Navbar**...) : [b) Utilisation de JWT au sein d'une IHM](#b).  
-Attention à ne pas oublier de mettre à jour votre Router (nouvelles pages pour le register, le login et le logout), la Navbar (différent affichage pour un utilisateur anonyme que pour un utilisateur connecté), d'ajouter les token dans le header de vos requêtes via fetch... 
-- Concernant le Router, il faut mettre à jour `onNavBarClick` pour que les gestionnaires d'evénéments restent attachés même quand la Navbar est réaffichée.
-- 💭 Comment rendre invisible les opérations d'écriture de films ?  
-Par exemple, vous pourriez afficher les boutons **Delete** et **Save** que si l'utilisateur est authentifié.  
-De même, si l'utilisateur est anonyme, les cellules associées aux films ne devraient pas être éditables.
 
-Veuillez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 7 : auths**"".
+- N'hésitez pas à copier/coller les fichiers utiles trouvés dans le tutoriel associé à cette partie : **`RegisterPage`**, **`LoginPage`**, **`Logout`**, **`auths`**, **`Navbar`** (différent affichage pour un utilisateur anonyme que pour un utilisateur connecté)....
+- Attention à ne pas oublier de mettre à jour votre **`Router`** : nouvelles pages pour le register, le login et le logout, la Navbar...
+- Ajoutez les tokens dans le header de vos requêtes **`fetch`**... 
+- Concernant le **`Router`**, il faut mettre à jour **`onNavBarClick`** pour que les gestionnaires d'evénéments restent attachés même quand la **`Navbar`** est réaffichée.
+- 💭 Comment rendre invisible les opérations d'écriture de certaines ressources au sein du frontend ?  
+Par exemple, vous pourriez afficher des boutons de type **`Delete`** ou **`Save`** que si l'utilisateur est authentifié.  
+De même, si l'utilisateur est anonyme, les ressources ne devraient pas être éditables.
 
-NB : Le code de vos applications se trouve dans votre repository local et
-votre web repository (normalement appelé **web2**) dans les répertoires nommés
-**/exercises/module7/7.1/api** et **/exercises/module7/7.1/hmi**.
+## 🍬 Gestion de session & remember me
+
+Vous pourriez ajouter une fonction "remember me" à votre formulaire de "login" et de "register" et faire en sorte que vos données de session soient sauvegardées :
+- dans le **`localStorage`** si l'on clique sur une checkbox "Remember me" ;
+- dans le **`sessionStorage`** si l'on ne clique pas sur la checkbox "Remember me" lors du login ou du register.
+
+
+Vous devez tester, à l'aide de Rest Client, toutes les opérations que vous avez modifiées.
+
+Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`2.23 : api bcrypt & escape-html`**.
+
+
+#### 🤝 Tips
+- Vous allez pouvoir refaire un peu de gestion d'événements pour détecter les clics sur une checkbox. N'hésitez pas à voir ce que propose **Bootstrap 5** pour les **checkboxes**.
+- Prenez un moment pour voir comment gérer la persistance de l'info 'Remember me'...  
+Est-ce que ce n'est pas une donnée de session qui doit persister lorsque l'utilisateur ferme son browser ?  
+En effet, point de vue ergonomie, il est intéressant que le dernier choix de l'utilisateur soit toujours présenté. La checkbox devrait donc rester **`checked`** ou pas, tant que l'utilisateur ne change pas son état, via un clic, ou via un Logout ; et cet état doit subsister aux travers des connexions (ouvertures / fermetures du browser).
+
+
+# <InternalPageTitle> 🍬 Persistance de données de session via des cookies </InternalPageTitle>
+
+## Authentification & autorisation JWT à l'aide de cookies
+
+Dans la partie optionnelle sur l'[Authentification & autorisation JWT à l'aide de cookies](../security-api/#🍬_authentification_autorisation_jwt_a_laide_de_cookies), nous avons vu comment mettre à jour l'API afin d'intégrer les tokens JWT aux cookies.
+
+Veuillez démarrer la version **`/web2/tutorials/pizzeria/api/cookies`** de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
+[cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
+
+Nous allons voir maintenant comment le frontend peut utiliser ces cookies.
+
+## Gestion de session côté client via une IHM et des cookies
+
+Pour ce nouveau tutoriel, nous allons repartir de la dernière version de notre frontend.
+
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/cookies`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/web-storage`** (ou [web-storage](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage)).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**`/web2/tutorials/pizzeria/hmi/cookies`**.
+
+Afin de sauvegarder les données de session, c'est à dire l'objet **`authenticatedUser`** contenant juste un username, nous ne devons même pas mettre à jour le fichier **`/usr/utils/auths.js`**. En effet, l'API **`cookies`** renvoie un objet du genre **`{username: "manager"}`**. Au niveau de l'IHM, le code est donc toujours fonctionnel pour sauvegarder le username grâce à `authenticatedUser`.
+
+Il ne reste donc qu'à changer le code où nous avons besoin d'une autorisation. Pour l'application de gestion de la pizzeria, il s'agit de la création de pizza.  
+Veuillez donc mettre à jour **`/src/Components/AddPizzaPage.js`** en enlevant ces deux lignes :
+- l'authenticatedUser : **`const authenticatedUser = getAuthenticatedUser();`** et l'import associé (**`import { getAuthenticatedUser } from '../../utils/auths';`**),
+- la ligne s'occupant de l'authorization header : **`Authorization: authenticatedUser.token`**.
+
+Veuillez tester votre dernière version du frontend.
+Loguez-vous avec l'utilisateur **`admin`** (et le password **`admin`**).  
+Ajoutez une pizza et vérifiez qu'elle s'affiche bien.  
+
+💭 Comment vérifier le cookie ?  
+Tout en ayant la fenêtre de votre application ouverte, via Chrome, allez dans vos outils de développeurs : **`F12`**.  
+Puis, dans l'onglet **`Application`**, cliquez sur **`Cookies`**, vous verrez apparaître **`http://localhost:8080`**. Cliquez sur cette URL, et vous verrez vos 2 cookies de session, **`user.sig`** et **`user`**.  
+N'hésitez pas à aller décoder la valeur du cookie **`user`** sur [base64decode](https://www.base64decode.org/) en faisant un copier / coller de **`Value`**. Vous devriez voir quelque chose apparaître du style **`{"username":"manager","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbmFnZXIiLCJpYXQiOjE2NjE3NzUxMDgsImV4cCI6MTc0ODE3NTEwOH0.sAZqq6vbrjCCZZoLH-n8hJKBoXJJJ8jEoupk8xKu5WI"}`**  !
+
+Toujours dans l'onglet **`Application`** des outils de développeurs de Chrome, faites un clear des cookies : clic droit sur **`http://localhost:8080`**, **`Clear`**.  
+Tentez maintenant d'ajouter une pizza... Ca ne fonctionne plus, et c'est bien normal, car il n'y a plus de token qui est envoyé à l'API !  
+
+Suite à ces tests, si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`cookies hmi tutorial`**.
+
+En cas de souci, vous pouvez utiliser le code du tutoriel :
+
+- pour le frontend : [hmi-cookies](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/cookies).
+- pour l'API : [api-cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
+
+💭 Notons que cette version de notre frontend pourrait être améliorée. Actuellement, lorsqu'on fait un logout, on n'efface pas le cookie du browser.   
+Comment feriez vous ?  
+*Vous pourriez par exemple appeler la méthode **GET /auths/logout** 😉.*
+
+
+# <InternalPageTitle> 🍬 Exercice 4.4 : Auto-refresh de myMovies </InternalPageTitle>
+
+S'il vous reste du temps, il serait vraiment intéressant de faire en sorte que cycliquement, tous les 5 secondes par exemple, l'affichage de la liste de films se mette automatiquement à jour.
+
+Ainsi, si d'autres utilisateurs ajoutent un film, vous les verrez directement apparaître dans votre fenêtre.
+
+⚡ Attention que si le composant d'affichage des films est utilisé pour permettre de directement mettre à jour un film, celui-ci ne doit pas se réafficher si un utilisateur est en train de mettre à jour un film.
+
+#### 🤝 Tips
+Pensez à la fonction **`setInterval`**.
+
+Vous pouvez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 7 : auto-refresh**"".
+
+NB : Le code de vos applications se trouverait dans votre repository local et
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module7/7.3/hmi**.
+
+# <InternalPageTitle> 🍬 Exercice 4.5 : Gestion de la navigation lors de l'auto-refresh de myMovie </InternalPageTitle>
+
+💭 Que peut-il se passer de désagréable si un utilisateur passe rapidement de la page listant les informations d'un film vers la page d'ajout d'un film ?
+
+Comme le render de tous les films et une action asynchrone, il est possible que celui-ci soit réalisé après que l'utilisateur ait quitté la page d'affichage des films. Cela peut être gênant, car si vous êtes sur le composant pour ajouter un film, vous ne souhaitez pas que votre formulaire d'ajout d'un film soit remplacé, de manière erronée, par la liste des films !
+
+Nous vous proposons d'implémenter ces deux fonctions :
+-	Stopper les futurs appels de **fetch**, les appels automatiques vers vos APIs (**setInterval** et **clearInterval**) quand il y a un clic sur un lien ;
+-	Stopper les appels de **fetch** en cours vers vos APIs quand il y a un clic sur un lien. En effet, si votre API doit renvoyer beaucoup de données, notamment quand il y a des images à communiquer, il est possible que cela prenne plusieurs secondes avant que l'API vous réponde.
+
+#### 🤝 Tips
+- Pensez aux fonctions **`setInterval`** et **`clearInterval`**.
+- Pour stopper un fetch en cours, vous pouvez utiliser un **AbortControlller**. Toute l'info est disponible sur la [Documentation MDN](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+
+Vous pouvez faire un **commit** de votre code avec le message suivant : 
+"**myMovies : module 7 : auto-refresh improved**"".
+
+NB : Le code de vos applications se trouverait dans votre repository local et
+votre web repository (normalement appelé **web2**) dans le répertoire nommé
+**/exercises/module7/7.4/hmi**.
+
+# <InternalPageTitle> 🍬 Exercice 4.6 : L'essentiel du cours en action </InternalPageTitle>
+
+## Introduction
+Voici un exercice qui fait revoir les compétences essentiels de ce cours de JS. Il a été utilisé comme examen pour les étudiants de Vinci en deuxième année de bachelier en Informatique de Gestion en août 2022. 
+
+Normalement, cette exercice, découpé en trois questions, devrait se réaliser dans un délai de 3h.
+
+Veuillez télécharger ce fichier
+<LinkFile name="examen_js.zip" target="_blank" download>examen_js.zip</LinkFile>.
+Cette archive contient un boilerplate pour chaque question et les ressources à utiliser pour cet examen.
+
+Dans un premier temps, veuillez désarchiver **examen_js.zip** localement sur votre machine.  
+⚡ Veuillez éviter de le faire sur un répertoire qui est partagé sur le cloud. En effet, il y a des milliers de fichiers associés aux **node_modules** lorsque vous lancerez l'installation des packages ! Ca serait une vraie horreur à synchroniser 😨 !
+
+## Objectif
+Nous allons développer deux frontends et une API pour une agence de voyages.
+
+## Question 1 : Créer une IHM interactive & moderne
+Nous souhaitons afficher des lieux de vacances proposés par l'agence de voyages. Il y a 5 lieux différents, chacun avec un id, un nom et une image.
+
+Le boilerplate pour cette question se trouve dans **/question1**.
+Vous trouverez 5 images correspondant à chaque lieu dans le répertoire **/question1/src/img**, ainsi qu'un fichier contenant une liste des lieux avec leur id, leur nom et leur image dans **/question1/src/utils/places.js**.
+
+Vous devez créer deux pages :
+-	La page d'accueil, accessible avec l'URI "/" ou avec un lien nommé "Home" dans la barre de navigation, doit afficher une liste de tous les noms de lieux de vacances.
+-	La page de photos, accessible avec l'URI "/photos" ou avec un lien nommé "Photos" dans la barre de navigation, doit afficher un carrousel des lieux proposés.
+  - Lorsqu'on arrive sur la page initialement, la page doit afficher le 3ème lieu dans la liste, avec son image et son nom en dessous.
+  - La page doit également afficher deux boutons. Le premier permet d'afficher le lieu précédent dans la liste à la place de celui-ci. Et  l'autre permet d'afficher le lieu suivant. Ces boutons ne doivent pas être cliquables s'il n'y a plus de lieu suivant ou de lieu précédent dans la liste.
+
+Contraintes d'implémentation : 
+-	Veuillez utiliser le fichier **/question1/src/utils/places.js** qui reprend des lieux de vacances. Vous devez mettre à jour ce fichier pour pouvoir l'utiliser dans votre code JS comme module.
+-	Aucune autre page ne doit être disponible sur le site web.
+-	Vous devez implémenter le carrousel vous-même, vous ne pouvez pas utiliser un carrousel de Bootstrap.
+-	Utilisez les images importées statiquement dans la liste des lieux de vacances et changez la source de l'image affichée quand l'utilisateur clique sur un bouton.
+
+Voici un exemple de ce à quoi pourrait ressembler votre site web :
+
+<ScrollableImage name="places.png" minWidth="800px" maxWidth="1599x" />
+
+<ScrollableImage name="carousel.png" minWidth="800px" maxWidth="1599x" />
+
+## Question 2 : Créer un service web
+Nous souhaitons développer une RESTful API pour gérer les lieux de vacances proposés par l'agence, les utilisateurs du site, ainsi que les lieux favoris de ces utilisateurs.
+
+Le boilerplate pour l'API de cette question se trouve dans **/question2**, c'est une copie du boilerplate du cours.
+
+Veuillez créer les opérations suivantes :
+-	**Créer un nouveau lieu de vacances**. L'opération doit prendre en entrée le nom du lieu ainsi que sa description, et doit retourner l'ID du lieu créé au format JSON. L'opération doit renvoyer une erreur si le nom ou la description ne sont pas fournis.
+-	**Créer un nouvel utilisateur**. L'opération doit prendre en entrée le nom de l'utilisateur ainsi que son adresse mail, et doit retourner l'ID de l'utilisateur créé au format JSON. L'opération doit renvoyer une erreur si le nom ou l'adresse mail ne sont pas fournis, ainsi que si un utilisateur existe déjà pour cette adresse mail.
+-	**Ajouter un lieu à ses favoris**. L'opération doit prendre en entrée l'ID de l'utilisateur et l'ID du lieu qu'il souhaite ajouter en favori. L'opération doit renvoyer une erreur si aucun utilisateur ne correspond à l'ID d'utilisateur donné, si aucun lieu ne correspond à l'ID de lieu donné, ou si cet utilisateur a déjà ce lieu dans ses favoris.
+
+Vous devez également créer dans le fichier **/question2/RESTClient/tests.http** au minimum une requête par opération que vous devez implémenter. Vous pouvez également créer plus de tests si vous le souhaitez.
+
+Contraintes d'implémentation :
+-	L'API que vous devez créer doit correspondre aux principes d'une API RESTful.
+-	Votre API ne peut pas proposer d'autres opérations que celles décrites ci-dessus.
+-	Les ID que génèrent votre API doivent provenir du package **uuid**.
+-	Les demandes qui sont créées doivent persister et donc survivre au redémarrage de votre application. Vous pouvez faire persister les demandes côté serveur de la manière que vous voulez, du moment que cela soit en JSON. N'hésitez pas à utiliser **/question2/utils/json.js**.
+-	Aucune autorisation JWT est nécessaire.
+
+## Question 3 : Créer une SPA intégrant une IHM et un web service
+Grâce à l'API que nous avez développé dans la question 2, l'agence de voyages a pu améliorer son API pour proposer un système de recommandations. Cependant, cette API utilise un système d'Intelligence Artificielle complexe et les opérations qui récupèrent les recommandations peuvent prendre un certain temps. 
+
+Le boilerplate pour cette question se trouve dans **/question3**.
+Vous devez consommer l'API décrite ci-dessous et disponible à l'adresse **https://places-exam-api.azurewebsites.net** pour afficher des recommandations de lieux de vacances. Cette API accepte les requêtes venant de toutes les origines et n'a pas de problème de CORS. Vous ne devez donc pas utiliser de proxy pour consommer cette API.
+
+| Méthode HTTP | URI | Opération | Format |
+|---|---|---|---|
+| **GET** | **/places**| Récupérer tous les lieux de vacances | Renvoie : `[ { id, name } ]` |
+| **GET** | **/recommended** | Récupérer le lieu de vacances le plus apprécié | Renvoie : `{ id, name }` |
+
+Sur la page d'accueil du site web, veuillez afficher le nom de tous les lieux de vacances, renvoyés par l'API avec l'URI "/places" (il n'est pas nécessaire d'afficher leur ID). 
+
+Toujours sur la page d'accueil, veuillez également afficher le nom du lieu de vacances le plus apprécié, renvoyé par l'API avec l'URI "**/recommended**". Comme cette opération peut prendre un certain temps, elle ne peut pas ralentir le chargement de la page. Le reste de la page doit être affiché avant de consommer cette API, et son résultat doit être rajouté sur la page quand l'opération est terminée.
+
+Aucune autre page ne doit être disponible sur le site web. Pensez donc à effacer le code du boilerplate qui est inutile.

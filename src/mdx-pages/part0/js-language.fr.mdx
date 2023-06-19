@@ -23,6 +23,7 @@ description: 'Introduction au langage JavaScript, apprentissage de la syntaxe'
   <InternalPageMenuItem> Les template literals </InternalPageMenuItem>
   <InternalPageMenuItem> Les objets </InternalPageMenuItem>
   <InternalPageMenuItem> Les exceptions </InternalPageMenuItem>
+  <InternalPageMenuItem> Le destructuring assignment </InternalPageMenuItem>
 </InternalPageMenu>
 
 Le JS s'écrit tant dans un browser que dans un environnement serveur.
@@ -764,3 +765,23 @@ try {
   // RegularDivideXbyY() results: undefined JS Division's result Infinity
 }
 ```
+
+# <InternalPageTitle> Le destructuring assignment </InternalPageTitle>
+
+Voici un exemple de **destructing assignment**, une façon très concise en JS de créer des variables à partir de propriétés d'objets ou des valeurs d'arrays :
+
+```js highlighting ="3"
+// Here the variable and constants are defined
+const decodedToken = jwt.verify(token, jwtSecret); // return the token payload
+const { username, iat, exp } = decodedToken;
+```
+
+Imaginez ici que la valeur de **`decodedToken`** est : **`{ username: 'admin', iat: 1661251095, exp: 1747651095 }`**. 
+
+Ce code **`const { username, iat, exp } = decodedToken;`** est l'équivalent de :
+```js
+const username = decodedToken.username;
+const iat = decodedToken.iat;
+const exp = decodedToken.exp;
+```
+Pour en savoir plus sur la puissance du **destructuring assignement**, vous pouvez consulter la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) [[R.64]](/references/#r64).
