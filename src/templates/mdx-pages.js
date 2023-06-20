@@ -56,8 +56,14 @@ const shortcodes = {
   PathViewerItem,
 };
 
+/* extra class to be added to the page div if the browser is firefox because
+Firefox does not support the has() CSS selector.
+*/
+
 export default function PageTemplate({ data: { mdx, allImages }, children }) {
   shortcodes.PageHeader = withFrontmatter(PageHeader, mdx?.frontmatter);
+  const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+  const extraClassIfFirefox = isFirefox ? 'page--visible-internal-menu' : '';
   return (
     <MainLayout
       {...(mdx?.frontmatter ? { frontmatter: mdx.frontmatter } : {})}
@@ -76,7 +82,9 @@ export default function PageTemplate({ data: { mdx, allImages }, children }) {
       <MDXProvider components={shortcodes}>
         <div
           className={
-            mdx?.frontmatter?.autoMargin ? 'page page--auto-margin' : 'page'
+            mdx?.frontmatter?.autoMargin
+              ? 'page page--auto-margin ' + extraClassIfFirefox
+              : 'page'
           }
         >
           {children}
