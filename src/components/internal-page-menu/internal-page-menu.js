@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { NavigationContext } from '../contexts/navigation-context';
+import { PathViewer } from '../path-viewer/path-viewer';
 
 /**
  * An internal page menu made up of InternalPageMenu item. The menu is normally drawn just under
- * the div with an header class if the header is visible. Else it is drawn at the top (when the 
+ * the div with an header class if the header is visible. Else it is drawn at the top (when the
  * user scroll and the header is no more visible).
  * It does not do anything special if we pass him a PathViewer : it only includes its in the wrapper.
  * It does automatically render relative links based on the texte given in the value of
@@ -67,7 +68,7 @@ const InternalPageMenu = ({
       style={{ top: menuIsInView && !sticky ? menuHeight : 0 }} // top has no effect when defautl position (static)
     >
       {React.Children.map(children, (child, index) => {
-        if (child.type.name === 'PathViewer') {
+        if (child.type === PathViewer) {
           return child;
         }
         return React.cloneElement(child, {
