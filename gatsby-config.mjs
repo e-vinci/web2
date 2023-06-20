@@ -44,6 +44,7 @@ const config = {
             link: '/part3',
           },
           { name: 'Partie 4 : Sécurisation', link: '/part4' },
+          { name: '🍬 Partie 5 : Exercices', link: '/part5' },
           { name: "L'essentiel", link: '/essentials' },
           { name: `Repositories`, link: `/repo` },
           { name: 'Bibliographie', link: '/references' },
