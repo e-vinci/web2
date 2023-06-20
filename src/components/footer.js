@@ -27,6 +27,9 @@ const Footer = ({ siteMetaData, ...otherProps }) => {
           <div className="footer__logo__image"></div>
           <div className="footer__logo__image2"></div>
         </div>
+        <div className="footer__version text--hand-written">
+          v{siteMetaData.version}
+        </div>
         <div className="footer__icons">
           <ul className="menu">
             {siteMetaData.authorEmail !== undefined &&

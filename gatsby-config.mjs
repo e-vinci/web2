@@ -1,5 +1,6 @@
 import remarkGfm from 'remark-gfm';
 import rehypeMdxCodeProps from 'rehype-mdx-code-props';
+import pkg from './package.json' assert { type: 'json' };
 
 const siteURL = 'https://e-vinci.github.io/js2'; // No trailing slash allowed!
 const siteTitle = 'web2course';
@@ -14,6 +15,7 @@ const projectDocument = 'WEB2-2022-PROJET-GROUP-XY.docx';
 const config = {
   pathPrefix: `/js2`,
   siteMetadata: {
+    version: pkg?.version,
     title: siteTitle,
     description: 'web2course : Apprendre JavaScript et Node.js',
     url: siteURL,

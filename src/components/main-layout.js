@@ -54,6 +54,7 @@ const MainLayout = ({
             instagramUrl
             defaultAssociatedProjectGroupName
             isAuthentication
+            version
           }
         }
       }
