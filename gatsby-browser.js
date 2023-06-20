@@ -27,3 +27,20 @@ export const onClientEntry = async () => {
     }
   }
 };
+
+/* extra class to be added to the page div if the browser is firefox because
+Firefox does not support the has() CSS selector.
+*/
+export const onRouteUpdate = ({ location, prevLocation }) => {
+  const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+  const extraClassIfFirefox = isFirefox ? 'page--visible-internal-menu' : '';
+  const pageDiv = document.querySelector('.page');
+  const pageInternalMenuDiv = document.querySelector('.page-menu');
+  if (
+    pageDiv &&
+    pageInternalMenuDiv &&
+    !pageInternalMenuDiv.classList.contains('page-menu--sticky') &&
+    isFirefox
+  )
+    pageDiv.classList.add('page--visible-internal-menu');
+};

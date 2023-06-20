@@ -43,6 +43,7 @@ const config = {
           },
           { name: 'Partie 4 : Sécurisation', link: '/part4' },
           { name: "L'essentiel", link: '/essentials' },
+          { name: `Repositories`, link: `/repo` },
           { name: 'Bibliographie', link: '/references' },
         ],
       },
@@ -56,10 +57,6 @@ const config = {
       {
         name: `About`,
         link: `/about`,
-      },
-      {
-        name: `Repositories`,
-        link: `/repo`,
       },
       {
         name: `Projets`,
