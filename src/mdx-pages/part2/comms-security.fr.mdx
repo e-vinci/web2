@@ -3,15 +3,14 @@ title: "Sécurité du browser"
 description: "Sécurité des communications du browser"
 ---
 
-<PathViewer>
-    <PathViewerItem to="/"> web2course </PathViewerItem>
-    <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
-    <PathViewerItem selected> k) Sécurité des communications du browser </PathViewerItem>
-</PathViewer>
-
 # k) Sécurité des communications du browser
 
 <InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
+    <PathViewerItem selected> k) Sécurité des communications du browser </PathViewerItem>
+  </PathViewer>
   <InternalPageMenuItem> Single Origin Policy & CORS </InternalPageMenuItem>
   <InternalPageMenuItem> Autorisation d'origines & les CORS </InternalPageMenuItem>
   <InternalPageMenuItem> Simulation d'une même origine via un proxy </InternalPageMenuItem>
@@ -118,7 +117,7 @@ Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec 
 En cas de souci, vous pouvez accéder au code du tutoriel ici :
 - pour l'API : [api-cors](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cors).
 - pour le frontend :
-  [basic-fetch-no-proxy](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch-no-proxy).
+  [basic-fetch-no-proxy-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch-no-proxy).
 
 💭 OK, ça fonctionne bien... Mais cela est possible seulement si nous sommes les propriétaires de la RESTful API. Maintenant, que faire si une API tierce doit être intégrée dans notre frontend ?  
 Imaginez que vous souhaitez intégrer une opération d'une API offerte par Google...  
@@ -133,11 +132,11 @@ Ici, nous sommes dans la situation où nous ne souhaitons pas, ou nous n'avons p
 
 Veuillez stopper l'exécution de l'API (**`/web2/tutorials/pizzeria/api/cors`**) et du frontend (**`/web2/tutorials/pizzeria/hmi/basic-fetch-no-proxy`**).
 
-Veuillez démarrer l'API qui n'autorise aucune autre origine : **`/web2/tutorials/pizzeria/api/fat-model`** (ou via le code de ce web repo si vous avez un souci : [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model)).
+Veuillez démarrer l'API qui n'autorise aucune autre origine : **`/web2/tutorials/pizzeria/api/fat-model`** (ou via le code de ce web repo si vous avez un souci : [api-fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model)).
 
 Nous allons mettre en place un mécanisme au niveau du frontend pour faire passer toutes les requêtes à destination de l'API par un proxy ; le proxy aura la même origine que le serveur de fichiers statiques ayant offert le frontend.
 
-Pour ce nouveau tutoriel, au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/basic-fetch`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/basic-fetch-no-proxy`** (ou [basic-fetch-no-proxy](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch-no-proxy)).
+Pour ce nouveau tutoriel, au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/basic-fetch`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/basic-fetch-no-proxy`** (ou [basic-fetch-no-proxy-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch-no-proxy)).
 
 Il vous reste aussi à vous assurer que votre frontend (**`/web2/tutorials/pizzeria/hmi/basic-fetch`**) est lui aussi bien démarré. Il devrait toujours y avoir l'erreur associée aux **CORS** donnée au sein de la console.
 
@@ -188,12 +187,12 @@ const HomePage = () => {
 A ce stade-ci, tout devrait fonctionner : le menu des pizzas est affiché suite à l'appel à notre RESTful API ne relaxant pas la sécurité !
 
 Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message :
-**`basic-fetch with proxy tutorial`**.
+**`basic-fetch-hmi with proxy tutorial`**.
 
 En cas de souci, vous pouvez utiliser le code du tutoriel :
 
-- pour le frontend : [basic-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
-- pour l'API : [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+- pour le frontend : [basic-fetch-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
+- pour l'API : [api-fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
 
 🍬 Voici quelques infos non capitales pour ce cours-ci :
 

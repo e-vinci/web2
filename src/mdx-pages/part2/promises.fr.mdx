@@ -3,15 +3,14 @@ title: "Promesses"
 description: "Programmation asynchrone & les promesses"
 ---
 
-<PathViewer>
+# l) Programmation asynchrone & les promesses
+
+<InternalPageMenu>
+  <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
     <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
     <PathViewerItem selected> l) Programmation asynchrone & les promesses </PathViewerItem>
-</PathViewer>
-
-# l) Programmation asynchrone & les promesses
-
-<InternalPageMenu> 
+  </PathViewer>
   <InternalPageMenuItem> Utilisation de promesses & async / await </InternalPageMenuItem> 
   <InternalPageMenuItem> Opération asynchrone d'écriture d'une ressource </InternalPageMenuItem> 
   <InternalPageMenuItem> Création de fonctions asynchrones renvoyant une promesse </InternalPageMenuItem>
@@ -30,7 +29,7 @@ On va donc écrire du code d'une manière équivalente à ce qui serait fait en 
 
 Pour ce nouveau tutoriel, nous allons refactorer l'IHM pour améliorer le code associé aux appels asynchrones aux API.
 
-Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/async-await`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/basic-fetch`** (ou [basic-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch).
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/async-await`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/basic-fetch`** (ou [basic-fetch-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
 **`/web2/tutorials/pizzeria/hmi/async-await`**.
@@ -57,7 +56,7 @@ const HomePage = async () => {
 };
 ```
 
-Pour tester ce code, il ne faut pas oublier de démarrer la RESTful API auparavant : **`/web2/tutorials/pizzeria/api/fat-model`** ou via le code de ce web repo si vous avez un souci : [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+Pour tester ce code, il ne faut pas oublier de démarrer la RESTful API auparavant : **`/web2/tutorials/pizzeria/api/fat-model`** ou via le code de ce web repo si vous avez un souci : [api-fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
 
 Voici quelques caractéristiques importantes de **`async`** / **`await`** :
 
@@ -303,10 +302,10 @@ const content = document.querySelector('#content').value;
 - Finalement, si l'opération de création de la pizza réussi, nous redirigeons l'utilisateur vers la **`HomePage`** à l'aide du composant fonctionnel **`Navigate`** offert au sein du module **`Navigate.js`** dans le dossier **Router** du boilerplate du frontend.
 
 Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message
-: **`async-await tutorial`**.
+: **`async-await-hmi tutorial`**.
 
 En cas de souci, vous pouvez accéder au code du tutoriel ici :
-[async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await).
+[async-await-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await).
 
 # <InternalPageTitle> Création de fonctions asynchrones renvoyant une promesse </InternalPageTitle>
 

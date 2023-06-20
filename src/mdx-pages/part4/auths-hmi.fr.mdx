@@ -3,20 +3,19 @@ title: "HMI & JWT"
 description: "Authentification & utilisation d'opérations protégées par JWT au sein d'une IHM"
 ---
 
-<PathViewer>
-    <PathViewerItem to="/"> web2course </PathViewerItem>
-    <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
-    <PathViewerItem selected> c) HMI & JWT </PathViewerItem>
-</PathViewer>
-
 # c) Authentification & utilisation d'opérations protégées par JWT au sein d'une IHM
 
 <InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
+    <PathViewerItem selected> c) HMI & JWT </PathViewerItem>
+  </PathViewer>
   <InternalPageMenuItem> Authentification d'un utilisateur via une IHM & JWT </InternalPageMenuItem>
   <InternalPageMenuItem> Autorisation de l'appel à une opération protégée </InternalPageMenuItem>
   <InternalPageMenuItem> Mise en place du localStorage pour sauvegarder les données de session  </InternalPageMenuItem>
-  <InternalPageMenuItem> Projet 2.24 : Authentification et appel d'opérations protégées par JWT </InternalPageMenuItem> 
-  <InternalPageMenuItem> 🍬 Persistance de données de session via des cookies </InternalPageMenuItem> 
+  <InternalPageMenuItem> Projet 4.3 : Authentification et appel d'opérations protégées par JWT </InternalPageMenuItem> 
+  <InternalPageMenuItem> 🍬 Persistance de données de session via des cookies </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> Authentification d'un utilisateur via une IHM & JWT </InternalPageTitle>
@@ -39,9 +38,9 @@ Dans le cadre du site de la pizzeria, nous savons que l'API met à disposition c
 
 <br/>
 
-Pour ce nouveau tutoriel, nous allons continuer le développement de l'IHM [async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await) (**`/web2/tutorials/pizzeria/hmi/async-await`**) pour que le formulaire de register et de login fassent appelle à l'API et sauve temporairement le token renvoyé.
+Pour ce nouveau tutoriel, nous allons continuer le développement de l'IHM [async-await-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await) (**`/web2/tutorials/pizzeria/hmi/async-await`**) pour que le formulaire de register et de login fassent appelle à l'API et sauve temporairement le token renvoyé.
 
-Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/jwt-fetch`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/async-await`** (ou [async-await](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch)).
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/jwt-fetch`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/async-await`** (ou [async-await-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch)).
 
 Veuillez démarrer la version **`/web2/tutorials/pizzeria/api/safe`** de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
 [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
@@ -586,11 +585,11 @@ En effet, l'API attend un token pour autoriser l'opération de création d'une p
 Déconnectez-vous (logout), reconnectez-vous à l'aide du compte **`admin`**, et ajoutez une pizza.
 Voila ! Le site devrait être entièrement fonctionnel !
 
-Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`jwt-fetch`**.
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`jwt-fetch-hmi tutorial`**.
 
 En cas de souci, vous pouvez utiliser le code du tutoriel :
 
-- pour le frontend : [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
+- pour le frontend : [jwt-fetch-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
 - pour l'API : [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
 💭 Est-ce que c'est "safe" que notre IHM affiche le menu "Add a pizza" pour un utilisateur qui n'est pas l'admin ?    
@@ -620,7 +619,7 @@ Dans le cadre du site nous permettant de gérer une pizzeria, nous allons faire 
 Veuillez démarrer la version **`/web2/tutorials/pizzeria/api/safe`** de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
 [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-Pour ce nouveau tutoriel, au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/web-storage`** sur base d'un copier/coller de **`/web2/tutorials/pizzeria/hmi/jwt-fetch`** (ou [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)).
+Pour ce nouveau tutoriel, au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/web-storage`** sur base d'un copier/coller de **`/web2/tutorials/pizzeria/hmi/jwt-fetch`** (ou [jwt-fetch-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
 **`/web2/tutorials/pizzeria/hmi/web-storage`**.
@@ -681,20 +680,20 @@ Si vous faites ensuite un refresh de votre page, comme votre session aura été 
 Faites ce test, c'est intéressant 😉.
 
 Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message :
-**`web storage tutorial`**.
+**`web-storage-hmi tutorial`**.
 
 En cas de souci, vous pouvez utiliser le code du tutoriel :
 
-- pour le frontend : [web-storage](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage).
-- pour l'API : [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
+- pour le frontend : [web-storage-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage).
+- pour l'API : [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-# <InternalPageTitle> Projet 2.24 : Authentification et appel d'opérations protégées par JWT </InternalPageTitle>
+# <InternalPageTitle> Projet 4.3 : Authentification et appel d'opérations protégées par JWT </InternalPageTitle>
 
 ## Mise en place du projet
 
-Vous devez mettre à jour votre frontend afin qu'il consomme les nouvelles opérations de votre API qui ont été développées pour [Projet 2.22](../auths-api/#project_2_22_authentification_autorisation_doperations).
+Vous devez mettre à jour votre frontend afin qu'il consomme les nouvelles opérations de votre API qui ont été développées pour [Projet 4.2](../security-api/#projet_4_2_securisation_d_api).
 
-Le code de votre frontend doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.24/hmi`** sur base d'un copier/coller du code de [Projet 2.21](../../part3/#projet_2_21_deploiement_de_votre_frontend_de_votre_backend).
+Le code de votre frontend doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/4.3/hmi`** sur base d'un copier/coller du code de [Projet 3.1](../../part3/#projet_3_1_deploiement_de_votre_frontend_de_votre_backend).
 
 ## Authentification et appel d'opérations nécessitant une autorisation JWT
 
@@ -739,7 +738,7 @@ Un peu avant la fin de la séance, veuillez discuter :
 
 </AuthenticatedBlock>
 
-Quand votre prototype de frontend offre l'authentification (register & login) et utilise toutes les opérations sécurisées de votre API, que les sessions sont bien sauvegardées, veuillez faire un **`commit`** de votre code avec comme message : **`2.24.1 : hmi jwt auths`**.
+Quand votre prototype de frontend offre l'authentification (register & login) et utilise toutes les opérations sécurisées de votre API, que les sessions sont bien sauvegardées, veuillez faire un **`commit`** de votre code avec comme message : **`4.3.1 : hmi jwt auths`**.
 
 #### 🤝 Tips
 
@@ -758,9 +757,7 @@ Vous pourriez ajouter une fonction "remember me" à votre formulaire de "login" 
 - dans le **`sessionStorage`** si l'on ne clique pas sur la checkbox "Remember me" lors du login ou du register.
 
 
-Vous devez tester, à l'aide de Rest Client, toutes les opérations que vous avez modifiées.
-
-Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`2.23 : api bcrypt & escape-html`**.
+Quand votre prototype de frontend est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`4.3.2 : remember me`**.
 
 
 #### 🤝 Tips
@@ -777,7 +774,7 @@ En effet, point de vue ergonomie, il est intéressant que le dernier choix de l'
 Dans la partie optionnelle sur l'[Authentification & autorisation JWT à l'aide de cookies](../security-api/#🍬_authentification_autorisation_jwt_a_laide_de_cookies), nous avons vu comment mettre à jour l'API afin d'intégrer les tokens JWT aux cookies.
 
 Veuillez démarrer la version **`/web2/tutorials/pizzeria/api/cookies`** de la RESTful API de la pizzeria. En cas de souci, vous pouvez utiliser ce code-ci :
-[cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
+[api-cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
 
 Nous allons voir maintenant comment le frontend peut utiliser ces cookies.
 
@@ -785,7 +782,7 @@ Nous allons voir maintenant comment le frontend peut utiliser ces cookies.
 
 Pour ce nouveau tutoriel, nous allons repartir de la dernière version de notre frontend.
 
-Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/cookies`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/web-storage`** (ou [web-storage](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage)).
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/hmi/cookies`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/hmi/web-storage`** (ou [web-storage-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
 **`/web2/tutorials/pizzeria/hmi/cookies`**.
@@ -809,130 +806,13 @@ N'hésitez pas à aller décoder la valeur du cookie **`user`** sur [base64decod
 Toujours dans l'onglet **`Application`** des outils de développeurs de Chrome, faites un clear des cookies : clic droit sur **`http://localhost:8080`**, **`Clear`**.  
 Tentez maintenant d'ajouter une pizza... Ca ne fonctionne plus, et c'est bien normal, car il n'y a plus de token qui est envoyé à l'API !  
 
-Suite à ces tests, si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`cookies hmi tutorial`**.
+Suite à ces tests, si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`cookies-hmi tutorial`**.
 
 En cas de souci, vous pouvez utiliser le code du tutoriel :
 
-- pour le frontend : [hmi-cookies](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/cookies).
+- pour le frontend : [cookies-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/cookies).
 - pour l'API : [api-cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
 
 💭 Notons que cette version de notre frontend pourrait être améliorée. Actuellement, lorsqu'on fait un logout, on n'efface pas le cookie du browser.   
 Comment feriez vous ?  
-*Vous pourriez par exemple appeler la méthode **GET /auths/logout** 😉.*
-
-
-# <InternalPageTitle> 🍬 Exercice 4.4 : Auto-refresh de myMovies </InternalPageTitle>
-
-S'il vous reste du temps, il serait vraiment intéressant de faire en sorte que cycliquement, tous les 5 secondes par exemple, l'affichage de la liste de films se mette automatiquement à jour.
-
-Ainsi, si d'autres utilisateurs ajoutent un film, vous les verrez directement apparaître dans votre fenêtre.
-
-⚡ Attention que si le composant d'affichage des films est utilisé pour permettre de directement mettre à jour un film, celui-ci ne doit pas se réafficher si un utilisateur est en train de mettre à jour un film.
-
-#### 🤝 Tips
-Pensez à la fonction **`setInterval`**.
-
-Vous pouvez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 7 : auto-refresh**"".
-
-NB : Le code de vos applications se trouverait dans votre repository local et
-votre web repository (normalement appelé **web2**) dans le répertoire nommé
-**/exercises/module7/7.3/hmi**.
-
-# <InternalPageTitle> 🍬 Exercice 4.5 : Gestion de la navigation lors de l'auto-refresh de myMovie </InternalPageTitle>
-
-💭 Que peut-il se passer de désagréable si un utilisateur passe rapidement de la page listant les informations d'un film vers la page d'ajout d'un film ?
-
-Comme le render de tous les films et une action asynchrone, il est possible que celui-ci soit réalisé après que l'utilisateur ait quitté la page d'affichage des films. Cela peut être gênant, car si vous êtes sur le composant pour ajouter un film, vous ne souhaitez pas que votre formulaire d'ajout d'un film soit remplacé, de manière erronée, par la liste des films !
-
-Nous vous proposons d'implémenter ces deux fonctions :
--	Stopper les futurs appels de **fetch**, les appels automatiques vers vos APIs (**setInterval** et **clearInterval**) quand il y a un clic sur un lien ;
--	Stopper les appels de **fetch** en cours vers vos APIs quand il y a un clic sur un lien. En effet, si votre API doit renvoyer beaucoup de données, notamment quand il y a des images à communiquer, il est possible que cela prenne plusieurs secondes avant que l'API vous réponde.
-
-#### 🤝 Tips
-- Pensez aux fonctions **`setInterval`** et **`clearInterval`**.
-- Pour stopper un fetch en cours, vous pouvez utiliser un **AbortControlller**. Toute l'info est disponible sur la [Documentation MDN](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
-
-Vous pouvez faire un **commit** de votre code avec le message suivant : 
-"**myMovies : module 7 : auto-refresh improved**"".
-
-NB : Le code de vos applications se trouverait dans votre repository local et
-votre web repository (normalement appelé **web2**) dans le répertoire nommé
-**/exercises/module7/7.4/hmi**.
-
-# <InternalPageTitle> 🍬 Exercice 4.6 : L'essentiel du cours en action </InternalPageTitle>
-
-## Introduction
-Voici un exercice qui fait revoir les compétences essentiels de ce cours de JS. Il a été utilisé comme examen pour les étudiants de Vinci en deuxième année de bachelier en Informatique de Gestion en août 2022. 
-
-Normalement, cette exercice, découpé en trois questions, devrait se réaliser dans un délai de 3h.
-
-Veuillez télécharger ce fichier
-<LinkFile name="examen_js.zip" target="_blank" download>examen_js.zip</LinkFile>.
-Cette archive contient un boilerplate pour chaque question et les ressources à utiliser pour cet examen.
-
-Dans un premier temps, veuillez désarchiver **examen_js.zip** localement sur votre machine.  
-⚡ Veuillez éviter de le faire sur un répertoire qui est partagé sur le cloud. En effet, il y a des milliers de fichiers associés aux **node_modules** lorsque vous lancerez l'installation des packages ! Ca serait une vraie horreur à synchroniser 😨 !
-
-## Objectif
-Nous allons développer deux frontends et une API pour une agence de voyages.
-
-## Question 1 : Créer une IHM interactive & moderne
-Nous souhaitons afficher des lieux de vacances proposés par l'agence de voyages. Il y a 5 lieux différents, chacun avec un id, un nom et une image.
-
-Le boilerplate pour cette question se trouve dans **/question1**.
-Vous trouverez 5 images correspondant à chaque lieu dans le répertoire **/question1/src/img**, ainsi qu'un fichier contenant une liste des lieux avec leur id, leur nom et leur image dans **/question1/src/utils/places.js**.
-
-Vous devez créer deux pages :
--	La page d'accueil, accessible avec l'URI "/" ou avec un lien nommé "Home" dans la barre de navigation, doit afficher une liste de tous les noms de lieux de vacances.
--	La page de photos, accessible avec l'URI "/photos" ou avec un lien nommé "Photos" dans la barre de navigation, doit afficher un carrousel des lieux proposés.
-  - Lorsqu'on arrive sur la page initialement, la page doit afficher le 3ème lieu dans la liste, avec son image et son nom en dessous.
-  - La page doit également afficher deux boutons. Le premier permet d'afficher le lieu précédent dans la liste à la place de celui-ci. Et  l'autre permet d'afficher le lieu suivant. Ces boutons ne doivent pas être cliquables s'il n'y a plus de lieu suivant ou de lieu précédent dans la liste.
-
-Contraintes d'implémentation : 
--	Veuillez utiliser le fichier **/question1/src/utils/places.js** qui reprend des lieux de vacances. Vous devez mettre à jour ce fichier pour pouvoir l'utiliser dans votre code JS comme module.
--	Aucune autre page ne doit être disponible sur le site web.
--	Vous devez implémenter le carrousel vous-même, vous ne pouvez pas utiliser un carrousel de Bootstrap.
--	Utilisez les images importées statiquement dans la liste des lieux de vacances et changez la source de l'image affichée quand l'utilisateur clique sur un bouton.
-
-Voici un exemple de ce à quoi pourrait ressembler votre site web :
-
-<ScrollableImage name="places.png" minWidth="800px" maxWidth="1599x" />
-
-<ScrollableImage name="carousel.png" minWidth="800px" maxWidth="1599x" />
-
-## Question 2 : Créer un service web
-Nous souhaitons développer une RESTful API pour gérer les lieux de vacances proposés par l'agence, les utilisateurs du site, ainsi que les lieux favoris de ces utilisateurs.
-
-Le boilerplate pour l'API de cette question se trouve dans **/question2**, c'est une copie du boilerplate du cours.
-
-Veuillez créer les opérations suivantes :
--	**Créer un nouveau lieu de vacances**. L'opération doit prendre en entrée le nom du lieu ainsi que sa description, et doit retourner l'ID du lieu créé au format JSON. L'opération doit renvoyer une erreur si le nom ou la description ne sont pas fournis.
--	**Créer un nouvel utilisateur**. L'opération doit prendre en entrée le nom de l'utilisateur ainsi que son adresse mail, et doit retourner l'ID de l'utilisateur créé au format JSON. L'opération doit renvoyer une erreur si le nom ou l'adresse mail ne sont pas fournis, ainsi que si un utilisateur existe déjà pour cette adresse mail.
--	**Ajouter un lieu à ses favoris**. L'opération doit prendre en entrée l'ID de l'utilisateur et l'ID du lieu qu'il souhaite ajouter en favori. L'opération doit renvoyer une erreur si aucun utilisateur ne correspond à l'ID d'utilisateur donné, si aucun lieu ne correspond à l'ID de lieu donné, ou si cet utilisateur a déjà ce lieu dans ses favoris.
-
-Vous devez également créer dans le fichier **/question2/RESTClient/tests.http** au minimum une requête par opération que vous devez implémenter. Vous pouvez également créer plus de tests si vous le souhaitez.
-
-Contraintes d'implémentation :
--	L'API que vous devez créer doit correspondre aux principes d'une API RESTful.
--	Votre API ne peut pas proposer d'autres opérations que celles décrites ci-dessus.
--	Les ID que génèrent votre API doivent provenir du package **uuid**.
--	Les demandes qui sont créées doivent persister et donc survivre au redémarrage de votre application. Vous pouvez faire persister les demandes côté serveur de la manière que vous voulez, du moment que cela soit en JSON. N'hésitez pas à utiliser **/question2/utils/json.js**.
--	Aucune autorisation JWT est nécessaire.
-
-## Question 3 : Créer une SPA intégrant une IHM et un web service
-Grâce à l'API que nous avez développé dans la question 2, l'agence de voyages a pu améliorer son API pour proposer un système de recommandations. Cependant, cette API utilise un système d'Intelligence Artificielle complexe et les opérations qui récupèrent les recommandations peuvent prendre un certain temps. 
-
-Le boilerplate pour cette question se trouve dans **/question3**.
-Vous devez consommer l'API décrite ci-dessous et disponible à l'adresse **https://places-exam-api.azurewebsites.net** pour afficher des recommandations de lieux de vacances. Cette API accepte les requêtes venant de toutes les origines et n'a pas de problème de CORS. Vous ne devez donc pas utiliser de proxy pour consommer cette API.
-
-| Méthode HTTP | URI | Opération | Format |
-|---|---|---|---|
-| **GET** | **/places**| Récupérer tous les lieux de vacances | Renvoie : `[ { id, name } ]` |
-| **GET** | **/recommended** | Récupérer le lieu de vacances le plus apprécié | Renvoie : `{ id, name }` |
-
-Sur la page d'accueil du site web, veuillez afficher le nom de tous les lieux de vacances, renvoyés par l'API avec l'URI "/places" (il n'est pas nécessaire d'afficher leur ID). 
-
-Toujours sur la page d'accueil, veuillez également afficher le nom du lieu de vacances le plus apprécié, renvoyé par l'API avec l'URI "**/recommended**". Comme cette opération peut prendre un certain temps, elle ne peut pas ralentir le chargement de la page. Le reste de la page doit être affiché avant de consommer cette API, et son résultat doit être rajouté sur la page quand l'opération est terminée.
-
-Aucune autre page ne doit être disponible sur le site web. Pensez donc à effacer le code du boilerplate qui est inutile.
+*Vous pourriez par exemple appeler la méthode **`GET /auths/logout`** 😉.*

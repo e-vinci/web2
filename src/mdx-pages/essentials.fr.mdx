@@ -8,31 +8,31 @@ autoMargin: false
 
 <Section className="pb-3">  
   <Content>
-    <h3 className="pb-3">L'essentiel</h3>
-    <p className="pb-3">L'essentiel du contenu de ce cours est couvert par la série de tutoriels nommée "essentials".</p> 
+    <h1 className="pb-3">L'essentiel</h1>
+    <p className="pb-3">L'essentiel du contenu de ce cours est couvert par la série de tutoriels nommée "**essentials**".</p> 
     
-    <p className="pb-3">Tout au long de la série "essentials", un site pour une pizzeria est développé de manière incrémentale.</p> 
+    <p className="pb-3">Tout au long de la série "**essentials**", un site pour une pizzeria est développé de manière incrémentale.</p> 
     
-    <p className="pb-3">Chaque tutoriel de la série "essentials" illustre une des 3 compétences essentielles du cours. Le fichier <b>README</b> décrit les étapes importantes dans la création du code associé au tutoriel. Il vous est conseillé de lire ce fichier <b>README</b> en parallèle du code.</p>
+    <p className="pb-3">Chaque tutoriel de la série "**essentials**" illustre une des 3 compétences essentielles du cours. Le fichier <b><code>README.md</code></b> de chaque tutoriel décrit les étapes importantes dans la création du code. Il vous est donc conseillé de lire ce fichier <b><code>README.md</code></b> en parallèle du code.</p>
     
     <p>Voici l'ordre de lecture recommandé pour cette série "Essentials" :</p>       
    
         <ul className="card mt-3">
           <div className="card__header">1. Créer un service web</div>          
           <li className="card__content">
-            <span className="card__content__title">basic-api</span>
+            <span className="card__content__title">api-basic</span>
             <div className="card__content_description">
               <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic" target="_blank">API : Gestion de données non persistantes, code peu structuré</a>
             </div>
           </li>
           <li className="card__content">
-            <span className="card__content__title">persistence-api</span>
+            <span className="card__content__title">api-persistence</span>
             <div className="card__content_description">
               <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/persistence" target="_blank">API : Gestion de la persistance des données dans un fichier .json</a>
             </div>
           </li>
           <li className="card__content">
-            <span className="card__content__title">fat-model-api</span>
+            <span className="card__content__title">api-fat-model</span>
             <div className="card__content_description">
               <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model" target="_blank">API : Refactoring du code et utilisation d'outils de développement</a>
             </div>
@@ -88,17 +88,17 @@ autoMargin: false
             <div className="card__content_description">
               <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi" target="_blank">HMI : Mise en place d'un routeur</a>
             </div>
-          </li>
-          <li className="card__content">
-            <span className="card__content__title">cors-api</span>
-            <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cors" target="_blank">API : Gestion des CORS via l'autorisation d'une nouvelle origine</a>
-            </div>
-          </li>
+          </li>          
           <li className="card__content">
             <span className="card__content__title">basic-fetch-no-proxy-hmi</span>
             <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch-no-proxy" target="_blank">HMI : Intégration de la RESTful API de la pizzeria et gestion de CORS</a>
+              <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch-no-proxy" target="_blank">HMI : Intégration de la RESTful API de la pizzeria</a>
+            </div>
+          </li>
+          <li className="card__content">
+            <span className="card__content__title">api-cors</span>
+            <div className="card__content_description">
+              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cors" target="_blank">API : Gestion des CORS via l'autorisation d'une nouvelle origine</a>
             </div>
           </li>
           <li className="card__content">
@@ -118,21 +118,27 @@ autoMargin: false
         <ul className="card mt-3">
           <div className="card__header">3. Intégrer l'authentification, l'autorisation et les sessions d'utilisateurs au sein de SPA</div>
           <li className="card__content">
-            <span className="card__content__title">auths-api</span>
+            <span className="card__content__title">api-auths</span>
             <div className="card__content_description">
               <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths" target="_blank">API : Authentification et autorisation d'utilisateurs</a>
             </div>
-          </li>
+          </li>         
           <li className="card__content">
-            <span className="card__content__title">jwt-fetch-hmi</span>
+            <span className="card__content__title">api-safe</span>
             <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch" target="_blank">HMI : Utilisation de JWT au sein d'une IHM</a>
+              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe" target="_blank"> API : hachage des passwords et protection contre attaques</a>
             </div>
           </li>
           <li className="card__content">
-            <span className="card__content__title">safe-api</span>
+            <span className="card__content__title">api-cookies</span>
             <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe" target="_blank">Sécurisation de RESTful API : hachage des passwords et protection contre attaques</a>
+              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies" target="_blank">🍬 API : Sauvegarde du username et du token au sein d'un cookie côté client</a>
+            </div>
+          </li>
+           <li className="card__content">
+            <span className="card__content__title">jwt-fetch-hmi</span>
+            <div className="card__content_description">
+              <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch" target="_blank">HMI : Utilisation de JWT au sein d'une IHM</a>
             </div>
           </li>
           <li className="card__content">
@@ -140,17 +146,11 @@ autoMargin: false
             <div className="card__content_description">
               <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage" target="_blank">HMI : Sauvegarde du token et du username dans le localStorage</a>
             </div>
-          </li> 
-          <li className="card__content">
-            <span className="card__content__title">cookies-api</span>
-            <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies" target="_blank">API : Sauvegarde du username et du token au sein d'un cookie côté client</a>
-            </div>
-          </li>
+          </li>           
           <li className="card__content">
             <span className="card__content__title">cookies-hmi</span>
             <div className="card__content_description">
-              <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/cookies" target="_blank">HMI : Utilisation des cookies</a>
+              <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/cookies" target="_blank">🍬 HMI : Utilisation des cookies </a>
             </div>
           </li>        
         </ul>

@@ -3,16 +3,15 @@ title: "Sécurisation API"
 description: "Sécurisation d'une RESTful API"
 ---
 
-<PathViewer>
+<InternalPageMenu>
+  <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
     <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
     <PathViewerItem selected> b) Sécuritsation d'une RESTful API </PathViewerItem>
-</PathViewer>
-
-<InternalPageMenu>
+  </PathViewer>
   <InternalPageMenuItem> Protection contre les attaques XSS </InternalPageMenuItem>
   <InternalPageMenuItem> Sécurisation des passwords </InternalPageMenuItem>
-  <InternalPageMenuItem> Projet 2.23 : Sécurisation d'API </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 4.2 : Sécurisation d'API </InternalPageMenuItem>
   <InternalPageMenuItem> 🍬 Authentification & autorisation JWT à l'aide de cookies </InternalPageMenuItem> 
 </InternalPageMenu>
 
@@ -41,7 +40,7 @@ La protection contre des attaques XSS se fait à différents niveaux. Ca n'est p
 ## Réaliser une attaque XSS
 Nous allons maintenant réaliser une attaque XSS sur le site de la pizzeria.
 
-Veuillez lancer le frontend [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch) (nous allons le développer tout prochainement, vous pouvez simplement en faire une copie temporaire, l'installer et l'exécuter) et le backend **auths** du site de la pizzeria (**`/web2/tutorials/pizzeria/api/auths`** ou en cas de soucis : [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths)).
+Veuillez lancer le frontend [jwt-fetch-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch) (nous allons le développer tout prochainement, vous pouvez simplement en faire une copie temporaire, l'installer et l'exécuter) et le backend **`api-auths`** du site de la pizzeria (**`/web2/tutorials/pizzeria/api/auths`** ou en cas de soucis : [api-auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths)).
 
 Evidemment, un hackeur, pour tenter l'attaque XSS, doit d'abord trouver un moyen d'usurper la session d'**`admin`**. Nous ne verrons pas dans ce cours le genre d'attaques qui permettrait de le faire. Nous allons considérer que cette première attaque est réussie et nous allons prendre le rôle d'un hackeur pouvant accéder au compte **`admin`**.
 
@@ -88,9 +87,9 @@ Au niveau de l'API, nous allons échapper les caractères dangereux, principalem
 
 Nous allons utiliser la librairie **[escape-html](https://www.npmjs.com/package/escape-html)** sous Node.js échappant les string pour une utilisation des string transformées en HTML.
 
-Pour ce nouveau tutoriel, nous allons continuer le développement de l'API [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths) et la sécuriser.
+Pour ce nouveau tutoriel, nous allons continuer le développement de l'API [api-auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths) et la sécuriser.
 
-Au sein de votre repo **`web2`**, veuillez créer le projet nommé **/web2/tutorials/pizzeria/api/safe** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/api/auths`** (ou [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/safe`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/api/auths`** (ou [api-auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
 **`/web2/tutorials/pizzeria/api/safe`**.
@@ -342,14 +341,14 @@ Au niveau de l'API, allez voir le contenu du nouveau fichier **`/data/users.json
 Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`api-safe tutorial`**.
 
 En cas de souci, vous pouvez utiliser le code du tutoriel :
-- pour le frontend : [jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
+- pour le frontend : [jwt-fetch-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
 - pour l'API : [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-# <InternalPageTitle> Projet 2.23 : Sécurisation d'API </InternalPageTitle>
+# <InternalPageTitle> Projet 4.2 : Sécurisation d'API </InternalPageTitle>
 
-Vous devez mettre à jour l'API développée pour [Projet 2.22](../auths-api/#project_2_22_authentification_autorisation_doperations) afin de sécuriser l'API pour échapper les caractères dangereux et pour hacher les password.
+Vous devez mettre à jour l'API développée pour [Projet 4.1](../auths-api/#project_4_1_authentification_autorisation_doperations) afin de sécuriser l'API pour échapper les caractères dangereux et pour hacher les password.
 
-Le code doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.23/api`** sur base d'un copier/coller du code de [Projet 2.22](../auths-api/#project_2_22_authentification_autorisation_doperations).
+Le code doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/4.2/api`** sur base d'un copier/coller du code de [Projet 4.1](../auths-api/#project_4_1_authentification_autorisation_doperations).
 
 <AuthenticatedBlock>
 
@@ -364,7 +363,7 @@ Un peu avant la fin de la séance, veuillez discuter :
 
 Vous devez tester, à l'aide de Rest Client, toutes les opérations que vous avez modifiées.
 
-Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`2.23 : api bcrypt & escape-html`**.
+Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`4.2 : api bcrypt & escape-html`**.
 
 #### 🤝 Tips
 
@@ -410,7 +409,7 @@ Pour ce faire nous allons utiliser la librairie [cookie-session](https://github.
 
 Nous allons maintenant continuer le développement de l'API [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
 
-Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/cookies`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/api/safe`** (ou [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe)).
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/cookies`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/api/safe`** (ou [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
 **`/web2/tutorials/pizzeria/api/cookies`**.
@@ -719,6 +718,6 @@ Admettons que vous souhaitez tester l'ajout d'une pizza sans envoyer de token :
 2. Tentez la création d'une pizza qui renverra un code **`401 Unauthorized`**.
 
 Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message :
-**`cookies api tutorial`**.
+**`api-cookies tutorial`**.
 
-En cas de souci, vous pouvez utiliser le code du tutoriel [cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
+En cas de souci, vous pouvez utiliser le code du tutoriel [api-cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).

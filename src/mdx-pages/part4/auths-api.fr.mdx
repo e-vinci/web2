@@ -3,15 +3,14 @@ title: "JWT auths API"
 description: "Authentification et autorisation d'accès aux opérations d'une RESTful API via JWT"
 ---
 
-<PathViewer>
-    <PathViewerItem to="/"> web2course </PathViewerItem>
-    <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
-    <PathViewerItem selected> a) JWT auths & API </PathViewerItem>
-</PathViewer>
-
 # a) Authentification et autorisation d'accès aux opérations d'une RESTful API via JWT
 
 <InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
+    <PathViewerItem selected> a) JWT auths & API </PathViewerItem>
+  </PathViewer>
   <InternalPageMenuItem> C'est quoi l'authentification et l'autorisation ? </InternalPageMenuItem>
   <InternalPageMenuItem> Stateful VS stateless authentication </InternalPageMenuItem>
   <InternalPageMenuItem> C'est quoi les tokens JWT ? </InternalPageMenuItem>
@@ -19,7 +18,7 @@ description: "Authentification et autorisation d'accès aux opérations d'une RE
   <InternalPageMenuItem> Autorisation et vérification de token </InternalPageMenuItem>
   <InternalPageMenuItem> Client REST avec JWT </InternalPageMenuItem>
   <InternalPageMenuItem> Protection des opérations d'écriture d'une API </InternalPageMenuItem>
-  <InternalPageMenuItem> Project 2.22 : Authentification & autorisation d'opérations </InternalPageMenuItem>
+  <InternalPageMenuItem> Project 4.1 : Authentification & autorisation d'opérations </InternalPageMenuItem>
 </InternalPageMenu>
 
 # <InternalPageTitle> C'est quoi l'authentification et l'autorisation ? </InternalPageTitle>
@@ -132,9 +131,9 @@ Via un exemple concret associé à notre RESTful API qui gère les ressources de
 
 La librairie que nous allons utiliser dans le cadre de ce cours pour gérer des tokens JWT est [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken).
 
-Dans ce nouveau tutoriel, nous allons continuer le développement de l'API [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model) pour ajouter des opérations permettant l'authentification et l'autorisation d'utilisateurs.
+Dans ce nouveau tutoriel, nous allons continuer le développement de l'API [api-fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model) pour ajouter des opérations permettant l'authentification et l'autorisation d'utilisateurs.
 
-Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/auths`** sur base d'un copié collé de **`/web2/tutorials/pizzeria/api/fat-model`** (ou [fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model)).
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/auths`** sur base d'un copié collé de **`/web2/tutorials/pizzeria/api/fat-model`** (ou [api-fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model)).
 
 Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
 **`/web2/tutorials/pizzeria/api/auths`**.
@@ -719,15 +718,15 @@ Authorization: {{admin.response.body.token}}
 Veuillez exécutez les requêtes de type **DELETE** et de type **PATCH** afin de vous assurer que l'API est en ordre.
 
 Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message :
-**`auths tutorial`**.
+**`api auths tutorial`**.
 
-En cas de souci, vous pouvez utiliser le code du tutoriel [auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
+En cas de souci, vous pouvez utiliser le code du tutoriel [api-auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
 
-# <InternalPageTitle> Project 2.22 : Authentification & autorisation d'opérations </InternalPageTitle>
+# <InternalPageTitle> Project 4.1 : Authentification & autorisation d'opérations </InternalPageTitle>
 
 Vous devez mettre à jour l'API développée pour [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines) afin de sécuriser certaines opérations par JWT.
 
-Le code doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.22/api`** sur base d'un copier/coller du code de [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines).
+Le code doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/4.1/api`** sur base d'un copier/coller du code de [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines).
 
 Il est possible que dans le cadre de votre projet, vous n'ayez pas besoin d'authentifier des utilisateurs afin de protéger l'accès à certaines opérations sur des ressources.
 
@@ -758,7 +757,7 @@ Un peu avant la fin de la séance, veuillez discuter :
 
 Vous devez tester toutes les nouvelles opérations que vous protégez par une autorisation JWT à l'aide de Rest Client.
 
-Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`2.22 : api JWT auths`**.
+Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`4.1 : api JWT auths`**.
 
 #### 🤝 Tips
 Comment créer un tableau dans un fichier Markdown (pour **`README.md`**) ?  
@@ -781,4 +780,4 @@ Comment ajouter l'authentification et l'autorisation JWT au sein de votre projet
 Puis vous pouvez y intégrer le code développée pour [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines).
 - Soit vous refaites les étapes du tutoriel dans cette page en partant du code développé pour [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines).
 
-# <InternalPageTitle> Project 2.22 : Authentification & autorisation d'opérations </InternalPageTitle>
+# <InternalPageTitle> Project 4.22 : Authentification & autorisation d'opérations </InternalPageTitle>

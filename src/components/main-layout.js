@@ -70,7 +70,6 @@ const MainLayout = ({
 
   if (prefix) {
     pathname = pathname.replace(prefix, '/');
-    console.log('new pathname : ', pathname);
   }
 
   const { langs, defaultLangKey } = data.site.siteMetadata.languages;

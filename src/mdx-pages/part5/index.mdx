@@ -1,0 +1,137 @@
+---
+title: "Exercices supplémentaires"
+description: "Quelques exercices supplémentaires"
+---
+
+# 🍬 Exercices supplémentaires
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part4"> 🍬 Partie 5 </PathViewerItem>
+    <PathViewerItem selected> Exercices supplémentaires </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> 🍬 Exercice 5.1 : Auto-refresh </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Exercice 5.2 : Gestion de la navigation lors de l'auto-refresh </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Exercice 5.3 : IHM & service web en résumé </InternalPageMenuItem>
+</InternalPageMenu>
+
+
+# <InternalPageTitle> 🍬 Exercice 5.1 : Auto-refresh </InternalPageTitle>
+
+S'il vous reste du temps, il serait intéressant de faire en sorte que cycliquement, tous les 5 secondes par exemple, l'affichage de la liste de films se mette automatiquement à jour. C'est donc un appel à l'API qui est à faire tous les 5 secondes.
+
+Ainsi, si d'autres utilisateurs ajoutent un film, vous les verrez directement apparaître dans votre fenêtre.
+
+⚡ Attention que si le composant d'affichage des films est utilisé pour permettre de directement mettre à jour un film, celui-ci ne doit pas se réafficher si un utilisateur est en train de mettre à jour un film.
+
+Le code de vos applications se trouverait dans votre repository local et
+votre web repository (normalement appelé **`web2`**) dans le répertoire nommé
+**`/exercises/5.1`**.
+
+Vous pouvez faire un **`commit`** de votre code avec le message suivant : 
+**`5.1 auto-refresh`**.
+
+#### 🤝 Tips
+Pensez à la fonction **`setInterval`**.
+
+
+# <InternalPageTitle> 🍬 Exercice 5.2 : Gestion de la navigation lors de l'auto-refresh </InternalPageTitle>
+
+Vous pourriez continuer le développement de **myMovies**.
+
+💭 Que peut-il se passer de désagréable si un utilisateur passe rapidement de la page listant les informations d'un film vers la page d'ajout d'un film ?
+
+Comme le render de tous les films est une action asynchrone, il est possible que celui-ci soit réalisé après que l'utilisateur ait quitté la page d'affichage des films. Cela peut être gênant, car si vous êtes sur le composant pour ajouter un film, vous ne souhaitez pas que votre formulaire d'ajout d'un film soit remplacé, de manière erronée, par la liste des films !
+
+Nous vous proposons d'implémenter ces deux fonctions :
+-	Stopper les futurs appels de **`fetch`**, les appels automatiques vers vos APIs (**`setInterval`** et **`clearInterval`**) quand il y a un clic sur un lien de la **`Navbar`** ;
+-	Stopper les appels de **`fetch`** en cours vers vos APIs quand il y a un clic sur un lien de la **`Navbar`**. En effet, si votre API doit renvoyer beaucoup de données, notamment quand il y a des images à communiquer, il est possible que cela prenne plusieurs secondes avant que l'API vous réponde.
+
+Le code de vos applications se trouverait dans votre repository local et
+votre web repository (normalement appelé **`web2`**) dans le répertoire nommé
+**`/exercises/5.2`**.
+
+Vous pouvez faire un **`commit`** de votre code avec le message suivant : 
+**`5.2 auto-refresh & navigation`**.
+
+#### 🤝 Tips
+- Pensez aux fonctions **`setInterval`** et **`clearInterval`**.
+- Pour stopper un **`fetch`** en cours, vous pouvez utiliser un **`AbortControlller`**. Toute l'info est disponible sur la [Documentation MDN](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
+
+# <InternalPageTitle> 🍬 Exercice 5.3 : IHM & service web en résumé </InternalPageTitle>
+
+## Introduction
+Voici un exercice qui fait revoir les compétences essentiels de ce cours de JS. Il a été utilisé comme examen pour les étudiants de Vinci en deuxième année de bachelier en Informatique de Gestion en août 2022. 
+
+Normalement, cette exercice, découpé en trois questions, devrait se réaliser dans un délai de 3h.
+
+Veuillez télécharger ce fichier
+<LinkFile name="examen_js.zip" target="_blank" download>examen_js.zip</LinkFile>.
+Cette archive contient un boilerplate pour chaque question et les ressources à utiliser pour cet examen.
+
+Dans un premier temps, veuillez désarchiver **`examen_js.zip`** localement sur votre machine.  
+⚡ Veuillez éviter de le faire sur un répertoire qui est partagé sur le cloud. En effet, il y a des milliers de fichiers associés aux **`node_modules`** lorsque vous lancerez l'installation des packages ! Ca serait une vraie horreur à synchroniser 😨 !
+
+## Objectif
+Nous allons développer deux frontends et une API pour une agence de voyages.
+
+## Question 1 : Créer une IHM interactive & moderne
+Nous souhaitons afficher des lieux de vacances proposés par l'agence de voyages. Il y a 5 lieux différents, chacun avec un id, un nom et une image.
+
+Le boilerplate pour cette question se trouve dans **`/question1`**.
+Vous trouverez 5 images correspondant à chaque lieu dans le répertoire **`/question1/src/img`**, ainsi qu'un fichier contenant une liste des lieux avec leur id, leur nom et leur image dans **`/question1/src/utils/places.js`**.
+
+Vous devez créer deux pages :
+-	La page d'accueil, accessible avec l'URI **`"/"`** ou avec un lien nommé "Home" dans la barre de navigation, doit afficher une liste de tous les noms de lieux de vacances.
+-	La page de photos, accessible avec l'URI **`"/photos"`** ou avec un lien nommé "Photos" dans la barre de navigation, doit afficher un carrousel des lieux proposés.
+  - Lorsqu'on arrive sur la page initialement, la page doit afficher le 3ème lieu dans la liste, avec son image et son nom en dessous.
+  - La page doit également afficher deux boutons. Le premier permet d'afficher le lieu précédent dans la liste à la place de celui-ci. Et  l'autre permet d'afficher le lieu suivant. Ces boutons ne doivent pas être cliquables s'il n'y a plus de lieu suivant ou de lieu précédent dans la liste.
+
+Contraintes d'implémentation : 
+-	Veuillez utiliser le fichier **`/question1/src/utils/places.js`** qui reprend des lieux de vacances. Vous devez mettre à jour ce fichier pour pouvoir l'utiliser dans votre code JS comme module.
+-	Aucune autre page ne doit être disponible sur le site web.
+-	Vous devez implémenter le carrousel vous-même, vous ne pouvez pas utiliser un carrousel de Bootstrap.
+-	Utilisez les images importées statiquement dans la liste des lieux de vacances et changez la source de l'image affichée quand l'utilisateur clique sur un bouton.
+
+Voici un exemple de ce à quoi pourrait ressembler votre site web :
+
+<ScrollableImage name="places.png" minWidth="800px" maxWidth="1599x" />
+
+<ScrollableImage name="carousel.png" minWidth="800px" maxWidth="1599x" />
+
+## Question 2 : Créer un service web
+Nous souhaitons développer une RESTful API pour gérer les lieux de vacances proposés par l'agence, les utilisateurs du site, ainsi que les lieux favoris de ces utilisateurs.
+
+Le boilerplate pour l'API de cette question se trouve dans **`/question2`**, c'est une copie du boilerplate du cours.
+
+Veuillez créer les opérations suivantes :
+-	**Créer un nouveau lieu de vacances**. L'opération doit prendre en entrée le nom du lieu ainsi que sa description, et doit retourner l'ID du lieu créé au format JSON. L'opération doit renvoyer une erreur si le nom ou la description ne sont pas fournis.
+-	**Créer un nouvel utilisateur**. L'opération doit prendre en entrée le nom de l'utilisateur ainsi que son adresse mail, et doit retourner l'ID de l'utilisateur créé au format JSON. L'opération doit renvoyer une erreur si le nom ou l'adresse mail ne sont pas fournis, ainsi que si un utilisateur existe déjà pour cette adresse mail.
+-	**Ajouter un lieu à ses favoris**. L'opération doit prendre en entrée l'ID de l'utilisateur et l'ID du lieu qu'il souhaite ajouter en favori. L'opération doit renvoyer une erreur si aucun utilisateur ne correspond à l'ID d'utilisateur donné, si aucun lieu ne correspond à l'ID de lieu donné, ou si cet utilisateur a déjà ce lieu dans ses favoris.
+
+Vous devez également créer dans le fichier **`/question2/RESTClient/tests.http`** au minimum une requête par opération que vous devez implémenter. Vous pouvez également créer plus de tests si vous le souhaitez.
+
+Contraintes d'implémentation :
+-	L'API que vous devez créer doit correspondre aux principes d'une API RESTful.
+-	Votre API ne peut pas proposer d'autres opérations que celles décrites ci-dessus.
+-	Les ID que génèrent votre API doivent provenir du package **uuid**.
+-	Les demandes qui sont créées doivent persister et donc survivre au redémarrage de votre application. Vous pouvez faire persister les demandes côté serveur de la manière que vous voulez, du moment que cela soit en JSON. N'hésitez pas à utiliser **`/question2/utils/json.js`**.
+-	Aucune autorisation JWT est nécessaire.
+
+## Question 3 : Créer une SPA intégrant une IHM et un web service
+Grâce à l'API que nous avez développé dans la question 2, l'agence de voyages a pu améliorer son API pour proposer un système de recommandations. Cependant, cette API utilise un système d'Intelligence Artificielle complexe et les opérations qui récupèrent les recommandations peuvent prendre un certain temps. 
+
+Le boilerplate pour cette question se trouve dans **`/question3`**.
+Vous devez consommer l'API décrite ci-dessous et disponible à l'adresse **`https://places-exam-api.azurewebsites.net`** pour afficher des recommandations de lieux de vacances. Cette API accepte les requêtes venant de toutes les origines et n'a pas de problème de CORS. Vous ne devez donc pas utiliser de proxy pour consommer cette API.
+
+| Méthode HTTP | URI | Opération | Format |
+|---|---|---|---|
+| **GET** | **`/places`**| Récupérer tous les lieux de vacances | Renvoie : **`[ { id, name } ]`** |
+| **GET** | **`/recommended`** | Récupérer le lieu de vacances le plus apprécié | Renvoie : **`{ id, name }`** |
+
+Sur la page d'accueil du site web, veuillez afficher le nom de tous les lieux de vacances, renvoyés par l'API avec l'URI **`/places`** (il n'est pas nécessaire d'afficher leur ID). 
+
+Toujours sur la page d'accueil, veuillez également afficher le nom du lieu de vacances le plus apprécié, renvoyé par l'API avec l'URI **`/recommended`**. Comme cette opération peut prendre un certain temps, elle ne peut pas ralentir le chargement de la page. Le reste de la page doit être affiché avant de consommer cette API, et son résultat doit être rajouté sur la page quand l'opération est terminée.
+
+Aucune autre page ne doit être disponible sur le site web. Pensez donc à effacer le code du boilerplate qui est inutile.

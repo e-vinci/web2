@@ -1,6 +1,7 @@
 .page {
   // deal with all text written directly within the .mdx files, without calling react components (or html)
   // it is considered that a text written with HTML shall start with a Section tag
+  // display:table;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -17,7 +18,13 @@
 
   @media only screen and (min-width: $lg) {
     width: auto;
-    margin-left: 30vw;
+    &:has(.page-menu) {
+      margin-left: 30vw;
+    }
+
+    &:has(.page-menu--sticky) {
+      margin-left: 0;
+    }
   }
 
   a {
@@ -38,9 +45,9 @@
   h3,
   h4,
   h5 {
-    margin-bottom: 0.5rem;    }
+    margin-bottom: 0.5rem;
+  }
 
- 
   p {
     margin-bottom: 1rem;
     line-height: 1.5;
@@ -65,7 +72,7 @@
     }
   }
 
-  pre{
+  pre {
     margin-bottom: 1rem;
   }
 

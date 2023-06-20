@@ -1,20 +1,28 @@
 .page-menu {
+  // display: block;
   width: max-content;
 
   @media only screen and (min-width: $lg) {
     width: 30vw;
+    height: 100vh;
+
     left: 0;
+    top: 0;
+    margin-top: 1rem;
     position: fixed;
     z-index: 10;
 
-    overflow-y: auto;
-    height: calc(100% - 120px);
-    top: 160px;
+    //display: table-cell;
+
+
+    overflow-y: auto;// auto;
+    // top: 160px;
 
     &--sticky {
       position: relative;
       top:0;
       width: max-content;
+      height: auto;
     }
   }
 

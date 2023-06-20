@@ -3,15 +3,14 @@ title: "Refactoring de l'API"
 description: "Refactoring à l'aide d'un fat model"
 ---
 
-<PathViewer>
-    <PathViewerItem to="/"> web2course </PathViewerItem>
-    <PathViewerItem to="/part1"> Partie 1)</PathViewerItem>
-    <PathViewerItem selected> d) Refactoring </PathViewerItem>
-</PathViewer>
-
 # d) Refactoring à l'aide d'un "fat model"
 
 <InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part1"> Partie 1)</PathViewerItem>
+    <PathViewerItem selected> d) Refactoring </PathViewerItem>
+  </PathViewer>
   <InternalPageMenuItem> Architectures web possibles pour une API ? </InternalPageMenuItem>
   <InternalPageMenuItem> Architecture Express & "fat model" </InternalPageMenuItem>
   <InternalPageMenuItem> Exercice 1.9 : Refactoring à l'aide d'un fat model </InternalPageMenuItem>
@@ -262,10 +261,10 @@ module.exports = router;
 Lancer votre API soit via le debugger, soit via la commande **`npm run dev`**.  
 Veuillez ensuite tester que tout fonctionne bien en exécutant les requêtes HTTP déjà présentes dans le répertoire **`REST Client`** du boilerplate.
 
-Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`fat-model tutorial`**.
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`api-fat-model tutorial`**.
 
 En cas de souci, vous pouvez accéder au code du tutoriel ici :
-[fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
+[api-fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model).
 
 # <InternalPageTitle> Exercice 1.9 : Refactoring à l'aide d'un fat model </InternalPageTitle>
 
