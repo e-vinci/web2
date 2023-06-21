@@ -35,7 +35,7 @@ Il existe des différences lorsqu'on écrit du JS pour un browser ou lorsqu'on �
 
 # <InternalPageTitle> Les instructions </InternalPageTitle>
 
-👍 Même si ce n'est pas obligatoire, on recommande de séparer chaque instruction par un " **;** ".
+👍 Même si ce n'est pas obligatoire, on recommande de séparer chaque instruction par un " **`;`** ".
 
 Cela permet d'augmenter la lisibilité du code.
 
@@ -44,15 +44,15 @@ let x = 1;
 console.log('x = ', x);
 ```
 
-`console.log()` : c'est une méthode qui permet d'afficher un message dans la console du browser ou de l'environnement Node.js. En Java, c'est l'équivalent de `System.out.println()` en Java.
+**`console.log()`** : c'est une méthode qui permet d'afficher un message dans la console du browser ou de l'environnement Node.js. En Java, c'est l'équivalent de **`System.out.println()`** en Java.
 
 # <InternalPageTitle> Les commentaires </InternalPageTitle>
 
 On ajoute des commentaires dans son code via :
 
-- " **//** " : une seule ligne commentée.
-- " **/\*** " et " **\*/** " : un bloc de lignes commenté.
-- " **/\*\*** " et " **\*/** " : un bloc de lignes commenté pour générer la `JSDoc` d'une fonction.
+- " **`//`** " : une seule ligne commentée.
+- " **`/*`** " et " **`*/`** " : un bloc de lignes commenté.
+- " **`/**`** " et " **`*/`** " : un bloc de lignes commenté pour générer la `JSDoc` d'une fonction.
 
 ```js
 /**
@@ -84,7 +84,7 @@ let monbrowser;
 ## Variables locales
 
 Pour définir une variable locale dont sa portée est associée à un bloc,
-on utilise : **let**.
+on utilise : **`let`**.
 
 ```js
 if (true) {
@@ -94,8 +94,7 @@ if (true) {
 console.log(blockScope); // Uncaught ReferenceError: blockScope is not defined
 ```
 
-Une variable **let** [[7.]](/references/#r7) :
-
+Une variable **`let`** [[7.]](/references/#r7) :
 - n'est pas accessible en dehors du bloc où elle est définie ;
 - est processée à l'exécution seulement ;
 - ne peut pas être redéclarée dans le même bloc.
@@ -103,7 +102,7 @@ Une variable **let** [[7.]](/references/#r7) :
 ## constantes locales
 
 Pour définir une constante dont sa portée est associée à un bloc,
-on utilise : **const** [[8.]](/references/#r8).
+on utilise : **`const`** [[8.]](/references/#r8).
 
 ```js
 if (true) {
@@ -118,7 +117,7 @@ if (true) {
 
 ## Variables globales
 
-Pour définir une variable globale si elle est déclarée en dehors d'une fonction, on utilise : **var**.
+Pour définir une variable globale si elle est déclarée en dehors d'une fonction, on utilise : **`var`**.
 
 ```js
 if (true) {
@@ -128,15 +127,14 @@ if (true) {
 console.log(globalVar); // Hello
 ```
 
-Une variable **var** est:
-
+Une variable **`var`** est:
 - processée avant l'execution du code ("hoisting") ;
 - accessible au travers de tout le programme ;
 - redéclarable dans n’importe quel bloc.
 
 ## Variables dont la portée est associée à une fonction
 
-Pour définir une variable ou constante dont la portée est associée à une fonction, on peut utiliser : **let**, **const** ou **var**.
+Pour définir une variable ou constante dont la portée est associée à une fonction, on peut utiliser : **`let`**, **`const`** ou **`var`**.
 
 ```js
 function checkScopeVarInFunction() {
@@ -147,7 +145,7 @@ checkScopeVarInFunction();
 console.log(varInFunction); // Uncaught ReferenceError: varInFunction is not defined
 ```
 
-👍 Nous vous recommandons d'utiliser **let** ou **const** lorsque vous déclarer une variable ou constante au sein d'une fonction.
+👍 Nous vous recommandons d'utiliser **`let`** ou **`const`** lorsque vous déclarer une variable ou constante au sein d'une fonction.
 
 <br />
 
@@ -172,7 +170,7 @@ console.log(varInFunction); // Hello
 
 ⚡ L'utilisation de variables globales peut s'avérer dangereux.
 
-On crée une variable globale soit via **var**, soit en initialisant une variable non déclarée.
+On crée une variable globale soit via **`var`**, soit en initialisant une variable non déclarée.
 
 ```js
 var index = 1;
@@ -188,8 +186,7 @@ function print() {
 ```
 
 Dans cet exemple de code, on s'attendrait à ce que la deuxième boucle affiche :
-
-`Print 1 Print 2 Print 3 Print 4 Print 5`.
+**`Print 1 Print 2 Print 3 Print 4 Print 5`**.
 
 ## Recommandations concernant la portée de vos variables
 
@@ -197,20 +194,20 @@ Dans cet exemple de code, on s'attendrait à ce que la deuxième boucle affiche 
 
 👍 Nous vous recommandons de définir des variables dont la portée est correctement exprimée par le mot-clé utilisé lors de la définition :
 
-- utilisez **let** ou **const** pour des variables ou constantes disponibles au sein d'un bloc de code uniquement;
-- utilisez **var** (ou **const**) que si une variable (ou constante) doit être disponible au sein de tous les blocs d'un script. Néanmoins, même dans ce cas-ci, on préférera utiliser une variable via **let**.
+- utilisez **`let`** ou **`const`** pour des variables ou constantes disponibles au sein d'un bloc de code uniquement;
+- utilisez **`var`** (ou **`const`**) que si une variable (ou constante) doit être disponible au sein de tous les blocs d'un script. Néanmoins, même dans ce cas-ci, on préférera utiliser une variable via **`let`**.
 
 ## Types de variables
 
 Voici les types principaux de variables qui seront déterminés lors de l'initialisation d'une variable :
 
-- **Number** (Nombre) : un seul type pour les entiers, réels, doubles…
-- **String** (Chaîne) : comprise entre guillemets simples, doubles ou entre **\`** et **\`**.
-- **Bool** (Booléen).
-- **Array** (Tableau).
-- **Object** (Objet).
+- **`Number`** (Nombre) : un seul type pour les entiers, réels, doubles…
+- **`String`** (Chaîne) : comprise entre guillemets simples, doubles ou entre **\`** et **\`**.
+- **`Bool`** (Booléen).
+- **`Array`** (Tableau).
+- **`Object`** (Objet).
 
-Afin de renvoyer sous forme d'une string le type d'une expression, on utilise l'opérateur **typeof**.
+Afin de renvoyer sous forme d'une string le type d'une expression, on utilise l'opérateur **`typeof`**.
 
 ```js
 console.log(typeof 12); // number
@@ -222,9 +219,9 @@ console.log(typeof undeclaredVariable); // undefined
 # <InternalPageTitle> Les opérateurs </InternalPageTitle>
 ## Opérateurs d'égalité ou de non égalité
 
-Pour une comparaison stricte, sans conversion de type, on utilise **===** ou **!==**.
+Pour une comparaison stricte, sans conversion de type, on utilise **`===`** ou **`!==`**.
 
-Pour une comparaison avec conversion de type, on utilise **==** ou **!=**.
+Pour une comparaison avec conversion de type, on utilise **`==`** ou **`!=`**.
 
 ```js
 1 === 1; // true
@@ -242,9 +239,9 @@ object1 == object2; //false
 
 ## Optional chaining operator : ?.
 
-L'opérateur **?.** permet de lire la valeur d'une propriété d'un objet sans devoir contrôler si la référence de l'objet est valide.
+L'opérateur **`?.`** permet de lire la valeur d'une propriété d'un objet sans devoir contrôler si la référence de l'objet est valide.
 
-Il agit comme l'opérateur **.** sauf qu'au lieu de causer une erreur si une référence (d'une variable) est "nullish", c'est-à-dire **null** ou **undefined**, l'expression est court-circuitée et renvoie **undefined**.
+Il agit comme l'opérateur **`.`** sauf qu'au lieu de causer une erreur si une référence (d'une variable) est "nullish", c'est-à-dire **`null`** ou **`undefined`**, l'expression est court-circuitée et renvoie **`undefined`**.
 
 Sans test de condition, voici un morceau de code qui soulève une exception :
 
@@ -260,8 +257,8 @@ const dogName = adventurer.dog.name; //Error: Cannot read properties of undefine
 console.log(dogName);
 ```
 
-En effet, la référence dog est **undefined**.  
-Avant le récent "optional chaining operateur", voici ce que nous aurions pu écrire comme code avant d'initialiser **dogName** :
+En effet, la référence dog est **`undefined`**.  
+Avant le récent "optional chaining operateur", voici ce que nous aurions pu écrire comme code avant d'initialiser **`dogName`** :
 
 ```js
 const adventurer = {
@@ -280,10 +277,10 @@ if (adventurer !== undefined && adventurer.dog !== undefined)
 console.log(dogName); // undefined
 ```
 
-Si la propriété d'un objet renvoyait jamais une valeur valide qui était à **false** ou **0**, alors on simplifiait souvent le check des valeurs nullish à qqch du style :
-`if(adventurer && adventurer.dog)` .
+Si la propriété d'un objet ne renvoyait jamais une valeur valide étant à **false** ou **0**, alors on simplifiait souvent le check des valeurs nullish à qqch du style :
+**`if(adventurer && adventurer.dog)`**.
 
-Maintenant, grâce à l'opérateur **?.**, nous pouvons écrire du code très concis et ne plus écrire de tests de conditions pour les valeurs de type "nullish" :
+Maintenant, grâce à l'opérateur **`?.`**, nous pouvons écrire du code très concis et ne plus écrire de tests de conditions pour les valeurs de type "nullish" :
 
 ```js
 const adventurer = {
@@ -310,7 +307,7 @@ console.log(kids2?.[0]?.name); // undefined
 
 ## Nullish coalescing operator : ??
 
-Le "nullish coalescing operator" permet de renvoyer ce qui se trouve à droite de l'opérateur quand ce qui se trouve à gauche est "nullish" (**null** ou **undefined**).
+Le "nullish coalescing operator" permet de renvoyer ce qui se trouve à droite de l'opérateur quand ce qui se trouve à gauche est "nullish" (**`null`** ou **`undefined`**).
 
 ```js
 const adventurer = {
@@ -328,8 +325,10 @@ console.log(catName); // "Dinah"
 ```
 
 ## Spread operator : ...
+
 ### Spread operator au niveau d'un objet
-Voici un exemple d'utilisation de **spread operator** :
+
+Voici un exemple d'utilisation de **`spread operator`** :
 
 ```js
 const MENU = [
@@ -362,25 +361,26 @@ const MENU = [
 const updatedPizza = {...MENU[foundIndex], ...req.body};
 ```
 
-Le **spread operator** est très utile en JS, ce sont les **"..."**.  
+Le **`spread operator`** est très utile en JS, ce sont les **`...`**.  
 Ici, nous créons un nouvel objet en intégrant deux objets : **`MENU[foundIndex]`** et **`req.body`**.  
-Le **spread operator** permet de faire une "shallow copy", ou copie peu profonde, d'un élément de l'array `MENU`, à l'aide de **`...MENU[foundIndex]`**.  
+Le **`spread operator`** permet de faire une "shallow copy", ou copie peu profonde, d'un élément de l'array **`MENU`**, à l'aide de **`...MENU[foundIndex]`**.  
 Cela reprend toutes les propriétés de l'objet identifié par **`foundIndex`**.  
 Ensuite, nous remplaçons les propriétés existantes de cette objet par les propriétés données dans **`req.body`** à l'aide de **`...req.body`**. Bien sûr, si l'objet **`...req.body`** contient des nouvelles propriétés, celles-ci seront ajoutée à **`updatedPizza`**. 
 
 ### Spread operator au niveau d'un array
-Voici un exemple de **spread operator** (voir les 3 petits points).
+Voici un exemple de **`spread operator`** (voir les 3 petits points) :
+
 ```js
 orderedMenu = [...MENU].sort((a, b) => a.title.localeCompare(b.title));
 ```
 
-Ici nous souhaitons faire un tri d'un `MENU` (qui est un array), nous souhaitons le faire sur une copie de celui-ci.  
+Ici nous souhaitons faire un tri d'un **`MENU`** (qui est un array) sur base d'une copie de celui-ci.  
 💭 Mais pourquoi le faire sur une copie ?  
-Et bien, si nous autorisons à trier l'array associé au `MENU`, lorsque nous tenterons d'ajouter un nouvel élément, le dernier élément de l'array ne contiendra plus le dernier id (ou l'id le plus haut) !  
-Comme la fonction **sort** modifie l'array sur lequel la méthode est appelée, nous voulons travailler sur une copie de cet array : **`[...MENU]`** crée un nouveau tableau contenant tous les éléments du **MENU**.
+Si nous autorisons à trier l'array associé au **`MENU`**, lorsque nous tenterons d'ajouter un nouvel élément, le dernier élément de l'array ne contiendra plus le dernier id (ou l'id le plus haut), car la fonction **`sort`** modifie l'array sur lequel la méthode est appelée !  
+Nous souhaitons donc travailler sur une copie de cet array : **`[...MENU]`** crée un nouveau tableau contenant tous les éléments du **`MENU`**.
 
 ### Spread operator en résumé
-Le **spread operator** est incroyablement puissant, il permet d'écrire du code concis et lisible.  
+Le **`spread operator`** est très puissant, il permet d'écrire du code concis et lisible.  
 Il est utilisé dans les objets, les arrays, ainsi que comme paramètre de fonction.  
 
 N'hésitez pas à consulter la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) [[R.57]](/references/#r57) pour en savoir plus.
@@ -389,13 +389,13 @@ N'hésitez pas à consulter la [documentation de MDN](https://developer.mozilla.
 
 Nous ne verrons pas tous les opérateurs logiques dans ce cours, ils sont sensés être connus.
 
-Par exemple, les opérateurs logiques sont les habituels : **&&**, **||**, **!**
+Par exemple, les opérateurs logiques sont les habituels : **`&&`**, **`||`**, **`!`**
 
 Néanmoins, vous avez tous les opérateurs disponibles dans [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators) [[R.9]](/references/#r9).
 
 # <InternalPageTitle> Les conditions </InternalPageTitle>
 
-Comme dans la majorité des langages, les instructions conditionnelles sont construites à l'aide de **if** ... **else**.
+Comme dans la majorité des langages, les instructions conditionnelles sont construites à l'aide de **`if`** ... **`else`**.
 
 Si vous souhaitez revoir les instructions conditionnelles, vous pouvez le faire dans la [documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#conditional_statements) [[R.10]](/references/#r10).
 
@@ -410,7 +410,7 @@ if (isAuthenticated) {
 }
 ```
 
-Voici un exemple de **switch** :
+Voici un exemple de **`switch`** :
 
 ```js
 let foo = 0;
@@ -437,7 +437,7 @@ En JS, il existe plusieurs façon de déclarer des fonctions.
 
 ## Les fonctions personnalisées
 
-Ce sont des fonctions qui portent un nom, définies à l'aide du mot-clé **function**.
+Ce sont des fonctions qui portent un nom, définies à l'aide du mot-clé **`function`**.
 
 ```js
 function welcomeMessage(message) {
@@ -491,11 +491,11 @@ console.log(higher(1)); // 2
 
 On peut ne pas mettre les parenthèses si et seulement si la fonction ne possède qu'un seul paramètre.
 
-On peut ne pas mettre les accolades si et seulement si le code est une expression, c'est-à-dire si la fonction renvoie quelque chose ; dans ce cas, on ne met pas de **return**.
+On peut ne pas mettre les accolades si et seulement si le code est une expression, c'est-à-dire si la fonction renvoie quelque chose ; dans ce cas, on ne met pas de **`return`**.
 
 ## Les paramètres de fonctions
 
-Les paramètres d'une fonction sont optionnels. Lors de l'appel d'une fonction, le valeur **undefined** est allouée aux paramètres manquants.
+Les paramètres d'une fonction sont optionnels. Lors de l'appel d'une fonction, le valeur **`undefined`** est allouée aux paramètres manquants.
 
 Les paramètres ont une portée locale au sein de la fonction.
 
@@ -539,7 +539,7 @@ console.log(message); // HI DEAR HUMAN
 
 Il existe encore d'autres caractéristiques pour les fonctions.
 
-Par exemple, une fonction retourne une valeur à l'aide de **return**.
+Par exemple, une fonction retourne une valeur à l'aide de **`return`**.
 
 Si vous souhaitez en savoir plus, vous pouvez lire [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions) [[R.11]](/references/#r11).
 
@@ -550,11 +550,11 @@ Les boucles permettent de répéter certaines tâches.
 Si vous souhaitez en savoir plus sur l'utilisation de différents types de boucles en JS, vous pouvez le faire via la [documentation MDN ici](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code) [[R.12]](/references/#r12).
 
 On utilise ces mots-clés pour définir des boucles en JS :
-**for**, **for**/**in**, **for**/**of**, **while**, **do**/**while**.
+**`for`**, **`for`**/**`in`**, **`for`**/**`of`**, **`while`**, **`do`**/**`while`**.
 
-Nous verrons aussi plus tard qu'il existe des fonctions sur des `Array` permettant de boucler sur les éléments d'un tableau.
+Nous verrons aussi plus tard qu'il existe des fonctions sur des **`Array`** permettant de boucler sur les éléments d'un tableau.
 
-S'il y a un type de boucle à retenir, c'est la boucle **for**, la plus classique, qui fonctionne dans tous les langages et avec la majorité des structures de données :
+S'il y a un type de boucle à retenir, c'est la boucle **`for`**, la plus classique, qui fonctionne dans tous les langages et avec la majorité des structures de données :
 
 ```js
 for (let index = 0; index < 5; index++) {
@@ -565,7 +565,7 @@ for (let index = 0; index < 5; index++) {
 # <InternalPageTitle> Les tableaux </InternalPageTitle>
 ## Introduction
 
-Les tableaux sont des variables ou constantes de type **Array**.  
+Les tableaux sont des variables ou constantes de type **`Array`**.  
 Un array (ou tableau) est un ensemble ordonné de valeurs auxquelles ont fait référence avec un nom et un indice.
 
 ## Création de tableaux
@@ -580,14 +580,14 @@ const arr2 = new Array(10) ; // What is the result ? 
 }
 ```
 
-⚡ Dans l'exemple ci-dessus, **arr** est un tableau de deux éléments contenant les valeurs **10** et **100**. Or **arr2** est un tableau de **10** éléments ne contenant aucune valeur...
+⚡ Dans l'exemple ci-dessus, **`arr`** est un tableau de deux éléments contenant les valeurs **`10`** et **`100`**. Or **`arr2`** est un tableau de **`10** éléments ne contenant aucune valeur...
 C'est assez déroutant et donc déconseillé de créer un tableau à l'aide du constructeur.
 
-👍 Il est recommandé de créer un array à l'aide de **[]**.
+👍 Il est recommandé de créer un array à l'aide de **`[]`**.
 
 ## Parcourir un tableau
 
-On peut parcourir un tableau soit à l'aide des boucles classiques (**for** & **.length**), soit à l'aide de la méthode **forEach()**.
+On peut parcourir un tableau soit à l'aide des boucles classiques (**`for`** & **`.length`**), soit à l'aide de la méthode **`forEach()`**.
 
 ```js
 for (let index = 0; index < LIBRARIES.length; index++) {
@@ -622,7 +622,7 @@ for (let x = 0; x < numberOfRows; x++) {
 
 ## Autres méthodes associées aux tableaux
 
-Il existe de nombreuses méthodes intéressantes associées aux tableaux, comme : `pop()`, `map()`, `indexOf()`.
+Il existe de nombreuses méthodes intéressantes associées aux tableaux, comme : **`pop()`**, **`map()`**, **`indexOf()`**.
 
 Si vous souhaitez approfondir ce sujet, vous pouvez consulter [la MDN documentation ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) [[R.13]](/references/#r13).
 
@@ -630,7 +630,7 @@ Si vous souhaitez approfondir ce sujet, vous pouvez consulter [la MDN documentat
 
 On peut écrire des String sur plusieurs lignes à l'aide de **\` \`**.
 
-Il est possible d'inclure des expressions, généralement les valeurs de variables, dans des String en utilisant **${}**.
+Il est possible d'inclure des expressions, généralement les valeurs de variables, dans des String en utilisant **`${}`**.
 
 ```js
 for (let i = 0; i < LIBRARIES.length; i++) {
@@ -671,7 +671,7 @@ let raphael = {
 
 On crée un objet vide via **{}**.
 
-⚡ Il n'est pas recommandé de créer un objet en utilisant le constructeur d' **Object** via le mot clé **new**.
+⚡ Il n'est pas recommandé de créer un objet en utilisant le constructeur d' **`Object`** via le mot clé **`new`**.
 
 ```js
 let sandra = {};
@@ -687,7 +687,7 @@ Il existe deux façons d'accéder aux propriétés d'un objet.
 
 ### Accès à une propriété via un .
 
-On accède régulièrement aux propriétés d'un objet via un **.** :
+On accède régulièrement aux propriétés d'un objet via un **`.`** :
 
 ```js
 console.log(raphael.firstname, ' :', raphael.sayHello()); // Raphael  : Hi everyone !
@@ -707,9 +707,9 @@ console.log(sandra['firstname'], ',', sandra['lastname']);
 
 Les exceptions permettent de gérer des cas d'erreur se produisant lors de l'exécution de vos scripts.
 
-On lance une exception à l'aide du mot clé **throw** et d'une expression.
+On lance une exception à l'aide du mot clé **`throw`** et d'une expression.
 
-On peut construire ses propres exception, en faisant un **throw** de String, Number, Boolean ou Object.
+On peut construire ses propres exception, en faisant un **`throw`** de String, Number, Boolean ou Object.
 
 ```js
 function divideXByY(x, y) {
@@ -719,7 +719,7 @@ function divideXByY(x, y) {
 divideXByY(5, 0); // Uncaught Division par 0 !
 ```
 
-On peut aussi lancer des exceptions à l'aide d'objets qui facilitent la gestion des exceptions : cela peut être l'objet **Error** ou d'autres types d'erreurs prédéfinies par l'environnement JS (**RangeError**, **SyntaxError**)
+On peut aussi lancer des exceptions à l'aide d'objets qui facilitent la gestion des exceptions : cela peut être l'objet **`Error`** ou d'autres types d'erreurs prédéfinies par l'environnement JS (**`RangeError`**, **`SyntaxError`**...)
 
 ```js
 function RegularDivideXByY(x, y) {
@@ -734,19 +734,19 @@ try {
 }
 ```
 
-Les deux propriétés intéressantes de "JS built-in error objects" sont : **name** & **message**.
+Les deux propriétés intéressantes de "JS built-in error objects" sont : **`name`** & **`message`**.
 
-Il est possible de créer vos propres classes d'erreur (en héritant de la classe **Error**).
+Il est possible de créer vos propres classes d'erreur (en héritant de la classe **`Error`**).
 
 Si vous souhaitez plus de détails sur les "JS built-in error objects", vous pouvez parcourir [la documentation MDN ici](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#error_types) [[R.14]](/references/#r14).
 
 ## Intercepter une expression
 
-On gère l'apparition d'une exception au sein d'un bloc de code à l'aide de **try** ... **catch** et éventuellement **finally** :
+On gère l'apparition d'une exception au sein d'un bloc de code à l'aide de **`try`** ... **`catch`** et éventuellement **`finally`** :
 
 - **`try{...}`** : partie de code monitorée ;
 - **`catch(err){...}`** : instructions à exécuter en réponses à une exception ;
-- **`finally{...}`** : code à exécuter dans tous les cas après le **try** ... **catch**, qu'il y ait eu une exception ou pas.
+- **`finally{...}`** : code à exécuter dans tous les cas après le **`try`** ... **`catch`**, qu'il y ait eu une exception ou pas.
 
 ```js
 let result;
@@ -767,7 +767,7 @@ try {
 
 # <InternalPageTitle> Le destructuring assignment </InternalPageTitle>
 
-Voici un exemple de **destructing assignment**, une façon très concise en JS de créer des variables à partir de propriétés d'objets ou des valeurs d'arrays :
+Voici un exemple de **`destructing assignment`**, une façon très concise en JS de créer des variables à partir de propriétés d'objets ou des valeurs d'arrays :
 
 ```js highlighting ="3"
 // Here the variable and constants are defined
@@ -783,4 +783,4 @@ const username = decodedToken.username;
 const iat = decodedToken.iat;
 const exp = decodedToken.exp;
 ```
-Pour en savoir plus sur la puissance du **destructuring assignement**, vous pouvez consulter la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) [[R.64]](/references/#r64).
+Pour en savoir plus sur la puissance du **`destructuring assignement`**, vous pouvez consulter la [documentation de MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) [[R.64]](/references/#r64).
