@@ -67,6 +67,10 @@ h3 {
 .text {
   @include regular-text();
 
+  &--center {
+    text-align: center;
+  }
+
   &--light {
     color: $secondary-color !important;
   }

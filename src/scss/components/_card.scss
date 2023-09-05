@@ -19,6 +19,12 @@
     border-radius: 0%;
   }
 
+  &__simple-youtube-container{
+    display:"inline-block";
+    width: 480px;
+    margin-bottom: 1rem;
+  }
+
   &__header {
     display: block;
     @include emphasized-text();

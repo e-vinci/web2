@@ -23,6 +23,10 @@ description: "Création dynamique de UI"
   <InternalPageMenuItem> 🍬 Exercice 2.10 : Génération dynamique d'une table sur base d'un formulaire </InternalPageMenuItem>
 </InternalPageMenu>
 
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/TWXve2OuRK8" />
+</div>
+
 # <InternalPageTitle> Pourquoi générer dynamiquement une UI ? </InternalPageTitle>
 
 Pour différentes raisons, nous souhaitons parfois générer des parties d'IHM dynamiquement, à l'aide de JS.
@@ -558,6 +562,10 @@ N'hésitez pas à tester ce morceau de code pour vous rendre compte que la liste
 
 # <InternalPageTitle> Ajout dynamique d'images ou d'autres assets  </InternalPageTitle>
 
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/xbTu5N9v7GA" />
+</div>
+
 Lorsque l'on souhaite ajouter une image ou tout autre assets (son, vidéo...) via du JS et que l'on utilise un module bundler comme Webpack, on ne peut pas juste ajouter une balise **`<image>`** avec le chemin en relatif vers celle-ci.
 
 Pourquoi pas ?  Parce qu'en fait, le bundler va s'occuper de copier, et parfois d'optimiser les assets dans le "build", généralement généré dans le répertoire **`/dist`** de votre projet.
@@ -595,6 +603,10 @@ Si vous souhaitez plus d'informations sur la gestion des assets via Webpack, vou
 
 # <InternalPageTitle> Debbuging d'un frontend tournant sous Webpack </InternalPageTitle>
 
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/DRwBQnHwnNU" />
+</div>
+
 💭 Qui est votre meilleur ami ?
 
 Il est possible qu'à ce stade-ci, vous ignorez une des bonnes réponses, car pour les développeurs, le debugger est leur meilleur ami !
@@ -603,24 +615,6 @@ Le debugger est toujours là pour vous, prêt à vous faire voyager pas à pas d
 C'est exactement ce que l'on attend d'un ami 😁.
 
 Le tutoriel qui suit apprend à débugger un frontend qui est développé en JS et qui utilise Webpack comme module bundler.
-
-<ul className="card mt-3">
-    <div className="card__header">Debugging d'un frontend tournant sous Webpack</div>
-    <li className="card__content">
-      <span className="card__content__title">Tutoriel vidéo</span>
-      <div className="card__content_description">
-        <div width="100px" style={{display:"inline-block"}}>
-          <YoutubeImage src="https://youtu.be/Fdo7zwhxaf4" />
-        </div>
-      </div>
-    </li>          
-    <li className="card__content">
-      <span className="card__content__title">Description</span>
-      <div className="card__content_description">
-        Débuggez une application en ajoutant des breakpoints, en voyageant pas à pas dans le code à l'aide de Chrome et de ses outils de développeurs.
-      </div>
-    </li>
-</ul>
 
 # <InternalPageTitle> Projet 2.8 : Génération dynamique d'une HomePage </InternalPageTitle>
 

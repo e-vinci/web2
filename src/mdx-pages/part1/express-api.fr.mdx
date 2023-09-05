@@ -32,6 +32,11 @@ description: "Introduction aux RESTful API en Node.js & Express"
 
 # <InternalPageTitle> Introduction aux RESTful API & conventions </InternalPageTitle>
 ## C'est quoi une application REST ?
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/EIESrlEV-CQ" />
+</div>
+
 **REST** vient de **RE**presentational **S**tate **T**ransfer : c'est un style architectural pour construire des applications web extensibles, où les client et serveurs sont séparés.
 
 Dans une application REST, une **interface uniforme** (ou API) est définie afin de permettre à des applications de coopérer.
@@ -73,6 +78,10 @@ Lors de l'ajout d'un film, si cette API est hébergée à l'URL racine **https:/
 Pour lire cette ressource, il faudrait faire une requête http de type **GET** sur cette **URL** : **https://jsonplaceholder.typicode.com/posts/10**.
 
 # <InternalPageTitle> Configuration & démarrage d'une RESTful API en Express </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/pnf0FDNvkto" />
+</div>
 
 ## Création d'un projet
 Nous allons maintenant créer notre toute première RESTful API pour gérer les données associées à une pizzeria, afin de bénéficier d'opérations sur des ressources de type "pizzas".
@@ -244,6 +253,10 @@ On définit une route de cette façon : **`app.`** ou **`router.`**  **`METHOD(P
 
 # <InternalPageTitle> Opérations de lecture </InternalPageTitle>
 
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/VrXEj8QhFcw" />
+</div>
+
 Nous souhaitons par commencer à développer une opération permettant de lire toutes les ressources de type "pizzas".  
 Veuillez créer un router pour traiter des ressources **/pizzas** au sein de **`/routes/pizzas.js`**.  
 Le plus simple est d'adapter **`indexRouter`** dans **`app.js`** en **`pizzaRouter`** et **`/routers/index.js`** en **`/routes/pizzas.js`**.  
@@ -376,6 +389,10 @@ Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.2 : 
 
 # <InternalPageTitle> Paramètres de route </InternalPageTitle>
 
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/i-QAbJOppwM" />
+</div>
+
 Les **route parameters** sont des segments d'une URL qui sont utilisés pour capturer une valeur spécifiée à leur position dans l'URL. On récupère ces paramètres via l'objet **`req.params`**.
 
 Pour notre pizzeria, nous souhaitons pouvoir lire une pizza identifiée par son **id**.
@@ -450,6 +467,10 @@ Pour consommer cette nouvelle opération via un browser, nous pouvons lire toute
 N'hésitez pas à tester d'autres tris.
 
 # <InternalPageTitle> Opération de création & parsing du body </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/TwnPu-T7Wm0" />
+</div>
 
 Nous souhaitons développer une opération permettant de créer une ressource de type "pizzas".  
 Selon les conventions REST, il faut faire une requête de type **`POST /pizzas`** qui offre une représentation de la ressource à créer. La représentation utilisée est le JSON que nous verrons plus en détails plus tard.  
@@ -647,6 +668,10 @@ Besoin d'inspiration pour l'aspect filtrage et la gestion du tri des ressources 
 
 # <InternalPageTitle> Codes de statut HTTP associés aux réponses </InternalPageTitle>
 
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/OHd092ILf7g" />
+</div>
+
 On ne peut pas toujours renvoyer du JSON suite à une requête client ainsi qu'un code HTTP correspondant au fait que tout est OK (**`200 OK`**).
 
 Quand vous exécutez cette requête :
@@ -742,6 +767,10 @@ Le code de votre application doit se trouver dans votre repository local et votr
 Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.5 : API : status code`**.
 
 # <InternalPageTitle> Opérations de suppression & de modification </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/1AQ9BknswUI" />
+</div>
 
 ## Opération de suppression
 Nous souhaitons développer une opération permettant de supprimer une ressource de type "pizzas" à l'aide de son identifiant.  

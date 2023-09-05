@@ -20,14 +20,18 @@ description: "JS dans un browser"
   <InternalPageMenuItem> Création d'une IHM classique </InternalPageMenuItem>
   <InternalPageMenuItem> Exercice 2.2 : interaction avec le DOM </InternalPageMenuItem>
   <InternalPageMenuItem> L'objet event </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.3 : objet event & formulaire </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.4 : objet event & multiples éléments </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.3.1 : objet event & formulaire </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.3.2 : objet event & multiples éléments </InternalPageMenuItem>
   <InternalPageMenuItem> Les timers & actions </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.5 : timer pour lancer une action </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.4.1 : timer pour lancer une action </InternalPageMenuItem>
   <InternalPageMenuItem> Les intervalles de temps & actions répétées  </InternalPageMenuItem>
-  <InternalPageMenuItem> Exercice 2.6 : séquence d'événements différés dans le temps </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.4.2 : séquence d'événements différés dans le temps </InternalPageMenuItem>
 </InternalPageMenu>
 
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/DR0LOO3fWm4" />
+</div>
 
 # <InternalPageTitle> C'est quoi le DOM ? </InternalPageTitle>
 
@@ -607,6 +611,10 @@ Veuillez créer un nouveau projet dans votre repository local et votre web repos
 
 # <InternalPageTitle> L'objet event </InternalPageTitle>
 
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/vcBMEaLZ7qU" />
+</div>
+
 L'objet **`event`** est automatiquement passé à la callback d'un écouteur d'événement.
 
 Il est très utile, pour deux raisons principalement :
@@ -707,26 +715,26 @@ const onSubmit = (e) => {
 myForm.addEventListener("submit", onSubmit);
 ```
 
-# <InternalPageTitle> Exercice 2.3 : objet event & formulaire </InternalPageTitle>
+# <InternalPageTitle> Exercice 2.3.1 : objet event & formulaire </InternalPageTitle>
 
 Veuillez réaliser une application web permettant d'afficher un formulaire demandant votre souhait de l'instant et un bouton pour le soumettre.
 
-Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.3`**.
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.3.1`**.
 
 Lorsqu'on clique pour soumettre son souhait, veuillez faire disparaître le formulaire et afficher le souhait soumis. Attention, vous devez vous assurer que la page n'est pas rechargée lors de la soumission du formulaire.
 
-Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.3 : event object & form`**.
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.3.1 : event object & form`**.
 
 #### 🤝 Tips
 
 - Pour faire disparaître un container (une **`div`** par exemple), vous pourriez utiliser sa propriété **`style.display`** et la mettre à **`none`**.
 - Pour faire apparaître du contenu dans un container, (une **`div`** par exemple), vous pourriez utiliser sa propriété **`innerText`**.
 
-# <InternalPageTitle> Exercice 2.4 : objet event & multiples éléments </InternalPageTitle>
+# <InternalPageTitle> Exercice 2.3.2 : objet event & multiples éléments </InternalPageTitle>
 
 Veuillez réaliser une application web permettant d'afficher la couleur associée à une div parmi environ un millier de divs.
 
-Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.4`**.
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.3.2`**.
 
 La page HTML contenant environ un millier de divs vous est offerte :
 <LinkFile name="many-divs.html" target="_blank" download> Fichier HTML de base </LinkFile>
@@ -735,7 +743,7 @@ Il ne vous reste plus qu'à ajouter l'interactivité :
 - Quand on clique sur une div, vous devez l'agrandir et afficher à l'intérieur sa couleur.
 - Vous devez faire cela en utilisant l'objet **`event`**.
 
-Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.4 : event object & multiple divs`**.
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.3.2 : event object & multiple divs`**.
 
 #### 🤝 Tips
 
@@ -744,6 +752,10 @@ Quand votre application est finalisée, veuillez faire un **`commit`** de votre 
 - La callback passée à **`addEventListener`** vous donne accès à la cible de l'événement via l'objet **`event`**.
 
 # <InternalPageTitle> Les timers & actions </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/S2Yo_6ASoUo" />
+</div>
 
 **`setTimeout(f,t)`** permet l'exécution d'une callback **`f`** à l'expiration d'un timer, après **`t`** ms.
 
@@ -791,16 +803,16 @@ N'hésitez pas à exécuter ce code, si vous le souhaitez, en créant les 2 fich
 Normalement, si vous cliquez sur le 1<sup>er</sup> bouton, puis avant deux secondes sur le deuxième bouton, aucun pop-up ne sera lancé.
 
 
-# <InternalPageTitle> Exercice 2.5 : timer pour lancer une action </InternalPageTitle>
+# <InternalPageTitle> Exercice 2.4.1 : timer pour lancer une action </InternalPageTitle>
 
 Veuillez réaliser une application web permettant d'afficher le temps qu'il faut pour qu'un utilisateur clique 10 fois sur un bouton : 
 - Le jeu démarre dès que la souris de l'utilisateur passe sur le bouton.
 - Si 5 secondes après que l'utilisateur soit passé sur le bouton, l'utilisateur n'a pas terminé son 10<sup>ème</sup> clic, veuillez afficher un message de type : *"Game over, you did not click 10 times within 5s !"*.
 - Si l'utilisateur a terminé ses 10 clics avant 5s, veuillez afficher :* "You win ! You clicked 10 times within X ms"* où X est une valeur entière.
 
-Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.5`**.
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.4.1`**.
 
-Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.5 : run action within timer`**.
+Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.4.1 : run action within timer`**.
 
 #### 🤝 Tips
 
@@ -871,7 +883,7 @@ Si vous souhaitez consulter la documentation MDN concernant la gestion d'événe
 - [Introduction aux événements](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events) [[R.27]](/references/#r27)
 - [Index & liste de tous les événements](https://developer.mozilla.org/en-US/docs/Web/Events) [[R.28]](/references/#r28)
 
-# <InternalPageTitle> Exercice 2.6 : séquence d'événements différés dans le temps </InternalPageTitle>
+# <InternalPageTitle> Exercice 2.4.2 : séquence d'événements différés dans le temps </InternalPageTitle>
 
 Veuillez réaliser une application web permettant d'afficher un feu rouge.
 
@@ -888,7 +900,7 @@ Voila à quoi pourrait ressembler votre application web :
 <ScrollableImage name="red-light.gif" minWidth="308px" maxWidth="308px" />
 
 
-Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.3`**.  Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.3 : timed events`**.
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.4.2`**.  Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.4.2 : timed events`**.
 
 #### 🤝 Tips
 

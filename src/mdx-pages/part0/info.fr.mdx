@@ -10,14 +10,17 @@ description: 'Informations générales associées aux cours de JS & Node.js'
 <InternalPageMenu>
   <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
-    <PathViewerItem to="/part0" > Partie 0 </PathViewerItem>
+    <PathViewerItem to="/part0"> Partie 0 </PathViewerItem>
     <PathViewerItem selected> a) Informations générales </PathViewerItem>
   </PathViewer>
   <InternalPageMenuItem> Public cible </InternalPageMenuItem>
   <InternalPageMenuItem> Licence & auteurs </InternalPageMenuItem>
   <InternalPageMenuItem> Compétences à la fin du cours </InternalPageMenuItem>
-  <InternalPageMenuItem> Découpes des compétences en modules & planning </InternalPageMenuItem>
-  <InternalPageMenuItem> Qu'est-ce qu'il est attendu de vous ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Planning des séances de cours </InternalPageMenuItem>
+  <InternalPageMenuItem>
+    {' '}
+    Qu'est-ce qu'il est attendu de vous ?{' '}
+  </InternalPageMenuItem>
   <InternalPageMenuItem> Modalités d'évaluation </InternalPageMenuItem>
 </InternalPageMenu>
 
@@ -28,7 +31,7 @@ description: 'Informations générales associées aux cours de JS & Node.js'
 <InternalPageMenu>
   <PathViewer>
     <PathViewerItem to="/"> web2course </PathViewerItem>
-    <PathViewerItem to="/part0" > Partie 0 </PathViewerItem>
+    <PathViewerItem to="/part0"> Partie 0 </PathViewerItem>
     <PathViewerItem selected> a) Informations générales </PathViewerItem>
   </PathViewer>
   <InternalPageMenuItem> Public cible </InternalPageMenuItem>
@@ -88,12 +91,830 @@ Et pour vous, chers étudiants de Vinci, par le biais du projet Web 2, vous sere
 
 <AuthenticatedBlock>
 
+# <InternalPageTitle> Planning des séances de cours </InternalPageTitle>
+
+## Planning simplifié
+
+Voici visuellement les compétences qui seront développées à chaque séance. Les séances en orange permettront de travailler sur votre projet, tout en apprenant de nouveaux concepts.
 
 <ScrollableImage name="planning.png" minWidth="1088px" maxWidth="1088px" />
+<figcaption>Lien entre les compétences et le planning des activités</figcaption>
 
-<figcaption>
-  Lien entre les compétences et le planning des activités
-</figcaption>
+## Planning détaillé
+
+Le tableau qui suit vous permet d'identifier les vidéos que vous devez visionner avant de vous rendre à chaque séance.
+
+<div style={{overflowX:"auto"}}>
+    <table width="1170">
+        <thead>
+            <tr style={{backgroundColor:"blue", color:"white"}}>
+                <th width="40"
+                    style={{writingMode: "tb-rl", transform: "rotate(-180deg)", 
+                        display:"flex", justifyContent:"center", alignContent:"center" }}>
+                Séance
+                </th >
+                <th width="60">
+                2BIN1
+                </th>
+                <th width="60">
+                2BIN2
+                </th>
+                <th width="60">
+                2BIN3
+                </th>            
+                <th width="150">
+                Compétences principales
+                </th>
+                <th width="200"> 
+                Concepts
+                </th>
+                <th width="200"> 
+                Vidéos
+                </th>
+                <th width="200"> 
+                Tutoriels
+                </th>
+                <th width="200">
+                Exercices / <span style={{color:"orange"}}>Projets</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <b>1</b>
+                </td>
+                <td>
+                    18/9
+                </td>
+                <td>
+                    19/9
+                </td>
+                <td>
+                    18/9
+                </td>
+                <td>
+                    Toutes
+                </td>
+                <td>
+                    <b>Informations du cours & introduction aux technologies </b>: <br/>
+                    <a href="https://e-vinci.github.io/web2/part0/">info générales</a>, contexte d'utilisation de JS, intro au JS, intro à Git, <a href="https://e-vinci.github.io/web2/part0/nodejs-app/">Intro au backend Node.js / Express</a>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part0/git/#exercice_0_1_creer_un_repository_local_et_distant_pour_gerer_vos_exercices_tutoriels">Exercice 0.1 : Créer un repository local et distant pour gérer vos exercices & tutoriels</a>
+                    <br/>
+                    <a href="https://e-vinci.github.io/web2/part0/nodejs-app/#exercice_0_2_mise_a_disposition_dune_page_html_via_une_app_express">Exercice 0.2 : mise à disposition d'une page HTML via une app Express</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <b>2</b>
+                </td>
+                <td>
+                    19/9
+                </td>
+                <td>
+                    22/9
+                </td>
+                <td>
+                    19/9
+                </td>
+                <td>
+                    C1 : Service Web
+                </td>
+                <td>
+                    <b>Introduction aux RESTful API en Node.js & Express</b> :  <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/express-api/#introduction_aux_res_tful_api_conventions">intro</a>, configuration & démarrage, fonctions middleware, routes, <a href="https://e-vinci.github.io/web2/part1/express-api/#operations_de_lecture">opération de lecture</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/EIESrlEV-CQ">RESTful API 01 : Intro aux RESTful API</a> (13min) <br/>
+                    <a href="https://youtu.be/pnf0FDNvkto">RESTful API 02 : Intro à Express</a> (22min) <br/>
+                    <a href="https://youtu.be/VrXEj8QhFcw">RESTful API 03 : Opération de lecture de base</a> (7min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic">api-basic</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part1/express-api/#exercice_1_1_lecture_de_toutes_les_ressources">Exercice 1.1 : lecture de toutes les ressources</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/express-api/#exercice_1_2_middleware_sexecutant_sur_toutes_les_routes">Exercice 1.2 : middleware s'exécutant sur toutes les routes</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>3</b>
+                </td>
+                <td>
+                    25/9
+                </td>
+                <td>
+                    26/9
+                </td>
+                <td>
+                    25/9
+                </td>
+                <td>
+                    C1 : Service Web
+                </td>
+                <td >
+                    <b>Introduction aux RESTful API en Node.js & Express</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/express-api/#parametres_de_route">Paramètres de route</a>, paramètres de requête, opération de création & parsing du body, <a href="https://e-vinci.github.io/web2/part1/express-api/#client_rest">Client REST</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/i-QAbJOppwM">RESTful API 04 : Paramètres de route et de requête</a> (17min) <br/>
+                    <a href="https://youtu.be/TwnPu-T7Wm0">RESTful API 05 : Opération de création & client REST</a> (16min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic">api-basic</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part1/express-api/#exercice_1_3_lectures_specifiques_creation_rest_client">Exercice 1.3 : lectures spécifiques, création & REST Client</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/express-api/#%F0%9F%8D%AC_exercice_1_4_gestion_de_la_pagination_du_tri_et_du_filtrage">🍬 Exercice 1.4 : Gestion de la pagination, du tri et du filtrage</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>4</b>
+                </td>
+                <td>
+                    26/9
+                </td>
+                <td>
+                    29/9
+                </td>
+                <td>
+                    26/9
+                </td>
+                <td>
+                    C1 : Service Web
+                </td>
+                <td >
+                    <b>Introduction aux RESTful API en Node.js & Express</b> :  <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/express-api/#codes_de_statut_http_associes_aux_reponses">status codes</a>, <a href="https://e-vinci.github.io/web2/part1/express-api/#operations_de_suppression_de_modification">opérations de suppression & modification</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/OHd092ILf7g">RESTful API 06 : Codes de statut HTTP</a> (6min) <br/>
+                    <a href="https://youtu.be/1AQ9BknswUI">RESTful API 07 : Opérations de suppression et de modification</a> (13min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/basic">api-basic</a>
+                </td>
+                <td>
+                    <a name="_Hlk144303392"></a><a href="https://e-vinci.github.io/web2/part1/express-api/#exercice_1_5_codes_de_statut_http">Exercice 1.5 : codes de statut http</a> <br/>
+                            <a href="https://e-vinci.github.io/web2/part1/express-api/#exercice_1_6_suppression_modification_de_ressources">Exercice 1.6 : suppression & modification de ressources</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>5</b>
+                </td>
+                <td>
+                    2/10
+                </td>
+                <td>
+                    3/10
+                </td>
+                <td>
+                    2/10
+                </td>
+                <td>
+                    C1 : Service Web
+                </td>
+                <td>
+                    <b>Introduction au JSON et persistance des données</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/json/">JSON</a> <br/> <br/>
+                    <b>Amélioration des outils de développement</b> : <br/>
+                    redémarrage automatique, Debugging, <a href="https://e-vinci.github.io/web2/part1/tools/#autres_outils_de_developpement_le_linter_le_formatter">linter & formatter</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/KR3bt4RBIQI">RESTful API 08 : Intro au JSON</a> (23min) <br/>
+                    <a href="https://youtu.be/SNGoExEk1CQ">RESTful API 09 : Redémarrage automatique & nodemon</a> (4min) <br/>
+                    <a href="https://youtu.be/LV3LOWoaFaU">RESTful API 10 : Debugging sous Node</a> (15min) <br/>
+                    <a href="https://youtu.be/BiWa7bbnjTI">RESTful API 11 : Linter & formatter</a> (20min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/persistence">api-persistence</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part1/json/#exercice_1_7_persistance_des_donnees">Exercice 1.7 : Persistance des données</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/tools/#exercice_1_8_refactoring_a_laide_de_linter_formatter">Exercice 1.8 : Refactoring à l'aide de linter & formatter</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>6</b>
+                </td>
+                <td>
+                    3/10
+                </td>
+                <td>
+                    6/10
+                </td>
+                <td>
+                    3/10
+                </td>
+                <td>
+                    C1 : Service Web
+                </td>
+                <td >
+                    <b>Refactoring à l'aide d'un "fat model"</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/refactoring/#architectures_web_possibles_pour_une_api">Architectures web possibles</a>, <a href="https://e-vinci.github.io/web2/part1/refactoring/#architecture_express_fat_model">Architecture Express & "fat model"</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/FihV6wXpIQE">RESTful API 12 : Refactoring & fat model</a> (16min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model">api-fat-model</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part1/refactoring/#exercice_1_9_refactoring_a_laide_dun_fat_model">Exercice 1.9 : Refactoring à l'aide d'un fat model</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part1/refactoring/#exercice_1_10_encore_un_fat_model">Exercice 1.10 : Encore un fat model</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>7</b>
+                </td>
+                <td>
+                    9/10
+                </td>
+                <td>
+                    10/10
+                </td>
+                <td>
+                    9/10
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>JS dans un browser</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/js-intro/">place du JS</a>, fonctionnement du browser, interagir avec le browser, ECMAScript <br/> <br/>
+                    <b>Interactions avec le DOM</b> : <br/>
+                    DOM, accéder à un élément, programmation événementielle & fonctionnelle (flux, écouteurs, callbacks), <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#creation_dune_ihm_classique">création d'une IHM classique</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/JsOn4wV5Prk">HMI 01 : Intro au JS dans un browser</a> (21min) <br/>
+                    <a href="https://youtu.be/DR0LOO3fWm4">HMI 02 : Interactions avec le DOM</a> (21min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/classic-hmi">classic-hmi</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part2/js-intro/#exercice_2_1_1_er_script_externe">Exercice 2.1 : 1er script externe</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#exercice_2_2_interaction_avec_le_dom">Exercice 2.2 : interaction avec le DOM</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>8</b>
+                </td>
+                <td>
+                    10/10
+                </td>
+                <td>
+                    13/10
+                </td>
+                <td>
+                    10/10
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Interactions avec le DOM</b> :  <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#lobjet_event">L'objet event</a> <br/> <br/>
+                    <b> <span style={{color:"orange"}}>Présentation du projet & création des équipes</span></b>
+                </td>
+                <td>
+                    <a href="https://youtu.be/vcBMEaLZ7qU">HMI 03 : L'objet event</a> (10min)
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#exercice_2_3_1_objet_event_formulaire">Exercice 2.3.1 : objet event & formulaire</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#exercice_2_3_2_objet_event_multiples_elements">Exercice 2.3.2 : objet event & multiples éléments</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>9</b>
+                </td>
+                <td>
+                    16/10
+                </td>
+                <td>
+                    17/10
+                </td>
+                <td>
+                    16/10
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Interactions avec le DOM</b> :  <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#les_timers_actions">Les timers & actions</a>, <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#les_intervalles_de_temps_actions_repetees">les intervalles de temps & actions répétées</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/S2Yo_6ASoUo">HMI 04 : Les timers & intervalles</a> (10 min)
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#exercice_2_4_1_timer_pour_lancer_une_action">Exercice 2.4.1 : timer pour lancer une action</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/dom-interaction/#exercice_2_4_2_sequence_devenements_differes_dans_le_temps">Exercice 2.4.2 : séquence d'événements différés dans le temps</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>10</b>
+                </td>
+                <td>
+                    17/10
+                </td>
+                <td>
+                    20/10
+                </td>
+                <td>
+                    17/10
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Les outils modernes pour développer des UI</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/modern-tools/#quels_outils_modernes_seraient_interessants">quels outils ?</a>, modules bundlers, création moderne d'IHM via boilerplate, installation des dépendances, prise en main de Webpack, <a href="https://e-vinci.github.io/web2/part2/modern-tools/#installation_dun_package">installation</a> d'un package
+                </td>
+                <td>
+                    <a href="https://youtu.be/6KsRvnSuzYw">HMI 05 : Outils modernes pour UI</a> (19min) <br/>
+                    <a href="https://youtu.be/dfCM4ImUXMA">HMI 06 : Découverte de Webpack via un boilerplate</a> (27min)
+                </td>
+                <td>
+                    🍬 <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/webpack-part1-hmi">webpack-part1-hmi</a> <br/>
+                    🍬 <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/webpack-part2-hmi">webpack-part2-hmi</a> <br/>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-hmi">modern-hmi</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part2/modern-tools/#exercice_2_5_module_bundler">Exercice 2.5 : module bundler</a> <br/> 
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/modern-tools/#projet_2_6_introduction_au_projet">Projet 2.6 : Introduction au projet</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>11</b>
+                </td>
+                <td>
+                    23/10
+                </td>
+                <td>
+                    24/10
+                </td>
+                <td>
+                    23/10
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Création d'UI esthétiques</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/ui/#comment_creer_une_ui">Comment ?</a>, Bootstrap ?, <a href="https://e-vinci.github.io/web2/part2/ui/#utilisation_de_bootstrap_avec_webpack">Bootstrap & Webpack</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/x-mtf1_0yKc">HMI 07 : Découverte de Bootstrap</a> (23min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-esthetic-hmi">modern-esthetic-hmi</a>
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/ui/#projet_2_7_ui_esthetique">Projet 2.7 : UI esthétique</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>12</b>
+                </td>
+                <td>
+                    24/10
+                </td>
+                <td>
+                    27/10
+                </td>
+                <td>
+                    24/10
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Création dynamique de UI</b> :  <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/dynamic-ui/#pourquoi_generer_dynamiquement_une_ui">Pourquoi ?</a>, à partir d'une string, écouteurs d'événements une fois le DOM rendu, à partir de Nodes, écouteurs d'événements avant de rendre le DOM, ajout d'images ou autres assets, <a href="https://e-vinci.github.io/web2/part2/dynamic-ui/#debbuging_dun_frontend_tournant_sous_webpack">debbuging</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/TWXve2OuRK8">HMI 08 : Création dynamique de UI</a> (24min) <br/>
+                    <a href="https://youtu.be/xbTu5N9v7GA">HMI 09 : Création dynamique d'assets & Webpack</a> (10min) <br/>
+                    <a href="https://youtu.be/DRwBQnHwnNU">HMI 10 : Debugging frontend & Webpack</a> (13min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-dynamic-hmi">modern-dynamic-hmi</a>
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/dynamic-ui/#projet_2_8_generation_dynamique_dune_home_page">Projet 2.8 : Génération dynamique d'une HomePage</a> <br/>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/dynamic-ui/#projet_2_9_changement_dynamique_du_contenu_dune_page">Projet 2.9 : changement dynamique du contenu d'une page</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/dynamic-ui/#%F0%9F%8D%AC_exercice_2_10_generation_dynamique_dune_table_sur_base_dun_formulaire">🍬 Exercice 2.10 : Génération dynamique d'une table sur base d'un formulaire</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>13</b>
+                </td>
+                <td>
+                    6/11
+                </td>
+                <td>
+                    7/11
+                </td>
+                <td>
+                    6/11
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Refactoring du code en modules</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/em6-modules/#cest_quoi_un_module_selon_es_6">module selon ES6</a>, import /export d'objets, découpe d'une IHM en modules <br/>
+                    <b>Le routage des écrans</b> : <br/>
+                    routage ?, ajout d'une Navbar, routeur, data-attributes, <a href="https://e-vinci.github.io/web2/part2/routing/#utilisation_du_routeur_boilerplate">boilerplate</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/bRymYky7u6w">HMI 11 : Les modules ES6</a> (13min) <br/>
+                    <a href="https://youtu.be/EYVRyrpwCYM">HMI 12 : Refactoring d'une IHM en modules</a> (19min) <br/>
+                    <a href="https://youtu.be/OW1rWsVcxlo">HMI 13 : Routage des écrans</a> (39min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/structured-hmi">structured-hmi</a> <br/> <br/> <br/> <br/> <br/>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi">routing-hmi</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part2/routing/#exercice_2_11_utilisation_dun_router">Exercice 2.11 : Utilisation d'un router</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>14</b>
+                </td>
+                <td>
+                    7/11
+                </td>
+                <td>
+                    10/11
+                </td>
+                <td>
+                    7/11
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Le routage des écrans</b> <br/> <br/>
+                    <b>🍬 L'orienté objet en JS</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/object-oriented/#loriente_objet_en_js_cest_possible">c'est possible ?</a>, objets, classes <br/> <br/>
+                    <b> Les animations et jeux vidéo</b> : <br/>
+                    🍬 Animations via l'API Canvas, 🍬 Animations via une librairie externe, <a href="https://e-vinci.github.io/web2/part2/animations/#%F0%9F%8D%AC_jeux_video_en_2_d_via_phaser">🍬 Jeux vidéo en 2D via Phaser</a>
+                </td>
+                <td>
+                    Voir HMI 13
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/routing-hmi">routing-hmi</a>
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/routing/#projet_2_12_navigation_router">Projet 2.12 : Navigation & router</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/animations/#exercice_2_13_gestion_devenements_associes_a_une_animation">Exercice 2.13 : Gestion d'événements associés à une animation</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>15</b>
+                </td>
+                <td>
+                    13/11
+                </td>
+                <td>
+                    14/11
+                </td>
+                <td>
+                    13/11
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Les animations et jeux vidéo</b>
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/animations/#projet_2_14_animation">Projet 2.14 : animation</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>16</b>
+                </td>
+                <td>
+                    14/11
+                </td>
+                <td>
+                    17/11
+                </td>
+                <td>
+                    14/11
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Les SPA, architectures & communications</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/spa-architectures/#architectures_classiques_dapplications_web">Architectures classiques d'applications web</a>, SPA & comms, <a href="https://e-vinci.github.io/web2/part2/spa-architectures/#requetes_asynchrones_les_promesses">requêtes asynchrones & les promesses</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/aHaNMqFpXSM">HMI 14 : Architectures web & SPA</a> (18min) <br/>
+                    <a href="https://youtu.be/lZYRfVdMiDs">HMI 15 : Requêtes asynchrones & promesses</a> (20min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch-no-proxy">basic-fetch-no-proxy-hmi</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part2/spa-architectures/#exercice_2_15_consommation_de_blagues_online">Exercice 2.15 : Consommation de blagues online</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/spa-architectures/#exercice_2_16_consommation_de_questions_localement">Exercice 2.16 : Consommation de questions localement</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>17</b>
+                </td>
+                <td>
+                    20/11
+                </td>
+                <td>
+                    21/11
+                </td>
+                <td>
+                    20/11
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Sécurité des communications du browser</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/comms-security/#single_origin_policy_cors">SOP & CORS</a>, autorisation d'origines, <a href="https://e-vinci.github.io/web2/part2/comms-security/#simulation_dune_meme_origine_via_un_proxy">proxy</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/mGPKLZpP3A8">HMI 16 : Sécurité des comms du browser</a> (18min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cors">api-cors</a> <br/>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/basic-fetch">basic-fetch-hmi</a> (proxy)
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/comms-security/#projet_2_17_consommation_doperations_dune_api_a_laide_dun_proxy">Projet 2.17 : consommation d'opérations d'une API à l'aide d'un proxy</a> <br/>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines">Project 2.18 : Autorisation de nouvelles origines</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>18</b>
+                </td>
+                <td>
+                    21/11
+                </td>
+                <td>
+                    24/11
+                </td>
+                <td>
+                    21/11
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Programmation asynchrone & les promesses</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/promises/#utilisation_de_promesses_async_await">async / await</a>, Opération asynchrone d'écriture, <a href="https://e-vinci.github.io/web2/part2/promises/#creation_de_fonctions_asynchrones_renvoyant_une_promesse">création de fonctions asynchrones</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/6xe9rpUPCvQ">HMI 17 : async & await & la programmation asynchrone</a> (23min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/async-await">async-await-hmi</a>
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part2/promises/#exercice_2_19_integration_de_la_res_tful_api_au_sein_de_l_ihm_de_my_movies_via_un_proxy">Exercice 2.19 : Intégration de la RESTful API au sein de l'IHM de myMovies via un proxy</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>19</b>
+                </td>
+                <td>
+                    27/11
+                </td>
+                <td>
+                    28/11
+                </td>
+                <td>
+                    27/11
+                </td>
+                <td>
+                    C2 : IHM
+                </td>
+                <td >
+                    <b>Les sessions côté client</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part2/sessions/#ou_sauvegarder_de_linfo_dans_un_browser">Où sauvegarder de l'info dans un browser ?</a>, <a href="https://e-vinci.github.io/web2/part2/sessions/#persistance_de_donnees_de_session_via_le_web_storage">Persistance de données de session via le web storage</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/-5VFdvK___I">HMI 18 : Les sessions côté client</a> (10min)
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part2/sessions/#projet_2_20_sauvegarde_de_sessions">Projet 2.20 : sauvegarde de sessions</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>20</b>
+                </td>
+                <td>
+                    28/11
+                </td>
+                <td>
+                    1/12
+                </td>
+                <td>
+                    28/11
+                </td>
+                <td>
+                    C3 : Déploiement
+                </td>
+                <td >
+                    Déploiement d'applications web :  <br/>
+                    <a href="https://e-vinci.github.io/web2/part3/#comment_deployer_une_application_sur_le_web">Comment déployer une application sur le web ?</a>, frontend sur GitHub Pages, API sur Azure, 🍬 base de données, <a href="https://e-vinci.github.io/web2/part3/#%F0%9F%8D%AC_protection_de_ses_secrets">🍬 protection de ses secrets</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/rj8bg7evpUM">DEP 01 : Intro au déploiement</a> (17min)
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part3/#projet_3_1_deploiement_de_votre_frontend_de_votre_backend">Projet 3.1 : déploiement de votre frontend & de votre backend</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>21</b>
+                </td>
+                <td>
+                    4/12
+                </td>
+                <td>
+                    5/12
+                </td>
+                <td>
+                    4/12
+                </td>
+                <td>
+                    C4 : Sécurisation
+                </td>
+                <td >
+                    <b>Authentification et autorisation d'accès aux opérations d'une RESTful API via JWT</b> : <a href="https://e-vinci.github.io/web2/part4/auths-api/#cest_quoi_lauthentification_et_lautorisation">authentification et autorisation ?</a>, tokens JWT ?, authentification et création de token, autorisation et vérification de token, Client REST avec JWT, <a href="https://e-vinci.github.io/web2/part4/auths-api/#protection_des_operations_decriture_dune_api">protection des opérations d'écriture d'une API</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/jCUyii3hcwY">SEC 01 : Intro à JWT auths</a> (18min)
+                    <a href="https://youtu.be/lVTM0x0vOrg">SEC 02 : JWT auths dans une API & REST Client</a> (39min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths">api-auths</a>
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part4/auths-api/#project_4_1_authentification_autorisation_doperations">Projet 4.1 : Authentification & autorisation d'opérations</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>22</b>
+                </td>
+                <td>
+                    5/12
+                </td>
+                <td>
+                    8/12
+                </td>
+                <td>
+                    5/12
+                </td>
+                <td>
+                    C4 : Sécurisation
+                </td>
+                <td >
+                    <b>Sécurisation d'une RESTful API</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part4/security-api/#protection_contre_les_attaques_xss">Protection contre les attaques XSS</a>, Sécurisation des passwords, <a href="https://e-vinci.github.io/js2/part4/security-api/#%F0%9F%8D%AC_authentification_autorisation_jwt_a_laide_de_cookies">🍬 Authentification & autorisation JWT à l'aide de cookies</a> <br/> <br/>
+                    <b>Authentification & utilisation d'opérations protégées par JWT au sein d'une IHM</b> : <br/>
+                    <a href="https://e-vinci.github.io/web2/part4/auths-hmi/#authentification_dun_utilisateur_via_une_ihm_jwt">Authentification & JWT, appel à une opération protégée</a>, localStorage pour sauvegarder les données de session, <a href="https://e-vinci.github.io/web2/part4/auths-hmi/#%F0%9F%8D%AC_persistance_de_donnees_de_session_via_des_cookies">🍬 persistance de données de session via des cookies</a>
+                </td>
+                <td>
+                    <a href="https://youtu.be/KsJ-11PcSp4">SEC 03 : Sécurisation d'une RESTful API</a> (21min) <br/>
+                    <a href="https://youtu.be/YiPNns3GUGE">SEC 04 : Authentification & autorisation dans une IHM</a> (29min)
+                </td>
+                <td>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe">api-safe</a> <br/>
+                    🍬 <a href="https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies">api-cookie</a> <br/> <br/>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch">jwt-fetch-hmi</a> <br/>
+                    <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/web-storage">web-storage-hmi</a> <br/>
+                    🍬 <a href="https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/cookies">cookies-hmi</a>
+                </td>
+                <td>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part4/security-api/#projet_4_2_securisation_d_api">Projet 4.2 : Sécurisation d'API</a> <br/>
+                    <a style={{color:"orange"}} href="https://e-vinci.github.io/web2/part4/auths-hmi/#projet_4_3_authentification_et_appel_doperations_protegees_par_jwt">Projet 4.3 : Authentification et appel d'opérations protégées par JWT</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>23</b>
+                </td>
+                <td>
+                    11/12
+                </td>
+                <td>
+                    12/12
+                </td>
+                <td>
+                    11/12
+                </td>
+                <td>
+                    Toutes
+                </td>
+                <td style={{color:"orange"}}>
+                    Travail sur son projet & révisions
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part5/#%F0%9F%8D%AC_exercice_5_1_auto_refresh">🍬 Exercice 5.1 : Auto-refresh</a> <br/>
+                    <a href="https://e-vinci.github.io/web2/part5/#%F0%9F%8D%AC_exercice_5_2_gestion_de_la_navigation_lors_de_lauto_refresh">🍬 Exercice 5.2 : Gestion de la navigation lors de l'auto-refresh</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>24</b>
+                </td>
+                <td>
+                    12/12
+                </td>
+                <td>
+                    15/12
+                </td>
+                <td>
+                    12/12
+                </td>
+                <td>
+                    Toutes
+                </td>
+                <td style={{color:"orange"}}>
+                    Travail sur son projet & révisions
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a href="https://e-vinci.github.io/web2/part5/#%F0%9F%8D%AC_exercice_5_3_ihm_service_web_en_resume">🍬 Exercice 5.3 : L'essentiel du cours en action</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<br />
 
 </AuthenticatedBlock>
 
@@ -115,7 +936,7 @@ Selon le système de crédits ECTS et le ETCS's User Guide [[R.62]](/references/
 
 ### Activité pédagogique n°1 (Ac1) - Capsules vidéos en ligne (~15 min en distanciel)
 
-- En distanciel, vous visualisez les vidéos qui sont demandées en entrée de la séance. 
+- En distanciel, vous visualisez les vidéos qui sont demandées en entrée de la séance.
 - Vous préparez vos questions pour la séance où la vidéo sera discutée.
 
 ### Activité pédagogique n°2 (Ac2) - Vérifier compréhension en groupe (~30 min en présentiel)
@@ -127,7 +948,7 @@ Selon le système de crédits ECTS et le ETCS's User Guide [[R.62]](/references/
 
 - Vous pratiquez en classe les concepts via les exercices proposés. Vous terminez vos exercices en distanciel si nécessaire.
 - Vous êtes encouragés à poser vos questions ou à demander de l'aide en cas de difficultés sur un exercice.
-- Veuillez offrir un temps raisonnable pour créer, ou tenter de créer, votre propre implémentation d'un exercice, sans regarder la solution ; n'hésitez pas à consulter, par la suite, la solution. 
+- Veuillez offrir un temps raisonnable pour créer, ou tenter de créer, votre propre implémentation d'un exercice, sans regarder la solution ; n'hésitez pas à consulter, par la suite, la solution.
 - Si vous éprouvez de la difficulté, vous pouvez choisir de réaliser un exercice en utilisant les conseils donnés.
 - Si vous souhaitez approfondir ou élargir votre apprentissage, vous pouvez le faire en implémentant les challenges proposés.
 
@@ -148,6 +969,7 @@ Selon le système de crédits ECTS et le ETCS's User Guide [[R.62]](/references/
 Le seuil de réussite pour le cours est fixé à une note de 10 sur 20 ; il est possible de le réussir sans avoir atteint toutes les compétences.
 
 ## Evaluation du projet
+
 Cette évaluation certificative concerne **30% des points** du cours en **1ère session**.
 
 Les critères d'évaluations et leur poids par rapport à la note du projet sont donnés via le modèle de document associé au projet : ce sont les critères 1 à 8 repris dans le Tableau ci-dessous qui permettent de déterminer la côte du projet sur 20.
@@ -160,6 +982,7 @@ S'il est détecté que vous ne participez pas activement au projet, vous serez a
 Les projets sont évalués par rapport à chaque critère et un feedback est documenté dans un rapport d'évaluation. Ce rapport vous est envoyé après l'examen de 1ère session.
 
 ## Examen de 1ère session
+
 Cette évaluation certificative principale concerne 70% des points du cours. C'est un examen se déroulant en janvier. L'évaluation se présente sous forme d'une production de code en réponse à un énoncé couvrant les compétences essentielles du cours : C1, C2 & C3. Ce sont les critères 1 & 2 définis au Tableau ci-dessous, ainsi que leurs poids associés, qui permettent de déterminer les points de l'examen. Un rapport d'évaluation vous est envoyé lors de la publication des points vous offrant un feedback sur votre examen.
 
 ## Examen de 2ème session
