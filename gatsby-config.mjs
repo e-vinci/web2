@@ -9,8 +9,8 @@ const authorEmail = 'raphael.baroni@vinci.be';
 const facebookUrl = '';
 const instagramUrl = '';
 const defaultLanguage = 'fr';
-const defaultAssociatedProjectGroupName = 'Web2 2022';
-const projectDocument = 'WEB2-2022-PROJET-GROUP-XY.docx';
+const defaultAssociatedProjectGroupName = 'Web2 2023';
+const projectDocument = ''; //'WEB2-2022-PROJET-GROUP-XY.docx';
 
 const config = {
   pathPrefix: `/js2`,

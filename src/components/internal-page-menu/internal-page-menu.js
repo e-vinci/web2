@@ -32,20 +32,19 @@ const InternalPageMenu = ({
   const { activePageMenuItem, setActivePageMenuItem } =
     useContext(NavigationContext);
 
-  const [menuIsInView, setmenuIsInView] = useState(true);
-  const [menuHeight, setMenuHeight] = useState(0);
+  const [headerIsInView, setHeaderIsInView] = useState(true);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const [menuIsHidden, setMenuIsHidden] = useState(false);
 
   useEffect(() => {
-    //if (menuHeight === 0) {
     const menuHeight = document
       .querySelector('.header')
       ?.getBoundingClientRect().height;
-    setMenuHeight(menuHeight);
-    //}
+    setHeaderHeight(menuHeight);
 
     const handleScroll = () => {
-      if (window.scrollY > menuHeight) setmenuIsInView(false);
-      else setmenuIsInView(true);
+      if (window.scrollY > menuHeight) setHeaderIsInView(false);
+      else setHeaderIsInView(true);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -53,7 +52,7 @@ const InternalPageMenu = ({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [menuIsInView]);
+  }, [headerIsInView]);
 
   /* a delay has been added, because when we click on a menu item, the scroll event will mess up the active
   item that shall be the clicked item. The delay ensure that the scroll event are superseeded by the click 
@@ -62,11 +61,39 @@ const InternalPageMenu = ({
     setTimeout(() => setActivePageMenuItem(itemTextInSnakeCase), 100);
   };
 
+  const onCloseOpenBtnClick = () => {
+    setMenuIsHidden(!menuIsHidden);
+  };
+
+  if (!sticky && menuIsHidden)
+    return (
+      <div
+        className={className + '__open-button'} /* style={{
+        top: headerIsInView ? headerHeight : 0,
+      }}*/
+      >
+        <button
+          className={className + '__open-button__item'}
+          style={{
+            top: headerIsInView ? headerHeight : 0,
+            // position: headerIsInView ? 'fixed' : 'sticky',
+          }}
+          onClick={onCloseOpenBtnClick}
+        ></button>
+      </div>
+    );
+
   return (
     <div
       className={`${className} ${sticky ? className + '--sticky' : ''}`}
-      style={{ top: menuIsInView && !sticky ? menuHeight : 0 }} // top has no effect when defautl position (static)
+      style={{ top: headerIsInView && !sticky ? headerHeight : 0 }} // top has no effect when defautl position (static)
     >
+      {!sticky && (
+        <button
+          className={className + '__close-button'}
+          onClick={onCloseOpenBtnClick}
+        ></button>
+      )}
       {React.Children.map(children, (child, index) => {
         if (child.type === PathViewer) {
           return child;
