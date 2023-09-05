@@ -1,0 +1,77 @@
+---
+title: "L'orienté objet"
+description: "Le routage des écrans"
+---
+
+# h) 🍬 L'orienté objet en JS
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
+    <PathViewerItem selected> h) 🍬 L'orienté objet en JS </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> L'orienté objet en JS c'est possible ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Les objets </InternalPageMenuItem>
+  <InternalPageMenuItem> Les classes </InternalPageMenuItem>
+</InternalPageMenu>
+
+# <InternalPageTitle> L'orienté objet en JS c'est possible ? </InternalPageTitle>
+
+JS est un langage orienté "objets" basé sur les prototypes, à l'inverse d'un langage comme Java qui est orienté sur les "classes".
+
+EN JS, tout objet peut être le prototype d'un autre objet, permettant à l'autre objet de partager les propriétés du premier objet.
+
+Il n'y a pas de distinction entre une classe et une instance, tout est objet : les strings, les tableaux, les API du browser, les objets personnalisés, les fonctions...
+
+Le JS moderne permet de facilement créer des objets et des classes.  
+Néanmoins, l'orienté objet n'est pas le point fort du JS.  
+Dans ce cours, nous allons généralement pas utiliser la notion de classe, nous préférons faire de la programmation fonctionnelle car cela est plus naturelle quand on fait du Vanilla JS.  
+
+Nous aimerions que vous vous sentiez libre de faire de l'orienté objet si vous le souhaitez, c'est pourquoi nous vous présentons rapidement certaines possibilités.
+
+Si vous souhaitez des détails sur l'orienté objet en JS, n'hésitez pas à consulter [la documentation MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Details_of_the_Object_Model) [[R.46]](/references/#r46)
+ 
+# <InternalPageTitle> Les objets </InternalPageTitle>
+
+La syntaxe pour créer et accéder à des objets a été vue dans l'introduction : [Les objets](../../part0/js-language/#les_objets).
+
+# <InternalPageTitle> Les classes </InternalPageTitle>
+
+Quand on écrit du code JS moderne, on définit une classe à l'aide du mot-clé **`class`** et d'un **`constructor()`**.
+
+Une seul constructeur est possible, sinon il y aura une erreur.
+
+Voici le code qui permettrait de créer une classe **`Car`** :
+
+```js
+import { v4 as uuidv4 } from 'uuid';
+
+class Car {
+  constructor(brand, model) {
+    this.brand = brand;
+    this.model = model;
+    this.id = uuidv4();
+  }
+
+  getDescription() {
+    return `Car's description : ${this.brand}, ${this.model} , ID:${this.id}`;
+  }
+}
+
+export default Car;
+```
+
+Les attributs sont directement définis dans le constructeur à l'aide de **`this.nomAttribut`**.
+
+Voici le code créant une instance de **`Car`** et affichant sa description dans la console : 
+
+```js
+const dacia = new Car('Dacia', 'Sandero');
+console.log(dacia.getDescription());
+```
+
+La notion d'héritage n'est pas nécessaire pour ce cours.  
+
+Néanmoins, si vous êtes passionné d'Orienté Objet, nous vous conseillons cet article :
+[JavaScript Visualized: Prototypal Inheritance](https://dev.to/lydiahallie/javascript-visualized-prototypal-inheritance-47co) [[R.47]](/references/#r47)

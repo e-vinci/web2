@@ -1,0 +1,528 @@
+---
+title: "Modules ES6"
+description: "Refactoring du code en modules"
+---
+
+# f) Refactoring du code en modules
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
+    <PathViewerItem selected> f) Modules ES6 </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> C'est quoi un module selon ES6 ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Création de modules </InternalPageMenuItem>
+  <InternalPageMenuItem> Export d'objets </InternalPageMenuItem>
+  <InternalPageMenuItem> Import d'objets </InternalPageMenuItem>
+  <InternalPageMenuItem> Découpe d'une IHM en modules </InternalPageMenuItem>
+</InternalPageMenu>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/bRymYky7u6w" />
+</div>
+
+# <InternalPageTitle> C'est quoi un module selon ES6 ? </InternalPageTitle>
+
+Les modules, selon ECMAScript, sont la norme pour empaqueter du code JS afin d'être réutilisé. La première fois que les modules intégrés sont apparus en JS c'est lors de ES6 (ou ECAMAScript 2015) en 2015.
+
+Un module est une librairie JS fournissant des objets.  
+Comme en JS tout est objet, un module met donc à disposition des fonctions, des constantes, des variables...
+
+# <InternalPageTitle> Création de modules </InternalPageTitle>
+
+Pour créer un module, il suffit de créer un script JS et d'exporter des objets au sein de ce module. 
+
+Le nom du module est le nom du fichier.
+
+Admettons que l'on souhaite créer un module permettant de mettre à disposition une classe **`Car`**.
+
+Nous pourrions créer le fichier **`Car.js`** dans lequel nous exportons **`Car`** de cette façon :
+
+```js
+// ... Imagine the code of a class (we will see later how to create a class)
+
+export default Car;
+```
+
+# <InternalPageTitle> Export d'objets </InternalPageTitle>
+
+## Introduction
+Pour mettre à disposition des objets (fonctions, constantes, objets, classes...) dans un module, il suffit d'utiliser le mot clé **`export`**.
+
+En JS, si vous souhaitez rendre un objet (fonction, constante, objet, classe...) privé au sein d'une librairie, il suffit simplement de ne pas l'exporter. En résumé, **les seules éléments publiques sont ce que vous exportez**.  
+Vous verrez plus tard que si vous programmez en orienté objet, à l'aide de classes, la notion de public / privé n'existe pas en JS. Il faut donc utiliser des modules pour bénéficier d'une sorte d'équivalent.
+
+Il existe deux types d'export.
+
+## Default export
+Lorsque vous avez un seul objet à exporter, il est préférable de le faire via un "default export".  
+
+D'ailleurs, le linter utilisé dans ce cours vous forcera à le faire, vous ne pourrez pas faire un "named export" si vous exportez un seul objet.
+
+Cela permet d'importer cet objet en lui donnant le nom que l'on souhaite.
+
+```js
+const Header = () => {
+  // ... some code to generate a header
+};
+
+export default Header;
+```
+
+Ce code permet un "default export" d'une fonction nommée **Header**.
+
+## Named export
+Lorsque l'on souhaite exporter plusieurs objets (fonctions, constantes, objets, classes...), nous allons généralement le faire via une "Named export".
+
+```js
+// ... some code to define three functions
+
+export { setPageTitle, setHeaderTitle, setFooterTitle };
+```
+
+Si vous souhaitez plus de détails sur l'export, vous pouvez consulter [la documentation MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) [[R.39]](/references/#r39).
+
+# <InternalPageTitle> Import d'objets </InternalPageTitle>
+
+## Introduction
+Pour utiliser des objets (fonctions, constantes, objets, classes...) au sein d'un script JS provenant de modules, on le fait à l'aide du mot clé **`import`** et du chemin vers le module à utiliser.
+
+Il existe deux types d'import, en fonction de comment les objets ont été exportés.
+
+Il est possible d'importer tant des objets de modules que l'on a créé soi-même, que de packages mis à disposition via un gestionnaire de packages.
+
+## Default import
+Lorsqu'un objet a été exporté via un "default export", on l'importe en lui donnant le nom que l'on souhaite à l'import et en indiquant le chemin vers le module à utiliser. 
+
+👍 Néanmoins, afin de ne pas créer la confusion, nous recommandons d'utiliser le même nom que celui utilisé lors de l'export.
+
+Si l'on souhaite importer la fonction **`Header`** exportée précédemment :
+
+```js
+import Header from './Components/Header/Header';
+```
+
+👍 Il est recommandé, lorsqu'on indique le chemin du module que l'on importe, de ne pas indiquer l'extension du nom de fichier (**`.js`**). Cela rend le code plus lisible. D'ailleurs, votre linter va vous forcer à ne pas indiquer les extensions de vos modules.
+
+🤝 Il est possible d'utiliser l'autocompletion pour générer le chemin vers un "default export module". Il suffit de taper ici **`import Header`** et d'appuyer sur **`Enter`** et VS Code générera automatiquement le chemin (path) du module.
+
+Notons qu'ici nous aurions pu donner n'importe quel nom à la fonction **`Header`** lors de l'import, par exemple :
+
+```js
+import AmazingHeader from './Components/Header/Header';
+```
+
+Nous ne recommandons généralement pas de changer de nom, sauf s'il pouvait y avoir un conflit avec une variable qui porterait déjà le même nom.
+
+Il est aussi possible d'importer des objets de packages offerts par la communauté via votre gestionnaire de package.  
+Pour ce faire, il est juste nécessaire d'indiquer le nom du package lors de l'import.
+
+Pour un "default import", il faut trouver un package qui met à disposition un seul objet, ce qui est peu commun.
+
+En voici un exemple, l'import d'une librairie permettant de réaliser des animations :
+```js
+import anime from 'animejs/lib/anime.es.js';
+
+```
+
+Bien sûr, avant d'importer un objet d'un package, il faut l'avoir préalablement installé 😉.
+
+## Named import
+Lorsqu'un objet a été exporté via un "Named export", on l'importe en utilisant des accolades et en indiquant le chemin vers le module à utiliser.
+
+Par exemple, pour importer les fonctions **`setPageTitle`** et **`setHeaderTitle`** définies ci-dessus, il suffit de faire :
+
+```js
+import { setPageTitle, setHeaderTitle } from './utils/render';;
+```
+
+Si l'on souhaitait changer le nom, on pourrait le faire via le mot-clé **`as`** :
+
+```js
+import { setPageTitle as renderPageTitle, setHeaderTitle as renderHeaderTitle} from './utils/render';;
+```
+
+On pourrait maintenant appeler la fonction **`renderPageTitle`** pour (ré)afficher le titre d'une page.
+
+Il est aussi possible d'importer des objets de packages offerts par la communauté via votre gestionnaire de package.  
+Pour ce faire, il est juste nécessaire d'indiquer le nom du package lors de l'import, et de sélectionner le ou les objet(s) qui vous intéresse entre les accolades.
+
+Voici l'exemple d'une librairie permettant de générer un id :
+
+```js
+import { v4 as uuidv4 } from 'uuid';
+```
+
+Bien sûr, avant d'importer un ou plusieurs objets d'un package, il ne faut pas oublier d'installer ce package 😉.
+
+Si vous souhaitez plus de détails sur l'import, vous pouvez consulter [la documentation MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) [[R.40]](/references/#r40).
+
+# <InternalPageTitle> Découpe d'une IHM en modules </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/EYVRyrpwCYM" />
+</div>
+
+## Pourquoi découper une IHM en modules ?
+Lorsque l'on développe une application, il est intéressant de découper celle-ci en module afin de rendre notre code plus lisible et maintenable.
+
+Généralement, si une partie d'un script pouvait être réutilisable dans une autre application, c'est probablement un signe qu'il serait utile de créer une fonction, et d'offrir cette fonction via un module.
+
+Pour le visuel d'une IHM, il est intéressant de découper l'UI en composants fonctionnels.  
+Par exemple, le layout d'un écran peut souvent être découpé en :
+- Un header : c'est un composant fonctionnel qui sera réutilisé pour la majorité des écrans.
+- Une page : c'est un composant fonctionnel qui sera souvent différent pour chaque écran. On pourrait imaginer une découpe où ce qui définit un écran, c'est sa page associée.
+- Un footer : c'est un composant fonctionnel qui sera réutilisé pour la majorité des écrans.
+
+Chacun peut donner des noms différents à ses éléments d'UI ainsi que prévoir des découpes en éléments à des niveaux différents. Ce qui compte, c'est d'éviter la duplication de code et de créer du code lisible.
+
+Nous allons dans ce cours vous proposer une découpe qui ressemble à ce qui est fait dans certains frameworks frontend, mais qui ne correspond à aucunes normes.  
+C'est juste une vision parmi d'autres de comment structurer une IHM pour faciliter son développement.
+
+Nous allons restructurer le code du site de la pizzeria, notamment afin d'éviter, lors de l'ajout de pages, de la duplication de code. De plus, nous souhaitons que tous nos écrans soient générés dynamiquement, via du JS. Ca nous permettra de facilement changer l'affichage.
+
+Pour démarrer ce nouveau tutoriel, nous allons repartir du code du tutoriel précédent.  
+Au sein de votre repo (normalement **`web2`**) veuillez donc faire un copier/coller de votre code se trouvant dans **`/tutorials/pizzeria/hmi/modern`** au sein du nouveau répertoire **`/tutorials/pizzeria/hmi/structured`**.  
+En cas de souci, vous pouvez utiliser ce code-ci : [modern-dynamic-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/modern-dynamic-hmi).
+
+Pour la suite de ce tutoriel, **`/tutorials/pizzeria/hmi/structured`** est considéré comme la racine du projet.
+
+## Créer une structure logique de répertoires et de modules
+Dans ce projet, veuillez créer tous ces nouveaux répertoires et fichiers vides pour reprendre nos composants fonctionnels :
+- **`/src/Components`** : répertoire qui reprendra tous les composants fonctionnels.
+- **`/src/Components/Pages`** : répertoire qui donnera toutes les pages qui seront accessibles en cliquant sur la Navbar.
+- **`/src/Components/Pages/HomePage.js`** : **`HomePage`** de notre site, c'est l'affichage du menu des pizzas et de la liste des boissons.
+- **`/src/Components/Pages/LoginPage.js`** : **`LoginPage`** de notre site, elle permettra plus tard aux admins de se connecter.
+- **`/src/Components/Pages/RegisterPage.js`** : **`RegisterPage`** de notre site, elle pourrait permettre de créer des admins.
+- **`/src/Components/Header`** : répertoire qui reprendra le **`Header`**.
+- **`/src/Components/Header/Header.js`** : module qui reprendra la génération du **`Header`** via du JS.
+- **`/src/Components/Footer`** : répertoire qui reprendra le **`Footer`**.
+- **`/src/Components/Footer/Footer.js`** : module qui reprendra la génération du **`Footer`** via du JS.
+- **`/src/Components/Navbar`** : répertoire qui reprendra la **`Navbar`**.
+- **`/src/Components/Navbar/Navbar.js`** : module qui reprendra la génération de la **`Navbar`** via du JS.
+
+## Créer le layout des écrans
+Il n'est pas utile de générer dynamiquement le squelette de tous les écrans via du JS.  
+Comme nous souhaitons un layout identique pour tous les écrans, nous allons garder ce layout au sein de **`/src/index.html`**, via des "wrappers" statiques ; ici nous utiliserons le **`<header>`**,  le **`<main>`** et le **`<footer>`** comme wrapper. 
+
+Veuillez mettre à jour le code de **`/src/index.html`** :
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizzeria</title>
+    <link rel="icon" href="./img/pizza-svgrepo-com.svg" type="image/svg+xml" />
+  </head>
+  <body class="vh-100 d-flex flex-column">
+    <header></header>
+    <main class="flex-grow-1 text-center"></main>
+    <footer class="text-center text-white font-weight-bold py-2"></footer>
+  </body>
+</html>
+```
+
+A ce stade-ci, l'application web ne présente plus le header et le footer, ainsi que le lecteur audio. Nous allons générer ces contenus dynamiquement dans la suite du tutoriels, dans les bons modules.
+
+## Génération des contenus dynamiques
+Probablement que générer dynamiquement le header et le footer n'a pas une grande valeur ajoutée à ce stade-ci car ces composants vont pas ou peu changer lorsqu'on affichera différents écrans.  
+Néanmoins, plus tard vous pourriez choisir d'ajouter des fonctionnalités dans ce header ou dans le footer : par exemple le choix de la langue, l'affichage d'une **`Navbar`** différente si l'utilisateur est authentifié ou pas...
+
+Pour générer un composant fonctionnel, nous devons décider de comment faire le rendu de ceux-ci. Nous devons déterminer quelles composants sont responsables de l'affichage : Est-ce un composant parent qui affiche ses enfants ? Est-ce que chaque composant est responsable de s'afficher ? ...  
+Pour ce cours, nous avons décidé que chaque composant fonctionnel est une fonction, et que cette fonction est responsable de s'afficher (ou de se rendre, car "render" en anglais) au sein d'un "wrapper" existant.
+
+Commençons par compléter la **`HomePage`**. Tout son code se trouve actuellement dans **`index.js`**. Nous devons faire un petit refactor afin de créer une fonction **`HomePage()`** qui sera appelée dans **`index.js`** au chargement de la page. Notons que la **`HomePage`** ne doit plus s'occuper du **`footer`**. C'est pourquoi la fonction **`renderPizzaImage`** a été supprimée.  
+
+Veuillez compléter le code de **`HomePage.js`** :
+
+```js
+const MENU = [
+  {
+    id: 1,
+    title: '4 fromages',
+    content: 'Gruyère, Sérac, Appenzel, Gorgonzola, Tomates',
+  },
+  {
+    id: 2,
+    title: 'Vegan',
+    content: 'Tomates, Courgettes, Oignons, Aubergines, Poivrons',
+  },
+  {
+    id: 3,
+    title: 'Vegetarian',
+    content: 'Mozarella, Tomates, Oignons, Poivrons, Champignons, Olives',
+  },
+  {
+    id: 4,
+    title: 'Alpage',
+    content: 'Gruyère, Mozarella, Lardons, Tomates',
+  },
+  {
+    id: 5,
+    title: 'Diable',
+    content: 'Tomates, Mozarella, Chorizo piquant, Jalapenos',
+  },
+];
+
+const DRINKS = [
+  {
+    id: 1,
+    title: 'Lemonade',
+    content: 'Sparkling water, lemon, ice cubes',
+  },
+  {
+    id: 2,
+    title: 'Ice tea',
+    content: 'Mint, ginger, water',
+  },
+  {
+    id: 3,
+    title: 'Exotic Kombucha',
+    content: 'Mango, Sparkling water, Fermented tea',
+  },
+];
+
+const HomePage = () => {
+  renderMenuFromString(MENU);
+
+  attachOnMouseEventsToGoGreen();
+
+  renderDrinksFromNodes(DRINKS);
+};
+
+function renderMenuFromString(menu) {
+  const menuTableAsString = getMenuTableAsString(menu);
+
+  const main = document.querySelector('main');
+
+  main.innerHTML += menuTableAsString;
+}
+
+function getMenuTableAsString(menu) {
+  const menuTableLines = getAllTableLinesAsString(menu);
+  const menuTable = addLinesToTableHeadersAndGet(menuTableLines);
+  return menuTable;
+}
+
+function addLinesToTableHeadersAndGet(tableLines) {
+  const menuTable = `
+  <div class="table-responsive pt-5">
+    <table class="table table-danger">
+      <tr>
+        <th>Pizza</th>
+        <th>Description</th>
+      </tr>
+      ${tableLines}    
+    </table>
+  </div>
+  `;
+  return menuTable;
+}
+
+function getAllTableLinesAsString(menu) {
+  let pizzaTableLines = '';
+
+  menu?.forEach((pizza) => {
+    pizzaTableLines += `<tr>
+      <td>${pizza.title}</td>
+      <td>${pizza.content}</td>
+    </tr>`;
+  });
+
+  return pizzaTableLines;
+}
+
+function attachOnMouseEventsToGoGreen() {
+  const table = document.querySelector('table');
+  table.addEventListener('mouseover', () => {
+    table.className = 'table table-success';
+  });
+
+  table.addEventListener('mouseout', () => {
+    table.className = 'table table-danger';
+  });
+}
+
+function renderDrinksFromNodes(drinks) {
+  const drinksTableAsNode = getDrinksTableAsNode(drinks);
+
+  const main = document.querySelector('main');
+
+  main.appendChild(drinksTableAsNode);
+}
+
+function getDrinksTableAsNode(drinks) {
+  const tableWrapper = document.createElement('div');
+  tableWrapper.className = 'table-responsive pt-5';
+  const table = document.createElement('table');
+  const tbody = document.createElement('tbody');
+  table.id = 'table-drinks';
+  table.className = 'table table-success';
+  tableWrapper.appendChild(table);
+  table.appendChild(tbody);
+  const header = document.createElement('tr');
+  const header1 = document.createElement('th');
+  header1.innerText = 'Drink';
+  const header2 = document.createElement('th');
+  header2.innerText = 'Description';
+  header.appendChild(header1);
+  header.appendChild(header2);
+  tbody.appendChild(header);
+
+  drinks?.forEach((drink) => {
+    const line = document.createElement('tr');
+    const title = document.createElement('td');
+    const description = document.createElement('td');
+    title.innerText = drink.title;
+    description.innerText = drink.content;
+    line.appendChild(title);
+    line.appendChild(description);
+    tbody.appendChild(line);
+  });
+
+  table.addEventListener('mouseover', () => {
+    table.className = 'table table-danger';
+  });
+
+  table.addEventListener('mouseout', () => {
+    table.className = 'table table-success';
+  });
+
+  return tableWrapper;
+}
+
+export default HomePage;
+```
+
+Ce code pourrait être nettoyé. En effet, les données (**`MENU`** et **`DRINKS`**) devraient se trouver dans un autre module, afin de séparer les données de la logique. Nous allons gérer l'aspect "données" plus tard.
+
+Maintenant, **`index.js`** va appeler la **`HomePage`**.  
+Il faut donc importer la fonction **`HomePage`** et l'appeler.  
+Voici le code de **`index.js`** à ce stade-ci :
+
+```js
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './stylesheets/main.css';
+import 'animate.css';
+
+import HomePage from './Components/Pages/HomePage';
+
+HomePage();
+```
+
+Nous allons générer le header, sans se soucier à ce stade-ci de la Navbar.  
+Comme nous souhaitons que le lecteur audio puisse être visible dans tous les écrans, celui-di sera ajouté au header.  
+Nous allons aussi au sein du header ajouter un "wrapper" dans lequel la Navbar pourra être affichée.  
+Voici le code de **`Header.js`** :
+
+```js
+import sound from '../../sound/Infecticide-11-Pizza-Spinoza.mp3';
+
+const Header = () => {
+  renderTitleAndWrapper();
+  renderAudioPlayer();
+  onBodyClick();
+};
+
+function renderTitleAndWrapper() {
+  const header = document.querySelector('header');
+  header.innerHTML = `<h1 class="animate__animated animate__bounce text-center">
+  We love Pizza
+  </h1>
+  <div id="navbarWrapper">
+  </div>
+  `;
+}
+
+function renderAudioPlayer() {
+  const header = document.querySelector('header');
+
+  header.innerHTML += `
+  <div class="text-center">
+    <audio id="audioPlayer" controls autoplay class="mt-3">
+    <source src="${sound}" type="audio/mpeg" />
+    Your browser does not support the audio element.
+    </audio>
+  </div>
+  `;
+}
+
+function onBodyClick() {
+  const body = document.querySelector('body');
+  body.addEventListener('click', startOrStopSound);
+}
+
+function startOrStopSound() {
+  const myAudioPlayer = document.querySelector('#audioPlayer');
+
+  if (myAudioPlayer.paused) myAudioPlayer.play();
+  else myAudioPlayer.pause();
+}
+
+export default Header;
+```
+
+Pour appeler le **`Header`**, il suffit de compléter **`index.js`** :
+
+```js highlighting="6,8"
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './stylesheets/main.css';
+import 'animate.css';
+
+import HomePage from './Components/Pages/HomePage';
+import Header from './Components/Header/Header';
+
+Header();
+HomePage();
+```
+
+On voit que le style permettant les animations, tout comme Bootstrap, ne doivent pas être chargé dans chacun des modules. Comme cela est fait dans le point d'entrée du programme **`index.js`**, ces styles sont disponibles dans tous les modules appelés par le biais d'**`index.js`**.
+
+Nous allons générer le footer.
+
+```js
+import pizzaImage from '../../img/pizza2.jpg';
+import logo from '../../img/js-logo.png';
+
+const Footer = () => {
+  const footer = document.querySelector('footer');
+  footer.innerHTML = `<h1 class="animate__animated animate__bounce animate__delay-2s text-center">
+  But we also love JS
+</h1>`;
+
+  renderSmallImage(footer, logo);
+  renderSmallImage(footer, pizzaImage);
+};
+
+export default Footer;
+
+function renderSmallImage(wrapper, url) {
+  const image = new Image(); // or document.createElement('img');
+  image.src = url;
+  image.height = 50;
+  wrapper.appendChild(image);
+}
+```
+
+Pour appeler le **`Footer`**, il suffit de compléter **`index.js`** :
+
+```js highlighting="7,11"
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './stylesheets/main.css';
+import 'animate.css';
+
+import HomePage from './Components/Pages/HomePage';
+import Header from './Components/Header/Header';
+import Footer from './Components/Footer/Footer';
+
+Header();
+HomePage();
+Footer();
+```
+
+Veuillez exécuter votre application pour vous assurer que celle-ci offre la même fonctionnalité qu'au tutoriel précédent.
+
+Nous allons maintenant rajouter des pages et travailler l'aspect navigation entre les pages.

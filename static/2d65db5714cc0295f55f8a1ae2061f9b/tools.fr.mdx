@@ -1,0 +1,237 @@
+---
+title: "Outils API"
+description: "Amélioration des outils de développement"
+---
+
+# c) Amélioration des outils de développement
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part1"> Partie 1 </PathViewerItem>
+    <PathViewerItem selected> c) Tools </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> Redémarrage automatique au changement d'un fichier </InternalPageMenuItem>
+  <InternalPageMenuItem> Debugging d'une API </InternalPageMenuItem>
+  <InternalPageMenuItem> Autres outils de développement : le linter & le formatter </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 1.8 : Refactoring à l'aide de linter & formatter </InternalPageMenuItem>
+</InternalPageMenu>
+
+Dans le développement de nos API, nous souhaitons plus de d'outil pour faciliter nos tâches de développeurs.  
+Notamment, à chaque changement de notre code, nous ne souhaitons pas devoir redémarrer manuellement notre application.
+
+Nous souhaiterions aussi bénéficier d'un debugger et d'autres outils, comme un linter...
+
+
+# <InternalPageTitle> Redémarrage automatique au changement d'un fichier </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/SNGoExEk1CQ" />
+</div>
+
+## Configuration de l'utilisation de nodemon
+
+Il est possible de faire en sorte qu'à chaque fois que nous sauvons un fichier, notre application **`node.js`** redémarre automatiquement.
+
+Voici la précédure :
+
+- Installez **nodemon** au niveau du répertoire du projet :
+
+```bash
+npm i nodemon -D
+```
+
+- Pour lancer **nodemon** (au lieu du simple **node**) quand on tape **`npm run dev`** : Veuillez ajouter la ligne **`"dev": "nodemon /bin/www"`** dans **`package.json`** :
+
+```json highlighting="2"
+"scripts": {
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www"
+  },
+```
+
+## Configuration des fichiers à ignorer pour éviter des rédémarrages
+
+Il est possible d'indiquer les fichiers qui doivent être ignorés par **nodemon** via l'ajout dans **`package.json`** :
+
+```json
+"nodemonConfig": {
+    "ignore": [
+      "data/*"
+    ]
+  },
+```
+
+Dans la configuration ajoutée ci-dessous, tous les fichiers qui seraient mis à jour dans le répertoire **`/data`** ne provoqueront pas de redémarrage du serveur **nodemon** lorsqu'il est lancé (en mode 'dev').
+
+Veuillez installer **nodemon** dans le cadre de votre tutoriel en cours (**api-persistence**) et configurer celui-ci pour que l'application ne redémarre pas à chaque fois que vous créez une nouvelle pizza.   
+N'hésitez pas à tester la création d'une pizza avant de dire à **nodemon** d'ignorer les fichiers se trouvant dans **`/data`**.
+
+# <InternalPageTitle> Debugging d'une API </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/LV3LOWoaFaU" />
+</div>
+
+## Introduction
+
+Est-ce que nous pouvons utiliser VS Code pour débugger notre API ?  
+Oui, heureusement, car le debugger est probablement le meilleur ami des développeurs.
+
+Il est toujours là pour aider, à l'écoute de nos investigations, mettant régulièrement en lumière des pistes de sortie de problèmes, tout cela de manière bienveillante, sans jamais nous brusquer 😁.
+
+[Debugging via VS Code](https://code.visualstudio.com/docs/editor/debugging) [[R.59]](/references/#r59) fournit le détails de comment débugger sous VS Code. Nous vous offrons par la suite une façon pratique de rapidement débugger.
+
+## Debugging sans configuration
+
+Sans aucune configuration, il est possible de débugger une application **Node.js**.
+
+Il suffit d'ouvrir le script d'entrée de votre application dans VS Code. Pour une application Express, le script d'entrée est **`/bin/www`**. Cliquez dans l'Explorer de VS Code sur **`/bin/www`** de votre tutoriel **api-persistence**. Une fois le script **`/bin/www`** ouvert, il ne reste plus qu'à exécuter le **Debug**.  
+Pour ce faire :
+- soit vous cliquez sur l'icône **`Run and Debug`** à gauche de l'Explorer, puis sur le bouton "**`Run and Debug`**";
+- soit vous cliquez sur "**`Run`**" puis sur "**`Start Debugging`**";
+- soit vous cliquez sur "**`F5`**",
+- Il est probable que la première fois que vous lancez le **`Debug`**, vous devrez sélectionner **`Node.js`**   (il sera indiqué : "**`Select debugger`**") comme debugger dans une liste.
+
+Une fois le debugger lancé, il suffit d'ajouter des breakpoints dans le code source et d'exécuter le code pas à pas.
+
+N'hésitez pas à exécuter pas à pas une opération de votre api, comme la création d'une pizza par exemple.
+
+## Debugging avec une bonne configuration
+
+Trouver une configuration qui permette de bien débugger n'est pas si aisé. Nous allons donc voir ensemble comment mettre en place une configuration des plus utiles dans le cadre de ce cours.
+
+Premièrement, il est important que lorsqu'on lance le debugger, on puisse bénéficier de **nodemon** et des redémarrages automatiques en cas de changement de code.  
+Pour ce faire, veuillez mettre à jour le fichier **`packages.json`** pour rajouter un script de démarrage :
+
+```json highlighting="2"
+"scripts": {
+    "debug": "nodemon ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www"
+  },
+```
+
+Nous allons maintenant créer une configuration de debugging associée à notre repo **web2** :
+
+- Cliquez sur l'icône "**`Run and Debug`**" à gauche de l'Explorer, puis sur le lien "**`create launch.json file`**" (**`.vscode/launch.json`**).
+- Quand il sera indiqué "**`Select debugger`**", sélectionnez **`Node.js`**.  
+  NB : Peu importe le debugger que vous sélectionnez, car vous allez par la suite copier / coller la configuration proposée.
+- Une fois le debugger **`Node.js`** choisi, VS Code crée un répertoire **`.vscode`** à la racine du folder ouvert au sein de VS Code (normalement vous devriez avoir ouvert votre repo local **web2**) contenant un fichier **`launch.json`** et une configuration initiale. Veuillez remplacer le contenu de ce fichier (**`.vscode/launch.json`**) par celui-ci :
+
+```json highlighting="10-14,19"
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch via NPM",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "debug"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node",
+      "cwd": "${fileDirname}"
+    }
+  ]
+}
+```
+
+**`runtimeArgs`** permet de sélectionner le script à lancer par le debugger, à savoir ici : **`debug`**.  
+Ainsi, quand on lancera le debugger, celui-ci lancera le programme avec l'équivalent de la commande **`npm run debug`**.
+
+**`"cwd":"${fileDirname}"`** : **`cwd`** permet d'indiquer le chemin vers la racine du programme à débugger. La variable **`fileDirname`** permet de sélectionner le programme à débugger sur base du fichier ouvert et actif dans VS Code.
+
+Si vous avez plusieurs applications au sein d'un folder de VS Code, pour débugger une application en particulier, nous vous conseillons cette approche :
+- Ouvrez le fichier **`package.json`** de l'application à débugger ;
+- Cliquez sur l'icône **`Run and Debug`** à gauche de l'Explorer, puis cliquez sur **`Start Debugging`** (ou cliquez juste sur **`F5`**) en vérifiant que la configuration de debugging sélectionnée est bien nommée **`Launch via NPM`**.
+
+Notons que le nom de la configuration de debugging peut facilement être modifiée en changeant la valeur de l'attribut **`name`** dans **`/.vscode/launch.json`**.
+
+Veuillez tester cette configuration de debugging au sein de votre repo local **web2**.  
+Vous pourriez par exemple observer pas à pas une opération de suppression d'une pizza, afin de voir à quel moment le contenu de l'array **`pizzas`** est mis à jour, ainsi que le fichier **`/data/pizzas.json`**.
+
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`api-persistence tutorial`**.
+
+En cas de souci, vous pouvez accéder au code du tutoriel ici :
+[api-persistence](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/persistence).
+
+# <InternalPageTitle> Autres outils de développement : le linter & le formatter </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/BiWa7bbnjTI" />
+</div>
+
+## Introduction
+
+Il serait utile de bénéficier :
+
+- d'un **linter** : celui-ci devrait imposer un "style guide" qui sera équivalent à notre style de programmation pour les IHM.
+- d'un **formatter** : celui-ci devrait automatiquement permettre d'améliorer le style de notre code pour se rapprocher de ce qui est imposé par le linter.
+
+Un boilerplate a été créé afin de mettre en place ces outils :
+[basic-api-boilerplate](https://github.com/e-vinci/basic-api-boilerplate)
+
+**Vous ne devez pas savoir comment créer et configurer un tel boilerplate.**  
+Néanmoins, pour les personnes très curieuses, la création du boilerplate est expliquée dans le **`README`** du boilerplate.
+
+Pour la suite du cours, nous n'utiliserons plus le générateur d'application Express, mais ce boilerplate.
+
+Il est important d'avoir installé les extensions **`ESLint`** et **`prettier`** au sein de VS Code pour bien utiliser le boilerplate d'une API.  
+
+## Le linter
+Nous souhaitons ajouter un outil qui permette de détecter des erreurs de programmation lors de l'écriture de nos scripts, un linter.   
+Nous voulons que le linter impose le style d'Airbnb décrit dans le **Airbnb JS style guide**.   
+Pour ce faire, grâce au boilerplate, lorsque nous lançons la commande **`npm start`**, nous utilisons **ESLint** (cet outil est aussi utilisé par Facebook au sein d'applications React) qui impose un style de programmation conforme aux règles d'Airbnb.   
+Lors du build de l'application, nous bénéficions de feedback sur notre code.
+
+Pour bénéficier de plus de feedback sur le code, veuillez installer l'extension **ESLint** au sein de VS Code.    
+Vous ne devez plus attendre le build pour avoir du feedback sur votre code, cela se fait dès l'écriture ! Vous avez même des propositions de "Quick fix" !
+
+Pour votre info, la configuration des règles de **ESLint** se fait dans le fichier **`.eslintrc.js`** devant se trouver à la racine d'un projet et offert au sein du boilerplate.
+
+## Le formatter
+Pour formater facilement votre code, le boilerplate fournit une configuration de **prettier** conforme à ce qui est attendu pour s'approcher du style imposé par le linter, c'est à dire au style d'Airbnb.
+
+Pour que la configuration du formater offerte dans le boilerplate soit utile, veuillez installer l'extension **prettier** au sein de VS Code.
+
+Une fois **prettier** installé dans VS Code, vous pouvez facilement formatter votre code conformément au style d'Airbnb :
+- soit en tapant **`Shift Alt F`** ;
+- soit en faisant un **clic droit** sur votre script, **`Format Document`** ; la première fois, il se peut que vous deviez sélectionner **prettier** comme formatter.
+
+Pour votre info, la configuration des règles de **prettier** se fait dans le fichier **`.prettierrc.js`** devant se trouver à la racine d'un projet et offert au sein du boilerplate.
+
+
+# <InternalPageTitle> Exercice 1.8 : Refactoring à l'aide de linter & formatter </InternalPageTitle>
+
+Vous allez faire un refactor de la RESTful API de **myMovies** en utilisant les outils de développement modernes mis à disposition dans un boilerplate. Vous allez écrire du code plus propre, qui correspond au style de programmation inposé par le le style d'Airbnb.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/1.8`** sur base du boilerplate : [basic-api-boilerplate](https://github.com/e-vinci/basic-api-boilerplate).
+
+Veuillez reprendre le code que vous avez développé à l'exercice précédent ([Exercice 1.7](../json/#exercice_1_7_persistance_des_donnees)) et intégrez le dans votre nouveau projet. 
+
+Vous devez mettre à jour le code pour qu'il n'y ait plus d'erreur identifiée par le linter. Pour ce faire, vous devez utiliser le formatter.
+
+⚡ Si vous avez fait un clone du boilerplate, attention au Git dans le Git, n'oubliez pas de supprimer le dossier **`.git`** présent dans votre nouveau projet.
+
+Veuillez tester que votre API fonctionne toujours aussi bien après le refactoring.
+
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.8 : API : linter & formatter`**.
+
+#### 🤝 Tips 
+- Tant que nous n'installez pas les packages, le linter n'est pas activé dans VS Code. Il faut aussi fermer et réouvrir les fichiers une fois les packages installés pour que les erreurs de style apparaissent dans VS Code.  
+- Vous avez un problème du type "no such file or directory" ? N'hésitez pas à créer un chemin correct vers votre fichier JSON à l'aide de la méthode **`join`** de l'objet **`path`** :
+```js
+const path = require('node:path');
+
+const jsonDbPath = path.join(__dirname, '/../data/films.json');
+```
+
+- Vous pourriez avoir besoin de convertir une string vers un entier, par exemple : 
+  - soit : `const id = Number(req.params.id);`
+  - soit : `const id = parseInt(req.params.id, 10);`
+ 
+
+

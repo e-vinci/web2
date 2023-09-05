@@ -1,0 +1,366 @@
+---
+title: "JS & browser"
+description: "JS dans un browser"
+---
+
+# a) JS dans un browser
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
+    <PathViewerItem selected> a) JS & Browser </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> Où mettre du code JS ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Comment fonctionne un browser pour afficher une page ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Comment interagir avec son browser ? </InternalPageMenuItem>
+  <InternalPageMenuItem> JS & la norme ECMAScript </InternalPageMenuItem>
+  <InternalPageMenuItem> Exercice 2.1 : 1er script externe </InternalPageMenuItem>
+</InternalPageMenu>
+
+
+Pour démarrer avec les UI (User Interfaces), nous allons développer des applications web classiques, façon "old school".
+
+Nous n'allons pas utiliser d'outils pour gérer les dépendances de nos applications, nous allons intégrer ces dépendances directement à l'aide de balises **`<script>`**.
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/JsOn4wV5Prk" />
+</div>
+
+# <InternalPageTitle> Où mettre du code JS ? </InternalPageTitle>
+
+## Introduction
+
+Le JavaScript a été créé en 1995 par Brendan Eich pour rendre les pages web interactives et ainsi améliorer l'expérience utilisateur.
+
+Le JS permet de créer des interactions avec l'HTML et le CSS d'un browser.
+
+Il s'exécute après la génération d'une page web comprenant du HTML et potentiellement du CSS.
+
+Les bases du langage JS sont reprises dans l'introduction de ce cours, au points [c) Introduction au langage JS](../../part0/js-language).
+
+Si vous ne connaissez pas encore bien la syntaxe du langage JS, il est important de (re)lire cette introduction avant d'aller plus loin.
+
+Il existe plusieurs façon de mettre du code JS pour interagir avec une page web.
+
+## Directement dans le browser
+
+👍 Pour ce cours, nous vous recommandons d'installer et d'utiliser **Chrome** comme browser.
+
+Ce browser moderne facilite grandement le développement d'applications web. Toutes les indications données dans ce cours concernant les fonctionnalités de développement offertes par un browser seront illustrée par **Chrome** uniquement.
+
+Si vous choisissez un autre browser, il vous faudra donc trouver l'équivalent par vous-même.
+
+Pour accéder à un environnement vous permettant d'introduire du JS directement dans votre browser, vous allez accéder à la **console** de votre browser. Pour ce faire, lorsque votre browser est ouvert, tapez : 
+- soit **`F12`** ;
+- soit **`CTRL + SHIFT + i`** ;
+- soit clic droit sur la fenêtre de votre browser, puis **`Inspecter`**.
+
+Il faut ensuite sélectionner l'onglet **`Console`** du browser.
+
+<ScrollableImage name="console.PNG" minWidth="400px" maxWidth="600px" />
+
+<figcaption>Utilisation de la console pour faire un calcul</figcaption>
+
+Veuillez copier/coller ce code dans la console de votre browser et observer le résultat.
+
+```js
+let message = "Hello world!";
+console.log(message);
+```
+
+## Dans une page HTML
+
+### Introduction
+
+Il existe plusieurs façons d'associer du JS à une page HTML.
+
+Pour écrire du code JS, de l'HTML ou du CSS, vous aurez besoin d'un éditeur de code. Il existe beaucoup d'éditeurs.
+
+👍 Pour écrire du code, dans ce cours, nous vous recommandons d'installer, dès maintenant si ce n'est pas déjà fait, **Visual Studio Code** : https://code.visualstudio.com/download [[R.18]](/references/#r18).
+
+Lors de l'installation, nous vous recommandons de sélectionner l'option **`Open with code`**. Cela vous permettra d'ouvrir un projet directement en faisant un clic droit sur un dossier.
+
+Toutes les indications données dans ce cours concernant les fonctionnalités de développement offertes par un éditeur de code seront illustrée par **VS Code** uniquement. Notons que cet outil est Open Source et est supporté par une large communauté de développeurs.
+
+Il est possible que vous préfériez utiliser un autre éditeur de code ou IDE, comme un des outils de la suite JetBrains (IntelliJ ou WebStorm).
+
+Si vous choisissez un de ces éditeurs, il vous faudra donc trouver l'équivalent des outils de développement présentés dans ce cours par vous-même.
+
+### Dans un fichier externe
+
+👍 La façon recommandée pour associer du JS à une page HTML, c'est de mettre le code JS dans un script externe, un fichier **`.js`**, et de faire appel à ce code au sein de la page HTML, à l'aide de **`<script src="file_name.js">`** juste avant la balise de fermeture **`</body>`**.
+
+Nous verrons plus tard comment l'HTML est rendu au sein du browser. Néanmoins, la raison pour laquelle il est recommandé d'inclure le script JS à la fin de la balise **`</body>`**, c'est pour nous assurer que si le JS doit interagir avec des éléments HTML, ceux-ci aient déjà été rendu par le browser.
+
+Afin d'avoir une visibilité de tout le code associé à votre cours de JS, veuillez ouvrir votre répertoire **`web2`** (créé dans le cadre de l'[Exercice 0.1](../part0/git/#exercice_0_1_creer_un_repository_local_et_distant_pour_gerer_vos_exercices_tutoriels)) à l'aide de votre éditeur de code. 
+
+Dans VS Code, pour ce tutoriel, veuillez créer le répertoire **`/web2/tutorials/external-script`**.
+
+NB : Pour ce faire, vous pouvez cliquer sur le répertoire **`tutorials`** dans VS Code et ensuite sur l'icône **`New Folder`**, et donner le nom voulu à ce répertoire (**`external-script`**).
+
+Dans ce répertoire, veuillez créer un fichier HTML **`index.html`**.
+
+NB : Si vous l'ignorez, vous pouvez cliquer sur **`external-script`** et ensuite sur l'icône **`New File`**, et donnez le nom voulu à ce fichier (**`index.html`**).
+
+A ce stade-ci, votre répertoire **`web2`** & VS Code devrait ressembler à cela :
+
+<ScrollableImage name="start.PNG" minWidth="400px" maxWidth="600px" />
+
+Veuillez ajouter ce contenu à **`index.html`** :
+
+```html
+<html>
+  <head>
+    <title>Demo : external JS script</title>
+  </head>
+  <body>
+    <script src="external-script.js"></script>
+    Hello everybody !
+  </body>
+</html>
+```
+
+On voit que ce fichier HTML est prêt à accueillir un script externe.
+
+Veuillez créer le fichier **`external-script.js`** au sein du répertoire **`external-script`** et y ajouter ce code ci :
+
+```js
+alert("Pop-up thanks to an external JS file.");
+```
+
+Il nous reste maintenant à exécuter cette application.
+
+Comme c'est une application web, nous avons besoin d'un serveur web pour afficher cette page web dans les règles de l'art.
+
+Il existe une multitude de serveurs web : Apache, IIS (Microsoft Web Server)...
+
+Lorsque nous développons des applications web "old school", sans outil moderne pour gérer les
+dépendances de notre application, nous allons utiliser un serveur web intégré à VS Code.
+
+Pour ce faire, veuillez installer l'extension **Live Server** de VS Code :
+
+- Dans le menu de gauche de VS Code, cliquez sur l'icône **`Extensions`** (4 petits carrés).
+- Ecrivez **`Live Server`**.
+- Cliquez sur **`Install`**.
+
+Une fois installé, vous pouvez lancer votre page web en faisant :
+
+- Clic droit sur **`index.html`**,
+- **`Open with Live Server`**
+
+🎉 Votre browser par défaut s'ouvrira, affichant votre toute première page web contenant du JS côté client !
+
+Si  n'est pas Chrome qui s'ouvre, nous vous recommandons de changer les préférences de votre OS. Sous Windows, dans la barre de recherche, vous trouverez facilement l'utilitaire pour le faire. Par exemple, pour un OS Windows en anglais : **`Default apps`**, **`Web browser`**.
+
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`hmi first external script tutorial`**.
+
+En cas de souci, vous pouvez accéder au code de cette démo ici :
+[hmi-external-script](https://github.com/e-vinci/js-demos/tree/main/frontend/js-location/external-script).
+
+👍 Il est recommandé de créer des fichiers séparés pour chaque catégorie de code : **`.html`**, **`.js`**, **`.css`**. Cela permet d'augmenter la lisibilité et la maintenabilité de votre code. 
+
+Nous allons voir qu'il existe néanmoins d'autres façon d'intégrer du JS, notamment en intégrer celui directement aux fichiers HTML.
+
+### Dans une fonction au sein d'une page HTML
+
+👎 Il est possible d'ajouter du JS dans une fonction ou événement associé à un élément HTML, néanmoins cela n'est pas recommandé lorsqu'on écrit du Vanilla JS. On appelle cette façon de faire du "Inline JavaScript".
+
+L'application développée au point précédent fournirait le même genre de résultat, avec un seul fichier HTML (**`index.html`**) :
+
+```html numbered highlighting="6-7"
+<html>
+  <head>
+    <title>Demo : internal JS in a function</title>
+  </head>
+  <body
+    onload="alert('Pop-up thanks to an HTML attribute & a function.' 
+    +'\nIt\'s not advised to add your scripts directly within the HTML.')"
+  >
+    <h1>Hello everyone ; )</h1>
+  </body>
+</html>
+```
+
+**`onload`** est un événement qui se produira une fois que l'élément **`body`** aura chargé tout son contenu ; une fois chargé, le code JS s'exécutera et affichera donc un pop-up.
+
+N'hésitez pas à visualiser cette page à l'aide de Live Server au sein de VS Code.
+
+En Vanilla JS, ce genre de code est déconseillé. Vous trouverez néanmoins beaucoup de code écrit de cette façon sur le web.
+
+Si plus tard, suite à ce cours, vous veniez à utiliser des frameworks comme React, vous découvrirez que parfois on préfère encapsuler l'HTML et le JS au sein de mêmes fichiers.
+
+### Dans une balise script au sein d'une page HTML
+
+👎 Il est possible d'ajouter du JS dans une balise **script** au sein d'un page HTML, néanmoins cela n'est pas recommandé lorsqu'on écrit du Vanilla JS.
+
+Avec un seul fichier HTML (**`index.html`**), voici comment il est possible d'afficher un pop-up :
+
+```html numbered highlighting="6-11"
+<html>
+  <head>
+    <title>Demo : internal script tag</title>
+  </head>
+  <body>
+    <script>
+      alert(
+        "Pop-up thanks to a script tag." +
+          "\nIt's not advised to add your scripts directly within the HTML."
+      );
+    </script>
+    Hello world ; )
+  </body>
+</html>
+```
+
+# <InternalPageTitle> Comment fonctionne un browser pour afficher une page ? </InternalPageTitle>
+## Réception des données
+
+Dans une première étape, lorsque vous accéder à l'URL d'un site web à l'aide de votre browser, celui-ci va principalement recevoir des fichiers HTML, CSS & JS en retour, sous forme d'octets.
+
+<ScrollableImage name="bytes.png" minWidth="600px" maxWidth="730px" />
+
+[Réception des données par le browser [R.19]](/references/#r19)
+
+## Création des structures de données utiles
+
+Une fois les données reçue, le browser doit pouvoir interpréter les octets reçus. Grâce au "character encoding", à notre époque nous devrions tous utiliser **utf-8**, le browser peut faire la transformation de ces octets vers des caractères.
+
+A partir des caractères, le browser peut commencer le parsing de chaque fichier, en identifiant les tokens, des structures de données identifiant les différents tags HTML & leurs attributs.
+
+A partir de ces tokens, le browser va créer des nodes et les lier entre eux sous forme d'un arbre. C'est cette structure de données que nous appelons le Document Object Model (DOM).
+
+<ScrollableImage name="dom.png" minWidth="600px" maxWidth="730px" />
+
+[Construction du DOM par le browser [R.19]](/references/#r19)
+
+Au fur et à mesure que le browser reçoit des données et construit le DOM, il peut tomber sur une balise incluant du CSS, comme par exemple :
+
+```html
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+```
+
+Dans ce cas, le browser va initialiser un process équivalent au DOM, mais pour créer une structure de données traitant des éléments de style, le CSS Object Model (CSSOM) :
+
+<ScrollableImage name="cssom.png" minWidth="600px" maxWidth="730px" />
+
+[Construction du CSSOM par le browser [R.19]](/references/#r19)
+
+## Création du render tree
+
+Les structures du DOM & du CSSOM sont indépendantes.
+
+Le browser va combiner ces deux structures en un "render tree".
+
+<ScrollableImage name="render.png" minWidth="600px" maxWidth="730px" />
+
+[Construction du render tree par le browser [R.19]](/references/#r19)
+
+<br />
+
+S'il y a des éléments cachés par le biais du CSS, ceux-ci seront présents dans le DOM, mais pas dans le render tree.
+
+## Création du layout
+
+L'étape qui suit est de créer le layout, étape parfois nommée "reflow". Le browser va calculer la taille et la position exacte de chaque élément à rendre (de l'anglais "render"), c'est-à-dire à afficher sur la page.
+
+## Affichage des éléments
+
+Sur base du render tree & du layout, le browser peut finalement "peindre" les différents nodes à l'écran et donc rendre la page !
+
+## Et le JS ?
+
+Lors de la création du DOM, s'il y a une balise script, et bien le script JS sera téléchargé. La construction du DOM sera "bloquée" jusqu'à la fin de l'exécution du script.
+
+De la même façon, l'exécution du CSSOM sera stoppée si le JS accèdent au style d'un élément HTML.
+
+Il est donc important de faire attention où l'on met ses scripts JS. C'est pourquoi, lorsqu'on souhaite interagir avec des éléments présents dans l'HTML, il faut mettre la balise script incluant le JS à la fin de la balise **body**.
+
+Le JS va donc pouvoir être utilisé tant pour créer des éléments du DOM & du CSSOM que pour interagir avec ceux-ci et rendre nos pages web intéressantes et "user friendly".
+
+# <InternalPageTitle> Comment interagir avec son browser ? </InternalPageTitle>
+
+Les browser mettent à disposition des API (Application Programming Interface), des librairies permettant d'interagir avec les pages web.
+
+<ScrollableImage name="browser.png" minWidth="600px" maxWidth="730px" />
+
+[Relation entre API & le browser [R.20]](/references/#r20)
+
+Les "Third party APIs" sont localisées sur des serveurs externes : lien vers une libraire JS, appel vers des web services comme Twitter, Google Maps…
+
+Les "Browser APIs" sont intégrées au browser et permettent d'interagir avec celui-ci.
+
+Voici quelques exemples d'API du browser pour :
+
+- Manipuler des pages web : **DOM API** ; c'est l'API la plus importante quand on fait du développement d'IHM.
+- Dessiner / animer : **Canvas** & **WebGL** ;
+- Communiquer des données avec un serveur : **Fetch API**, et anciennement **XMLHttpRequest** ;
+- Gérer des flux audio & vidéo : **Audio & Video APIs**
+- Gérer la persistance de données : **Web Storage APIs** (**cookies**, **localStorage**, **sessionStorage**…)
+
+Via des objets JS, ce sont ces API que nous allons utiliser dans nos scripts JS, afin de créer des pages web interactives.
+
+Il n'existe pas de standard pour le Browser Object Model.
+
+Voici une vue des différents objets JS qui permettent d'acccéder au Browser Object Model :
+
+<ScrollableImage name="bom.png" minWidth="360px" maxWidth="360px" />
+
+[Les objets JS offerts par le browser [R.21]](/references/#r21)
+
+Voici quelques explications concernant le rôle de certains de ces objets :
+
+- **`window`** : objet manipulant la fenêtre du browser même, il offre des fonctions comme : **`alert()`**, **`prompt()`**…
+- **`navigator`** (**`===window.navigator`**) : objet contenant de l'information sur le browser, comme par exemple :
+  **`navigator.appName`**, **`navigator.appVersion`**.
+- **`location`** : (**`===window.location`**) objet représentant l'URL de la page ; il offre des propriétés & méthodes comme :
+  - **`location.href`** :l'URL de la page affichée.
+  - **`location.reload()`** : recharge la page.
+  - **`location.replace('https://URL_INDIQUEE')`** : navigue vers l'URL indiquée.
+- **`document`** : (**`===window.document`**) objet manipulant le corps de l'HTML & du CSS de la page. Nous allons tout prochainement approfondir les propriétés & méthodes mises à disposition par cet objet JS.
+
+# <InternalPageTitle> JS & la norme ECMAScript </InternalPageTitle>
+
+La norme ECMAScript, le standard pour le JS côté client, a débouché sur de multiples implémentations du JS (ActionScript, JScript, JavaScript, CommonJS...).
+
+ECMAScript est utilisé généralement pour des scripts côté client, mais de plus en plus est aussi utilisé côté serveur avec Node.js.
+
+A la mi-juin 2023, la version en cours approuvée de ECMAScript est ECMAScript 2022 [[R.24]](/references/#r24).
+
+Par exemple, ECMAScript 2015 (aussi appelée ES6) à mis en place de nouveaux éléments importants au sein du JS : **`arrow functions`**, **`let`** & **`const`**, **`Promise`**, **`class`**…
+
+ECMAScript 2015 (ES6) est supporté par la majorité des browsers modernes, mais pas par IE !
+
+👍 Nous vous recommandons d'écrire du code moderne conforme à ES6 ou une version plus récente.
+Si vos applications doivent supporter de vieux browsers, vous devriez utiliser des outils comme Babel qui automatiquement convertiront votre code ES6+ vers des versions de JS plus anciennes.
+
+Si l'aspect normatif vous passionne et que vous souhaitez suivre les propositions d'inclusion dans la norme : https://tc39.es/ [[R.25]](/references/#r25).
+
+# <InternalPageTitle> Exercice 2.1 : 1er script externe </InternalPageTitle>
+
+Via un script JS externe, veuillez créer une application web affichant, au chargement d'une page HTML, un pop-up dont le message reprend la date et l'heure au moment de l'affichage de ce pop-up.
+
+Ce même message doit être affiché dans la console.
+
+Pour ce faire, vous allez créer, puis appeler, une fonction **`addDateTime(message)`** qui renvoie une string concaténant :
+
+- la date et l'heure à l'appel de la fonction ; 
+- le **`message`** passé en argument de la fonction.
+
+Par exemple, si le **`message`** est *"This is the best moment to have a look at this website !"*, le pop-up affichera quelque chose du genre *"06/09/2022 14:59 : This is the best moment to have a look at this website !"*.
+
+Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.1`**.  Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec le message suivant : **`2.1 : HMI : first external script`**.
+
+#### 🤝 Tips
+Vous pouvez vous aider du code donné ci-dessous :
+
+```js
+const dateTimeNow = new Date();
+console.log(dateTimeNow.toLocaleDateString()); // 17/08/2020
+console.log(dateTimeNow.toLocaleTimeString()); // 13:26:15
+```
+
+Autre référence pouvant vous aider :
+[mdn web docs - Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date).

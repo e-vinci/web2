@@ -1,0 +1,109 @@
+---
+title: "Contexte d'utilisation du JS"
+description: "Contexte d'utilisation du JS & choix des outils"
+---
+
+# b) Contexte d'utilisation du JS & choix des outils
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part0" > Partie 0 </PathViewerItem>
+    <PathViewerItem selected> b) Contexte </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> Contexte d'utilisation du JS </InternalPageMenuItem>
+  <InternalPageMenuItem> Librairies & frameworks JS sélectionnés pour ce cours </InternalPageMenuItem>
+</InternalPageMenu>
+
+# <InternalPageTitle> Contexte d'utilisation du JS </InternalPageTitle>
+## Utilisation de JS
+
+En 2021, suite au grand sondage annuel de StackOverflow, le JS est le langage le plus utilisé depuis plus de 9 ans !
+
+<ScrollableImage
+  name="most-pop-programming.png"
+  minWidth="400px"
+  maxWidth="600px"
+/>
+
+[Programming, scripting, and markup languages [R.1]](/references/#r1)
+
+## (Sur)Diversité de JS
+
+### Applications frontend web classiques
+
+Il existe une multitude de librairies & frameworks JS pour aider à réaliser des d'Interfaces Homme-Machine (IHM) : JQuery, Phaser, Anime.js, AngularJS, React…
+
+Voici quelques librairies et frameworks JS utilisés en 2021 côté client :
+
+<ScrollableImage
+  name="frontend-technos.jpg"
+  minWidth="400px"
+  maxWidth="600px"
+/>
+
+[Best JavaScript Frameworks, Libraries and Tools to Use in 2021 [R.2]](/references/#r2)
+
+### Applications backend
+
+Il existe aussi un nombre incroyable de librairies & frameworks JS permettant de réaliser des applications côté serveur, aussi appelées applications backend : Node.js, Express, Next.js...
+
+Voici quelques frameworks JS utilisés en 2020 côté serveur :
+
+<ScrollableImage
+  name="backend-frameworks.png"
+  minWidth="400px"
+  maxWidth="600px"
+/>
+
+[Top 10 JavaScript Frameworks for Server Side Development in 2020 [R.3]](/references/#r3)
+
+### Communication de données
+
+Le JavaScript Object Notation (JSON) est notamment utilisé dans le cadre de communications entre applications, notamment afin de standardiser l'échange de message et de permettre une interopérabilité entre applications développées selon des technologies différentes.
+
+### Applications mobiles clientes / Cross Platform applications
+
+Le JS est utilisé pour réaliser des applications multi-plateformes. Il existe beaucoup de types d'architecture et de librairies & framework JS pour écrire une base de code commune en JS et permettre de générer des application qui s'exécuteront sous différentes plateformes (Android, iOS, Windows, Mac, Linux, Web...) :
+
+- Progressive Web Applications (PWA).
+- Hybrid Applications : Cordova, Ionic…
+- Real Native Applications : React Native, NativeScript…
+
+### Sur-ensemble de JS / langage transpilant vers JS
+
+Certaines applications peuvent être écrites dans un langage qui se base sur le JS :
+
+- TypeScript
+- CoffeeScript
+- ...
+
+### Embedded scripts
+
+Le JS sert aussi à intégrer des fonctionnalités, des plugins, à certains logiciels très connus.
+Par exemple :
+
+- Chrome extensions
+- Google Apps Script
+- ...
+
+### Autres
+
+Il existe encore d'autres contextes où le JS est utilisé. C'est une belle motivation pour apprendre ce langage, il permet aux programmeurs de faire de nombreuses choses.
+
+Pour ce cours, nous avons donc du faire des choix afin de sélectionner les technologies les plus appropriées.
+
+# <InternalPageTitle> Librairies & frameworks JS sélectionnés pour ce cours </InternalPageTitle>
+## Côté serveur / backend
+
+Par contre, côté serveur, nous utiliserons le framework **Express** afin de faciliter le développement de web services.
+
+## Côté client / frontend
+
+Côté client, pour le développement d'IHM, la priorité est mise sur l'apprentissage de Vanilla JS [[R.3]](/references/#r3), ou JS pure, sans utilisation de framework.
+
+En effet, comme le JS est devenu interopérable grâce à des standards (les normes **ECMAScript**) qui doivent être implémentés par tous les browsers modernes, il n'est plus nécessaires d'utiliser des librairies comme **jQuery**.
+
+<ScrollableImage name="js-evolution.png" minWidth="400px" maxWidth="600px" />
+
+[Evolution du JS [R.4.]](/references/#r4)
