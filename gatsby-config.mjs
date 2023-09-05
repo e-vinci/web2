@@ -2,7 +2,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeMdxCodeProps from 'rehype-mdx-code-props';
 import pkg from './package.json' assert { type: 'json' };
 
-const siteURL = 'https://e-vinci.github.io/js2'; // No trailing slash allowed!
+const siteURL = 'https://e-vinci.github.io/web2'; // No trailing slash allowed!
 const siteTitle = 'web2course';
 const youtubeUrl = ''; //"https://www.youtube.com/channel/UC_iU0pfrDaYFXd6X9mPlAJQ";
 const authorEmail = 'raphael.baroni@vinci.be';
@@ -13,7 +13,7 @@ const defaultAssociatedProjectGroupName = 'Web2 2023';
 const projectDocument = ''; //'WEB2-2022-PROJET-GROUP-XY.docx';
 
 const config = {
-  pathPrefix: `/js2`,
+  pathPrefix: `/web2`,
   siteMetadata: {
     version: pkg?.version,
     title: siteTitle,
