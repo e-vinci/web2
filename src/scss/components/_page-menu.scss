@@ -28,40 +28,45 @@
   padding-bottom: 1.3rem;
 
   &__close-button {
-    background-color: #111;
-    color:white;
-    position: absolute;
-    // width:50px;
-    top: 0;
-    right: 0px;
-    font-size: 20px;
-    padding: 5px 15px;
-    border-radius: 50%;
-    &:after {
-      content: '\00d7'; // equivalent of &times;
+    display: none;
+    @media only screen and (min-width: $lg) {
+      display: block;
+      background-color: #111;
+      color: white;
+      margin-bottom: 0.5rem;
+      right: 0px;
+      font-size: 20px;
+      padding: 5px 15px;
+      border-radius: 50%;
+      &:after {
+        content: '\00d7'; // equivalent of &times;
+      }
     }
   }
 
   &__open-button {
-    position: absolute;
-    top:0;
-    right: 0;
-    height:100vh;
-    
+    display: none;
+    @media only screen and (min-width: $lg) {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100vh;
 
-    &__item {
-      position:fixed;
-      right:0;
-      z-index: 10;
-      font-size: 20px;
-      cursor: pointer;
-      background-color: #111;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 50%;
-      border: none;
-      &:after {
-        content: '\2630'; // equivalent of &#9776;
+      &__item {
+        position: fixed;
+        right: 0;
+        z-index: 10;
+        font-size: 20px;
+        cursor: pointer;
+        background-color: #111;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 50%;
+        border: none;
+        &:after {
+          content: '\2630'; // equivalent of &#9776;
+        }
       }
     }
   }
