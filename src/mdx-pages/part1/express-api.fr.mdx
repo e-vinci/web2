@@ -749,19 +749,14 @@ Voici les "status codes" que nous allons généralement utiliser :
 
 # <InternalPageTitle> Exercice 1.5 : codes de statut HTTP </InternalPageTitle>
 
-Veuillez continuer le développement de la RESTful API de **myMovies**, sous Express, afin de mieux gérer la création de pizza et le réponses à donner aux clients.
+Veuillez continuer le développement de la RESTful API de **myMovies**, sous Express, afin de mieux gérer la la lecture et la création de films et le réponses à donner aux clients.
 
 Veuillez repartir du code de la solution de votre [Exercice 1.3](#exercice_1_3_lectures_specifiques_creation_rest_client) ou de votre [Exercice 1.4 optionnel](#🍬_exercice_1_4_gestion_de_la_pagination_du_tri_et_du_filtrage).
 
-Veuillez améliorer cette opération :
-
-| URI | Méthode HTTP | Opération |
-|---|---|---|
-| **`films`** | POST | CREATE ONE : Créer une ressource basée sur les données de la requête. |
-
-<br/>
-
-Lors de l'ajout d'un film, si la ressource existe déjà, c'est-à-dire s'il y a déjà un film présent avec le **`title`** donné, veuillez renvoyer le status code approprié.
+Veuillez améliorer les deux opérations de lecture (**`GET /films`** & **`GET /films/:id`**) et l'opération de création de films (**`POST /films`**):
+- En cas d'échec de la validation des paramètres reçus par une opération (non respect du contrat de l'API), veuillez renvoyer le status code approprié.
+- Lors de l'échec de la lecture d'un film en particulier, veuillez renvoyer le status code approprié.
+- Lors de l'ajout d'un film, si la ressource existe déjà, c'est-à-dire s'il y a déjà un film présent avec le **`title`** donné, veuillez renvoyer le status code approprié.
 
 Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.5`**.  
 Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.5 : API : status code`**.
