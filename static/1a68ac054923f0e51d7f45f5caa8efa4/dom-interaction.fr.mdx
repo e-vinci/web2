@@ -26,7 +26,8 @@ description: "JS dans un browser"
   <InternalPageMenuItem> Exercice 2.4.1 : timer pour lancer une action </InternalPageMenuItem>
   <InternalPageMenuItem> Les intervalles de temps & actions répétées  </InternalPageMenuItem>
   <InternalPageMenuItem> Exercice 2.4.2 : séquence d'événements différés dans le temps </InternalPageMenuItem>
-</InternalPageMenu>
+  <InternalPageMenuItem> Introduction au projet </InternalPageMenuItem>
+</InternalPageMenu> 
 
 
 <div className="card card__simple-youtube-container">
@@ -814,7 +815,7 @@ Normalement, si vous cliquez sur le 1<sup>er</sup> bouton, puis avant deux secon
 Veuillez réaliser une application web permettant d'afficher le temps qu'il faut pour qu'un utilisateur clique 10 fois sur un bouton : 
 - Le jeu démarre dès que la souris de l'utilisateur passe sur le bouton.
 - Si 5 secondes après que l'utilisateur soit passé sur le bouton, l'utilisateur n'a pas terminé son 10<sup>ème</sup> clic, veuillez afficher un message de type : *"Game over, you did not click 10 times within 5s !"*.
-- Si l'utilisateur a terminé ses 10 clics avant 5s, veuillez afficher :* "You win ! You clicked 10 times within X ms"* où X est une valeur entière.
+- Si l'utilisateur a terminé ses 10 clics avant 5s, veuillez afficher :*"You win ! You clicked 10 times within X ms"* où X est une valeur entière.
 
 Veuillez créer un nouveau projet dans votre repository local et votre web repository (normalement appelé **`web2`**) nommé **`/exercises/2.4.1`**.
 
@@ -919,3 +920,61 @@ Veuillez créer un nouveau projet dans votre repository local et votre web repos
   style="display: inline-block; min-width: 50px; min-height: 50px; border:1px solid black"
 ></div>
 ```
+
+# <InternalPageTitle> Introduction au projet </InternalPageTitle>
+Dans le cadre de ce cours, nous souhaitions que vous puissiez vous exercer au développement d'une application qui vous tient à coeur.
+
+C'est pourquoi, nous vous demandons de réfléchir à une application que vous souhaiteriez développer.
+
+Pour aborder certains concepts, vous allez créer une application web mettant en œuvre :
+- Une thématique qui vous tient à cœur ;
+- Une RESTful API tournant sous Node.js & Express ; 
+- Un frontend animé utilisant les opérations offertes par votre RESTful API et éventuellement des APIs tierces.
+
+Pour votre frontend animé, l'animation sera en 2D, 3D, sous forme de jeux ou de simples effets visuels.
+
+A ce stade-ci, nous vous proposons d'écrire l'objectif du projet que vous souhaitez développer et d'identifier un titre pour votre projet. La description de votre projet (~15 lignes) devrait répondre à ces questions : 
+- quel type d'organisation (équipe sportive, bibliothèque, amis, famille…) serait prise en charge par votre application ?
+- Pourquoi cette application vous tient à cœur ? 
+
+Au sein de votre répertoire **`/web2/`**, veuillez créer un répertoire **`/web2/project`**, et y ajouter un fichier **`README.md`** contenant le titre du projet qui vous tiendrait à coeur de développer ainsi que la courte description de son objectif.
+
+Pour décider de l'objectif de votre projet, vous pouvez vous inspirer de ce qui a été fait les années précédentes par les étudiants de Vinci en consultant la [vitrine de projets](/public-projects/showcase2022).
+
+Voici quelques autres exemples d'applications que vous pourriez réaliser : 
+-	une gestion de critiques de livres ;
+-	une gestion d'une équipe sportive (gestion des achats ou autres de l'équipe) ;
+-	un jeux vidéo (multi-joueurs ou pas) dont les utilisateurs et leurs scores seraient gérés par une RESTful API ;
+-	Un jeu de devinette d'un mot sur base du dessin d'un des joueurs ;
+-	…
+
+Quand votre **`README`** est finalisé, veuillez faire un **`commit`** avec comme message : **`2.6 : project description & title`**.
+
+
+<UnAuthenticatedBlock>
+
+Si vous n'avez pas l'envie de définir votre propre projet, vous aurez toujours l'occasion de simplement approfondir le développement de l'application myMovies qui permettra de gérer des informations associées à des films.
+
+</UnAuthenticatedBlock>
+
+<AuthenticatedBlock>
+
+## Création d'une équipe de projet
+
+Veuillez former un groupe de 4 ou 5 étudiants sur ce site en utilisant l'application permettant d'identifier les projets : [Projets](/project-page).
+
+Il est recommandé que l'attribution des groupes se fasse par discussions entre les étudiants. Lorsque 4 ou 5 étudiants ont un intérêt commun pour un projet, ils s'inscrivent au sein d'un groupe en cliquant sur l'icône <Image name="join.png" width="26px" height="28px" display="inline-block" />.
+
+Pour aider à la création de groupes, il est aussi possible de vous inscrire :
+-	à un groupe vide. Cela permettra à tous d'identifier les partenaires potentiels. 
+-	à un groupe où il y a déjà un ou plusieurs étudiants. Dans ce cas, veuillez-vous entretenir avec ces potentiels partenaires sur le sujet de votre projet. 
+
+Si nécessaire, vous pouvez vous désinscrire d'un groupe où vous n'avez pas trouvé de sujet commun dans le but de rejoindre un autre groupe. Il suffit de cliquer sur l'icône <Image name="quit.png" width="28px" height="26px" display="inline-block" />.
+
+A la date ultime de création de groupe, pour les étudiants toujours en recherche de partenaires, les enseignants faciliteront (ou imposeront si nécessaire) la création des groupes, mais pas des sujets de projet.
+
+## Consignes du projet
+
+Toutes les consignes du projet, la grille d'évaluation, ainsi que le template du rapport de groupe se trouvent dans ce document : <LinkFile name="WEB2-2023-PROJET-GROUP-XY.docx" target="_blank" download> Ergonomie & développement d'une SPA animée </LinkFile>
+
+</AuthenticatedBlock>
