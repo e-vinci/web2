@@ -295,7 +295,7 @@ Pour ce faire, veuillez créer un nouveau projet dans votre repository local et 
 ⚡ Si vous avez fait un clone du boilerplate, attention au Git dans le Git, n'oubliez pas de supprimer le dossier **`.git`** présent dans votre nouveau projet.
 
 Un texte à dactylographier contient comme propriétés : 
-- **`id`** : un entier ;
+- **`id`** : un uuid généré via la librairie https://www.npmjs.com/package/uuid ;
 - **`content`** : un contenu textuel ;
 - **`level`** : le niveau associé au texte; les seules valeurs autorisées sont : **easy**, **medium** et **hard**.
 
@@ -305,10 +305,10 @@ Voici le tableau formalisant toutes les opérations que vous devez implémenter 
 |-----|---------|-----------|
 | **`texts`**	| GET |	READ ALL : Lire toutes les ressources de la collection |
 | **`texts?level=value`**	| GET |	READ ALL FILTERED : Lire toutes les ressources de la collection selon le filtre donné |
-| **`texts/{id}`** | GET | READ ONE : Lire la ressource identifiée |
+| **`texts/:id`** | GET | READ ONE : Lire la ressource identifiée |
 | **`texts`**	| POST	| CREATE ONE : Créer une ressource basée sur les données de la requête |
-| **`texts/{id}`** |	DELETE	| DELETE ONE : Effacer la ressource identifiée |
-| **`texts/{id}`** |	PUT	| UPDATE ONE : Remplacer l'entièreté de la ressource par les données de la requête |
+| **`texts/:id`** |	DELETE	| DELETE ONE : Effacer la ressource identifiée |
+| **`texts/:id`** |	PUT	| UPDATE ONE : Remplacer l'entièreté de la ressource par les données de la requête |
 
 <br/>
 

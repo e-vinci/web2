@@ -730,6 +730,9 @@ Quand votre application est finalisée, veuillez faire un **`commit`** de votre 
 - Pour faire disparaître un container (une **`div`** par exemple), vous pourriez utiliser sa propriété **`style.display`** et la mettre à **`none`**.
 - Pour faire apparaître du contenu dans un container, (une **`div`** par exemple), vous pourriez utiliser sa propriété **`innerText`**.
 
+#### 🍬 Si vous souhaitez aller plus loin
+Une fois un souhait fait, vous pourriez afficher un bouton permettant de réafficher le formulaire demandant un souhait.
+
 # <InternalPageTitle> Exercice 2.3.2 : objet event & multiples éléments </InternalPageTitle>
 
 Veuillez réaliser une application web permettant d'afficher la couleur associée à une div parmi environ un millier de divs.
@@ -740,7 +743,7 @@ La page HTML contenant environ un millier de divs vous est offerte :
 <LinkFile name="many-divs.html" target="_blank" download> Fichier HTML de base </LinkFile>
 
 Il ne vous reste plus qu'à ajouter l'interactivité : 
-- Quand on clique sur une div, vous devez l'agrandir et afficher à l'intérieur sa couleur.
+- Quand on clique sur une div, vous devez l'agrandir et afficher à l'intérieur sa couleur (elle peut apparaître en RGB, par exemple : **`rgb(255. 153. 255)`**).
 - Vous devez faire cela en utilisant l'objet **`event`**.
 
 Quand votre application est finalisée, veuillez faire un **`commit`** de votre code avec comme message : **`2.3.2 : event object & multiple divs`**.
@@ -750,6 +753,9 @@ Quand votre application est finalisée, veuillez faire un **`commit`** de votre 
 - N'hésitez pas à récupérer une liste de toutes les divs via **`querySelectorAll`**.
 - Vous pourriez, sur base de cette liste, attacher un écouteur de clics sur chaque div : **`addEventListener`**.
 - La callback passée à **`addEventListener`** vous donne accès à la cible de l'événement via l'objet **`event`**.
+
+#### 🍬 Si vous souhaitez aller plus loin
+Si vous le souhaitez, vous pourriez faire en sorte que lorsqu'on clique une nouvelle fois sur une div, celle-ci revienne à sa taille initiale et n'affiche plus sa couleur.
 
 # <InternalPageTitle> Les timers & actions </InternalPageTitle>
 
