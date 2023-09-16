@@ -11,7 +11,10 @@
 
   width: 100%;
   min-height: 10px;
-  //z-index: 5;
+
+  &--fit-content {
+    display: block;
+  }
 
   &__content {
     // The flex shorthand allows you to set the three values in this order — flex-grow, flex-shrink, flex-basis
@@ -27,10 +30,24 @@
     padding-left: 1rem;
     padding-right: 1rem;
 
-    &--no-auto-margin{
-      padding-left: 0rem;
+    &--no-auto-margin {
+      padding: 0;
     }
-    
+
+    &--center {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    &__responsive-image {
+      @media only screen and (min-width: $lg) {
+        display: block;
+        width: 80vh;
+        height: 80vh;
+      }
+    }
+
     @media only screen and (min-width: $lg) {
       flex-basis: 50%;
     }
@@ -47,7 +64,7 @@
     padding-right: 1rem;
     @include emphasized-text();
 
-    &--left{
+    &--left {
       text-align: left;
       padding-left: 1rem;
     }
@@ -58,11 +75,10 @@
     min-height: 5vh;
     text-align: center;
     align-self: flex-end;
-    justify-content:center ;
+    justify-content: center;
     padding-left: 1rem;
     padding-right: 1rem;
     padding-bottom: 1rem;
-
   }
 
   /* Deal with background elements within a section or within a : note that this is normally not necessary
@@ -82,8 +98,8 @@
   // Deal with hyperlinks in a section
   a {
     color: $tertiary-color;
-    transition: color 0.15s ease-in-out,
-      background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out;
 
     cursor: pointer;
     &:hover,
@@ -94,4 +110,3 @@
 
   /* Deal with section modifiers */
 }
-

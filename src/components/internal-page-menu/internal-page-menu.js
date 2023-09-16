@@ -17,6 +17,7 @@ import { PathViewer } from '../path-viewer/path-viewer';
  * endOfLeadingString : by default an empty String, these are special chars that we want to add
  * prior to each menu title : ")" for example.
  * sticky : false by default. If different than false (if the props is given as "sticky" without value e.g.)
+ * center : should be only used when sticky. If different than false, center the menu...
  * the menu will not move/change even if the screen is lg and the menu should go to the left side.
  * @param {*} param0
  * @returns
@@ -28,6 +29,7 @@ const InternalPageMenu = ({
   numbered = false,
   className = 'page-menu',
   sticky = false,
+  center = false,
 }) => {
   const { activePageMenuItem, setActivePageMenuItem } =
     useContext(NavigationContext);
@@ -35,6 +37,10 @@ const InternalPageMenu = ({
   const [headerIsInView, setHeaderIsInView] = useState(true);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [menuIsHidden, setMenuIsHidden] = useState(false);
+
+  const stickyClass = sticky ? className + '--sticky' : '';
+  const centerClass = center ? ` ${className}--center` : '';
+  const mainDivClass = stickyClass + centerClass;
 
   useEffect(() => {
     const menuHeight = document
@@ -85,7 +91,7 @@ const InternalPageMenu = ({
 
   return (
     <div
-      className={`${className} ${sticky ? className + '--sticky' : ''}`}
+      className={`${className} ${mainDivClass}`}
       style={{ top: headerIsInView && !sticky ? headerHeight : 0 }} // top has no effect when defautl position (static)
     >
       {!sticky && (

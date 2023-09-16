@@ -1,6 +1,6 @@
-import React from "react";
-import { graphql, useStaticQuery } from "gatsby";
-import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import React from 'react';
+import { graphql, useStaticQuery } from 'gatsby';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 
 /**
  * Based on a name of a picture (WARNING : there cannot be duplicates), fill a container
@@ -11,7 +11,7 @@ import { GatsbyImage, getImage } from "gatsby-plugin-image";
  * @param {*} param0
  * @returns
  */
-const Image = ({ children, name, alt, width, height, display }) => {
+const Image = ({ children, name, alt, width, height, display, objectFit }) => {
   const data = useStaticQuery(graphql`
     {
       allFile(
@@ -38,14 +38,14 @@ const Image = ({ children, name, alt, width, height, display }) => {
   `);
 
   if (
-    (name && name.toLowerCase().includes("http://")) ||
-    (name && name.toLowerCase().includes("https://"))
+    (name && name.toLowerCase().includes('http://')) ||
+    (name && name.toLowerCase().includes('https://'))
   )
     return (
       <img
         src={name}
-        style={{ height: "100%", width: "100%", zIndex: 2 }}
-        alt={!alt ? "GatsbyImage" : alt}
+        style={{ height: '100%', width: '100%', zIndex: 2 }}
+        alt={!alt ? 'GatsbyImage' : alt}
       />
     );
 
@@ -58,7 +58,7 @@ const Image = ({ children, name, alt, width, height, display }) => {
   if (!requiredImage) {
     return (
       <div>
-        <h3 style={{ color: "red" }}>The image {name} does not exist !</h3>
+        <h3 style={{ color: 'red' }}>The image {name} does not exist !</h3>
         {children}
       </div>
     );
@@ -69,9 +69,20 @@ const Image = ({ children, name, alt, width, height, display }) => {
   return (
     <GatsbyImage
       image={image}
-      style={{ height: height ?? "100%", width: width ?? "100%", zIndex: 2, display: display ?? "block"}}
-      imgStyle={{ height: height ?? "100%", width: width ?? "100%", display: display ?? "block"}}
-      alt={!alt ? "GatsbyImage" : alt}
+      style={{
+        height: height ?? '100%',
+        width: width ?? '100%',
+        zIndex: 2,
+        display: display ?? 'block',
+        // objectFit: objectFit ?? 'fill',
+      }}
+      imgStyle={{
+        height: height ?? '100%',
+        width: width ?? '100%',
+        display: display ?? 'block',
+        // objectFit: objectFit ?? 'fill',
+      }}
+      alt={!alt ? 'GatsbyImage' : alt}
     />
   );
 };
