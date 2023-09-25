@@ -365,11 +365,26 @@ Le code de votre application doit se trouver dans votre repository local et votr
 Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.1 API : read`**.
 
 # <InternalPageTitle> Exercice 1.2 : middleware s'exécutant sur toutes les routes </InternalPageTitle>
+## Application middleware de base
 Veuillez créer un middleware qui permet d'enregistrer et d'afficher dans la console des statistiques sur les requêtes faites à votre API.
 
-Vous devez enregistrer, depuis le démarrage du serveur, le nombre de requêtes faites à votre API.
+Vous devez enregistrer, depuis le démarrage du serveur, le nombre de requêtes **`GET`** faites à votre API.
 
-Vous devez catégoriser le nombre d'appels par **`PATH`** et par **`méthode HTTP`**.
+Voici un example de ce qui devrait être affiché dans la console à chaque requête vers votre API :
+```bash
+GET counter : 2
+```
+
+Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.2`**.  
+Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.2 : app middleware`**.
+
+#### 🤝 Tips
+- Comment récupérer la méthode HTTP ? **`req.method`** ...
+- Comment appliquer un middleware à toutes les routes ? revoir les **application-level middleware**...
+
+## 🍬 Et si on allait un peu plus loin ?
+
+Vous allez maintenant catégoriser le nombre d'appels par **`PATH`** et par **`méthode HTTP`**.
 
 Voici un example de ce qui devrait être affiché dans la console à chaque requête vers votre API :
 ```bash
@@ -379,13 +394,6 @@ Request counter :
 - POST /pizzas : 5
 - DELETE /pizzas : 2
 ```
-
-Le code de votre application doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/exercises/1.2`**.  
-Veuillez faire un **`commit`** de votre code avec le message suivant : **`1.2 : app middleware`**.
-
-#### 🤝 Tips
-- Comment récupérer la méthode HTTP ? **`req.method`** ...
-- Comment appliquer un middleware à toutes les routes ? revoir les **application-level middleware**...
 
 # <InternalPageTitle> Paramètres de route </InternalPageTitle>
 
