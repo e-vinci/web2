@@ -110,7 +110,7 @@ Veuillez enrichir le frontend développé dans le cadre de votre projet en lui a
 
 <UnAuthenticatedBlock>
 
-Pour votre frontend : veuillez repartir du code de [Projet 2.18](../comms-security/#project_2_18_autorisation_de_nouvelles_origines) ou de [Exercice 2.19](../promises/#exercice_2_19_integration_de_la_res_tful_api_au_sein_de_l_ihm_de_my_movies_via_un_proxy) si votre projet est **myMovies**.  
+Pour votre frontend : veuillez repartir du code de [Exercice 2.19](../promises/#exercice_2_19_integration_de_la_res_tful_api_au_sein_de_l_ihm_de_my_movies_via_un_proxy) si votre projet est **myMovies**.  
 Le code du frontend doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.20`**.
 
 </UnAuthenticatedBlock>
@@ -131,7 +131,7 @@ Il est intéressant que vous vous partagiez le travail :
 
 Vous devez ajouter un moyen de switcher d'un thème "light" ou "dark" au sein de votre application. 
 
-Par exemple, vous pouvez le faire via un bouton dans le header permettant de basculer d'un thème à l'autre.
+Par exemple, vous pouvez le faire via un bouton dans le header ou le footer permettant de basculer d'un thème à l'autre.
 
 Vous devez sauvegarder le thème sélectionné par l'utilisateur comme donnée de session persistante. Ainsi, vous allez sauvegarder l'information du thème dans le localStorage.
 
@@ -139,19 +139,12 @@ Au redémarrage du browser, ou lors du refresh du frontend, l'application doit t
 
 Quand un prototype de gestion de thème est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`2.20.1 : user session & theme`**.
 
-## Gestion d'un message conforme RGPD pour sauvegarder les préférences
+## Gestion de l'affichage d'une "privacy policy" conforme au RGPD
 
 La toute première fois que les utilisateurs chargent votre application, vous devez leur afficher un message conforme au RGPD, indiquant comment vous allez traiter de leurs données, sauvegarder leurs préférences...
 
-Vous devez demander l'accord aux utilisateurs de sauvegarder leurs préférences :
-- S'ils sélectionnent qu'ils sont OK que leur préférences soient sauvegardées (totalement anonyme puisque c'est fait au niveau de leur browser), alors vous devez :
-  - sauvegarder leur choix comme donnée de session persistente (localStorage).
-  - au redémarrage du browser, ou lors du refresh du frontend, ne plus présenter le message aux utilisateurs.
-  - si les utilisateurs changent de thème, vous devez sauvegarder ce choix dans le localStorage.
-  - mettre à disposition un moyen pour effacer ses préférences : par exemple, un bouton permettrait d'effacer les données associées à la sauvegarde des préférences et du choix du thème.
-- S'ils sélectionnent que leurs préférences ne peuvent pas être sauvegardées, alors vous devez :
-  - sauvegarder leur choix comme donnée de session temporaire (sessionStorage).
-  - au redémarrage du browser, ou lors du refresh du frontend, présenter à nouveau le message aux utilisateurs.
-  - si les utilisateurs changent de thème, vous devez sauvegarder ce choix dans le sessionStorage. Ainsi, au redémarrage du browser, le thème utilisé par l'application sera le thème par défaut et non pas le dernier thème sélectionné.
+Vous devez afficher ce message dans une modal, et l'utilisateur doit pouvoir le fermer en cliquant sur un bouton "OK".
+Vous devez sauvegarder le consentement de l'utilisateur comme donnée de session persistante. Ainsi, vous allez sauvegarder l'information du consentement dans le localStorage.  
+A la prochaine ouverture de l'application, si l'utilisateur a donné son consentement, vous n'affichez plus le message.
 
 Quand un prototype est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`2.20.2 : user session & user preferences`**.

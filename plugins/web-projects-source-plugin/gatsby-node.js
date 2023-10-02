@@ -32,6 +32,7 @@ async function addProjectsInGraphQL(createNode, projectGroupName) {
       'projects/projectgroups/' +
       projectGroupName +
       '/public';
+    console.log('url : ', url);
     const response = await fetch(url);
     const publicProjects = await response.json();
 
