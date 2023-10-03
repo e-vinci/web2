@@ -1,0 +1,150 @@
+---
+title: "Sessions"
+description: "Les sessions côté client"
+---
+
+# m) Les sessions côté client
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part2"> Partie 2 </PathViewerItem>
+    <PathViewerItem selected> m) Les sessions </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> Où sauvegarder de l'info dans un browser ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Persistance de données de session via le web storage </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 2.20 : sauvegarde de sessions </InternalPageMenuItem>
+</InternalPageMenu>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/-5VFdvK___I" />
+</div>
+
+# <InternalPageTitle> Où sauvegarder de l'info dans un browser ? </InternalPageTitle>
+
+Nous avons vu qu'une des exigences associées à la création d'une application selon l'architecture REST, c'est qu'elle soit **stateless** : l'API ne peut pas garder l'état du client, sa session, côté serveur.
+
+C'est donc au client de sauvegarder ses données de session.
+
+Mais où pouvons nous sauvegarder des données de manière persistante côté client ?
+
+Il existe deux façons principales de sauvegarder de l'info dans un browser :
+- le **web storage** ; 
+- les **cookies**.
+
+Dans le cadre de ce cours, nous allons principalement voir comment sauvegarder de l'info à l'aide du **web storage**. Dans la partie du cours sur la gestion de l'authentification et l'autorisation d'utilisateurs, vous pourrez optionnellement voir comment les cookies peuvent être utilisés pour sauvegarder des données de session côté client.
+
+NB : le browser met à disposition d'autres API un peu moins connues pour sauvegarder des infos. Nous ne les verrons pas dans le cadre de ce cours, mais il reste néanmoins intéressant de lire très rapidement de quoi il s'agit :
+- **IndexedDB API** : permet de sauvegarder côté client de grandes quantités d'infos structurées, incluant des fichiers ; c'est une base de données orientée objets en JS qui permet les transactions.
+- **Cache API** : permet d'enregistrer et retrouver des requêtes et leur réponses. Bien qu'à la base créé pour pouvoir fournir des réponses plus rapides à certaines requêtes, cette API peut aussi être utilisée comme mécanisme général de stockage.
+
+# <InternalPageTitle> Persistance de données de session via le web storage </InternalPageTitle>
+
+## Introduction
+Le **Web Storage API** fournit un mécanisme permettant aux browser d'enregistrer des paires **clé / valeur** d'une manière plus intuitive que l'utilisation de cookies.
+
+Il existe deux mécanismes au sein du web storage :
+- **sessionStorage** :
+    - offre un espace de stockage séparé pour chaque origine pour la durée de la session d'une page, tant que le browser est ouvert.
+    - les clés / valeurs y sont enregistrées sous forme de string uniquement ;
+    - met à disposition un espace de stockage plus grand qu'un cookie, ~5MB maximum par origine ;
+- **localStorage** : 
+    - offre aussi un espace de stockage séparé pour chaque origine, mais les données persistent quand le browser est fermé et réouvert ;
+    - est un espace de stockage plus grand qu'un cookie, limité à ~10MB en cas de crash/restart du browser.
+
+Les principales méthodes offertes par **sessionStorage** et **localStorage** sont les mêmes. Voici quelques exemples de codes par méthode.
+
+## `setItem()`
+Cette méthode permet d'enregistrer, pour une clé donnée, la valeur associée :
+
+```js numbered highlighting="5"
+const STORE_NAME = 'user';
+
+const setUserSessionData = (user) => {
+  const storageValue = JSON.stringify(user);
+  localStorage.setItem(STORE_NAME, storageValue);
+};
+```
+
+Pour enregistrer un objet JS sous forme de string, il suffit de le sérialiser à l'aide de la méthode **`JSON.stringify()`**.
+
+## `getItem()`
+Cette méthode permet d'obtenir la valeur associée à la clé donnée en argument :
+
+```js numbered highlighting="4"
+const STORE_NAME = 'user';
+
+const getUserSessionData = () => {
+  const retrievedUser = localStorage.getItem(STORE_NAME);
+  if (!retrievedUser) return;
+  return JSON.parse(retrievedUser);
+};
+```
+
+Pour cet exemple, comme la valeur a été sérialisée, nous pouvons récupérer l'objet grâce à la méthode **`JSON.parse()`**.
+
+## `removeITem()`
+Cette méthode permet d'effacer une clé / valeur :
+
+```js numbered highlighting="4"
+const STORE_NAME = 'user';
+
+const removeSessionData = () => {
+  localStorage.removeItem(STORE_NAME);
+};
+```
+
+## `clear()`
+Cette méthode permet d'effacer tout l'espace de stockage pour une origine donnée.
+
+Cette méthode est très utile lorsque l'on souhaite effacer toute la session d'un utilisateur, notamment lors du logout d'un utilisateur.
+
+
+# <InternalPageTitle> Projet 2.20 : sauvegarde de sessions </InternalPageTitle>
+
+## Objectif
+
+Veuillez enrichir le frontend développé dans le cadre de votre projet en lui ajoutant une gestion de thèmes et la gestion de l'affichage d'un message traitant du respect de la vie privée point de vue de la sauvegarde des préférences (RGPD).
+
+## Mise en place du projet
+
+<UnAuthenticatedBlock>
+
+Pour votre frontend : veuillez repartir du code de [Exercice 2.19](../promises/#exercice_2_19_integration_de_la_res_tful_api_au_sein_de_l_ihm_de_my_movies_via_un_proxy) si votre projet est **myMovies**.  
+Le code du frontend doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.20`**.
+
+</UnAuthenticatedBlock>
+
+<AuthenticatedBlock>
+
+Pour votre frontend : veuillez repartir du code de [Projet 2.18](../comms-security/#project_2_18_autorisation_de_nouvelles_origines). 
+Le code du frontend doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/2.20`**.
+
+Veuillez travailler avec les membres de votre groupe.  
+Il est intéressant que vous vous partagiez le travail :
+- certains membres de l'équipe travail sur la gestion de thèmes ;
+- les autres travaillent sur la gestion de l'affichage d'un message conforme aux demandes du RGPD.
+
+</AuthenticatedBlock>
+
+## Gestion d'un thème
+
+Vous devez ajouter un moyen de switcher d'un thème "light" ou "dark" au sein de votre application. 
+
+Par exemple, vous pouvez le faire via un bouton dans le header ou le footer permettant de basculer d'un thème à l'autre.
+
+Vous devez sauvegarder le thème sélectionné par l'utilisateur comme donnée de session persistante. Ainsi, vous allez sauvegarder l'information du thème dans le localStorage.
+
+Au redémarrage du browser, ou lors du refresh du frontend, l'application doit toujours afficher ses écrans selon le dernier thème sélectionné : veuillez donc changer les couleurs de certains backgrounds et certains textes en fonction du thème.
+
+Quand un prototype de gestion de thème est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`2.20.1 : user session & theme`**.
+
+## Gestion de l'affichage d'une "privacy policy" conforme au RGPD
+
+La toute première fois que les utilisateurs chargent votre application, vous devez leur afficher un message conforme au RGPD, indiquant comment vous allez traiter de leurs données, sauvegarder leurs préférences...
+
+Vous devez afficher ce message dans une modal, et l'utilisateur doit pouvoir le fermer en cliquant sur un bouton "OK".
+Vous devez sauvegarder le consentement de l'utilisateur comme donnée de session persistante. Ainsi, vous allez sauvegarder l'information du consentement dans le localStorage.  
+A la prochaine ouverture de l'application, si l'utilisateur a donné son consentement, vous n'affichez plus le message.
+
+Quand un prototype est finalisé, veuillez faire un **`commit`** de votre code avec comme message : **`2.20.2 : user session & user preferences`**.
