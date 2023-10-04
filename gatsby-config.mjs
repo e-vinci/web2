@@ -10,7 +10,7 @@ const facebookUrl = '';
 const instagramUrl = '';
 const defaultLanguage = 'fr';
 const defaultAssociatedProjectGroupName = 'Web2 2023';
-const projectDocument = ''; //'WEB2-2022-PROJET-GROUP-XY.docx';
+const projectDocument = 'WEB2-2023-PROJET-GROUP-XY.docx';
 
 const config = {
   pathPrefix: `/web2`,
