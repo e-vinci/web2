@@ -1,0 +1,789 @@
+---
+title: "JWT auths API"
+description: "Authentification et autorisation d'accès aux opérations d'une RESTful API via JWT"
+---
+
+# a) Authentification et autorisation d'accès aux opérations d'une RESTful API via JWT
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
+    <PathViewerItem selected> a) JWT auths & API </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> C'est quoi l'authentification et l'autorisation ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Stateful VS stateless authentication </InternalPageMenuItem>
+  <InternalPageMenuItem> C'est quoi les tokens JWT ? </InternalPageMenuItem>
+  <InternalPageMenuItem> Authentification et création de token </InternalPageMenuItem>
+  <InternalPageMenuItem> Autorisation et vérification de token </InternalPageMenuItem>
+  <InternalPageMenuItem> Client REST avec JWT </InternalPageMenuItem>
+  <InternalPageMenuItem> Protection des opérations d'écriture d'une API </InternalPageMenuItem>
+  <InternalPageMenuItem> Project 4.1 : Authentification & autorisation d'opérations </InternalPageMenuItem>
+</InternalPageMenu>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/jCUyii3hcwY" />
+</div>
+
+# <InternalPageTitle> C'est quoi l'authentification et l'autorisation ? </InternalPageTitle>
+
+## Authentification, c'est quoi ?
+L'authentification, c'est le processus de **vérifier qui est l'utilisateur** d'une application.
+
+Pour authentifier un utilisateur, on va généralement passer via un formulaire de connexion, lui demandant un username et un password.
+
+## Autorisation, c'est quoi ?
+L'autorisation, c'est le processus de **vérifier ce à quoi un utilisateur à accès**.
+
+Une API va autoriser les accès à certaines opérations en fonction des privilèges associés aux utilisateurs. Il y aura des opérations qui seront autorisées : 
+- **pour tous les utilisateurs**, tant anonymes qu'authentifiés ;  
+*imaginez par exemple les opérations de lecture de produits sur un site "vitrine". Il ne faut pas devoir créer de compte utilisateur pour pouvoir afficher les produits du site.*
+- **pour tous les utilisateurs authentifiés**, peu importe leurs privilèges ;  
+*imaginez le fait de pouvoir poster des messages dans un forum ; il faut avoir un compte pour pouvoir le faire, mais il ne faut pas de privilèges spécifiques (pas besoin d'être admin).*
+- **pour seulement un ou plusieurs utilisateur(s) authentifié(s)** ayant les privilèges requis ;  
+*imaginez une opération de lecture de tous les profils des utilisateurs d'une banque ; il faut avoir un compte admin de la banque pour pouvoir le faire. Ca serait catastrophique si n'importe quel utilisateur authentifié pourrait accéder aux profils de tous les utilisateurs !*
+
+## Différents moyens d'authentification
+
+### Authentification stateful
+
+Traditionnellement, ou anciennement, nous avons l'authentification qui est supportée à l'aide de cookies. L'utilisateur envoie via un formulaire son username et password, le serveur vérifie ceux-ci et crée un id de session et le renvoie à l'utilisateur via un cookie.  
+Après l'authentification, à chaque requête du client sur ce serveur, le cookie est envoyé, et le serveur, qui a sauvegardé la session, va la retrouver sur base de l'id de session présent dans le cookie et va autoriser ou non l'accès à l'opération demandée par le client.  
+C'est ce qu'on appelle une authentification **stateful**.
+
+Un mécanisme d'authentification **stateful** indique que le serveur est responsable de sauvegarder les données de session des utilisateurs. 
+
+On parle de **session** d'un utilisateur comme étant toute la durée où le client s'authentifie à l'application web jusqu'à ce qu'il quitte cette application, lorsqu'il ferme son browser.
+
+### Authentification stateless 
+
+De manière plus moderne, nous avons des mécanismes d'authentification qui sont dits **stateless**. Dans ce genre de mécanisme, c'est le client qui doit sauvegarder les données de session, et donc le browser. L'authentification à l'aide de **tokens** devient très populaire.  
+Il existe différents moyen de l'implémenter. Dans le cadre de ce cours, nous focuserons sur la façon la plus habituelle, les **JSON Web Tokens**, ou **JWT**.
+
+Il existe d'autres mécanismes très modernes qui utilisent des tokens, et qui sont mis en place par des tiers : **OAuth**, **OpenId**... Ces mécanismes sont offerts par Microsoft, Google, Facebook... Nous ne les verrons pas dans le cadre de cours. Néanmoins, à la fin de ce cours, vous devriez être apte à pouvoir les utiliser, sous réserve de bien lire la documentation 😉.
+
+# <InternalPageTitle> Stateful VS stateless authentication  </InternalPageTitle>
+
+Quels sont les avantages & inconvénients d'une authentification stateful ? et d'une authentification stateless ?
+
+#### Authentification stateful
+**Inconvénients** :
+- La session utilise de la mémoire pour chaque utilisateur.
+- Le backend n'a aucune manière de déterminer si le frontend s'est déconnecté du site ou non : gestion de l'expiration d'une session plus compliquée, notamment si le frontend revient après une longue durée.
+- Toutes les sessions sont perdues en cas de redémarrage du serveur (réauthentification).
+- Load balancing compliqué ; en effet, si un client fait une requête, pendant toute la durée de la session, s'il y a plusieurs serveurs qui peuvent y répondre, comment est gérée la session de ce client ? Par quel(s) serveur(s) ? Comment se partagent-ils les données de session ? Est-ce que ça doit toujours être le même serveur qui réponde au même client ?
+
+**Avantages** :
+- Peu gourmand en ressource point de vue processing et très rapide ; en effet, une fois qu'une session est en place, la vérification que le cookie contient le bon id de session se fait vite.
+
+#### Authentification stateless
+**Inconvénients** : 
+Comme le serveur ne retient plus l'utilisateur en mémoire, il doit utiliser de la cryptographie pour créer et valider les token ; c'est donc consommateur en ressource point de vue processing.
+
+**Avantages** : 
+- Pas de session à gérer, même après redémarrage du serveur, il n'y a pas de réauthentification nécessaire.
+- Evolutif, utilisation facile de plusieurs serveurs si du load balancing est nécessaire ; en effet, comme chaque requête du client contient toutes les infos pour se faire autoriser, il n'est pas nécessaire de savoir quel serveur va prendre en charge la requête.
+
+Notons que la "scalability" horizontale, la possibilité de permettre à une application d'augmenter sa capacité de répondre à une charge grandissante simplement en ajoutant des machines, est quelque chose de très important à notre époque.  
+Certaines applications web ont des centaines de millions d'utilisateurs ; pour celles-ci, on ne peut pas compter sur la "scalability" verticale, c'est-à-dire le fait d'augmenter les ressources d'une machine, en augmentant sa RAM, son processeur, son espace de stockage...
+
+Dès lors, dans le cadre de ce cours, nous allons préférer les applications web qui peuvent tourner sur des serveurs **stateless**.
+
+# <InternalPageTitle> C'est quoi les tokens JWT ? </InternalPageTitle>
+
+Les **JSON Web token**, ou **JWT**, appartiennent à un standard internet permettant l'échange sécurisé de tokens entre plusieurs parties.
+
+Un **JWT** contient **trois parties encodées en base64** et ressemble à qqch du style :  
+**`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.`**  
+**`eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.`**   
+**`SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`**
+
+Voici les 3 parties d'un JWT et leurs caractéristiques :
+- l'**entête** (ou header) : un objet JSON identifiant le type de token (JWT) et l'algorithme utilisé pour générer la signature du token (HS256), un algorithme de hachage. 
+- le **payload** : un objet JSON permettant de spécifier le **claim** ; ce sont des paramètres optionnels précisant les affirmations associées au token, comme la date d'expiration du token, son créateur, le fait que l'utilisateur est admin... généralement, on y met pas trop d'info, principalement l'identifiant de l'utilisateur ; si l'API a besoin de plus d'info concernant l'utilisateur, elle ira généralement les chercher dans ses données.
+- la **signature** : c'est une signature numérique construite à partir d'un secret privé ou d'une clé publique/privée, via l'algorithme précisé dans la signature.
+
+💭 C'est bien joli tout ça, mais comment ça permet de sécuriser la session d'un utilisateur ?  
+Généralement, l'API, et elle uniquement, connait le secret privé. Elle va donc créer le token d'un utilisateur authentifié, en y ajoutant le claim (ou les affirmations) qu'elle juge utile.  
+Lorsque le client reçoit son token, il va le sauvegarder dans son browser.  
+Pour chaque requête nécessitant une autorisation de l'API, le client enverra son token au sein du header de la requête.  
+L'API utilisera le secret privé, connu d'elle-même uniquement, pour vérifier la signature du token. Si tout est OK, c'est que l'utilisateur est bien authentifié et que son claim est OK.
+
+Imaginez maintenant qu'un hackeur tente de modifier le token, pour modifier le claim, notamment en changeant l'id de l'utilisateur présent dans le payload du token.
+Et bien la signature ne correspondra plus à ce token là ! L'API le détectera.  
+Pour que le hackeur réussisse son acte malicieux, il est obligé de connaître le secret privé qui ne doit être connu que de l'API. Ca ne serait que sur base du secret privé que les hackeurs pourraient générer un nouveau token qui serait validé par l'API. Pas évident à faire...
+
+Ainsi, on peut imaginer un token comme une enveloppe sécurisé par un cadenas très spécial : ce cadenas, qui est mis sur l'enveloppe contenant, par exemple, l'identifiant d'un utilisateur, est fermé par la clé 🔑 que seulement connaît l'API.
+Si quelqu'un touche à l'enveloppe, le cadenas ne s'ouvrira plus avec la 🔑 de l'API : la tentative de hackage sera détectée ! 
+Si quelqu'un tente de créer une enveloppe sécurisé, il le fera avec une autre clé, **🗝** par exemple, car il ne connaît pas 🔑. L'API, tentant d'ouvrir l'enveloppe sécurisée à l'aide de 🔑, elle ne s'ouvrira pas : la tentative de hacking sera détectée ! 
+
+💭 Est-ce que cette métaphore d'enveloppe sécurisée vous parle ?
+Attention que dans la réalité, le payload classique d'un token sera décodable, que l'on connaisse ou pas le secret privé. Il est encodé en base64 ! Ne mettez donc jamais de secrets dans le payload d'un token !  
+Si vraiment un jour vous deviez mettre un secret dans un payload, bien que déconseillé, vous pourriez toujours le faire en cryptant le payload.
+
+👍 Le mécanisme de token assure que l'on aie une très haute probabilité de détecter les altérations faites sur les tokens, les tentatives de forgeage, grâce à la signature de ceux-ci.  
+
+⚡ Par contre, si nous laissions traîner des informations dans le payload d'un token, comme un password d'un utilisateur et son username, alors là, c'est juste un beau cadeau que l'on offre aux hackeurs ; ils n'auraient plus qu'à trouver un moyen de voler à distance nos données de session ; ils pourraient ensuite utiliser le formulaire de connexion et prendre possession de notre identité 😨.
+
+Il existe un site fort intéressant qui montre la structure d'un token et qui permet de les décoder : [jwt.io](https://jwt.io/) [[R.63]](/references/#r63). Nous l'utiliserons plus tard pour décoder les tokens générés par nos RESTful API.
+
+# <InternalPageTitle> Authentification et création de token </InternalPageTitle>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/lVTM0x0vOrg" />
+</div>
+
+## Introduction
+
+Via un exemple concret associé à notre RESTful API qui gère les ressources de type "pizzas", nous allons mettre en place un processus d'authentification et d'autorisation JWT.
+
+La librairie que nous allons utiliser dans le cadre de ce cours pour gérer des tokens JWT est [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken).
+
+Dans ce nouveau tutoriel, nous allons continuer le développement de l'API [api-fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model) pour ajouter des opérations permettant l'authentification et l'autorisation d'utilisateurs.
+
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/auths`** sur base d'un copié collé de **`/web2/tutorials/pizzeria/api/fat-model`** (ou [api-fat-model](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/fat-model)).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**`/web2/tutorials/pizzeria/api/auths`**.
+
+Veuillez installer la librairie **`jsonwebtoken`** au sein de votre nouveau projet **`auths`** :
+```bash
+npm i jsonwebtoken
+```
+
+## Mécanisme d'authentification et création du token
+
+Toujours à l'aide d'Express, nous allons créer un router **`auths`** qui mettra à disposition les opérations de **`login`** et de **`register`**. 
+Voici le contrat associé à ces nouvelles opérations :
+
+##### Opérations sur les ressources de type "auths"
+| URI | Méthode HTTP | Opération |
+|---|---|---|
+| **`auths/login`** | **POST** | Vérifier les credentials d'une ressource de type "users" et renvoyer le username et un token JWT si les credentials sont OK |
+| **`auths/register`** | **POST** | Créer une ressource de type "users" et renvoyer le username et un token JWT |
+
+<br/>
+
+Le modèle **`users`** s'occupera de créer les utilisateur, de vérifier leurs credentials ainsi que de créer des token.
+
+Voici le workflow attendu pour une opération de **`login`** ou de **`register`** :
+
+<ScrollableImage name="login.png" minWidth="879px" maxWidth="879x" />
+<figcaption>Appel à une RESTful API pour s'authentifier et obtenir un JWT</figcaption>
+
+Ce que l'on voit dans l'image ci-dessus : 
+- si le modèle considère que l'utilisateur est authentifiable, que ses credentials sont OK, alors il va utiliser la méthode **`sign`** de l'objet **`jwt`** pour créer un token. 
+- le token est envoyé dans le body de la réponse à l'utilisateur. 
+
+Ce que l'on ne voit pas dans l'image ci-dessus :
+- c'est le job du client de sauvegarder le token. Si l'application cliente est un browser, alors celui-ci pourra être sauvegardé dans le web storage du browser.
+- l'application cliente peut être faite avec n'importe quelle technologie. Par exemple, nous pourrons utiliser REST Client pour faire une requête à l'API...
+
+Dans notre RESTful API, nous avons décidé que lorsqu'un client s'enregistre, quand il fait appel à l'opération **`register`** pour créer un compte, l'API considère automatiquement que cet utilisateur est authentifié. Tout comme la méthode **`login`**, la méthode **`register`** créera et renverra un token JWT à l'utilisateur.
+
+NB : Il est possible d'envisager un workflow différent : après le **`register`**, l'application demanderait à l'utilisateur un **`login`**, **`register`** ne renvoyant jamais de token à l'utilisateur.
+
+## Implémentation de login & register
+
+Nous allons à présent mettre en place le code permettant d'implémenter le workflow que l'on vient de découvrir.
+
+Veuillez créer le modèle **`users`** en créant le fichier **`/models/users.js`** et y inclure ce code :
+```js numbered highlighting="1,5-6,23-27,29-31,34,43-47,49-52,54"
+const jwt = require('jsonwebtoken');
+const path = require('node:path');
+const { parse, serialize } = require('../utils/json');
+
+const jwtSecret = 'ilovemypizza!';
+const lifetimeJwt = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
+
+const jsonDbPath = path.join(__dirname, '/../data/users.json');
+
+const defaultUsers = [
+  {
+    id: 1,
+    username: 'admin',
+    password: 'admin',
+  },
+];
+
+function login(username, password) {
+  const userFound = readOneUserFromUsername(username);
+  if (!userFound) return undefined;
+  if (userFound.password !== password) return undefined;
+
+  const token = jwt.sign(
+    { username }, // session data added to the payload (payload : part 2 of a JWT)
+    jwtSecret, // secret used for the signature (signature part 3 of a JWT)
+    { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
+  );
+
+  const authenticatedUser = {
+    username,
+    token,
+  };
+
+  return authenticatedUser;
+}
+
+function register(username, password) {
+  const userFound = readOneUserFromUsername(username);
+  if (userFound) return undefined;
+
+  createOneUser(username, password);
+
+  const token = jwt.sign(
+    { username }, // session data added to the payload (payload : part 2 of a JWT)
+    jwtSecret, // secret used for the signature (signature part 3 of a JWT)
+    { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
+  );
+
+  const authenticatedUser = {
+    username,
+    token,
+  };
+
+  return authenticatedUser;
+}
+
+function readOneUserFromUsername(username) {
+  const users = parse(jsonDbPath, defaultUsers);
+  const indexOfUserFound = users.findIndex((user) => user.username === username);
+  if (indexOfUserFound < 0) return undefined;
+
+  return users[indexOfUserFound];
+}
+
+function createOneUser(username, password) {
+  const users = parse(jsonDbPath, defaultUsers);
+
+  const createdUser = {
+    id: getNextId(),
+    username,
+    password,
+  };
+
+  users.push(createdUser);
+
+  serialize(jsonDbPath, users);
+
+  return createdUser;
+}
+
+function getNextId() {
+  const users = parse(jsonDbPath, defaultUsers);
+  const lastItemIndex = users?.length !== 0 ? users.length - 1 : undefined;
+  if (lastItemIndex === undefined) return 1;
+  const lastId = users[lastItemIndex]?.id;
+  const nextId = lastId + 1;
+  return nextId;
+}
+
+module.exports = {
+  login,
+  register,
+  readOneUserFromUsername,
+};
+
+```
+
+Dans le code ci-dessus, **jwtSecret** est le secret privé connu uniquement du serveur. C'est la même secret qu'il faudra utiliser pour vérifier un token.  
+
+**`jwt.sign()`** permet de créer le token et ses 3 parties :
+- le payload du token, la 2ème partie du token, est complété principalement via le permier argument de **`sign()`** ; ici, le token affirme que l'utilisateur possédant le **`username`** donné est authentifié.
+- le payload du token sera aussi modifié sur base de la durée d'expiration du token, selon l'argument **`expiresIn`**.
+- **`jwtSecret`** est utilisé pour créer la 3ème partie du token, sa signature.
+
+Il faut maintenant que nous créions le router **`auths`** offrant les opérations de **`login`** et de **`register`**, en faisant appel au modèle **`users`**.  
+Veuillez créer le fichier **`/routes/auths.js`** et y inclure le code suivant :
+```js
+const express = require('express');
+const { register, login } = require('../models/users');
+
+const router = express.Router();
+
+/* Register a user */
+router.post('/register', (req, res) => {
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+
+  if (!username || !password) return res.sendStatus(400); // 400 Bad Request
+
+  const authenticatedUser = register(username, password);
+
+  if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
+
+  return res.json(authenticatedUser);
+});
+
+/* Login a user */
+router.post('/login', (req, res) => {
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+
+  if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
+
+  const authenticatedUser = login(username, password);
+
+  if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
+
+  return res.json(authenticatedUser);
+});
+
+module.exports = router;
+```
+
+Il n'y a rien de bien spécial à ce code. On fait simplement appel aux opérations du modèle **`users`**.
+
+Attention, il faut rajouter le nouveau router au sein de **`app.js`** pour que notre API puisse offrir les nouvelles opérations ; veuillez donc ajouter ce code dans **`/app.js`** :
+```js highlighting="7,18"
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+
+const usersRouter = require('./routes/users');
+const pizzaRouter = require('./routes/pizzas');
+const authsRouter = require('./routes/auths');
+
+const app = express();
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use('/users', usersRouter);
+app.use('/pizzas', pizzaRouter);
+app.use('/auths', authsRouter);
+
+module.exports = app;
+```
+
+## Utilisation de Rest Client pour tester les nouvelles opérations
+
+Veuillez démarrer votre API **`auths`**.
+
+On va utiliser REST Client pour tester ces nouvelles opérations.
+
+Veuillez créer le fichier **`/REST Client/auths.http`** et y ajouter le code suivant :
+```http
+@baseUrl = http://localhost:3000
+
+### Try to login an unknow user
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"unknown",
+    "password":"admin"
+}
+
+### Login the default admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+
+
+### Create the manager user
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manager"
+}
+
+### Login the manager user
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manager"
+}
+```
+
+Veuillez exécuter les différentes requêtes. Tout devrait fonctionner, vous devriez récupérer le username et le token d'un utilisateur authentifié.
+
+Pour le fun, nous allons décoder un token : 
+- Veuillez copier le token de ce que renvoie votre API pour la requête de login de l'utilisateur **`manager`** (qqch qui doit ressembler à une string du genre : **`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hbmFnZXIiLCJpYXQiOjE2NjEyNDg1MjksImV4cCI6MTc0NzY0ODUyOX0.JvYzM0gtmVkqFr9R3f1Bf6ow_QuyHJY-vedJ39N7JKw`**).
+- Veuillez vous rendre sur le site [JWT](https://jwt.io/) et coller votre token dans le champs **`Encoded`**. Dans la colonne **`Decoded`**, vous devriez voir l'algorithme utilisé par la méthode **`sign`**, ainsi que les données présentes dans le payload, dont **`"username": "manager"`** ! 
+
+Vous comprenez maintenant pourquoi on n'ajoute pas des secrets dans un token 😉.
+
+## Cacher ses secrets
+
+Dans ce cours-ci, vous pouvez, de manière optionnelle, voir comment faire en sorte que le secret,  permettant de signer & vérifier les token, ne soit pas présent sur le web repository de vos API (par exemple ici le modèle **`users.js`** hardcode ce secret). En effet, pour des raisons de sécurité, si votre secret est visible pour tous les développeurs qui accède à votre repository public, c'est un problème !
+
+Si vous souhaitez découvrir comment faire en sorte de rendre invisible des informations sensibles sur un web repository, tout en pouvant bénéficiant de ces infos dans votre environnement de développement, vous pouvez consulter la partie 3 du cours sur la [Protection de ses secrets](../../part3/#🍬_protection_de_ses_secrets).
+
+# <InternalPageTitle> Autorisation et vérification de token </InternalPageTitle>
+
+## Mécanisme d'autorisation d'utilisateurs à des opérations d'une API 
+
+### Intro
+
+Dans le workflow que nous avons choisi, les utilisateurs reçoivent un token lors du **`register`** ou du **`login`**. C'est le job de l'application cliente de trouver un moyen de sauvegarder ce token. 
+
+Lorsqu'une application client souhaite créer une pizza, on souhaite autoriser cette opération qu'à l'administrateur du site gérant la pizzéria.  
+Nous décidons donc pour l'**opération de création de pizza que l'utilisateur doit** non seulement être **authentifié**, mais qu'en plus, il doit être l'**admin** du site.
+
+### Mécanisme d'autorisation quand le token JWT est valide
+
+Pour que l'application client qui fait la requête à l'API puisse s'autoriser, elle doit ajouter un **`authorization header`** à sa requête contenant comme valeur le token reçu lors du **`login`** ou du **`register`** :
+
+<ScrollableImage name="authorizeOK.png" minWidth="879px" maxWidth="879x" />
+<figcaption>Appel à une opération d'une RESTful API nécessitant une autorisation JWT : autorisation valide</figcaption>
+
+Le router de "pizzas", avant même de passer la requête à la route **`POST /pizzas`**, va lancer la fonction middleware d'autorisation nommée **`authorize`**. La fonction middleware **`authorize`** va s'occuper de vérifier le token envoyé par le client dans un header à l'aide de la méthode **`verifiy`** de l'objet **`jwt`** (de la librairie **`jsonwebtoken`**).
+
+💭 Si le token est valide, est-ce que ça signifie que l'utilisateur est bien authentifié ?  
+*Hé bien non, car imaginez qu'entre le moment où l'utilisateur se soit logué, il ait été supprimé de l'application par un admin... dans ce cas-ci, on ne veut pas l'autoriser à ajouter une pizza au menu de la pizzeria ! Il n'est p-e même plus un employé, il souhaite p-e écrire du contenu malicieux 😨*
+
+Donc si le token est valide, **`authorize`** fera appel au modèle de **`users`** pour vérifier que l'utilisateur existe bien dans le support de données (fichiers JSON, base de données ou autres) et pour obtenir toutes les infos sur cet utilisateur. Si l'utilisateur existe, alors cela signifie que l'utilisateur est bien authentifié. La fonction middleware **`authorize`** va passer la main à une autre fonction middleware pour vérifier que l'utilisateur est bien l'admin.
+
+💭 Comment est-ce que **`authorize`** peut faire appel au modèle pour vérifier que l'utilisateur existe bien ? Est-ce que cela signifie que le token doit contenir tout un tas de données sur l'utilisateur ?
+
+👍 En règle générale, on va juste mettre un identifiant de l'utilisateur dans ce qu'on appelle le **payload** du token. C'est ensuite l'API, suite au décodage de l'identifiant de l'utilisateur, qui fera appel aux données pour retrouver tout ce qui concerne l'utilisateur.
+
+La fonction middleware **`isAdmin`** va vérifier que l'utilisateur est bien l'admin. Si c'est OK, elle passera la main à la fonction middleware qui gère la route **`POST /pizzas`** au sein du router de pizzas en faisant l'appel à la fonction **`next`**.  
+*🍬 NB : on pourrait aussi laisser la fonction **`createOnePizza`** s'occuper de vérifier que l'utilisateur demandant la création de la pizza soit bien l'admin. Ici, comme il s'agit de vérifier que le contrat de l'API soit respecté, c'est-à-dire que l'utilisateur soit bien authentifié & admin, alors on préfère réaliser cette action en dehors du modèle. Dans nos choix architecturaux pour nos RESTful API, nous avons décidé que ce n'est pas le modèle qui s'occupe de présenter les données aux clients, c'est le rôle des routers (et les fonctions middleware associées).*
+
+Maintenant que le client a les bons privilèges, l'opération de création de la pizza peut donc être autorisée. L'opération de **`createOnePizza`** du modèle renverra la nouvelle pizza au router qui s'occupera de présenter la nouvelle pizza au client, au format JSON.
+
+### Mécanisme d'autorisation quand le token JWT est invalide
+
+Voici le workflow d'autorisation si le token n'est pas valide :
+
+<ScrollableImage name="authorizeNOK.png" minWidth="879px" maxWidth="879x" />
+<figcaption>Appel à une opération d'une RESTful API nécessitant une autorisation JWT : autorisation invalide</figcaption>
+
+Dans ce cas là, **`authorize`** ne passe pas la main à **`isAdmin`** ni même à la fonction middleware qui gère la route **`POST /pizzas`**.  
+La fonction middleware **`authorize`** renvoie directement un code d'erreur **`401 Unauthorized`** au client. 
+
+### Mécanisme d'autorisation quand l'utilisateur n'est pas admin
+
+Vous pourriez aussi imaginer le workflow où le client envoie un token valide, mais l'utilisateur associé n'est pas admin. Dans ce cas-ci, **`authorize`** ferait appel à **`isAdmin`**, mais **`isAdmin`** renverrait directement un code d'erreur **`403 Forbidden`** au client.  
+En effet, l'API indiquerait ainsi qu'elle aurait vérifié que l'utilisateur est bien authentifié, mais que celui ne possède pas les privilèges suffisant pour accéder à l'opération demandée.
+
+## Implémentation du mécanisme d'autorisation
+
+😨 Wow, le workflow d'autorisation pour la création d'une pizza est assez long.  
+Nous allons maintenant l'implémenter dans notre tutoriel en cours.  
+Nous vous inquiétez pas, ce qui importe dans le code qui va suivre, ce n'est pas de savoir écrire tout le code, mais de bien comprendre les mécanismes associés. En effet, en règle générale, vous allez utiliser des librairies vous permettant d'autoriser les accès aux opérations de vos API. Vous écrirez donc rarement les mécanismes d'autorisation, par contre, vous devrez pouvoir les utiliser.
+
+Veuillez créer les nouvelles fonctions middleware **`authorize`** et **`isAdmin`** au sein d'un nouveau fichier **`/utils/auths.js`** :
+```js numbered highlighting="1,4,7,11-12,18"
+const jwt = require('jsonwebtoken');
+const { readOneUserFromUsername } = require('../models/users');
+
+const jwtSecret = 'ilovemypizza!';
+
+const authorize = (req, res, next) => {
+  const token = req.get('authorization');
+  if (!token) return res.sendStatus(401);
+
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    const { username } = decoded;
+
+    const existingUser = readOneUserFromUsername(username);
+
+    if (!existingUser) return res.sendStatus(401);
+
+    req.user = existingUser; // request.user object is available in all other middleware functions
+    return next();
+  } catch (err) {
+    console.error('authorize: ', err);
+    return res.sendStatus(401);
+  }
+};
+
+const isAdmin = (req, res, next) => {
+  const { username } = req.user;
+
+  if (username !== 'admin') return res.sendStatus(403);
+  return next();
+};
+
+module.exports = { authorize, isAdmin };
+```
+
+Voici quelques explications sur le code de la fonction middleware **`authorize`** : 
+- Grâce à **`req.get('authorization')`** (ligne 7), on récupère le token qui a été envoyé par le client au sein de l'**`authorization header`** de la requête sous forme de string.
+- La méthode **`jwt.verify(token, jwtSecret)`** (ligne 11) vérifie tant la signature du token que son éventuelle expiration. Elle utilise le secret **`jwtSecret`** qui doit être le même que celui pris en compte lors de la création du token.
+- Elle charge toutes les données de l'utilisateur authentifié au sein de l'objet **`req`** (ligne 18), dans **`user`**. Cela est une bonne pratique, cela permet, pour toute la durée du traitement de cette requête, de mettre à disposition ces données à toutes les fonctions middleware.    
+💭 Mais pourquoi faire cela ?
+*Imaginez que vous faites un appel à une base de données externes à chaque fois que vous souhaitez obtenir les informations d'un utilisateur... Cela est très consommateur en temps... Lorsque vous allez utiliser d'autres fonctions middleware comme **`isAdmin`**, vous n'avez plus besoin de faire appel à la base de données.*
+
+La fonction middleware **`isAdmin`** récupère les données de l'utilisateur authentifié via l'objet **`req.user`**.  
+Si l'utilisateur n'est pas **`admin`**, c'est le code **`403 Forbidden`** qui est renvoyé à l'application cliente, signifiant que l'utilisateur est bien authentifié, mais il n'a pas les privilèges pour accéder à l'opération demandée (création de pizza).  
+Si tout est OK, **`isAdmin`** fait appel à **`next()`**, ce qui consiste à exécuter la prochaine fonction middleware qui est présente après l'appel de **`isAdmin`**.
+
+Où allons-nous utiliser ces nouvelles fonctions middleware ?
+
+Nous pouvons le faire au niveau que nous souhaitons, soit au niveau :
+- de l'**application**, pour toutes les routes, via **`app.use(authorize)`**.
+- d'un **router**, pour toutes les routes associées ; par exemple, on pourrait dire que toutes les routes du router de pizzas sont protégées par une autorisation JWT. On écrirait : **`app.use("/pizzas", authorize, pizzaRouter);`**.  
+Cela signifierait que toutes les opérations sur des ressources de type "pizzas" ne seraient autorisées que si l'utilisateur était authentifié. Cela serait problématique pour deux raisons :
+    - On veut pouvoir afficher le menu des pizzas pour tous les utilisateurs, même s'ils sont anonymes.
+    - On ne veut pas simplement vérifier qu'un utilisateur est authentifié pour créer une pizza, on veut aussi vérifier qu'il est admin.
+- d'une route, pour une opération de notre RESTful API. C'est ce que nous souhaitons faire ici. Veuillez mettre à jour le code du router de "pizzas" au sein de **`/routes/pizzas.js`** :
+```js highlighting="2,7"
+// See existing code
+const { authorize, isAdmin } = require('../utils/auths');
+
+// See existing code
+
+// Create a pizza to be added to the menu.
+router.post('/', authorize, isAdmin, (req, res) => {
+  const title = req?.body?.title?.length !== 0 ? req.body.title : undefined;
+  const content = req?.body?.content?.length !== 0 ? req.body.content : undefined;
+
+  if (!title || !content) return res.sendStatus(400); // error code '400 Bad request'
+
+  const createdPizza = createOnePizza(title, content);
+
+  return res.json(createdPizza);
+});
+```
+
+Ainsi, nous avons juste fait l'appel de deux fonctions middleware pour vérifier :
+- **que l'utilisateur est authentifié** via **`authorize`** ; si tout est OK au niveau du token fournit par l'application cliente, **`authorize`** fait appel via **`next()`** à la prochaine fonction middleware. Dans ce cas-ci, c'est **`isAdmin`**. S'il y a un problème, **`authorize`** termine le traitement de la requête en envoyant un code d'erreur au client et les prochaines fonctions middleware (**`isAdmin`**, puis la fonction **`arrow`**) ne sont pas exécutées.
+- **que l'utilisateur est admin** via **`isAdmin`** ; si tout est OK, que l'utilisateur authentifié est l'admin, **`isAdmin`** fait appel via **`next()`** à la prochaine fonction middleware. Dans ce cas-ci, c'est la fonction **`arrow`** qui appelle l'opération demandée pour créer la pizza : **`createOnePizza`**. Si l'utilisateur authentifié n'est pas l'admin, alors **`isAdmin`** termine le traitement en envoyant un code d'erreur au client et la fonction traitant de l'opération de création n'est pas exécutée.
+
+Comment pouvons-nous tester l'opération de création d'une pizza ? Via REST Client.
+Tentons le coup à l'aide de cette requête (elle est déjà présente dans **/REST Client/pizzas.http**) :
+```http
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Après avoir exécuté cette requête, vous devriez avoir reçu un status code **`401 Unauthorized`**.
+C'est normal, comme nous n'avons pas envoyé de token, nous ne pouvons donc pas être autorisé.  
+Au prochain point nous allons voir comment utiliser REST Client pour sauvegarder de l'information, comme un token, suite à une requête vers une API.
+
+# <InternalPageTitle> Client REST avec JWT </InternalPageTitle>
+
+Précédemment, nous avons appris à utiliser REST Client, l'extension de VS Code, pour faire des requêtes vers des API.
+
+Voici quelques notions supplémentaire pour utiliser REST Client avec des **`JWT`** :
+- Il est possible de créer des **`Request Variables`** afin de **récupérer la réponse** associée 
+à une requête au sein d'une variable.
+- On va donc pouvoir récupérer le token, suite à une requête d'authentification, 
+au sein d'une **`Request Variable`**, pour ensuite fournir ce token dans le **`Authorization header`** de toutes les requêtes demandant une autorisation JWT.
+
+Si vous souhaitez plus d'infos sur les **`Request Variables`**, vous pouvez consulter la [documentation de REST Client](https://github.com/Huachao/vscode-restclient#request-variables) [[R.55]](/references/#r55).
+
+Voici comment mettre à jour le script **`/REST Client/pizzas.http`** pour créer une pizza en passant le token de l'utilisateur **`admin`** :
+
+```http
+### Create a pizza by using the admin account
+#### First login as the admin
+##### Define a request variable nammed admin :
+# @name admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+
+#### Create a pizza with the admin token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+Authorization: {{admin.response.body.token}}
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Pour tester l'opération de création de pizza, veuillez d'abord exécuter la première requête, puis la seconde donnée ci-dessus.
+
+A ce stade-ci, il serait aussi intéressant de tester certains cas d'erreurs associés aux tokens. Veuillez compléter le script **`/REST Client/pizzas.http`** avec :
+```http
+### 1. Create a pizza without a token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### 2. Create a pizza without being the admin, use manager account
+#### 2.1 First login as the manager
+##### 2.1.1 Define a request variable nammed manager
+# @name manager
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manager"
+}
+
+##### 2.1.2 Define a file variable to simplify the access to the token of manager
+@managerToken = {{manager.response.body.token}}
+
+#### 2.2 Try to create a pizza with the manager token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+```
+
+Nous voyons qu'à l'aide de REST Client, nous pouvons utiliser une **`File Variable`** pour allouer une partie de la réponse faite à une requête.  
+Dans ce cas, on peut faire appel à l'API en passant le token via la **`File Variable`** nommé **`managerToken`** (code associé : **`Authorization: {{managerToken}}`**) au lieu d'utiliser une partie seulement de la **`Request Variable`** nommée **`manager`** (code possible : **`Authorization: {{manager.response.body.token}}`**).  
+Cela permet de créer des requêtes plus concises.
+
+# <InternalPageTitle> Protection des opérations d'écriture d'une API </InternalPageTitle>
+
+Veuillez mettre à jour votre RESTful API gérant les pizzas afin que toutes les opérations d'écriture soient protégées par une autorisation JWT, n'autorisant que l'utilisateur **admin**.
+
+Voici le code à mettre à jour dans **`/routes/pizzas`** pour correctement autoriser les opérations de suppression et de modification sur des ressources de type "pizzas":
+```js highlighting="2,11"
+// Delete a pizza from the menu based on its id
+router.delete('/:id', authorize, isAdmin, (req, res) => {
+  const deletedPizza = deleteOnePizza(req.params.id);
+
+  if (!deletedPizza) return res.sendStatus(404);
+
+  return res.json(deletedPizza);
+});
+
+// Update a pizza based on its id and new values for its parameters
+router.patch('/:id', authorize, isAdmin, (req, res) => {
+  const title = req?.body?.title;
+  const content = req?.body?.content;
+
+  if ((!title && !content) || title?.length === 0 || content?.length === 0) {
+    return res.sendStatus(400);
+  }
+
+  const updatedPizza = updateOnePizza(req.params.id, { title, content });
+
+  if (!updatedPizza) return res.sendStatus(404);
+
+  return res.json(updatedPizza);
+});
+```
+
+Pour vous assurer que les opérations de suppression et de modification sont bien fonctionnelles, veuillez mettre à jour les requêtes associées afin d'utiliser un token. Veuillez mettre à jour **`/REST Client/pizzas.http`** en ajoutant ces deux lignes :
+
+```http numbered highlighting="25,30"
+### Create a pizza by using the admin account
+#### First login as the admin
+##### Define a request variable nammed admin
+# @name admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+
+#### Create a pizza with the admin token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+Authorization: {{admin.response.body.token}}
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### Delete pizza identified by 2 with the admin token
+DELETE {{baseUrl}}/pizzas/2
+Authorization: {{admin.response.body.token}}
+
+### Update the pizza identified by 6 with the admin token
+PATCH {{baseUrl}}/pizzas/6
+Content-Type: application/json
+Authorization: {{admin.response.body.token}}
+
+{
+    "title":"Magic Green 2"
+}
+```
+
+Veuillez exécutez les requêtes de type **DELETE** et de type **PATCH** afin de vous assurer que l'API est en ordre.
+
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message :
+**`api auths tutorial`**.
+
+En cas de souci, vous pouvez utiliser le code du tutoriel [api-auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths).
+
+# <InternalPageTitle> Project 4.1 : Authentification & autorisation d'opérations </InternalPageTitle>
+
+Vous devez mettre à jour l'API développée pour [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines) afin de sécuriser certaines opérations par JWT.
+
+Le code doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/4.1/api`** sur base d'un clone du boilerplate [jwt-api-boilerplate](https://github.com/e-vinci/jwt-api-boilerplate) et de l'ajout de votre code créé pour [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines).
+
+Il est possible que dans le cadre de votre projet, vous n'ayez pas besoin d'authentifier des utilisateurs afin de protéger l'accès à certaines opérations sur des ressources.
+
+Si c'est le cas, il est quand même important d'apprendre les concepts associés à l'authentification et à l'autorisation JWT. Veuillez donc développer un prototype d'application qui nécessiterait une authentification, ainsi qu'au moins une opération qui devrait être autorisée.
+
+Si vous n'avez pas d'idée, vous pourriez simplement développer un prototype permettant d'entrer des commentaires sur votre site web et de les visualiser.
+
+Dans un premier temps, veuillez identifier toutes les opérations mises à disposition par votre API, ainsi que si celles-ci sont protégées par JWT, au sein du fichier **`README.md`** (fichier Markdown) de votre projet. Voici un exemple de comment nous vous recommandons de documenter votre API, sous forme de tableau : 
+
+| URI | Méthode HTTP | Auths? | Opération |
+|---|---|---|---|
+| **`films`** | GET | Non | READ ALL : Lire toutes les ressources de la collection |
+| **`comments`** | GET | JWT | READ ALL FILTERED : Lire toutes les ressources de la collection |
+| **`comments`** | POST | JWT | CREATE ONE : Créer une ressource basée sur les données de la requête |
+| ... | ... | ... | ... |
+
+<br/>
+
+<AuthenticatedBlock>
+
+Veuillez travailler avec les membres de votre groupe et vous partager le travail.
+
+Un peu avant la fin de la séance, veuillez discuter :
+- du lien entre les UCs que vous avez identifiés en début de projet et les opérations de votre API.
+- des difficultés rencontrées, de ce que vous avez appris...
+
+</AuthenticatedBlock>
+
+Vous devez tester toutes les nouvelles opérations que vous protégez par une autorisation JWT à l'aide de Rest Client.
+
+Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`4.1 : api JWT auths`**.
+
+#### 🤝 Tips
+Comment créer un tableau dans un fichier Markdown (pour **`README.md`**) ?  
+Voici deux options :
+- Soit vous utiliser des **`|`** pour délimiter les cellules et des **`|---|`** pour séparer 
+les headers du corps du tableau. 
+Voici le Markdown de l'exemple donné ci-dessus :
+```text
+| URI | Méthode HTTP | Auths? | Opération |
+|---|---|---|---|
+| **`films`** | GET | Non | READ ALL : Lire toutes les ressources de la collection |
+| **`comments`** | GET | JWT | READ ALL FILTERED : Lire toutes les ressources de la collection |
+| **`comments`** | POST | JWT | CREATE ONE : Créer une ressource basée sur les données de la requête |
+| ... | ... | ... | ... |
+```
+- Soit c'est simplement un tableau HTML (`<table>`).
+
+Comment ajouter l'authentification et l'autorisation JWT au sein de votre projet ?
+- Soit vous partez du boilerplate du cours offrant l'authentification et l'autorisation JWT : [jwt-api-boilerplate](https://github.com/e-vinci/jwt-api-boilerplate). 
+Puis vous pouvez y intégrer le code développée pour [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines).
+- Soit vous refaites les étapes du tutoriel dans cette page en partant du code développé pour [Project 2.18](../../part2/comms-security/#project_2_18_autorisation_de_nouvelles_origines).

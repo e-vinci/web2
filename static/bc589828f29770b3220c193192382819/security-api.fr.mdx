@@ -1,0 +1,727 @@
+---
+title: "Sécurisation API"
+description: "Sécurisation d'une RESTful API"
+---
+
+# b) Sécurisation d'une RESTful API
+
+<InternalPageMenu>
+  <PathViewer>
+    <PathViewerItem to="/"> web2course </PathViewerItem>
+    <PathViewerItem to="/part4"> Partie 4 </PathViewerItem>
+    <PathViewerItem selected> b) Sécuritsation d'une RESTful API </PathViewerItem>
+  </PathViewer>
+  <InternalPageMenuItem> Protection contre les attaques XSS </InternalPageMenuItem>
+  <InternalPageMenuItem> Sécurisation des passwords </InternalPageMenuItem>
+  <InternalPageMenuItem> Projet 4.2 : Sécurisation d'API </InternalPageMenuItem>
+  <InternalPageMenuItem> 🍬 Authentification & autorisation JWT à l'aide de cookies </InternalPageMenuItem> 
+</InternalPageMenu>
+
+<div className="card card__simple-youtube-container">
+    <YoutubeImage src="https://youtu.be/KsJ-11PcSp4" />
+</div>
+
+La sécurisation d'API est une problématique complexe.  
+Nous n'allons pas aller dans les détails de cette problématique, juste offrir une solution à deux cas simples à traiter.
+
+# <InternalPageTitle> Protection contre les attaques XSS </InternalPageTitle>
+
+## Une attaque XSS, c'est quoi ?
+
+Les attaques **XSS**, ou **Cross-Site Scripting**, sont un type d'injection de scripts malicieux dans une application web.
+
+Imaginez le forum web d'une banque et ce scénario :
+
+<ScrollableImage name="xss.png" minWidth="500px" maxWidth="700px" />
+
+L'API de la banque permet d'enregistrer des messages qui sont associés à des forums sur lesquels leurs clients peuvent poster des messages.  
+Si l'API de la banque était mal sécurisée et qu'elle permettait d'enregistrer n'importe quels types d'information en tant que "messages" du forum, il serait possible à un attaquant d'injecter du JS malicieux dans l'API.  
+Plus tard, lors de l'affichage des messages par le forum de la banque (**`https://forum.my-bank.com`**), le JS malicieux pourrait s'exécuter dans le browser de n'importe quel utilisateur.  
+Vous avez vu que via du JS, on peut envoyer de l'information n'importe où, notamment à l'aide de **`fetch`**. Ce qui permettrait donc à un hacker, via son script malicieux, d'envoyer des cookies contenant des infos sensibles à son API malicieuse, en vue de futures attaques encore plus diaboliques, comme notamment vider le compte en banque d'utilisateurs.
+
+La protection contre des attaques XSS se fait à différents niveaux. Ca n'est pas l'objet de ce cours de voir cela en détails, mais nous verrons un technique simple pour éviter certaines attaques.
+
+## Réaliser une attaque XSS
+Nous allons maintenant réaliser une attaque XSS sur le site de la pizzeria.
+
+Veuillez lancer le frontend [jwt-fetch-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch) (nous allons le développer tout prochainement, vous pouvez simplement en faire une copie temporaire, l'installer et l'exécuter) et le backend **`api-auths`** du site de la pizzeria (**`/web2/tutorials/pizzeria/api/auths`** ou en cas de soucis : [api-auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths)).
+
+Evidemment, un hackeur, pour tenter l'attaque XSS, doit d'abord trouver un moyen d'usurper la session d'**`admin`**. Nous ne verrons pas dans ce cours le genre d'attaques qui permettrait de le faire. Nous allons considérer que cette première attaque est réussie et nous allons prendre le rôle d'un hackeur pouvant accéder au compte **`admin`**.
+
+Veuillez vous loguer à l'aide du compte **`admin`** (et le password **`admin`**).  
+Veuillez vous rendre sur la page **`Add a pizza`**.
+
+Pour le titre de la pizza, vous pouvez ajouter n'importe quoi.
+Dans le contenu de la pizza, veuillez ajouter cela et soumettre : 
+
+```text
+<img src="#" onerror="alert('You have been hacked !')">
+```
+
+En fait, nous avons ajouté une balise **`img`** contenant du inline JS. **`onerror`** est un gestionnaire d'événements qui sera d'office appelé car la source (**`src="#"`** ) donné à **`img`** n'est pas une image.
+
+Maintenant, tout utilisateur connecté ou pas qui se loguera sur le site va exécuter ce script "malicieux". Il verra le pop-up apparaître avec le message *"You have been hacked !"*.  
+En effet, le menu des pizzas, tel qu'il est construit, est basé sur toutes les ressources de type "pizzas" renvoyées par l'API, dont une des pizzas contient le JS malicieux qui est exécuté dans une cellule de la table via ce code de la **`HomePage`** de l'IHM :
+```js highlighting="7"
+function getAllTableLinesAsString(menu) {
+  let pizzaTableLines = '';
+
+  menu?.forEach((pizza) => {
+    pizzaTableLines += `<tr>
+      <td>${pizza.title}</td>
+      <td>${pizza.content}</td>
+    </tr>`;
+  });
+
+  return pizzaTableLines;
+}
+```
+
+## Empêcher les attaques XSS
+
+Par rapport à l'attaque précédente, le plus simple pour protéger de l'attaque pourrait être de faire en sorte que l'application cliente n'interprète pas d'HTML / JS / CSS envoyé par l'API.
+
+Ici, dans la **`HomePage`**, on utilise la propriété **`innerHTML`** d'une **`td`**. Ainsi, l'HTML et l'inline JS associé est exécuté. Si l'on utilisais la propriété **`innerText`** des **`td`**, alors, ni l'HTML et le JS serait interprété par le browser, et donc pas de possibilité de script malicieux au niveau de la **`HomePage`**.
+
+Oui, mais si nous allions vers cette solution, cela serait problématique si nous souhaitions réellement développer plusieurs applications clientes, il faudrait toujours faire attention à cette contrainte.
+
+Dès lors, nous allons préférer la solution où nous sécurisons l'API. Ainsi, peu importe l'application cliente développée, il devrait y avoir moins d'angles d'attaques.
+
+Au niveau de l'API, nous allons échapper les caractères dangereux, principalement **`"`**, **`'`**, **`&`**, **`<`**, **`>`**.
+
+Nous allons utiliser la librairie **[escape-html](https://www.npmjs.com/package/escape-html)** sous Node.js échappant les string pour une utilisation des string transformées en HTML.
+
+Pour ce nouveau tutoriel, nous allons continuer le développement de l'API [api-auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths) et la sécuriser.
+
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/safe`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/api/auths`** (ou [api-auths](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/auths)).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**`/web2/tutorials/pizzeria/api/safe`**.
+
+Veuillez installer la librairie **`escape-html`** au sein de votre projet **`safe`** :
+```bash
+npm i escape-html
+```
+
+Nous allons supprimer, s'il existe, le fichier reprenant le code malicieux introduit précédemment : veuillez supprimer le fichier **`/data/pizzas.json`**.
+
+Nous allons mettre à jour le modèle de pizzas pour échapper les caractères dangereux.
+Veuillez modifier **`/models/pizzas.js`** :
+```js highlighting="1,9-10"
+const escape = require('escape-html');
+// other bits of code
+
+function createOnePizza(title, content) {
+  const pizzas = parse(jsonDbPath, defaultPizzas);
+
+  const createdPizza = {
+    id: getNextId(),
+    title: escape(title),
+    content: escape(content),
+  };
+
+  pizzas.push(createdPizza);
+
+  serialize(jsonDbPath, pizzas);
+
+  return createdPizza;
+}
+```
+
+Nous allons maintenant tester si tout est réglé au niveau de l'attaque XSS.  
+Dans votre frontend temporaire ([jwt-fetch](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch)), veuillez vous loguer à l'aide du compte **`admin`** (et le password **`admin`**).  
+Veuillez vous rendre sur la page **`Add a pizza`**.
+
+Comme précédemment : 
+- Pour le titre de la pizza, vous pouvez ajouter n'importe quoi.
+- Dans le contenu de la pizza, veuillez ajouter cela et soumettre : 
+
+``` text
+<img src="#" onerror="alert('You have been hacked !')">
+```
+
+Maintenant, tout utilisateur connecté verra simplement apparaître, quand il affiche la **`HomePage`**, le menu des pizzas avec :
+
+<ScrollableImage name="hacked.png" minWidth="500px" maxWidth="744px" />
+
+Il n'y a plus de code JavaScript malicieux qui peut s'exécuter côté client 🎉 !
+
+Nous allons maintenant régler les problèmes de passwords mis en clair dans un fichier de l'API.
+
+# <InternalPageTitle> Sécurisation des passwords </InternalPageTitle>
+
+Nous souhaitons maintenant assurer que les passwords enregistrés dans un support de données (un fichier ou une base de données) ne puissent pas être récupérés.
+
+👍 Pour ce faire, il est recommandé d'hacher les passwords avant de les enregistrer au niveau d'une API.
+
+Afin de se protéger contre les "hash attacks", on utilise du **salt** :
+- un **salt** : c'est une donnée aléatoire qui est utilisé en entrée d'une fonction qui hache des données. Ainsi, si un hackeur utilise une base de données de passwords hachés, il devra en plus trouver le bon **salt** pour que son attaque puisse fonctionner.
+- **salt round** : nombre de fois que l'opération de hachage est faite, rendant les attaques de force brute plus lente et donc difficile ; une valeur de **10** semble être généralement raisonnable et recommendée. 
+
+Pour hacher sous Node.js, nous utiliserons la librairie [bcrypt](https://www.npmjs.com/package/bcrypt).
+
+Veuillez installer la librairie **`bcrypt`** au sein de votre API **`safe`** :
+```bash
+npm i bcrypt
+```
+
+En résumé, nous allons utiliser :
+- la fonction asynchrone **`hash`** de **`bcrypt`** pour **hacher un password** ;
+- la fonction asynchrone **`compare`** de **`bcrypt`** pour **comparer un password en clair à un password haché** ; si le résultat est positif, cela signifie que le password fournit pour un utilisateur correspond au password initial.
+
+Nous préférons utiliser les librairies asynchrone afin que l'API reste disponible à gérer des requêtes clientes et ne bloque pas celles-ci jusqu'à la fin d'une opération de **bcrypt** !
+
+Veuillez effacer le fichier **`/data/users.json`** contenant les credentials d'utilisateurs où les passwords sont donnés en clair.
+
+Nous allons maintenant mettre à jour le modèle de "users" pour utiliser **`bcrypt`**. Veuillez modifier **`/models/users.js`** :
+```js numbered highlighting="2,9,17,21,25-26,42,46,70,73"
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const path = require('node:path');
+const { parse, serialize } = require('../utils/json');
+
+const jwtSecret = 'ilovemypizza!';
+const lifetimeJwt = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
+
+const saltRounds = 10;
+
+const jsonDbPath = path.join(__dirname, '/../data/users.json');
+
+const defaultUsers = [
+  {
+    id: 1,
+    username: 'admin',
+    password: bcrypt.hashSync('admin', saltRounds),
+  },
+];
+
+async function login(username, password) {
+  const userFound = readOneUserFromUsername(username);
+  if (!userFound) return undefined;
+
+  const passwordMatch = await bcrypt.compare(password, userFound.password);
+  if (!passwordMatch) return undefined;
+
+  const token = jwt.sign(
+    { username }, // session data added to the payload (payload : part 2 of a JWT)
+    jwtSecret, // secret used for the signature (signature part 3 of a JWT)
+    { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
+  );
+
+  const authenticatedUser = {
+    username,
+    token,
+  };
+
+  return authenticatedUser;
+}
+
+async function register(username, password) {
+  const userFound = readOneUserFromUsername(username);
+  if (userFound) return undefined;
+
+  await createOneUser(username, password);
+
+  const token = jwt.sign(
+    { username }, // session data added to the payload (payload : part 2 of a JWT)
+    jwtSecret, // secret used for the signature (signature part 3 of a JWT)
+    { expiresIn: lifetimeJwt }, // lifetime of the JWT (added to the JWT payload)
+  );
+
+  const authenticatedUser = {
+    username,
+    token,
+  };
+
+  return authenticatedUser;
+}
+
+function readOneUserFromUsername(username) {
+  const users = parse(jsonDbPath, defaultUsers);
+  const indexOfUserFound = users.findIndex((user) => user.username === username);
+  if (indexOfUserFound < 0) return undefined;
+
+  return users[indexOfUserFound];
+}
+
+async function createOneUser(username, password) {
+  const users = parse(jsonDbPath, defaultUsers);
+
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  const createdUser = {
+    id: getNextId(),
+    username,
+    password: hashedPassword,
+  };
+
+  users.push(createdUser);
+
+  serialize(jsonDbPath, users);
+
+  return createdUser;
+}
+
+function getNextId() {
+  const users = parse(jsonDbPath, defaultUsers);
+  const lastItemIndex = users?.length !== 0 ? users.length - 1 : undefined;
+  if (lastItemIndex === undefined) return 1;
+  const lastId = users[lastItemIndex]?.id;
+  const nextId = lastId + 1;
+  return nextId;
+}
+
+module.exports = {
+  login,
+  register,
+  readOneUserFromUsername,
+};
+```
+
+Voici les modifications apportées :
+- **pour créer un password hashé** : on utilise la fonction asynchrone **`hash`** pour créer le password haché. Dès lors, **`createOneUser`** devient asynchrone. De plus, comme **`createOneUser`** est devenue asynchrone, dans **`register`**, pour chaîner le traitement de création du token, on met un **`await`** à l'appel de **`createOneUser`**. Et comme un **`await`** est ajouté au sein de **`register`**, il faut mettre un **`async`** à la méthode **`register`**. Attention, du coup, comme **`register`** est devenue asynchrone, il faudra aussi bien chaîner les traitements où **`register`** est appelé, dans le router **`auths`**.
+- **pour vérifier qu'un password en clair "match" à un password haché** : on utilise la fonction asynchrone **`compare`** que l'on chaîne à la création du token à l'aide de **`await`**. Dès lors, la fonction **`login`** doit elle aussi être déclarée **`async`**. Attention, du coup, comme `login` est devenue asynchrone, il faudra bien chaîner les traitements où **`login`** est appelé, dans le router **`auths`**.
+- **pour créer l'utilisateur **`admin`** se trouvant dans les **`defaultUsers`** avec des credentials par défaut** : on souhaite indiquer comme **`password`** le password haché correspondant au password **`"admin"`**. Pour se simplifier la vie, on appelle la fonction synchrone **`hashSync`** (voir ligne 16). Bien évidemment, dans une application plus robuste, on évitera d'hardcoder ce genre de secrets dans les sources de notre application 😉 !
+
+Afin de traiter des deux fonctions du modèle **`users`** qui sont devenues asynchrones, **`login`** et **`register`**, nous allons modifier le router **`/routes/auths`** :
+```js numbered highlighting="7,13,21,27"
+const express = require('express');
+const { register, login } = require('../models/users');
+
+const router = express.Router();
+
+/* Register a user */
+router.post('/register', async (req, res) => {
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+
+  if (!username || !password) return res.sendStatus(400); // 400 Bad Request
+
+  const authenticatedUser = await register(username, password);
+
+  if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
+
+  return res.json(authenticatedUser);
+});
+
+/* Login a user */
+router.post('/login', async (req, res) => {
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+
+  if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
+
+  const authenticatedUser = await login(username, password);
+
+  if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
+
+  return res.json(authenticatedUser);
+});
+
+module.exports = router;
+```
+
+Nous avons simplement chaîné les réponses à faire au client seulement une fois les opération `register`** et **`login`** terminées. Pour ce faire, nous avons précédé le nom de ces méthodes par **`await`**. Nous avons donc du ajouter **`async`** aux fonctions middleware s'occupant des routes **`POST /auths/register`** et **`POST /auths/login`**.
+
+Veuillez vérifier que votre application fonctionne correctement.  
+Via l'IHM, veuillez faire un register d'un nouvel utilisateur.  
+Au niveau de l'API, allez voir le contenu du nouveau fichier **`/data/users.json`**. Les passwords devraient maintenant être hachés, comme par exemple :
+
+```json
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "$2b$10$RioLKlPFyYFEhv/46gR7dufDkke07eDpWH9tBt/A4Z9tJh0oJnnf2"
+  },
+  {
+    "id": 2,
+    "username": "manager",
+    "password": "$2b$10$NZZ1zxOPdby6gl4Dw8K0Q.v4ZRWTbh1Ta7qcYzH5G4SrO5z71H0kO"
+  }
+]
+```
+
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message : **`api-safe tutorial`**.
+
+En cas de souci, vous pouvez utiliser le code du tutoriel :
+- pour le frontend : [jwt-fetch-hmi](https://github.com/e-vinci/js-demos/tree/main/frontend/frontend-essentials/jwt-fetch).
+- pour l'API : [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
+
+# <InternalPageTitle> Projet 4.2 : Sécurisation d'API </InternalPageTitle>
+
+Vous devez mettre à jour l'API développée pour [Projet 4.1](../auths-api/#project_4_1_authentification_autorisation_doperations) afin de sécuriser l'API pour échapper les caractères dangereux. Normalement, vos passwords sont déjà hachés car pour créer le [Projet 4.1](../auths-api/#project_4_1_authentification_autorisation_doperations), vous aviez utilisé le code offert dans le boilerplate [jwt-api-boilerplate](https://github.com/e-vinci/jwt-api-boilerplate).
+
+Le code doit se trouver dans votre repository local et votre web repository (normalement appelé **`web2`**) dans le répertoire nommé **`/project/4.2/api`** sur base d'un copier/coller du code de [Projet 4.1](../auths-api/#project_4_1_authentification_autorisation_doperations).
+
+<AuthenticatedBlock>
+
+Veuillez travailler avec les membres de votre groupe et vous partager le travail :
+- certains membres peuvent travailler sur cette sécurisation ;
+- d'autres membres sur d'autres aspect du projet.
+
+Un peu avant la fin de la séance, veuillez discuter :
+- présenter ce que vous avez appris au niveau de la sécurisation aux membres qui ont travaillé sur autre chose.
+
+</AuthenticatedBlock>
+
+Vous devez tester, à l'aide de Rest Client, toutes les opérations que vous avez modifiées.
+
+Quand un prototype d'api est finalisé et testé, veuillez faire un **`commit`** de votre code avec comme message : **`4.2 : api bcrypt & escape-html`**.
+
+#### 🤝 Tips
+
+⚡ N'oubliez pas que vos méthodes de **`login`** et de **`register`** deviennent asynchrones, cela impose de bien chaîner les traitements dans le router, sinon vous risquez de renvoyer des objets vides en réponses aux requêtes.
+
+# <InternalPageTitle> 🍬 Authentification & autorisation JWT à l'aide de cookies </InternalPageTitle>
+
+## Pourquoi utiliser l'autorisation JWT à l'aide de cookies ?
+
+Dans la partie sur l'[Authentification et autorisation d'accès aux opérations d'une RESTful API via JWT](../auths-api/), nous avons vu une façon de gérer des token JWT, sans gérer de cookies.
+
+Cela impose aux client de sauvegarder les token et de les envoyer dans un **`authorization header`** lorsqu'ils souhaitent accéder à une opération protégée.
+
+Il est aussi possible d'intégrer les tokens au sein de cookies. Dans ce cas-là, les clients qui ont reçu un cookie de l'API renverront automatiquement ce cookie (mécanisme des browsers). Les tokens JWT voyageront automatiquement grâce au mécanisme de cookies.
+
+💭 Faut-il mieux intégrer les token JWT dans des cookies ou pas ?  
+Il est difficile de donner une réponse à cette question. Chaque approche a des avantages et des inconvénients. Ce qui devrait être le point d'attention, c'est la sécurité. Et dans les deux cas, on atteint un niveau de sécurité raisonnable.
+Pour ce cours, nous avons choisi la façon la plus moderne, en laissant au client le choix de sauvegarder les token dans le web storage (nous allons voir ça tout prochainement pour l'aspect frontend).  
+Notons que le cas le plus sûr est probablement d'avoir deux types de token, ce qui est d'une complexité qui dépasse les objectifs de ce cours. Néanmoins, pour votre info, les mécanismes d'authentification comme OAuth (authorization de MS Azure) & OpenID Connect (authentification de MS Azure) gère deux types de token :
+- un token à durée de vie courte qui sera enregistré en mémoire vive au niveau du client (access token) ou dans le localStorage.
+- un token à durée de vie longue qui sera enregistré par le client dans un cookie (refresh token, notamment utilisé par l'API pour créer un nouvel access token).
+
+## Un cookie, c'est quoi ?
+
+Un **cookie** représente des données qu'un serveur envoie à un browser.  
+Le browser peut sauver ce cookie. Pour chaque requête faite au serveur sur la même origine (que l'origine où le cookie a été reçu), le cookie sera automatiquement envoyé au serveur.
+
+Il fut un temps où les cookies étaient utilisés comme un mécanisme général de stockage de données côté client. 
+
+👍 Actuellement, si les cookies sont utilisés pour sauvegarder les données de session, il faut se protéger contre les attaques XSS et rendre les cookies inaccessibles au JavaScript : on utilise donc les cookies **`HttpOnly`** qui sont inaccessibles à la **`Document.cookie API`**. 
+
+Pour la suite, on va donc voir :
+- comment utiliser Express pour créer des cookies au niveau d'une API ;
+- comment rendre ces cookies inaccessibles aux attaques XSS en configurant **`HttpOnly`**.
+
+## Implémentation de l'authentification & l'autorisation JWT au sein de cookies
+
+### Intro
+
+Nous allons donc créer une nouvelle version de l'API sauvegardant le token d'un utilisateur au sein d'un cookie, ainsi que son username, sans que ces infos soient accessible au JS côté client.
+
+Pour ce faire nous allons utiliser la librairie [cookie-session](https://github.com/expressjs/cookie-session) qui permet d'enregistrer des données de session dans des cookies.
+
+Nous allons maintenant continuer le développement de l'API [safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe).
+
+Au sein de votre repo **`web2`**, veuillez créer le projet nommé **`/web2/tutorials/pizzeria/api/cookies`** sur base d'un copié/collé de **`/web2/tutorials/pizzeria/api/safe`** (ou [api-safe](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/safe)).
+
+Pour la suite du tutoriel, nous considérons que tous les chemins absolus démarrent du répertoire
+**`/web2/tutorials/pizzeria/api/cookies`**.
+
+Veuillez installer la librairie **`cookie-session`** au sein de votre nouveau projet **`cookies`** :
+```bash
+npm i cookie-session
+```
+
+### Utilisation de la fonction middleware **cookieSession**
+
+Veuillez mettre à jour **`/app.json`** pour mettre en place la gestion de cookies :
+
+```js highlighting="4,12-21"
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cookieSession = require('cookie-session');
+
+const usersRouter = require('./routes/users');
+const pizzaRouter = require('./routes/pizzas');
+const authsRouter = require('./routes/auths');
+
+const app = express();
+
+const expiryDateIn3Months = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 3);
+const cookieSecreteKey = 'YouWouldnot!not!like!mypizza';
+app.use(
+  cookieSession({
+    name: 'user',
+    keys: [cookieSecreteKey],  
+    httpOnly: true,
+    expires: expiryDateIn3Months,
+  }),
+);
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use('/users', usersRouter);
+app.use('/pizzas', pizzaRouter);
+app.use('/auths', authsRouter);
+
+module.exports = app;
+```
+
+Nous avons donc bien indiqué que le cookie est inaccessible au JS via : **`httpOnly: true`**.
+
+Nous avons fait en sorte que le cookie soit signé via la clé **`cookieSecreteKey`**.  
+Le mécanisme de signature correspond à ce qui a été vu dans le cadre des tokens JWT.  
+Ainsi, si un cookie venait être modifié par un utilisateur, lors de la vérification du cookie, cela sera automatiquement détecté par la fonction middleware **`cookieSession`** et la session ne sera pas créée.
+
+Pour info, la fonction middleware **`cookieSession`** va créer deux cookies :
+- un cookie portant comme nom la valeur de **`name`** ; il est encodé en base64. N'hésitez pas à vous amuser à décoder un cookie généré par **`cookieSession`** sur [base64decode](https://www.base64decode.org/).
+- un cookie portant comme nom la valeur de **`name`** + **`.sig`** : c'est la signature qui prévient contre le "tempering" (acte intentionnel mais non autorisé qui amène à la modification d'un système ou de données).
+
+### Lecture et ajout de données de session via `req.session`
+
+Pour créer des données de session, il suffit de simplement les ajouter à l'objet **`req.session`**.
+
+Dans le cadre de la RESTful API gérant les pizzas, cela est fait lors d'une opération de type **`register`** ou **`login`**.
+
+Veuillez mettre à jour le router **`/routes/auths.js`** :
+
+```js numbered highlighting="17,19,33,35,38-42,44-47"
+const express = require('express');
+const { register, login } = require('../models/users');
+
+const router = express.Router();
+
+/* Register a user */
+router.post('/register', async (req, res) => {
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+
+  if (!username || !password) return res.sendStatus(400); // 400 Bad Request
+
+  const authenticatedUser = await register(username, password);
+
+  if (!authenticatedUser) return res.sendStatus(409); // 409 Conflict
+
+  createCookieSessionData(req, authenticatedUser);
+
+  return res.json({ username: authenticatedUser.username });
+});
+
+/* Login a user */
+router.post('/login', async (req, res) => {
+  const username = req?.body?.username?.length !== 0 ? req.body.username : undefined;
+  const password = req?.body?.password?.length !== 0 ? req.body.password : undefined;
+
+  if (!username || !password) return res.sendStatus(400); // 400 Bad Reques
+
+  const authenticatedUser = await login(username, password);
+
+  if (!authenticatedUser) return res.sendStatus(401); // 401 Unauthorized
+
+  createCookieSessionData(req, authenticatedUser);
+
+  return res.json({ username: authenticatedUser.username });
+});
+
+/* Logout a user */
+router.get('/logout', (req, res) => {
+  req.session = null;
+  return res.sendStatus();
+});
+
+function createCookieSessionData(req, authenticatedUser) {
+  req.session.username = authenticatedUser.username;
+  req.session.token = authenticatedUser.token;
+}
+
+module.exports = router;
+```
+
+Dans le code ci-dessus, nous préparons les données de session qui seront écrites dans le cookie à l'aide de l'objet **`req.session`**.  
+Lorsque nous renvoyons du JSON aux clients, nous ne renvoyons plus le token, mais juste le username de l'utilisateur. L'application cliente, le browser, pourra utiliser cette info pour afficher le nom de l'utilisateur. Pour rappel, le browser n'a pas accès, via le JS, à l'info se trouvant dans le cookie.
+
+Quand nous gérons une session via des cookies, il n'est pas évident de bien clôre une session. Nous avons créé une nouvelle opération de type **`GET /auths/logout`** qui permet d'effacer les données de session d'un utilisateur.
+
+Il nous reste à changer le mécanisme d'autorisation.
+Les tokens ne seront plus reçu via un authorization header, mais via un cookie.  
+Nous allons donc mettre à jour le middleware **`/utils/authorize`** (1 seule ligne) :
+
+```js numbered highlighting="7"
+const jwt = require('jsonwebtoken');
+const { readOneUserFromUsername } = require('../models/users');
+
+const jwtSecret = 'ilovemypizza!';
+
+const authorize = (req, res, next) => {
+  const { token } = req.session;
+  if (!token) return res.sendStatus(401);
+
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    console.log('decoded', decoded);
+    const { username } = decoded;
+
+    const existingUser = readOneUserFromUsername(username);
+
+    if (!existingUser) return res.sendStatus(401);
+
+    req.user = existingUser; // request.user object is available in all other middleware functions
+    return next();
+  } catch (err) {
+    console.error('authorize: ', err);
+    return res.sendStatus(401);
+  }
+};
+
+const isAdmin = (req, res, next) => {
+  const { username } = req.user;
+
+  if (username !== 'admin') return res.sendStatus(403);
+  return next();
+};
+
+module.exports = { authorize, isAdmin };
+```
+
+# <InternalPageTitle> 🍬 Test via REST Client d'une RESTful API attendant des cookies </InternalPageTitle>
+
+Il nous reste à tester nos requêtes via REST Client.
+
+Il n'y a pas de nouvelles notions à apprendre pour utiliser REST Client avec des cookies : le comportement par défaut de REST Client, lorsqu'un cookie est renvoyé dans une réponse, est d'inclure ce cookie dans chaque requête vers la même origine.
+
+Dès lors, pour tester l'API, il suffit d'enlever tous les authorization headers et de rajouter une requête pour tester l'effacement d'une session.
+
+Veuillez tester les requêtes à l'aide de **`/REST Client/pizzas.http`** :
+
+```http
+######### NORMAL OPERATION  ###########
+
+### Read all pizzas
+GET http://localhost:3000/pizzas
+
+### Read all pizzas with File variable
+@baseUrl = http://localhost:3000
+GET {{baseUrl}}/pizzas
+
+### Read all pizzas sorted by title (ascending)
+GET {{baseUrl}}/pizzas/?order=+title
+
+### Read all pizzas sorted by title (descending)
+GET {{baseUrl}}/pizzas/?order=-title
+
+### Read pizza identified by 2
+GET {{baseUrl}}/pizzas/2
+
+### Create a pizza by using the admin account
+#### First login as the admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+
+#### Create a pizza with the admin token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### Delete pizza identified by 2 with the admin token
+DELETE {{baseUrl}}/pizzas/2
+
+### Update the pizza identified by 6 with the admin token
+PATCH {{baseUrl}}/pizzas/6
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2"
+}
+
+
+######### ERROR OPERATION  ###########
+
+### 1. Create a pizza without a token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### 2. Create a pizza without being the admin, use manager account
+#### 2.1 First login as the manager
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manager"
+}
+
+#### 2.2 Try to create a pizza with the manager token
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Green",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### Read pizza which does not exists
+GET {{baseUrl}}/pizzas/100
+
+### Create a pizza which lacks a property
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### Create a pizza without info for a property
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"",
+    "content":"Epinards, Brocolis, Olives vertes, Basilic"
+}
+
+### Update for a pizza which does not exist
+PATCH {{baseUrl}}/pizzas/200
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2"
+}
+
+### Update for a pizza which does not provide any info for a property
+PATCH {{baseUrl}}/pizzas/1
+
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2",
+    "content":""
+}
+```
+
+**`/REST Client/auths.http`** a été mis à jour pour tester **`GET /auths/logout`** :
+```http
+### Logout any user
+GET {{baseUrl}}/auths/logout
+```
+
+Pour ajouter une pizza, il suffit juste :
+1. De loguer l'admin.
+2. De créer une nouvelle pizza ; le cookie est automatiquement envoyé.
+
+Admettons que vous souhaitez tester l'ajout d'une pizza sans envoyer de token :
+1. Lancez l'opération de logout (**`GET /auths/logout`**) ; le cookie renvoyé ne contient pas de données de session ;
+2. Tentez la création d'une pizza qui renverra un code **`401 Unauthorized`**.
+
+Si tout fonctionne bien, faites un **`commit`** de votre repo (**`web2`**) avec comme message :
+**`api-cookies tutorial`**.
+
+En cas de souci, vous pouvez utiliser le code du tutoriel [api-cookies](https://github.com/e-vinci/js-demos/tree/main/backend-restful-api/restful-api-essentials/cookies).
